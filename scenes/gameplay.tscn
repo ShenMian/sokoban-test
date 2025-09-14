@@ -1,11 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://mesh_library.tres" id="1_7biu0"]
-[ext_resource type="ArrayMesh" uid="uid://cf5aouovlxjw1" path="res://box.tres" id="2_00tan"]
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
 
-[sub_resource type="MultiMesh" id="MultiMesh_l1v76"]
-mesh = ExtResource("2_00tan")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00tan"]
+albedo_color = Color(0.49092185, 0.7905889, 0.99605805, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_00tan"]
+material = SubResource("StandardMaterial3D_00tan")
 
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1
@@ -21,11 +23,15 @@ data = {
 }
 metadata/_editor_floor_ = Vector3(0, -1, 0)
 
-[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
-multimesh = SubResource("MultiMesh_l1v76")
+[node name="Boxes" type="Node3D" parent="."]
+
+[node name="Player" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 4.5, 1, -3.5)
+mesh = SubResource("CapsuleMesh_00tan")
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 7, -3.9801302)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 8, -3.98)
+fov = 60.0
 script = ExtResource("3_l1v76")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
@@ -47,22 +53,49 @@ grow_horizontal = 0
 text = "2D"
 metadata/_edit_use_anchors_ = true
 
-[node name="Moves" type="Label" parent="CanvasLayer"]
+[node name="Panel" type="Panel" parent="CanvasLayer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -86.0
-offset_right = -30.0
-offset_bottom = 23.0
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 57.0
 grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Moves" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
 text = "MOVES"
 
-[node name="Pushes" type="Label" parent="CanvasLayer"]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 31.5
-offset_right = 92.5
-offset_bottom = 23.0
-grow_horizontal = 2
+[node name="Label" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Pushes" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
 text = "PUSHES"
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1

@@ -17,4 +17,4 @@ config/icon="res://icon.svg"
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://locals/en.en.translation", "res://locals/zh.zh.translation")
+locale/translations=PackedStringArray("res://locals/translation.en.translation", "res://locals/translation.zh.translation")
