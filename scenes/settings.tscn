@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
-[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://theme.tres" id="1_6wm04"]
+[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_6wm04"]
 [ext_resource type="Script" uid="uid://c6004pmkpetwp" path="res://scripts/settings/video.gd" id="2_r6d6q"]
 
 [node name="Settings" type="Control"]
