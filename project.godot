@@ -72,4 +72,4 @@ pause={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://locals/translation.en.translation", "res://locals/translation.zh.translation")
+locale/translations=PackedStringArray("res://i18n/translation.en.translation", "res://i18n/translation.zh.translation")

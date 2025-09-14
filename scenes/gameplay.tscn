@@ -67,31 +67,27 @@ shadow_enabled = true
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_00tan")
 
-[node name="HUD" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CheckButton" type="CheckButton" parent="HUD"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -69.0
-offset_bottom = 31.0
-grow_horizontal = 0
-theme = ExtResource("4_ocj2s")
-text = "2D"
-metadata/_edit_use_anchors_ = true
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="ScoreboardPanel" type="Panel" parent="HUD"]
+[node name="ScoreboardPanel" type="Panel" parent="CanvasLayer/HUD"]
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -85.0
-offset_right = 85.0
+offset_left = 471.0
+offset_right = 641.0
 offset_bottom = 49.0
 grow_horizontal = 2
 theme = ExtResource("4_ocj2s")
 theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/ScoreboardPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HUD/ScoreboardPanel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -107,49 +103,51 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="MovesVBox" type="VBoxContainer" parent="HUD/ScoreboardPanel/HBoxContainer"]
+[node name="MovesVBox" type="VBoxContainer" parent="CanvasLayer/HUD/ScoreboardPanel/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Moves" type="Label" parent="HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
+[node name="Moves" type="Label" parent="CanvasLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
 layout_mode = 2
 text = "MOVES"
 
-[node name="Value" type="Label" parent="HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
+[node name="Value" type="Label" parent="CanvasLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="PushesVBox" type="VBoxContainer" parent="HUD/ScoreboardPanel/HBoxContainer"]
+[node name="PushesVBox" type="VBoxContainer" parent="CanvasLayer/HUD/ScoreboardPanel/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Pushes" type="Label" parent="HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
+[node name="Pushes" type="Label" parent="CanvasLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
 layout_mode = 2
 text = "PUSHES"
 
-[node name="Value" type="Label" parent="HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
+[node name="Value" type="Label" parent="CanvasLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="ToolbarPanel" type="Panel" parent="HUD"]
+[node name="ToolbarPanel" type="Panel" parent="CanvasLayer/HUD"]
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -98.09375
-offset_top = -41.0
-offset_right = 98.09375
+offset_left = 457.90625
+offset_top = 567.0
+offset_right = 654.09375
+offset_bottom = 608.0
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("4_ocj2s")
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
 
-[node name="MarginContainer" type="MarginContainer" parent="HUD/ToolbarPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HUD/ToolbarPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -164,22 +162,22 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUD/ToolbarPanel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HUD/ToolbarPanel/MarginContainer"]
 layout_mode = 2
 
-[node name="UndoButton" type="Button" parent="HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
+[node name="UndoButton" type="Button" parent="CanvasLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Undo"
 
-[node name="ResetButton" type="Button" parent="HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
+[node name="ResetButton" type="Button" parent="CanvasLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Reset"
 
-[node name="SolveButton" type="Button" parent="HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
+[node name="SolveButton" type="Button" parent="CanvasLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Solve"
 
-[node name="PauseMenu" parent="." instance=ExtResource("4_ct7aa")]
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("4_ct7aa")]
 visible = false
 theme = SubResource("Theme_5d2l8")
 

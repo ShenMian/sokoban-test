@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://el10yav48fuk"]
+
+[ext_resource type="FontFile" uid="uid://bl43eg0051aab" path="res://assets/fonts/Inter-4.1/extras/otf/Inter-BoldItalic.otf" id="1_a1qmo"]
+
+[resource]
+default_font = ExtResource("1_a1qmo")
+default_font_size = 22

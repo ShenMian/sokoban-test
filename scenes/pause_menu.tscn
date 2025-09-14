@@ -93,7 +93,7 @@ text = "SETTINGS"
 layout_mode = 2
 text = "CREDITS"
 
-[node name="Button" type="Button" parent="."]
+[node name="CloseButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
