@@ -1,7 +1,8 @@
 extends Control
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-
+@onready var settings_button: Button = $CenterContainer/VBoxContainer/SettingsButton
+@onready var credits_button: Button = $CenterContainer/VBoxContainer/CreditsButton
 
 func open():
 	get_tree().paused = true
@@ -12,6 +13,10 @@ func open():
 func close():
 	hide()
 	get_tree().paused = false
+
+
+func _ready():
+	pass
 
 
 func _input(_event: InputEvent):
