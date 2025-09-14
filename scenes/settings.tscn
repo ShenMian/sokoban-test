@@ -18,10 +18,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Video" type="CenterContainer" parent="TabContainer"]
-visible = false
 layout_mode = 2
 script = ExtResource("2_r6d6q")
 metadata/_tab_index = 0
@@ -64,6 +63,7 @@ text = "VSYNC"
 layout_mode = 2
 
 [node name="Audio" type="CenterContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("1_5p8wc")
 metadata/_tab_index = 1
