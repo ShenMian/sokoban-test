@@ -14,3 +14,7 @@ config/name="Sokoban"
 run/main_scene="uid://dxgyp85axyufh"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://locals/en.en.translation", "res://locals/zh.zh.translation")
