@@ -1,34 +1,7 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dn1ejd5aa4hp6"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dvbbi3vt7rasu"]
 
-[ext_resource type="FontFile" uid="uid://c1dksvj52n0ie" path="res://fonts/Inter-4.1/Inter.ttc" id="1_nx7ni"]
+[ext_resource type="FontFile" uid="uid://c1dksvj52n0ie" path="res://fonts/Inter-4.1/Inter.ttc" id="1_e1x85"]
 
 [resource]
-Button/fonts/font = ExtResource("1_nx7ni")
-CheckBox/fonts/font = null
-CheckButton/fonts/font = null
-CodeEdit/fonts/font = null
-ColorPickerButton/fonts/font = null
-FoldableContainer/fonts/font = null
-GraphNodeTitleLabel/fonts/font = null
-ItemList/fonts/font = null
-Label/fonts/font = null
-LineEdit/fonts/font = null
-LinkButton/fonts/font = null
-MenuBar/fonts/font = null
-MenuButton/fonts/font = null
-OptionButton/fonts/font = null
-PopupMenu/fonts/font = null
-PopupMenu/fonts/font_separator = null
-ProgressBar/fonts/font = null
-RichTextLabel/fonts/bold_font = null
-RichTextLabel/fonts/bold_italics_font = null
-RichTextLabel/fonts/italics_font = null
-RichTextLabel/fonts/mono_font = null
-RichTextLabel/fonts/normal_font = null
-TabBar/fonts/font = null
-TabContainer/fonts/font = null
-TextEdit/fonts/font = null
-TooltipLabel/fonts/font = null
-Tree/fonts/font = null
-Tree/fonts/title_button_font = null
-Window/fonts/title_font = null
+default_font = ExtResource("1_e1x85")
+default_font_size = 20
