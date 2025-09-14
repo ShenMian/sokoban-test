@@ -3,6 +3,12 @@ keys,en,zh
 MOVES,Moves,移动数
 PUSHES,Pushes,推动数
 
+SOLVER,Solver,求解器
+HEATMAP,Heatmap,热力图
+HEATMAP_TIP,Visualize push lower bounds as a heatmap,将推动下界以热力图的形式可视化
+DEADLOCK,Deadlocks,死锁
+DEADLOCK_TIP,Show static deadlock locations,显示静态死锁位置
+
 VOLUMN,Volume,音量
 MASTER_VOLUMN,Master Volume,主音量
 MUSIC_VOLUMN,Music Volume,音乐音量
@@ -17,8 +23,5 @@ BORDERLESS_FULLSCREEN,Borderless Fullscreen,无边框全屏
 EXCLUSIVE_FULLSCREEN,Exclusive Fullscreen,独占全屏
 VSYNC,VSync,垂直同步
 
-SETTINGS,Settings,设置eat
+SETTINGS,Settings,设置
 CLOSE,Close,关闭
-
-HEATMAP_TIP,Show heatmap,显示热力图
-DEADLOCK_TIP,Show deadlocks,显示死锁

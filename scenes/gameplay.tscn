@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxgyp85axyufh"]
+[gd_scene load_steps=11 format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://models/mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://d2l2mcb536frf" path="res://scripts/gameplay.gd" id="1_l1v76"]
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/pause_menu.tscn" id="4_ct7aa"]
+[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://theme.tres" id="4_ocj2s"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00tan"]
 albedo_color = Color(0.49092185, 0.7905889, 0.99605805, 1)
@@ -73,6 +74,7 @@ anchor_right = 1.0
 offset_left = -69.0
 offset_bottom = 31.0
 grow_horizontal = 0
+theme = ExtResource("4_ocj2s")
 text = "2D"
 metadata/_edit_use_anchors_ = true
 
@@ -84,6 +86,7 @@ offset_left = -75.0
 offset_right = 75.0
 offset_bottom = 49.0
 grow_horizontal = 2
+theme = ExtResource("4_ocj2s")
 theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD/ScoreboardPanel"]
@@ -132,6 +135,7 @@ offset_top = -39.0
 offset_right = 89.0
 grow_horizontal = 2
 grow_vertical = 0
+theme = ExtResource("4_ocj2s")
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
 
 [node name="MarginContainer" type="MarginContainer" parent="HUD/ToolbarPanel"]

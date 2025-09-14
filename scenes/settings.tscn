@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=4 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
+[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://theme.tres" id="1_6wm04"]
 [ext_resource type="Script" uid="uid://c6004pmkpetwp" path="res://scripts/settings/video.gd" id="2_r6d6q"]
 
 [node name="Settings" type="Control"]
@@ -10,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_6wm04")
 
 [node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 1
@@ -20,10 +22,47 @@ grow_horizontal = 2
 grow_vertical = 2
 current_tab = 0
 
+[node name="Gameplay" type="CenterContainer" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBox" type="VBoxContainer" parent="TabContainer/Gameplay"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SolverLabel" type="Label" parent="TabContainer/Gameplay/VBox"]
+layout_mode = 2
+text = "SOLVER"
+uppercase = true
+
+[node name="SolverGrid" type="GridContainer" parent="TabContainer/Gameplay/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="HeatmapLabel" type="Label" parent="TabContainer/Gameplay/VBox/SolverGrid"]
+layout_mode = 2
+text = "HEATMAP"
+
+[node name="Heatmap" type="CheckButton" parent="TabContainer/Gameplay/VBox/SolverGrid"]
+layout_mode = 2
+button_pressed = true
+
+[node name="DeadlockLabel" type="Label" parent="TabContainer/Gameplay/VBox/SolverGrid"]
+layout_mode = 2
+text = "DEADLOCK"
+
+[node name="Deadlock" type="CheckButton" parent="TabContainer/Gameplay/VBox/SolverGrid"]
+layout_mode = 2
+button_pressed = true
+
 [node name="Video" type="CenterContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("2_r6d6q")
-metadata/_tab_index = 0
+metadata/_tab_index = 1
 
 [node name="VBox" type="VBoxContainer" parent="TabContainer/Video"]
 custom_minimum_size = Vector2(400, 0)
@@ -66,7 +105,7 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 script = ExtResource("1_5p8wc")
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="VBox" type="VBoxContainer" parent="TabContainer/Audio"]
 custom_minimum_size = Vector2(400, 0)
@@ -135,18 +174,3 @@ text = "MUTE_WHEN_NOT_FOCUSED"
 [node name="MuteWhenNotFocused" type="CheckButton" parent="TabContainer/Audio/VBox/OutputGrid"]
 layout_mode = 2
 button_pressed = true
-
-[node name="Solver" type="VBoxContainer" parent="TabContainer"]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 2
-
-[node name="HeatmapButton" type="CheckButton" parent="TabContainer/Solver"]
-layout_mode = 2
-tooltip_text = "HEATMAP_TIP"
-text = "Heatmap"
-
-[node name="DeadlockButton" type="CheckButton" parent="TabContainer/Solver"]
-layout_mode = 2
-tooltip_text = "DEADLOCK_TIP"
-text = "Deadlock"
