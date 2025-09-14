@@ -1,3 +1,9 @@
 keys,en,zh
 MOVES,Moves,移动数
 PUSHES,Pushes,推动数
+VOLUMN,Volume,音量
+MASTER_VOLUMN,Master Volume,主音量
+MUSIC_VOLUMN,Music Volume,音乐音量
+SFX_VOLUMN,SFX Volume,音效音量
+HEATMAP_TIP,Show heatmap,显示热力图
+DEADLOCK_TIP,Show deadlocks,显示死锁

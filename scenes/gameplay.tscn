@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxgyp85axyufh"]
+[gd_scene load_steps=8 format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
@@ -12,6 +12,26 @@ material = SubResource("StandardMaterial3D_00tan")
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1
 background_color = Color(0.33064672, 0.33064672, 0.3306467, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_00tan"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l1v76"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_detail = 5
 
 [node name="Gameplay" type="Node3D"]
 
@@ -53,49 +73,90 @@ grow_horizontal = 0
 text = "2D"
 metadata/_edit_use_anchors_ = true
 
-[node name="Panel" type="Panel" parent="CanvasLayer"]
+[node name="ScoreboardPanel" type="Panel" parent="CanvasLayer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -75.0
 offset_right = 75.0
-offset_bottom = 57.0
+offset_bottom = 49.0
 grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ScoreboardPanel"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 49.0
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="MovesVBox" type="VBoxContainer" parent="CanvasLayer/ScoreboardPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Moves" type="Label" parent="CanvasLayer/ScoreboardPanel/HBoxContainer/MovesVBox"]
+layout_mode = 2
+text = "MOVES"
+
+[node name="Value" type="Label" parent="CanvasLayer/ScoreboardPanel/HBoxContainer/MovesVBox"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="PushesVBox" type="VBoxContainer" parent="CanvasLayer/ScoreboardPanel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Pushes" type="Label" parent="CanvasLayer/ScoreboardPanel/HBoxContainer/PushesVBox"]
+layout_mode = 2
+text = "PUSHES"
+
+[node name="Value" type="Label" parent="CanvasLayer/ScoreboardPanel/HBoxContainer/PushesVBox"]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="ToolbarPanel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.375
+offset_top = -39.0
+offset_right = 89.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ToolbarPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -1.5
+offset_right = -0.375
+offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ToolbarPanel/MarginContainer"]
 layout_mode = 2
-alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer"]
+[node name="UndoButton" type="Button" parent="CanvasLayer/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
-alignment = 1
+text = "Undo"
 
-[node name="Moves" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ResetButton" type="Button" parent="CanvasLayer/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
-text = "MOVES"
+text = "Reset"
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="SolveButton" type="Button" parent="CanvasLayer/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
-text = "0"
-horizontal_alignment = 1
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="Pushes" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-text = "PUSHES"
-
-[node name="Label" type="Label" parent="CanvasLayer/Panel/MarginContainer/HBoxContainer/VBoxContainer2"]
-layout_mode = 2
-text = "0"
-horizontal_alignment = 1
+text = "Solve"
