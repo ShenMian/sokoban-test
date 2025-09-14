@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxgyp85axyufh"]
+[gd_scene load_steps=12 format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://models/mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://d2l2mcb536frf" path="res://scripts/gameplay.gd" id="1_l1v76"]
@@ -35,6 +35,8 @@ bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_detail = 5
+
+[sub_resource type="Theme" id="Theme_5d2l8"]
 
 [node name="Gameplay" type="Node3D"]
 script = ExtResource("1_l1v76")
@@ -82,17 +84,26 @@ metadata/_edit_use_anchors_ = true
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -75.0
-offset_right = 75.0
+offset_left = -85.0
+offset_right = 85.0
 offset_bottom = 49.0
 grow_horizontal = 2
 theme = ExtResource("4_ocj2s")
 theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD/ScoreboardPanel"]
-layout_mode = 0
-offset_right = 150.0
-offset_bottom = 49.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.5
+offset_top = -25.0
+offset_right = 80.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 8
 alignment = 1
 
@@ -130,9 +141,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -80.375
-offset_top = -39.0
-offset_right = 89.0
+offset_left = -98.09375
+offset_top = -41.0
+offset_right = 98.09375
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("4_ocj2s")
@@ -170,3 +181,6 @@ text = "Solve"
 
 [node name="PauseMenu" parent="." instance=ExtResource("4_ct7aa")]
 visible = false
+theme = SubResource("Theme_5d2l8")
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]

@@ -2,7 +2,8 @@
 
 ## Assets
 
-- <https://kenney.nl/assets/prototype-kit>
-- <https://kenney.nl/assets/sokoban>
-- <https://kenney.nl/assets/ui-pack>
-- <https://kenney.nl/assets/input-prompts>
+| Name          | Source                                   | License |
+|---------------|------------------------------------------|---------|
+| Prototype Kit | <https://kenney.nl/assets/prototype-kit> | CC0     |
+| Input Prompts | <https://kenney.nl/assets/input-prompts> | CC0     |
+| Inter         | <https://github.com/rsms/inter>          | OFL-1.1 |
