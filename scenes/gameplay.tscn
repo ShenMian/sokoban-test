@@ -53,7 +53,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 4.5, 1, -3.5)
 mesh = SubResource("CapsuleMesh_00tan")
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 8, -3.98)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 9, -3.98)
 fov = 60.0
 script = ExtResource("3_l1v76")
 

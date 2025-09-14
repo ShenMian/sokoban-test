@@ -4,7 +4,7 @@ extends CenterContainer
 @onready var vsync: CheckButton = $VBox/GridContainer/Vsync
 
 
-func _ready() -> void:
+func _ready():
 	match DisplayServer.window_get_mode():
 		DisplayServer.WINDOW_MODE_WINDOWED:
 			window_mode.selected = 0
@@ -19,7 +19,7 @@ func _ready() -> void:
 	vsync.toggled.connect(_on_vsync_toggled)
 
 
-func _on_window_mode_selected(index: int) -> void:
+func _on_window_mode_selected(index: int):
 	match index:
 		0:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
@@ -29,7 +29,7 @@ func _on_window_mode_selected(index: int) -> void:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
 
 
-func _on_vsync_toggled(toggled_on: bool) -> void:
+func _on_vsync_toggled(toggled_on: bool):
 	if toggled_on:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 	else:

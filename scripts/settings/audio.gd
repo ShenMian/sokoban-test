@@ -6,7 +6,7 @@ extends CenterContainer
 @onready var mute_when_not_focused: CheckButton = $VBox/OutputGrid/MuteWhenNotFocused
 
 
-func _ready() -> void:
+func _ready():
 	var master_bus_index := AudioServer.get_bus_index("Master")
 	var music_bus_index := AudioServer.get_bus_index("Music")
 	var sfx_bus_index := AudioServer.get_bus_index("Sfx")
@@ -20,7 +20,7 @@ func _ready() -> void:
 	sfx_volumn.value_changed.connect(linear_to_db.bind(AudioServer.set_bus_volume_db.bind(sfx_bus_index)))
 
 
-func _notification(what: int) -> void:
+func _notification(what: int):
 	match what:
 		NOTIFICATION_APPLICATION_FOCUS_OUT:
 			_on_window_minimized()
@@ -29,7 +29,7 @@ func _notification(what: int) -> void:
 			_on_window_restored()
 
 
-func _on_window_minimized() -> void:
+func _on_window_minimized():
 	if not mute_when_not_focused.button_pressed:
 		return
 	
@@ -37,7 +37,7 @@ func _on_window_minimized() -> void:
 	AudioServer.set_bus_mute(master_bus_index, true)
 
 
-func _on_window_restored() -> void:
+func _on_window_restored():
 	if not mute_when_not_focused.button_pressed:
 		return
 	
