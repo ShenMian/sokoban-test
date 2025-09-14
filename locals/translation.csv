@@ -7,6 +7,8 @@ VOLUMN,Volume,音量
 MASTER_VOLUMN,Master Volume,主音量
 MUSIC_VOLUMN,Music Volume,音乐音量
 SFX_VOLUMN,SFX Volume,音效音量
+OUTPUT,Output,输出设备
+MUTE_WHEN_NOT_FOCUSED,Mute When Not Focused,失去焦点时静音
 
 DISPLAY,Display,显示
 WINDOW_MODE,Window Mode,窗口模式
