@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=3 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
+[ext_resource type="Script" uid="uid://c6004pmkpetwp" path="res://scripts/settings/video.gd" id="2_r6d6q"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -19,10 +20,53 @@ grow_horizontal = 2
 grow_vertical = 2
 current_tab = 0
 
+[node name="Video" type="CenterContainer" parent="TabContainer"]
+layout_mode = 2
+script = ExtResource("2_r6d6q")
+metadata/_tab_index = 0
+
+[node name="VBox" type="VBoxContainer" parent="TabContainer/Video"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="TabContainer/Video/VBox"]
+layout_mode = 2
+text = "DISPLAY"
+uppercase = true
+
+[node name="GridContainer" type="GridContainer" parent="TabContainer/Video/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="WindowModeLabel" type="Label" parent="TabContainer/Video/VBox/GridContainer"]
+layout_mode = 2
+text = "WINDOW_MODE"
+
+[node name="WindowMode" type="OptionButton" parent="TabContainer/Video/VBox/GridContainer"]
+layout_mode = 2
+item_count = 3
+popup/item_0/text = "WINDOWED"
+popup/item_0/id = 0
+popup/item_1/text = "BORDERLESS_FULLSCREEN"
+popup/item_1/id = 1
+popup/item_2/text = "EXCLUSIVE_FULLSCREEN"
+popup/item_2/id = 2
+
+[node name="VsyncLabel" type="Label" parent="TabContainer/Video/VBox/GridContainer"]
+layout_mode = 2
+text = "VSYNC"
+
+[node name="Vsync" type="CheckButton" parent="TabContainer/Video/VBox/GridContainer"]
+layout_mode = 2
+
 [node name="Audio" type="CenterContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("1_5p8wc")
-metadata/_tab_index = 0
+metadata/_tab_index = 1
 
 [node name="VBox" type="VBoxContainer" parent="TabContainer/Audio"]
 custom_minimum_size = Vector2(400, 0)
@@ -76,7 +120,7 @@ step = 0.1
 [node name="Solver" type="VBoxContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="HeatmapButton" type="CheckButton" parent="TabContainer/Solver"]
 layout_mode = 2

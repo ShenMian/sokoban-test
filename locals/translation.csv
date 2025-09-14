@@ -1,9 +1,19 @@
 keys,en,zh
+
 MOVES,Moves,移动数
 PUSHES,Pushes,推动数
+
 VOLUMN,Volume,音量
 MASTER_VOLUMN,Master Volume,主音量
 MUSIC_VOLUMN,Music Volume,音乐音量
 SFX_VOLUMN,SFX Volume,音效音量
+
+DISPLAY,Display,显示
+WINDOW_MODE,Window Mode,窗口模式
+WINDOWED,Windowed,窗口化
+BORDERLESS_FULLSCREEN,Borderless Fullscreen,无边框全屏
+EXCLUSIVE_FULLSCREEN,Exclusive Fullscreen,独占全屏
+VSYNC,VSync,垂直同步
+
 HEATMAP_TIP,Show heatmap,显示热力图
 DEADLOCK_TIP,Show deadlocks,显示死锁
