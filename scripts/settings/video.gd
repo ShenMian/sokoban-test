@@ -23,15 +23,14 @@ func _ready():
 	window_mode.item_selected.connect(_on_window_mode_selected)
 	vsync.toggled.connect(_on_vsync_toggled)
 
-	match ProjectSettings.get_setting("rendering/anti_aliasing/quality/screen_space_aa"):
+	match get_viewport().screen_space_aa:
 		Viewport.SCREEN_SPACE_AA_DISABLED:
 			screen_space_aa.selected = 0
 		Viewport.SCREEN_SPACE_AA_SMAA:
 			screen_space_aa.selected = 1
 		Viewport.SCREEN_SPACE_AA_FXAA:
 			screen_space_aa.selected = 2
-
-	match ProjectSettings.get_setting("rendering/anti_aliasing/quality/msaa_3d"):
+	match get_viewport().msaa_3d:
 		0:
 			msaa.selected = 0
 		2:
@@ -40,6 +39,7 @@ func _ready():
 			msaa.selected = 2
 		8:
 			msaa.selected = 3
+	taa.button_pressed = get_viewport().use_taa
 
 	screen_space_aa.item_selected.connect(_on_screen_space_aa_item_selected)
 	msaa.item_selected.connect(_on_msaa_item_selected)
@@ -72,22 +72,22 @@ func _on_screen_space_aa_item_selected(index: int):
 			value = Viewport.SCREEN_SPACE_AA_SMAA
 		2:
 			value = Viewport.SCREEN_SPACE_AA_FXAA
-	ProjectSettings.set_setting("rendering/anti_aliasing/quality/screen_space_aa", value)
+	get_viewport().screen_space_aa = value
 
 
 func _on_msaa_item_selected(index: int):
-	var value: int
+	var value: Viewport.MSAA
 	match index:
 		0:
-			value = 0
+			value = Viewport.MSAA_DISABLED
 		1:
-			value = 2
+			value = Viewport.MSAA_2X
 		2:
-			value = 4
+			value = Viewport.MSAA_4X
 		3:
-			value = 8
-	ProjectSettings.set_setting("rendering/anti_aliasing/quality/msaa_3d", value)
+			value = Viewport.MSAA_8X
+	get_viewport().msaa_3d = value
 
 
 func _on_taa_toggled(toggled_on: bool):
-	ProjectSettings.set_setting("rendering/anti_aliasing/quality/use_taa", toggled_on)
+	get_viewport().use_taa = toggled_on
