@@ -21,7 +21,7 @@ buses/default_bus_layout="res://assets/default_bus_layout.tres"
 
 [autoload]
 
-UiSound="*res://scenes/sounds.tscn"
+Sounds="*res://scenes/sounds.tscn"
 
 [input]
 

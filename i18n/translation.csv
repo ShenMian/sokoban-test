@@ -4,6 +4,10 @@ MOVES,Moves,移动数
 PUSHES,Pushes,推动数
 
 SOLVER,Solver,求解器
+STRATEGY,Strategy,策略
+FAST,Fast,快速
+OPTIMAL_PUSH,Optimal Push,最优推动
+OPTIMAL_MOVE,Optimal Move,最优移动
 HEATMAP,Heatmap,热力图
 HEATMAP_TIP,Visualize push lower bounds as a heatmap,将推动下界以热力图的形式可视化
 DEADLOCK,Deadlocks,死锁
@@ -22,6 +26,16 @@ WINDOWED,Windowed,窗口化
 BORDERLESS_FULLSCREEN,Borderless Fullscreen,无边框全屏
 EXCLUSIVE_FULLSCREEN,Exclusive Fullscreen,独占全屏
 VSYNC,VSync,垂直同步
+ANTI_ALIASING,Anti Aliasing,抗锯齿
+SCREEN_SPACE_AA,Screen Space AA,屏幕空间抗锯齿
+SMAA,SMAA,SMAA
+FXAA,FXAA,FXAA
+MSAA,MSAA,MSAA
+MSAA_TIP,Multisample Anti-Aliasing,多重采样抗锯齿
+TAA,TAA,TAA
+TAA_TIP,Temporal Anti-Aliasing,时间抗锯齿
+
+DISABLED,Disabled,禁用
 
 SETTINGS,Settings,设置
 CREDITS,Credits,鸣谢
