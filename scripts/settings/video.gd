@@ -1,7 +1,7 @@
 extends CenterContainer
 
-@onready var window_mode: OptionButton = $VBox/GridContainer/WindowMode
-@onready var vsync: CheckButton = $VBox/GridContainer/Vsync
+@onready var window_mode: OptionButton = $VBox/WindowModePanel/Margin/HBox/OptionButton
+@onready var vsync: CheckButton = $VBox/VsyncPanel/Margin/HBox/CheckButton
 
 
 func _ready():

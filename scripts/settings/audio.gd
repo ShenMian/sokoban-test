@@ -1,9 +1,9 @@
 extends CenterContainer
 
-@onready var master_volumn: HSlider = $VBox/VolumeGrid/MasterVolume
-@onready var music_volumn: HSlider = $VBox/VolumeGrid/MusicVolume
-@onready var sfx_volumn: HSlider = $VBox/VolumeGrid/SfxVolume
-@onready var mute_when_not_focused: CheckButton = $VBox/OutputGrid/MuteWhenNotFocused
+@onready var master_volumn: HSlider = $VBox/MasterVolumePanel/Margin/HBox/HSlider
+@onready var music_volumn: HSlider = $VBox/MusicVolumePanel/Margin/HBox/HSlider
+@onready var sfx_volumn: HSlider = $VBox/SfxVolumePanel/Margin/HBox/HSlider
+@onready var mute_when_not_focused: CheckButton = $VBox/SfxVolumePanel2/Margin/HBox/CheckButton
 
 
 func _ready():
