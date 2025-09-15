@@ -26,86 +26,86 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 theme_override_font_sizes/font_size = 35
 text = "Settings"
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
 
-[node name="Gameplay" type="CenterContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="Gameplay" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Gameplay"]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer/Gameplay"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="SolverLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Gameplay/VBox"]
+[node name="SolverLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "SOLVER"
 uppercase = true
 
-[node name="SolverGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer/Gameplay/VBox"]
+[node name="SolverGrid" type="GridContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
 layout_mode = 2
 theme_override_constants/h_separation = 50
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="HeatmapLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Gameplay/VBox/SolverGrid"]
+[node name="HeatmapLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/SolverGrid"]
 layout_mode = 2
 text = "HEATMAP"
 
-[node name="Heatmap" type="CheckButton" parent="MarginContainer/VBoxContainer/TabContainer/Gameplay/VBox/SolverGrid"]
+[node name="Heatmap" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/SolverGrid"]
 layout_mode = 2
 button_pressed = true
 
-[node name="DeadlockLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Gameplay/VBox/SolverGrid"]
+[node name="DeadlockLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/SolverGrid"]
 layout_mode = 2
 text = "DEADLOCK"
 
-[node name="Deadlock" type="CheckButton" parent="MarginContainer/VBoxContainer/TabContainer/Gameplay/VBox/SolverGrid"]
+[node name="Deadlock" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/SolverGrid"]
 layout_mode = 2
 button_pressed = true
 
-[node name="Video" type="CenterContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="Video" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
 visible = false
 layout_mode = 2
 script = ExtResource("2_r6d6q")
 metadata/_tab_index = 1
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Video"]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer/Video"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="DisplayLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBox"]
+[node name="DisplayLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "DISPLAY"
 uppercase = true
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBox"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
 layout_mode = 2
 theme_override_constants/h_separation = 50
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="WindowModeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBox/GridContainer"]
+[node name="WindowModeLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/GridContainer"]
 layout_mode = 2
 text = "WINDOW_MODE"
 
-[node name="WindowMode" type="OptionButton" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBox/GridContainer"]
+[node name="WindowMode" type="OptionButton" parent="MarginContainer/VBox/TabContainer/Video/VBox/GridContainer"]
 layout_mode = 2
 item_count = 3
 popup/item_0/text = "WINDOWED"
@@ -115,85 +115,85 @@ popup/item_1/id = 1
 popup/item_2/text = "EXCLUSIVE_FULLSCREEN"
 popup/item_2/id = 2
 
-[node name="VsyncLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBox/GridContainer"]
+[node name="VsyncLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/GridContainer"]
 layout_mode = 2
 text = "VSYNC"
 
-[node name="Vsync" type="CheckButton" parent="MarginContainer/VBoxContainer/TabContainer/Video/VBox/GridContainer"]
+[node name="Vsync" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Video/VBox/GridContainer"]
 layout_mode = 2
 
-[node name="Audio" type="CenterContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
+[node name="Audio" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
 visible = false
 layout_mode = 2
 script = ExtResource("1_5p8wc")
 metadata/_tab_index = 2
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer/Audio"]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer/Audio"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="VolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
+[node name="VolumeLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "VOLUME"
 uppercase = true
 
-[node name="VolumeGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
+[node name="VolumeGrid" type="GridContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 layout_mode = 2
 theme_override_constants/h_separation = 50
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="MasterVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+[node name="MasterVolumeLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 text = "MASTER_VOLUME"
 
-[node name="MasterVolume" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+[node name="MasterVolume" type="HSlider" parent="MarginContainer/VBox/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 max_value = 1.0
 step = 0.1
 
-[node name="MusicVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+[node name="MusicVolumeLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 text = "MUSIC_VOLUME"
 
-[node name="MusicVolume" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+[node name="MusicVolume" type="HSlider" parent="MarginContainer/VBox/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 max_value = 1.0
 step = 0.1
 
-[node name="SfxVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+[node name="SfxVolumeLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 text = "SFX_VOLUME"
 
-[node name="SfxVolume" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+[node name="SfxVolume" type="HSlider" parent="MarginContainer/VBox/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 max_value = 1.0
 step = 0.1
 
-[node name="OutputLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
+[node name="OutputLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "OUTPUT"
 uppercase = true
 
-[node name="OutputGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
+[node name="OutputGrid" type="GridContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 layout_mode = 2
 theme_override_constants/h_separation = 50
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="MuteWhenNotFocusedLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/OutputGrid"]
+[node name="MuteWhenNotFocusedLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox/OutputGrid"]
 layout_mode = 2
 text = "MUTE_WHEN_NOT_FOCUSED"
 
-[node name="MuteWhenNotFocused" type="CheckButton" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/OutputGrid"]
+[node name="MuteWhenNotFocused" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Audio/VBox/OutputGrid"]
 layout_mode = 2
 button_pressed = true
