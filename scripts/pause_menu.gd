@@ -1,16 +1,15 @@
 extends Control
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var settings_button: Button = $CenterContainer/VBoxContainer/SettingsButton
-@onready var credits_button: Button = $CenterContainer/VBoxContainer/CreditsButton
+@onready var settings_button: Button = $MenuBackground/VBox/SettingsButton
+@onready var credits_button: Button = $MenuBackground/VBox/CreditsButton
 @onready var close_button: Button = $CloseButton
+
 
 func open():
 	get_tree().paused = true
 	show()
 	animation_player.play("blur")
-
-	close_button.pressed.connect(close)
 
 
 func close():
@@ -19,7 +18,7 @@ func close():
 
 
 func _ready():
-	pass
+	close_button.pressed.connect(close)
 
 
 func _input(_event: InputEvent):

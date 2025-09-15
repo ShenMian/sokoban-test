@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxgyp85axyufh"]
+[gd_scene load_steps=11 format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/models/mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://d2l2mcb536frf" path="res://scripts/gameplay.gd" id="1_l1v76"]
@@ -36,8 +36,6 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_detail = 5
 
-[sub_resource type="Theme" id="Theme_5d2l8"]
-
 [node name="Gameplay" type="Node3D"]
 script = ExtResource("1_l1v76")
 
@@ -71,9 +69,11 @@ environment = SubResource("Environment_00tan")
 
 [node name="HUD" type="Control" parent="HudLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("4_ocj2s")
 
 [node name="ScoreboardPanel" type="Panel" parent="HudLayer/HUD"]
@@ -81,9 +81,9 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 471.0
-offset_right = 641.0
-offset_bottom = 49.0
+offset_left = -76.0
+offset_right = 76.0
+offset_bottom = 47.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
@@ -110,10 +110,12 @@ alignment = 1
 
 [node name="Moves" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "MOVES"
 
 [node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "0"
 horizontal_alignment = 1
 
@@ -124,10 +126,12 @@ alignment = 1
 
 [node name="Pushes" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "PUSHES"
 
 [node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "0"
 horizontal_alignment = 1
 
@@ -138,10 +142,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 457.90625
-offset_top = 567.0
-offset_right = 654.09375
-offset_bottom = 608.0
+offset_left = -106.046875
+offset_top = -41.0
+offset_right = 106.046875
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
@@ -181,6 +184,5 @@ layer = 2
 
 [node name="PauseMenu" parent="MenuLayer" instance=ExtResource("4_ct7aa")]
 visible = false
-theme = SubResource("Theme_5d2l8")
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
