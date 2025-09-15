@@ -1,8 +1,8 @@
 extends CenterContainer
 
-@onready var master_volumn: HSlider = $VBox/VolumnGrid/MasterVolumn
-@onready var music_volumn: HSlider = $VBox/VolumnGrid/MusicVolumn
-@onready var sfx_volumn: HSlider = $VBox/VolumnGrid/SfxVolumn
+@onready var master_volumn: HSlider = $VBox/VolumeGrid/MasterVolume
+@onready var music_volumn: HSlider = $VBox/VolumeGrid/MusicVolume
+@onready var sfx_volumn: HSlider = $VBox/VolumeGrid/SfxVolume
 @onready var mute_when_not_focused: CheckButton = $VBox/OutputGrid/MuteWhenNotFocused
 
 

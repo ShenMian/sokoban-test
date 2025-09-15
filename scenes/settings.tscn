@@ -133,45 +133,45 @@ custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="VolumnLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
+[node name="VolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
-text = "VOLUMN"
+text = "VOLUME"
 uppercase = true
 
-[node name="VolumnGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
+[node name="VolumeGrid" type="GridContainer" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox"]
 layout_mode = 2
 theme_override_constants/h_separation = 50
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="MasterVolumnLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumnGrid"]
+[node name="MasterVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
-text = "MASTER_VOLUMN"
+text = "MASTER_VOLUME"
 
-[node name="MasterVolumn" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumnGrid"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-max_value = 1.0
-step = 0.1
-
-[node name="MusicVolumnLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumnGrid"]
-layout_mode = 2
-text = "MUSIC_VOLUMN"
-
-[node name="MusicVolumn" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumnGrid"]
+[node name="MasterVolume" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 max_value = 1.0
 step = 0.1
 
-[node name="SfxVolumnLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumnGrid"]
+[node name="MusicVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
-text = "SFX_VOLUMN"
+text = "MUSIC_VOLUME"
 
-[node name="SfxVolumn" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumnGrid"]
+[node name="MusicVolume" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.1
+
+[node name="SfxVolumeLabel" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
+layout_mode = 2
+text = "SFX_VOLUME"
+
+[node name="SfxVolume" type="HSlider" parent="MarginContainer/VBoxContainer/TabContainer/Audio/VBox/VolumeGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1

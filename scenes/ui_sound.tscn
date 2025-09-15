@@ -2,6 +2,6 @@
 
 [node name="UiSound" type="Node"]
 
-[node name="PressAudioPlayer" type="AudioStreamPlayer" parent="."]
+[node name="SwitchPressAudioPlayer" type="AudioStreamPlayer" parent="."]
 
-[node name="HoverAudioPlayer" type="AudioStreamPlayer" parent="."]
+[node name="SwitchHoverAudioPlayer" type="AudioStreamPlayer" parent="."]

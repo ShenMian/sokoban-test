@@ -9,10 +9,10 @@ HEATMAP_TIP,Visualize push lower bounds as a heatmap,将推动下界以热力图
 DEADLOCK,Deadlocks,死锁
 DEADLOCK_TIP,Show static deadlock locations,显示静态死锁位置
 
-VOLUMN,Volume,音量
-MASTER_VOLUMN,Master Volume,主音量
-MUSIC_VOLUMN,Music Volume,音乐音量
-SFX_VOLUMN,SFX Volume,音效音量
+VOLUME,Volume,音量
+MASTER_VOLUME,Master Volume,主音量
+MUSIC_VOLUME,Music Volume,音乐音量
+SFX_VOLUME,SFX Volume,音效音量
 OUTPUT,Output,输出设备
 MUTE_WHEN_NOT_FOCUSED,Mute When Not Focused,失去焦点时静音
 
