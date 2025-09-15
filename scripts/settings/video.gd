@@ -22,7 +22,25 @@ func _ready():
 	
 	window_mode.item_selected.connect(_on_window_mode_selected)
 	vsync.toggled.connect(_on_vsync_toggled)
-	
+
+	match ProjectSettings.get_setting("rendering/anti_aliasing/quality/screen_space_aa"):
+		Viewport.SCREEN_SPACE_AA_DISABLED:
+			screen_space_aa.selected = 0
+		Viewport.SCREEN_SPACE_AA_SMAA:
+			screen_space_aa.selected = 1
+		Viewport.SCREEN_SPACE_AA_FXAA:
+			screen_space_aa.selected = 2
+
+	match ProjectSettings.get_setting("rendering/anti_aliasing/quality/msaa_3d"):
+		0:
+			msaa.selected = 0
+		2:
+			msaa.selected = 1
+		4:
+			msaa.selected = 2
+		8:
+			msaa.selected = 3
+
 	screen_space_aa.item_selected.connect(_on_screen_space_aa_item_selected)
 	msaa.item_selected.connect(_on_msaa_item_selected)
 	taa.toggled.connect(_on_taa_toggled)
