@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=9 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_6wm04"]
+[ext_resource type="Script" uid="uid://da8bag1av6klb" path="res://scripts/settings/settings.gd" id="2_es4n0"]
 [ext_resource type="Theme" uid="uid://el10yav48fuk" path="res://assets/title_theme.tres" id="2_f4mfi"]
 [ext_resource type="Script" uid="uid://c6004pmkpetwp" path="res://scripts/settings/video.gd" id="2_r6d6q"]
 
@@ -30,6 +31,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_6wm04")
+script = ExtResource("2_es4n0")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.38776845, 0.38776842, 0.38776842, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
