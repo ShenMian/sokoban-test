@@ -415,7 +415,7 @@ custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 4
-min_value = 40.0
+min_value = 45.0
 value = 60.0
 
 [node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
