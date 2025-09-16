@@ -2,7 +2,7 @@ extends Control
 
 signal closed
 
-@onready var background: ColorRect = $Background
+@onready var background: TextureRect = $Background
 @onready var tab_container: TabContainer = $MarginContainer/VBox/TabContainer
 @onready var close_button: Button = $CloseButton
 
@@ -30,10 +30,10 @@ func _input(_event: InputEvent):
 
 
 func _on_active_tab_changed(index: int):
-	if index == 1:
-		background.color.a = 0.0
+	if tab_container.get_tab_title(index) == "Video":
+		background.visible = false
 	else:
-		background.color.a = 1.0
+		background.visible = true
 
 
 func _on_close_pressed():
