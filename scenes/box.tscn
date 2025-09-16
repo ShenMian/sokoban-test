@@ -6,10 +6,10 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_ks2v0"]
 
 [node name="Box" type="Node3D"]
+script = ExtResource("2_ks2v0")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_3inec")
-script = ExtResource("2_ks2v0")
 
 [node name="Area3D" type="Area3D" parent="."]
 

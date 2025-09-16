@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://d3bx7fp67oyvm"]
+[gd_scene load_steps=6 format=3 uid="uid://d3bx7fp67oyvm"]
 
 [ext_resource type="Script" uid="uid://d00rrxvy7irsm" path="res://scripts/player.gd" id="1_3vyb7"]
+[ext_resource type="Material" uid="uid://5bovxx7jgxuf" path="res://assets/materials/outline.tres" id="1_g2els"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00tan"]
-albedo_color = Color(0.49092185, 0.7905889, 0.99605805, 1)
+next_pass = ExtResource("1_g2els")
+albedo_color = Color(0.18568704, 0.63593996, 0.9999296, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_00tan"]
 material = SubResource("StandardMaterial3D_00tan")
@@ -11,13 +13,13 @@ material = SubResource("StandardMaterial3D_00tan")
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vyb7"]
 
 [node name="Player" type="Node3D"]
+script = ExtResource("1_3vyb7")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
 mesh = SubResource("CapsuleMesh_00tan")
-script = ExtResource("1_3vyb7")
 
-[node name="Area3D" type="Area3D" parent="Mesh"]
+[node name="Area" type="Area3D" parent="Mesh"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Area"]
 shape = SubResource("CapsuleShape3D_3vyb7")
