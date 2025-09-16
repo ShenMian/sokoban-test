@@ -462,6 +462,38 @@ popup/item_1/id = 1
 popup/item_2/text = "FXAA"
 popup/item_2/id = 2
 
+[node name="TaaPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "TAA_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel/Margin/HBox"]
+layout_mode = 2
+mouse_filter = 1
+text = "TAA"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+script = ExtResource("6_jrqig")
+metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
+
 [node name="MsaaPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
@@ -501,38 +533,6 @@ popup/item_2/text = "4x"
 popup/item_2/id = 2
 popup/item_3/text = "8x"
 popup/item_3/id = 3
-
-[node name="TaaPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_vertical = 3
-tooltip_text = "TAA_TIP"
-
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
-
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel/Margin"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel/Margin/HBox"]
-layout_mode = 2
-mouse_filter = 1
-text = "TAA"
-
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel/Margin/HBox"]
-layout_mode = 2
-size_flags_horizontal = 10
-script = ExtResource("6_jrqig")
-metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
 [node name="Audio" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
 visible = false
