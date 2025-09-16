@@ -8,17 +8,31 @@ extends ScrollContainer
 @onready var msaa: OptionButton = $VBox/MsaaPanel/Margin/HBox/OptionButton
 @onready var taa: CheckButton = $VBox/TaaPanel/Margin/HBox/CheckButton
 
+const WINDOW_MODE_TO_INDEX = {
+	DisplayServer.WINDOW_MODE_WINDOWED: 0,
+	DisplayServer.WINDOW_MODE_FULLSCREEN: 1,
+	DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN: 2
+}
+var INDEX_TO_WINDOW_MODE = WINDOW_MODE_TO_INDEX.keys()
+
+const SCREEN_SPACE_AA_TO_INDEX = {
+	Viewport.SCREEN_SPACE_AA_DISABLED: 0,
+	Viewport.SCREEN_SPACE_AA_SMAA: 1,
+	Viewport.SCREEN_SPACE_AA_FXAA: 2
+}
+var INDEX_TO_SCREEN_SPACE_AA = SCREEN_SPACE_AA_TO_INDEX.keys()
+
+const MSAA_TO_INDEX = {
+	Viewport.MSAA_DISABLED: 0,
+	Viewport.MSAA_2X: 1,
+	Viewport.MSAA_4X: 2,
+	Viewport.MSAA_8X: 3
+}
+var INDEX_TO_MSAA = MSAA_TO_INDEX.keys()
+
 
 func _ready():
-	match DisplayServer.window_get_mode():
-		DisplayServer.WINDOW_MODE_WINDOWED:
-			window_mode.selected = 0
-		DisplayServer.WINDOW_MODE_FULLSCREEN:
-			window_mode.selected = 1
-		DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
-			window_mode.selected = 2
-		_:
-			window_mode.selected = -1
+	window_mode.selected = WINDOW_MODE_TO_INDEX[DisplayServer.window_get_mode()]
 
 	if DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_ENABLED:
 		frame_rate_limit.disabled = true
@@ -34,22 +48,8 @@ func _ready():
 	vsync.toggled.connect(_on_vsync_toggled)
 	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_value_changed)
 
-	match get_viewport().screen_space_aa:
-		Viewport.SCREEN_SPACE_AA_DISABLED:
-			screen_space_aa.selected = 0
-		Viewport.SCREEN_SPACE_AA_SMAA:
-			screen_space_aa.selected = 1
-		Viewport.SCREEN_SPACE_AA_FXAA:
-			screen_space_aa.selected = 2
-	match get_viewport().msaa_3d:
-		0:
-			msaa.selected = 0
-		2:
-			msaa.selected = 1
-		4:
-			msaa.selected = 2
-		8:
-			msaa.selected = 3
+	screen_space_aa.selected = SCREEN_SPACE_AA_TO_INDEX[get_viewport().screen_space_aa]
+	msaa.selected = MSAA_TO_INDEX[get_viewport().msaa_3d]
 	taa.button_pressed = get_viewport().use_taa
 
 	screen_space_aa.item_selected.connect(_on_screen_space_aa_item_selected)
@@ -58,13 +58,7 @@ func _ready():
 
 
 func _on_window_mode_selected(index: int):
-	match index:
-		0:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		1:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-		2:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+	DisplayServer.window_set_mode(INDEX_TO_WINDOW_MODE[index])
 
 
 func _on_vsync_toggled(toggled_on: bool):
@@ -86,29 +80,11 @@ func _on_frame_rate_limit_value_changed(value: float):
 
 
 func _on_screen_space_aa_item_selected(index: int):
-	var value: Viewport.ScreenSpaceAA
-	match index:
-		0:
-			value = Viewport.SCREEN_SPACE_AA_DISABLED
-		1:
-			value = Viewport.SCREEN_SPACE_AA_SMAA
-		2:
-			value = Viewport.SCREEN_SPACE_AA_FXAA
-	get_viewport().screen_space_aa = value
+	get_viewport().screen_space_aa = INDEX_TO_SCREEN_SPACE_AA[index]
 
 
 func _on_msaa_item_selected(index: int):
-	var value: Viewport.MSAA
-	match index:
-		0:
-			value = Viewport.MSAA_DISABLED
-		1:
-			value = Viewport.MSAA_2X
-		2:
-			value = Viewport.MSAA_4X
-		3:
-			value = Viewport.MSAA_8X
-	get_viewport().msaa_3d = value
+	get_viewport().msaa_3d = INDEX_TO_MSAA[index]
 
 
 func _on_taa_toggled(toggled_on: bool):
