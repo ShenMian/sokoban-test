@@ -7,10 +7,14 @@
 
 [node name="ButtonPressAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("1_aevjb")
+bus = &"Sfx"
 
 [node name="ButtonHoverAudio" type="AudioStreamPlayer" parent="."]
+bus = &"Sfx"
 
 [node name="SwitchPressAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_8b883")
+bus = &"Sfx"
 
 [node name="SwitchHoverAudio" type="AudioStreamPlayer" parent="."]
+bus = &"Sfx"
