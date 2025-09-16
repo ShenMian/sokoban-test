@@ -164,6 +164,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "STRATEGY_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/StrategyPanel"]
 layout_mode = 1
@@ -248,6 +249,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "WINDOW_MODE_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/WindowModePanel"]
 layout_mode = 1
@@ -283,6 +285,7 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "VSYNC_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/VsyncPanel"]
 layout_mode = 1
@@ -317,6 +320,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "SCREEN_SPACE_AA_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/ScreenSpaceAAPanel"]
 layout_mode = 1
@@ -440,6 +444,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "MASTER_VOLUME_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MasterVolumePanel"]
 layout_mode = 1
@@ -472,6 +477,7 @@ step = 0.01
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "MUSIC_VOLUME_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MusicVolumePanel"]
 layout_mode = 1
@@ -504,6 +510,7 @@ step = 0.01
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "SFX_VOLUME_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/SfxVolumePanel"]
 layout_mode = 1
@@ -542,6 +549,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "MUTE_WHEN_NOT_FOCUSED_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MuteWhenNotFocusedPanel"]
 layout_mode = 1

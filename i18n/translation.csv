@@ -10,6 +10,7 @@ DEADLOCK,Deadlocks,死锁
 DEADLOCK_TIP,Show static deadlock locations,显示静态死锁位置
 SOLVER,Solver,求解器
 STRATEGY,Strategy,策略
+STRATEGY_TIP,Choose solver strategy,选择解算器策略
 FAST,Fast,快速
 OPTIMAL_PUSH,Optimal Push,最优推动
 OPTIMAL_MOVE,Optimal Move,最优移动
@@ -18,19 +19,26 @@ HEATMAP_TIP,Visualize push lower bounds as a heatmap,将推动下界以热力图
 
 VOLUME,Volume,音量
 MASTER_VOLUME,Master Volume,主音量
+MASTER_VOLUME_TIP,Master volume controls overall audio level,主音量控制整体音量
 MUSIC_VOLUME,Music Volume,音乐音量
+MUSIC_VOLUME_TIP,Adjust music volume separately from sound effects,单独调整音乐音量
 SFX_VOLUME,SFX Volume,音效音量
+SFX_VOLUME_TIP,Adjust sound effects volume separately from music,单独调整音效音量
 OUTPUT,Output,输出设备
 MUTE_WHEN_NOT_FOCUSED,Mute When Not Focused,失去焦点时静音
+MUTE_WHEN_NOT_FOCUSED_TIP,Mute audio when the game window is not focused,在游戏窗口不在焦点时静音
 
 DISPLAY,Display,显示
 WINDOW_MODE,Window Mode,窗口模式
+WINDOW_MODE_TIP,Select window mode,选择窗口模式
 WINDOWED,Windowed,窗口化
 BORDERLESS_FULLSCREEN,Borderless Fullscreen,无边框全屏
 EXCLUSIVE_FULLSCREEN,Exclusive Fullscreen,独占全屏
 VSYNC,VSync,垂直同步
+VSYNC_TIP,Toggle vertical sync to reduce screen tearing,切换垂直同步以减少画面撕裂
 ANTI_ALIASING,Anti Aliasing,抗锯齿
 SCREEN_SPACE_AA,Screen Space AA,屏幕空间抗锯齿
+SCREEN_SPACE_AA_TIP,Screen-space anti-aliasing,屏幕空间抗锯齿方法
 SMAA,SMAA,SMAA
 FXAA,FXAA,FXAA
 MSAA,MSAA,MSAA
