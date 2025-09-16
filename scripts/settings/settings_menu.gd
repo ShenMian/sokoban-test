@@ -1,10 +1,13 @@
 extends Control
 
+signal fov_changed(fov: float)
 signal closed
 
 @onready var background: TextureRect = $Background
 @onready var tab_container: TabContainer = $MarginContainer/VBox/TabContainer
 @onready var close_button: Button = $CloseButton
+
+@onready var fov: SliderBar = $MarginContainer/VBox/TabContainer/Video/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
 
 
 func open():
@@ -19,6 +22,8 @@ func close():
 func _ready() -> void:
 	tab_container.tab_changed.connect(_on_active_tab_changed)
 	close_button.pressed.connect(_on_close_pressed)
+
+	fov.value_changed.connect(fov_changed.emit)
 
 
 func _input(_event: InputEvent):

@@ -10,6 +10,7 @@ func _ready():
 	progress_bar.min_value = self.min_value
 	progress_bar.max_value = self.max_value
 	progress_bar.step = self.step
+	progress_bar.value = self.value
 	label.text = str(int(round(progress_bar.value)))
 
 

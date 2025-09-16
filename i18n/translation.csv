@@ -38,6 +38,9 @@ BORDERLESS_FULLSCREEN,Borderless Fullscreen,无边框全屏
 EXCLUSIVE_FULLSCREEN,Exclusive Fullscreen,独占全屏
 VSYNC,VSync,垂直同步
 VSYNC_TIP,Toggle vertical sync to reduce screen tearing,切换垂直同步以减少画面撕裂
+GRAPHICS,Graphics,图形
+FIELD_OF_VIEW,Field of View,视野
+FIELD_OF_VIEW_TIP,Adjust the camera's field of view,调整摄像机的视野
 ANTI_ALIASING,Anti Aliasing,抗锯齿
 SCREEN_SPACE_AA,Screen Space AA,屏幕空间抗锯齿
 SCREEN_SPACE_AA_TIP,Screen-space anti-aliasing,屏幕空间抗锯齿方法

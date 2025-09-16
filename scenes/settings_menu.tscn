@@ -105,9 +105,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_2ctot")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 0
+current_tab = 1
 
 [node name="Gameplay" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("4_fb6cq")
 metadata/_tab_index = 0
@@ -296,7 +297,6 @@ script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
 [node name="Video" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
-visible = false
 layout_mode = 2
 script = ExtResource("2_r6d6q")
 metadata/_tab_index = 1
@@ -378,6 +378,45 @@ layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
+
+[node name="GraphicsLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
+layout_mode = 2
+theme = ExtResource("2_f4mfi")
+text = "GRAPHICS"
+uppercase = true
+
+[node name="FieldOfViewPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "FIELD_OF_VIEW_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/FieldOfViewPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/FieldOfViewPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/FieldOfViewPanel/Margin/HBox"]
+layout_mode = 2
+text = "FIELD_OF_VIEW"
+
+[node name="SliderBar" parent="MarginContainer/VBox/TabContainer/Video/VBox/FieldOfViewPanel/Margin/HBox" instance=ExtResource("6_n35ux")]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+min_value = 40.0
+value = 60.0
 
 [node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
 layout_mode = 2
