@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bolx2df8w721l"]
 
-[ext_resource type="Script" uid="uid://d4ilpf3t0f3re" path="res://scripts/slider_bar.gd" id="1_bqkdu"]
+[ext_resource type="Script" uid="uid://d4ilpf3t0f3re" path="res://scripts/ui/slider_bar.gd" id="1_bqkdu"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_edqov"]
 
 [node name="SliderBar" type="HSlider"]
