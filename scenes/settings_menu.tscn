@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=12 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_6wm04"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://el10yav48fuk" path="res://assets/title_theme.tres" id="2_f4mfi"]
 [ext_resource type="Script" uid="uid://c6004pmkpetwp" path="res://scripts/settings/video.gd" id="2_r6d6q"]
 [ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="6_48ojb"]
+[ext_resource type="PackedScene" uid="uid://bolx2df8w721l" path="res://scenes/slider_bar.tscn" id="6_n35ux"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="7_n35ux"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4mfi"]
@@ -423,13 +424,13 @@ layout_mode = 2
 layout_mode = 2
 text = "MASTER_VOLUME"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MasterVolumePanel/Margin/HBox"]
-custom_minimum_size = Vector2(300, 0)
+[node name="SliderBar" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MasterVolumePanel/Margin/HBox" instance=ExtResource("6_n35ux")]
+custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
 size_flags_horizontal = 10
-size_flags_vertical = 1
+size_flags_vertical = 4
 max_value = 1.0
-step = 0.1
+step = 0.01
 
 [node name="MusicVolumePanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 custom_minimum_size = Vector2(0, 40)
@@ -455,13 +456,13 @@ layout_mode = 2
 layout_mode = 2
 text = "MUSIC_VOLUME"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MusicVolumePanel/Margin/HBox"]
-custom_minimum_size = Vector2(300, 0)
+[node name="SliderBar" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MusicVolumePanel/Margin/HBox" instance=ExtResource("6_n35ux")]
+custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
 size_flags_horizontal = 10
-size_flags_vertical = 1
+size_flags_vertical = 4
 max_value = 1.0
-step = 0.1
+step = 0.01
 
 [node name="SfxVolumePanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 custom_minimum_size = Vector2(0, 40)
@@ -487,13 +488,13 @@ layout_mode = 2
 layout_mode = 2
 text = "SFX_VOLUME"
 
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBox/TabContainer/Audio/VBox/SfxVolumePanel/Margin/HBox"]
-custom_minimum_size = Vector2(300, 0)
+[node name="SliderBar" parent="MarginContainer/VBox/TabContainer/Audio/VBox/SfxVolumePanel/Margin/HBox" instance=ExtResource("6_n35ux")]
+custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
 size_flags_horizontal = 10
-size_flags_vertical = 1
+size_flags_vertical = 4
 max_value = 1.0
-step = 0.1
+step = 0.01
 
 [node name="OutputLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 layout_mode = 2
@@ -501,12 +502,12 @@ theme = ExtResource("2_f4mfi")
 text = "OUTPUT"
 uppercase = true
 
-[node name="SfxVolumePanel2" type="Panel" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
+[node name="MuteWhenNotFocusedPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Audio/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/SfxVolumePanel2"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MuteWhenNotFocusedPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -518,14 +519,14 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/SfxVolumePanel2/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MuteWhenNotFocusedPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox/SfxVolumePanel2/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MuteWhenNotFocusedPanel/Margin/HBox"]
 layout_mode = 2
 text = "MUTE_WHEN_NOT_FOCUSED"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Audio/VBox/SfxVolumePanel2/Margin/HBox"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Audio/VBox/MuteWhenNotFocusedPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 button_pressed = true
