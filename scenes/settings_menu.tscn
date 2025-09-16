@@ -74,9 +74,10 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 0
+current_tab = 2
 
 [node name="Gameplay" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -84,6 +85,74 @@ metadata/_tab_index = 0
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
+
+[node name="GeneralLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
+layout_mode = 2
+theme = ExtResource("2_f4mfi")
+text = "GENERAL"
+uppercase = true
+
+[node name="CheckerboardPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "CHECKERBOARD_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/CheckerboardPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/CheckerboardPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/CheckerboardPanel/Margin/HBox"]
+layout_mode = 2
+mouse_filter = 1
+text = "CHECKERBOARD"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/CheckerboardPanel/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+button_pressed = true
+
+[node name="DeadlockPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "DEADLOCK_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel/Margin/HBox"]
+layout_mode = 2
+mouse_filter = 1
+text = "DEADLOCK"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+button_pressed = true
 
 [node name="SolverLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
 layout_mode = 2
@@ -131,6 +200,7 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "HEATMAP_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/HeatmapPanel"]
 layout_mode = 1
@@ -149,42 +219,10 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/HeatmapPanel/Margin/HBox"]
 layout_mode = 2
-tooltip_text = "HEATMAP_TIP"
 mouse_filter = 1
 text = "HEATMAP"
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/HeatmapPanel/Margin/HBox"]
-layout_mode = 2
-size_flags_horizontal = 10
-button_pressed = true
-
-[node name="DeadlockPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 5
-
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel/Margin"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel/Margin/HBox"]
-layout_mode = 2
-tooltip_text = "DEADLOCK_TIP"
-mouse_filter = 1
-text = "DEADLOCK"
-
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/DeadlockPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 button_pressed = true
@@ -297,7 +335,6 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/ScreenSpaceAAPanel/Margin/HBox"]
 layout_mode = 2
-tooltip_text = "MSAA_TIP"
 mouse_filter = 1
 text = "SCREEN_SPACE_AA"
 
@@ -317,6 +354,7 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "MSAA_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/MsaaPanel"]
 layout_mode = 1
@@ -335,7 +373,6 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/MsaaPanel/Margin/HBox"]
 layout_mode = 2
-tooltip_text = "MSAA_TIP"
 mouse_filter = 1
 text = "MSAA"
 
@@ -357,6 +394,7 @@ popup/item_3/id = 3
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "TAA_TIP"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel"]
 layout_mode = 1
@@ -375,7 +413,6 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/TaaPanel/Margin/HBox"]
 layout_mode = 2
-tooltip_text = "TAA_TIP"
 mouse_filter = 1
 text = "TAA"
 
@@ -384,7 +421,6 @@ layout_mode = 2
 size_flags_horizontal = 10
 
 [node name="Audio" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
-visible = false
 layout_mode = 2
 script = ExtResource("1_5p8wc")
 metadata/_tab_index = 2
