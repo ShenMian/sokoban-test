@@ -122,11 +122,6 @@ text = "LANGUAGE"
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/LanguagePanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
-item_count = 2
-popup/item_0/text = "en"
-popup/item_0/id = 0
-popup/item_1/text = "zh"
-popup/item_1/id = 1
 
 [node name="CheckerboardPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
 custom_minimum_size = Vector2(0, 40)
