@@ -3,6 +3,7 @@ keys,en,zh
 MOVES,Moves,移动数
 PUSHES,Pushes,推动数
 
+GAMEPLAY,Gameplay,玩法
 GENERAL,General,通用
 LANGUAGE,Language,语言
 LANGUAGE_TIP,Select the interface language,选择界面语言
@@ -19,6 +20,7 @@ OPTIMAL_MOVE,Optimal Move,最优移动
 HEATMAP,Heatmap,热力图
 HEATMAP_TIP,Visualize push lower bounds as a heatmap,将推动下界以热力图的形式可视化
 
+AUDIO,Audio,音频
 VOLUME,Volume,音量
 MASTER_VOLUME,Master Volume,主音量
 MASTER_VOLUME_TIP,Master volume controls overall audio level,主音量控制整体音量
@@ -30,6 +32,7 @@ OUTPUT,Output,输出设备
 MUTE_WHEN_NOT_FOCUSED,Mute When Not Focused,失去焦点时静音
 MUTE_WHEN_NOT_FOCUSED_TIP,Mute audio when the game window is not focused,在游戏窗口不在焦点时静音
 
+VIDEO,Video,视频
 DISPLAY,Display,显示
 WINDOW_MODE,Window Mode,窗口模式
 WINDOW_MODE_TIP,"Choose window mode\n• Windowed.\n• Borderless fullscreen.\n• Exclusive fullscreen.","选择窗口模式\n• 窗口化.\n• 无边框全屏.\n• 独占全屏."

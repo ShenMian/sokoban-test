@@ -7,7 +7,7 @@ signal closed
 @onready var tab_container: TabContainer = $MarginContainer/VBox/TabContainer
 @onready var close_button: Button = $CloseButton
 
-@onready var fov: SliderBar = $MarginContainer/VBox/TabContainer/Video/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
+@onready var fov: SliderBar = $MarginContainer/VBox/TabContainer/VIDEO/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
 
 
 func open():
