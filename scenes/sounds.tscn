@@ -1,11 +1,16 @@
-[gd_scene format=3 uid="uid://dgqg5u1u0eomg"]
+[gd_scene load_steps=3 format=3 uid="uid://dgqg5u1u0eomg"]
+
+[ext_resource type="AudioStream" uid="uid://7qwmxm6udupb" path="res://assets/audio/sfx/click_002.ogg" id="1_aevjb"]
+[ext_resource type="AudioStream" uid="uid://bh4xhjn7rwh61" path="res://assets/audio/sfx/select_001.ogg" id="2_8b883"]
 
 [node name="UiSound" type="Node"]
 
-[node name="SwitchPressAudio" type="AudioStreamPlayer" parent="."]
-
-[node name="SwitchHoverAudio" type="AudioStreamPlayer" parent="."]
-
 [node name="ButtonPressAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_aevjb")
 
 [node name="ButtonHoverAudio" type="AudioStreamPlayer" parent="."]
+
+[node name="SwitchPressAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_8b883")
+
+[node name="SwitchHoverAudio" type="AudioStreamPlayer" parent="."]

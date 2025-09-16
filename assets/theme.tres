@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=3 format=3 uid="uid://dvbbi3vt7rasu"]
 
-[ext_resource type="FontFile" uid="uid://c1dksvj52n0ie" path="res://assets/fonts/Inter-4.1/Inter.ttc" id="1_5x3i2"]
+[ext_resource type="FontFile" uid="uid://d1y2psiq73ye2" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Regular.ttf" id="1_5x3i2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lu33j"]
 content_margin_left = 4.0
