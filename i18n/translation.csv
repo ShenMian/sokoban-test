@@ -4,6 +4,8 @@ MOVES,Moves,移动数
 PUSHES,Pushes,推动数
 
 GENERAL,General,通用
+LANGUAGE,Language,语言
+LANGUAGE_TIP,Select the interface language,选择界面语言
 CHECKERBOARD,Checkerboard,棋盘格
 CHECKERBOARD_TIP,Toggle to color floor tiles in a checkerboard pattern,以棋盘格样式给地砖上色
 DEADLOCK,Deadlocks,死锁

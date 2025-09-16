@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=13 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_6wm04"]
 [ext_resource type="Script" uid="uid://da8bag1av6klb" path="res://scripts/settings/settings_menu.gd" id="2_es4n0"]
 [ext_resource type="Theme" uid="uid://el10yav48fuk" path="res://assets/title_theme.tres" id="2_f4mfi"]
 [ext_resource type="Script" uid="uid://c6004pmkpetwp" path="res://scripts/settings/video.gd" id="2_r6d6q"]
+[ext_resource type="Script" uid="uid://mwdcehvdg02c" path="res://scripts/settings/gameplay.gd" id="4_fb6cq"]
 [ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="6_48ojb"]
 [ext_resource type="PackedScene" uid="uid://bolx2df8w721l" path="res://scenes/slider_bar.tscn" id="6_n35ux"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="7_n35ux"]
@@ -66,7 +67,7 @@ theme_override_constants/separation = 10
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 theme_override_font_sizes/font_size = 35
-text = "Settings"
+text = "SETTINGS"
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/VBox"]
 layout_mode = 2
@@ -74,11 +75,11 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 2
+current_tab = 0
 
 [node name="Gameplay" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
-visible = false
 layout_mode = 2
+script = ExtResource("4_fb6cq")
 metadata/_tab_index = 0
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer/Gameplay"]
@@ -91,6 +92,41 @@ layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "GENERAL"
 uppercase = true
+
+[node name="LanguagePanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "LANGUAGE_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/LanguagePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/LanguagePanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/LanguagePanel/Margin/HBox"]
+layout_mode = 2
+mouse_filter = 1
+text = "LANGUAGE"
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox/LanguagePanel/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+item_count = 2
+popup/item_0/text = "en"
+popup/item_0/id = 0
+popup/item_1/text = "zh"
+popup/item_1/id = 1
 
 [node name="CheckerboardPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Gameplay/VBox"]
 custom_minimum_size = Vector2(0, 40)
@@ -425,6 +461,7 @@ layout_mode = 2
 size_flags_horizontal = 10
 
 [node name="Audio" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("1_5p8wc")
 metadata/_tab_index = 2
