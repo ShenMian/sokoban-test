@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://dxgyp85axyufh"]
+[gd_scene load_steps=12 format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/models/mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://d2l2mcb536frf" path="res://scripts/gameplay.gd" id="1_l1v76"]
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
+[ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/settings_menu.tscn" id="6_din8e"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00tan"]
 albedo_color = Color(0.49092185, 0.7905889, 0.99605805, 1)
@@ -183,6 +184,9 @@ text = "Solve"
 layer = 2
 
 [node name="PauseMenu" parent="MenuLayer" instance=ExtResource("4_ct7aa")]
+visible = false
+
+[node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("6_din8e")]
 visible = false
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]

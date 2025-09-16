@@ -1,5 +1,8 @@
 extends Control
 
+signal closed
+signal request_settings
+
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var settings_button: Button = $MenuBackground/VBox/SettingsButton
 @onready var credits_button: Button = $MenuBackground/VBox/CreditsButton
@@ -14,14 +17,22 @@ func open():
 
 func close():
 	hide()
+	closed.emit()
 	get_tree().paused = false
 
 
 func _ready():
 	close_button.pressed.connect(close)
+	settings_button.pressed.connect(_on_settings_pressed)
 
 
 func _input(_event: InputEvent):
-	if Input.is_action_just_released("pause"):
+	if not self.visible:
+		return
+	if Input.is_action_just_released("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		close()
+
+
+func _on_settings_pressed():
+	request_settings.emit()

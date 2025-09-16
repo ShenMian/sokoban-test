@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=11 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_6wm04"]
-[ext_resource type="Script" uid="uid://da8bag1av6klb" path="res://scripts/settings/settings.gd" id="2_es4n0"]
+[ext_resource type="Script" uid="uid://da8bag1av6klb" path="res://scripts/settings/settings_menu.gd" id="2_es4n0"]
 [ext_resource type="Theme" uid="uid://el10yav48fuk" path="res://assets/title_theme.tres" id="2_f4mfi"]
 [ext_resource type="Script" uid="uid://c6004pmkpetwp" path="res://scripts/settings/video.gd" id="2_r6d6q"]
+[ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="6_48ojb"]
+[ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="7_n35ux"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4mfi"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -23,7 +25,8 @@ content_margin_right = 10.0
 content_margin_bottom = 4.0
 bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0.6039216)
 
-[node name="Settings" type="Control"]
+[node name="SettingsMenu" type="Control"]
+process_mode = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -70,10 +73,9 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 1
+current_tab = 0
 
 [node name="Gameplay" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -187,6 +189,7 @@ size_flags_horizontal = 10
 button_pressed = true
 
 [node name="Video" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("2_r6d6q")
 metadata/_tab_index = 1
@@ -526,3 +529,18 @@ text = "MUTE_WHEN_NOT_FOCUSED"
 layout_mode = 2
 size_flags_horizontal = 10
 button_pressed = true
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_top = -73.0
+offset_right = 149.0
+offset_bottom = -27.0
+grow_vertical = 0
+text = "CLOSE"
+icon = ExtResource("6_48ojb")
+script = ExtResource("7_n35ux")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
