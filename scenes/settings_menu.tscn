@@ -379,6 +379,40 @@ size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
+[node name="FrameRateLimitPanel" type="Panel" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "FRAME_RATE_LIMIT_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/FrameRateLimitPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/TabContainer/Video/VBox/FrameRateLimitPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox/FrameRateLimitPanel/Margin/HBox"]
+layout_mode = 2
+text = "FRAME_RATE_LIMIT"
+
+[node name="SliderBar" parent="MarginContainer/VBox/TabContainer/Video/VBox/FrameRateLimitPanel/Margin/HBox" instance=ExtResource("6_n35ux")]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+min_value = 30.0
+max_value = 361.0
+value = 60.0
+
 [node name="GraphicsLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")

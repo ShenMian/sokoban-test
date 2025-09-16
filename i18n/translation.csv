@@ -38,6 +38,9 @@ BORDERLESS_FULLSCREEN,Borderless Fullscreen,无边框全屏
 EXCLUSIVE_FULLSCREEN,Exclusive Fullscreen,独占全屏
 VSYNC,VSync,垂直同步
 VSYNC_TIP,Toggle vertical sync to reduce screen tearing,切换垂直同步以减少画面撕裂
+FRAME_RATE_LIMIT,Frame Rate Limit,帧率限制
+FRAME_RATE_LIMIT_TIP,Limit the maximum frame rate,限制最大帧率
+UNLIMITED,Unlimited,无限制
 GRAPHICS,Graphics,图形
 FIELD_OF_VIEW,Field of View,视野
 FIELD_OF_VIEW_TIP,Adjust the camera's field of view,调整摄像机的视野

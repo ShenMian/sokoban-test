@@ -4,6 +4,15 @@ class_name SliderBar
 @onready var progress_bar: ProgressBar = $ProgressBar
 @onready var label: Label = $ProgressBar/Label
 
+@export var disabled: bool = false:
+	set(disabled):
+		if disabled:
+			self.editable = false
+			self.modulate = Color.GRAY * 0.8
+		else:
+			self.editable = true
+			self.modulate = Color.WHITE
+
 
 func _ready():
 	self.value_changed.connect(_on_value_changed)
