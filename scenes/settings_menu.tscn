@@ -296,7 +296,7 @@ button_pressed = true
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
-[node name="Video" type="CenterContainer" parent="MarginContainer/VBox/TabContainer"]
+[node name="Video" type="ScrollContainer" parent="MarginContainer/VBox/TabContainer"]
 layout_mode = 2
 script = ExtResource("2_r6d6q")
 metadata/_tab_index = 1
@@ -304,6 +304,8 @@ metadata/_tab_index = 1
 [node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/TabContainer/Video"]
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
 theme_override_constants/separation = 10
 
 [node name="DisplayLabel" type="Label" parent="MarginContainer/VBox/TabContainer/Video/VBox"]

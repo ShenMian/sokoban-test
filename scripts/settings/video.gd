@@ -1,4 +1,4 @@
-extends CenterContainer
+extends ScrollContainer
 
 @onready var window_mode: OptionButton = $VBox/WindowModePanel/Margin/HBox/OptionButton
 @onready var vsync: CheckButton = $VBox/VsyncPanel/Margin/HBox/CheckButton
