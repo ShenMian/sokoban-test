@@ -35,7 +35,7 @@ func _input(_event: InputEvent):
 
 
 func _on_active_tab_changed(index: int):
-	if tab_container.get_tab_title(index) == "Video":
+	if tab_container.get_tab_title(index) == "VIDEO":
 		background.visible = false
 	else:
 		background.visible = true
