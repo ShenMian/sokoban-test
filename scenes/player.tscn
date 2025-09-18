@@ -16,7 +16,7 @@ material = SubResource("StandardMaterial3D_00tan")
 script = ExtResource("1_3vyb7")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0.5, 0.5, 0.5)
 mesh = SubResource("CapsuleMesh_00tan")
 
 [node name="Area" type="Area3D" parent="Mesh"]

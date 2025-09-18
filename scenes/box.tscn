@@ -9,6 +9,7 @@
 script = ExtResource("2_ks2v0")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 mesh = ExtResource("1_3inec")
 
 [node name="Area3D" type="Area3D" parent="Mesh"]

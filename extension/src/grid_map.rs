@@ -87,11 +87,7 @@ impl LevelMap {
         let box_scene: Gd<PackedScene> = load("res://scenes/box.tscn");
         for position in self.map.box_positions() {
             let mut instance: Gd<Node3D> = box_scene.instantiate().unwrap().cast();
-            instance.set_global_position(Vector3::new(
-                position.x as f32 + 0.5,
-                0.5,
-                position.y as f32 + 0.5,
-            ));
+            instance.set_global_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
             self.base()
                 .get_node_as::<Node3D>("Boxes")
                 .add_child(&instance);
@@ -99,9 +95,9 @@ impl LevelMap {
 
         let mut player = self.base().get_node_as::<Node3D>("Player");
         player.set_global_position(Vector3::new(
-            self.map.player_position().x as f32 + 0.5,
-            0.5,
-            self.map.player_position().y as f32 + 0.5,
+            self.map.player_position().x as f32,
+            0.0,
+            self.map.player_position().y as f32,
         ));
     }
 }
