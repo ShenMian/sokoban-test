@@ -9,7 +9,6 @@ extends Node3D
 func _ready():
 	area.mouse_entered.connect(_on_area_mouse_entered)
 	area.mouse_exited.connect(_on_area_mouse_exited)
-	pass
 
 
 func _on_area_mouse_entered():
