@@ -8,3 +8,5 @@ crate-type = ["cdylib"]
 
 [dependencies]
 godot = "0.3"
+nalgebra = "0.34.0"
+soukoban = { path = "../../Repos/soukoban" }
