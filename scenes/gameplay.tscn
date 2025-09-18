@@ -35,6 +35,8 @@ corner_detail = 5
 [node name="Gameplay" type="Node3D"]
 script = ExtResource("1_l1v76")
 
+[node name="LevelMap" type="LevelMap" parent="."]
+
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("1_7biu0")
 cell_size = Vector3(1, 1, 1)
