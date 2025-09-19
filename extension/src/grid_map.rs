@@ -18,9 +18,10 @@ struct LevelMap {
 #[godot_api]
 impl IGridMap for LevelMap {
     fn init(base: Base<GridMap>) -> Self {
-        let map = Map::from_actions(Actions::from_str("R").unwrap()).unwrap();
-
-        Self { map, base }
+        Self {
+            map: Map::from_actions(Actions::from_str("R").unwrap()).unwrap(),
+            base,
+        }
     }
 }
 
@@ -29,11 +30,11 @@ impl LevelMap {
     #[func]
     fn load_from_string(&mut self, lurd: GString) {
         let Ok(actions) = Actions::from_str(&lurd.to_string()) else {
-            godot_print!("Failed to parse actions from string: {}", lurd);
+            godot_print!("failed to parse actions from string");
             return;
         };
         let Ok(map) = Map::from_actions(actions) else {
-            godot_print!("Failed to create map from actions: {}", lurd);
+            godot_print!("failed to create map from actions");
             return;
         };
         self.map = map;
@@ -63,7 +64,12 @@ impl LevelMap {
             };
             item_ids.insert(tile, id);
         }
-        assert_eq!(item_ids.len(), 3);
+        assert_eq!(item_ids.len(), 3, "missing required mesh items");
+
+        let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
+        for r#box in boxes.get_children().iter_shared() {
+            boxes.remove_child(&r#box);
+        }
 
         self.base_mut().clear();
         for x in 0..self.map.dimensions().x {
@@ -85,11 +91,9 @@ impl LevelMap {
 
         let box_scene: Gd<PackedScene> = load("res://scenes/box.tscn");
         for position in self.map.box_positions() {
-            let mut instance: Gd<Node3D> = box_scene.instantiate().unwrap().cast();
-            instance.set_global_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
-            self.base()
-                .get_node_as::<Node3D>("Boxes")
-                .add_child(&instance);
+            let mut r#box: Gd<Node3D> = box_scene.instantiate().unwrap().cast();
+            r#box.set_global_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
+            boxes.add_child(&r#box);
         }
 
         let mut player = self.base().get_node_as::<Node3D>("Player");
