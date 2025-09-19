@@ -7,7 +7,7 @@ signal closed
 @onready var tab_container: TabContainer = $MarginContainer/VBox/TabContainer
 @onready var close_button: ButtonFx = $CloseButton
 
-@onready var fov: SliderBar = $MarginContainer/VBox/TabContainer/VIDEO/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
+@onready var field_of_view: SliderBar = $MarginContainer/VBox/Tabs/VIDEO/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
 
 
 func open():
@@ -23,7 +23,8 @@ func _ready() -> void:
 	tab_container.tab_changed.connect(_on_active_tab_changed)
 	close_button.pressed.connect(_on_close_pressed)
 
-	fov.value_changed.connect(fov_changed.emit)
+	field_of_view.value_changed.connect(_on_field_of_view_changed)
+	field_of_view.value = Settings.get_value("video", "fov")
 
 
 func _input(_event: InputEvent):
@@ -39,6 +40,11 @@ func _on_active_tab_changed(index: int):
 		background.visible = false
 	else:
 		background.visible = true
+
+
+func _on_field_of_view_changed(fov: float):
+	fov_changed.emit(fov)
+	Settings.set_value("video", "fov", fov)
 
 
 func _on_close_pressed():

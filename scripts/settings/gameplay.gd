@@ -7,6 +7,11 @@ const LOCALE_TO_NAME = {
 	"zh": "中文"
 }
 
+const LOCALE_TO_INDEX = {
+	"en": 0,
+	"zh": 1
+}
+
 
 func _ready() -> void:
 	var locales = TranslationServer.get_loaded_locales()
@@ -16,8 +21,12 @@ func _ready() -> void:
 		language.set_item_metadata(i, locale)
 
 	language.item_selected.connect(_on_language_item_selected)
+	var index = LOCALE_TO_INDEX[Settings.get_value("gameplay", "language")];
+	language.select(index)
+	language.item_selected.emit(index)
 
 
 func _on_language_item_selected(index: int):
-	var selected := str(language.get_item_metadata(index))
-	TranslationServer.set_locale(selected)
+	var locale := str(language.get_item_metadata(index))
+	TranslationServer.set_locale(locale)
+	Settings.set_value("gameplay", "language", locale)

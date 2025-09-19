@@ -19,9 +19,18 @@ func _ready():
 	music_volumn.value_changed.connect(_on_volume_changed.bind(music_bus_index))
 	sfx_volumn.value_changed.connect(_on_volume_changed.bind(sfx_bus_index))
 
+	mute_when_not_focused.button_pressed = Settings.get_value("audio", "mute_when_not_focused")
+	mute_when_not_focused.toggled.connect(_on_mute_when_not_focused_toggled)
+
 
 func _on_volume_changed(value: float, bus_index: int):
-	AudioServer.set_bus_volume_db(bus_index, linear_to_db(value))
+	var volume = linear_to_db(value)
+	AudioServer.set_bus_volume_db(bus_index, volume)
+	Settings.set_value("audio", "bus_%d_volume" % bus_index, volume)
+
+
+func _on_mute_when_not_focused_toggled(toggled: bool):
+	Settings.set_value("audio", "mute_when_not_focused", toggled)
 
 
 func _notification(what: int):

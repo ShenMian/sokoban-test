@@ -32,33 +32,31 @@ var INDEX_TO_MSAA = MSAA_TO_INDEX.keys()
 
 
 func _ready():
-	window_mode.selected = WINDOW_MODE_TO_INDEX[DisplayServer.window_get_mode()]
-
-	if DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_ENABLED:
-		frame_rate_limit.disabled = true
-		vsync.button_pressed = true
-	else:
-		frame_rate_limit.disabled = false
-		vsync.button_pressed = false
-
-	frame_rate_limit.value = Engine.max_fps
-	_on_frame_rate_limit_value_changed(Engine.max_fps)
-
 	window_mode.item_selected.connect(_on_window_mode_selected)
-	vsync.toggled.connect(_on_vsync_toggled)
-	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_value_changed)
+	window_mode.select(Settings.get_value("video", "window_mode"))
 
-	screen_space_aa.selected = SCREEN_SPACE_AA_TO_INDEX[get_viewport().screen_space_aa]
-	msaa.selected = MSAA_TO_INDEX[get_viewport().msaa_3d]
-	taa.button_pressed = get_viewport().use_taa
+	vsync.toggled.connect(_on_vsync_toggled)
+	vsync.button_pressed = Settings.get_value("video", "vsync")
+	vsync.toggled.emit(Settings.get_value("video", "vsync"))
+
+	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_value_changed)
+	frame_rate_limit.value_changed.emit(Settings.get_value("video", "frame_rate_limit"))
+	frame_rate_limit.value = frame_rate_limit.max_value if Engine.max_fps == 0 else Engine.max_fps
 
 	screen_space_aa.item_selected.connect(_on_screen_space_aa_item_selected)
+	screen_space_aa.select(SCREEN_SPACE_AA_TO_INDEX[Settings.get_value("video", "screen_space_aa")])
+
 	msaa.item_selected.connect(_on_msaa_item_selected)
+	msaa.select(MSAA_TO_INDEX[Settings.get_value("video", "msaa")])
+
 	taa.toggled.connect(_on_taa_toggled)
+	taa.button_pressed = Settings.get_value("video", "taa")
+	taa.toggled.emit(Settings.get_value("video", "taa"))
 
 
 func _on_window_mode_selected(index: int):
 	DisplayServer.window_set_mode(INDEX_TO_WINDOW_MODE[index])
+	Settings.set_value("video", "window_mode", INDEX_TO_WINDOW_MODE[index])
 
 
 func _on_vsync_toggled(toggled_on: bool):
@@ -68,6 +66,7 @@ func _on_vsync_toggled(toggled_on: bool):
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		frame_rate_limit.disabled = false
+	Settings.set_value("video", "vsync", DisplayServer.window_get_vsync_mode())
 
 
 func _on_frame_rate_limit_value_changed(value: float):
@@ -77,15 +76,19 @@ func _on_frame_rate_limit_value_changed(value: float):
 		Engine.max_fps = 0
 	else:
 		Engine.max_fps = int(value)
+	Settings.set_value("video", "frame_rate_limit", Engine.max_fps)
 
 
 func _on_screen_space_aa_item_selected(index: int):
 	get_viewport().screen_space_aa = INDEX_TO_SCREEN_SPACE_AA[index]
+	Settings.set_value("video", "screen_space_aa", INDEX_TO_SCREEN_SPACE_AA[index])
 
 
 func _on_msaa_item_selected(index: int):
 	get_viewport().msaa_3d = INDEX_TO_MSAA[index]
+	Settings.set_value("video", "msaa", INDEX_TO_MSAA[index])
 
 
 func _on_taa_toggled(toggled_on: bool):
 	get_viewport().use_taa = toggled_on
+	Settings.set_value("video", "taa", toggled_on)

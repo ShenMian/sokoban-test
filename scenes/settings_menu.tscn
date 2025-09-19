@@ -182,7 +182,6 @@ text = "CHECKERBOARD"
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/GAMEPLAY/VBox/CheckerboardPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
-button_pressed = true
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
@@ -215,7 +214,6 @@ text = "DEADLOCK"
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/GAMEPLAY/VBox/DeadlockPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
-button_pressed = true
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
@@ -291,7 +289,6 @@ text = "HEATMAP"
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/GAMEPLAY/VBox/HeatmapPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
-button_pressed = true
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
@@ -720,7 +717,6 @@ text = "MUTE_WHEN_NOT_FOCUSED"
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/TabContainer/AUDIO/VBox/MuteWhenNotFocusedPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
-button_pressed = true
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 

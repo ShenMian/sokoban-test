@@ -22,6 +22,7 @@ buses/default_bus_layout="res://assets/default_bus_layout.tres"
 [autoload]
 
 Sounds="*res://scenes/sounds.tscn"
+Settings="*res://scripts/settings/settings.gd"
 
 [input]
 
@@ -73,7 +74,3 @@ pause={
 [internationalization]
 
 locale/translations=PackedStringArray("res://i18n/translation.en.translation", "res://i18n/translation.zh.translation")
-
-[rendering]
-
-anti_aliasing/quality/screen_space_aa=2
