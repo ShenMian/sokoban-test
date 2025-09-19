@@ -11,22 +11,26 @@ func _ready():
 	var music_bus_index := AudioServer.get_bus_index("Music")
 	var sfx_bus_index := AudioServer.get_bus_index("Sfx")
 
-	master_volumn.value = db_to_linear(AudioServer.get_bus_volume_db(master_bus_index))
-	music_volumn.value = db_to_linear(AudioServer.get_bus_volume_db(music_bus_index))
-	sfx_volumn.value = db_to_linear(AudioServer.get_bus_volume_db(sfx_bus_index))
-
 	master_volumn.value_changed.connect(_on_volume_changed.bind(master_bus_index))
 	music_volumn.value_changed.connect(_on_volume_changed.bind(music_bus_index))
 	sfx_volumn.value_changed.connect(_on_volume_changed.bind(sfx_bus_index))
 
-	mute_when_not_focused.button_pressed = Settings.get_value("audio", "mute_when_not_focused")
 	mute_when_not_focused.toggled.connect(_on_mute_when_not_focused_toggled)
+
+	apply_settings()
+
+
+func apply_settings():
+	master_volumn.value = Settings.get_value("audio", "master_volume")
+	music_volumn.value = Settings.get_value("audio", "music_volume")
+	sfx_volumn.value = Settings.get_value("audio", "sfx_volume")
+	mute_when_not_focused.button_pressed = Settings.get_value("audio", "mute_when_not_focused")
 
 
 func _on_volume_changed(value: float, bus_index: int):
 	var volume = linear_to_db(value)
 	AudioServer.set_bus_volume_db(bus_index, volume)
-	Settings.set_value("audio", "bus_%d_volume" % bus_index, volume)
+	Settings.set_value("audio", "%s_volume" % AudioServer.get_bus_name(bus_index).to_lower(), value)
 
 
 func _on_mute_when_not_focused_toggled(toggled: bool):

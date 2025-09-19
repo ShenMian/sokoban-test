@@ -12,7 +12,8 @@ func _ready():
 
 
 func _input(_event):
-	if Input.is_action_just_released("pause"):
+	if Input.is_action_just_pressed("pause"):
+		get_viewport().set_input_as_handled()
 		hud.hide()
 		pause_menu.open()
 

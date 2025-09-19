@@ -4,10 +4,15 @@ signal fov_changed(fov: float)
 signal closed
 
 @onready var background: TextureRect = $Background
-@onready var tab_container: TabContainer = $MarginContainer/VBox/TabContainer
+@onready var tabs: TabContainer = $MarginContainer/VBox/Tabs
 @onready var close_button: ButtonFx = $CloseButton
+@onready var restore_button: ButtonFx = $RestoreButton
 
-@onready var field_of_view: SliderBar = $MarginContainer/VBox/Tabs/VIDEO/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
+@onready var gameplay: CenterContainer = $MarginContainer/VBox/Tabs/GAMEPLAY
+@onready var video: ScrollContainer = $MarginContainer/VBox/Tabs/VIDEO
+@onready var audio: CenterContainer = $MarginContainer/VBox/Tabs/AUDIO
+
+@onready var fov: SliderBar = $MarginContainer/VBox/Tabs/VIDEO/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
 
 
 func open():
@@ -20,32 +25,43 @@ func close():
 
 
 func _ready() -> void:
-	tab_container.tab_changed.connect(_on_active_tab_changed)
+	tabs.tab_changed.connect(_on_active_tab_changed)
 	close_button.pressed.connect(_on_close_pressed)
+	restore_button.pressed.connect(_on_restore_pressed)
 
-	field_of_view.value_changed.connect(_on_field_of_view_changed)
-	field_of_view.value = Settings.get_value("video", "fov")
+	video.fov_changed.connect(fov_changed.emit)
 
 
 func _input(_event: InputEvent):
 	if not self.visible:
 		return
-	if Input.is_action_just_released("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		close()
 
 
 func _on_active_tab_changed(index: int):
-	if tab_container.get_tab_title(index) == "VIDEO":
+	Sounds.play_button_press()
+	if tabs.get_tab_title(index) == "VIDEO":
 		background.visible = false
 	else:
 		background.visible = true
 
 
-func _on_field_of_view_changed(fov: float):
-	fov_changed.emit(fov)
-	Settings.set_value("video", "fov", fov)
+func _on_fov_changed(value: float):
+	fov_changed.emit(value)
+	Settings.set_value("video", "fov", value)
 
 
 func _on_close_pressed():
 	close()
+
+
+func _on_restore_pressed():
+	match tabs.get_tab_title(tabs.current_tab):
+		"GAMEPLAY":
+			Settings.reset_gameplay_settings()
+			gameplay.apply_settings()
+		"VIDEO":
+			Settings.reset_video_settings()
+			video.apply_settings()
+		"AUDIO":
+			Settings.reset_audio_settings()
+			audio.apply_settings()

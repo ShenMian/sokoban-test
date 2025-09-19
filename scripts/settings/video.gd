@@ -1,8 +1,12 @@
 extends ScrollContainer
 
+signal fov_changed(fov: float)
+
 @onready var window_mode: OptionButton = $VBox/WindowModePanel/Margin/HBox/OptionButton
 @onready var vsync: CheckButton = $VBox/VsyncPanel/Margin/HBox/CheckButton
 @onready var frame_rate_limit: SliderBar = $VBox/FrameRateLimitPanel/Margin/HBox/SliderBar
+
+@onready var fov: SliderBar = $VBox/FieldOfViewPanel/Margin/HBox/SliderBar
 
 @onready var screen_space_aa: OptionButton = $VBox/ScreenSpaceAAPanel/Margin/HBox/OptionButton
 @onready var msaa: OptionButton = $VBox/MsaaPanel/Margin/HBox/OptionButton
@@ -33,23 +37,31 @@ var INDEX_TO_MSAA = MSAA_TO_INDEX.keys()
 
 func _ready():
 	window_mode.item_selected.connect(_on_window_mode_selected)
+	vsync.toggled.connect(_on_vsync_toggled)
+	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_changed)
+	fov.value_changed.connect(_on_fov_changed)
+	screen_space_aa.item_selected.connect(_on_screen_space_aa_item_selected)
+	msaa.item_selected.connect(_on_msaa_item_selected)
+	taa.toggled.connect(_on_taa_toggled)
+
+	apply_settings()
+
+
+func apply_settings():
 	window_mode.select(Settings.get_value("video", "window_mode"))
 
-	vsync.toggled.connect(_on_vsync_toggled)
 	vsync.button_pressed = Settings.get_value("video", "vsync")
 	vsync.toggled.emit(Settings.get_value("video", "vsync"))
 
-	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_value_changed)
 	frame_rate_limit.value_changed.emit(Settings.get_value("video", "frame_rate_limit"))
 	frame_rate_limit.value = frame_rate_limit.max_value if Engine.max_fps == 0 else Engine.max_fps
 
-	screen_space_aa.item_selected.connect(_on_screen_space_aa_item_selected)
+	fov.value = Settings.get_value("video", "fov")
+
 	screen_space_aa.select(SCREEN_SPACE_AA_TO_INDEX[Settings.get_value("video", "screen_space_aa")])
-
-	msaa.item_selected.connect(_on_msaa_item_selected)
+	
 	msaa.select(MSAA_TO_INDEX[Settings.get_value("video", "msaa")])
-
-	taa.toggled.connect(_on_taa_toggled)
+	
 	taa.button_pressed = Settings.get_value("video", "taa")
 	taa.toggled.emit(Settings.get_value("video", "taa"))
 
@@ -69,7 +81,7 @@ func _on_vsync_toggled(toggled_on: bool):
 	Settings.set_value("video", "vsync", DisplayServer.window_get_vsync_mode())
 
 
-func _on_frame_rate_limit_value_changed(value: float):
+func _on_frame_rate_limit_changed(value: float):
 	if value == 0 || value == frame_rate_limit.max_value:
 		frame_rate_limit.value = frame_rate_limit.max_value
 		frame_rate_limit.label.text = "UNLIMITED"
@@ -77,6 +89,11 @@ func _on_frame_rate_limit_value_changed(value: float):
 	else:
 		Engine.max_fps = int(value)
 	Settings.set_value("video", "frame_rate_limit", Engine.max_fps)
+
+
+func _on_fov_changed(value: float):
+	fov_changed.emit(value)
+	Settings.set_value("video", "fov", value)
 
 
 func _on_screen_space_aa_item_selected(index: int):

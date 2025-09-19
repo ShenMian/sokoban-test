@@ -8,7 +8,7 @@ extends Camera3D
 
 var _is_dragging = false
 var _target_position: Vector3
-var _target_size: float
+var _target_size: float = 10.0
 
 
 func _ready():

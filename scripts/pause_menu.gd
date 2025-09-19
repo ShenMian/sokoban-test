@@ -29,9 +29,6 @@ func _ready():
 func _input(_event: InputEvent):
 	if not self.visible:
 		return
-	if Input.is_action_just_released("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		close()
 
 
 func _on_settings_pressed():

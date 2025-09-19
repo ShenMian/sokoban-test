@@ -1,9 +1,6 @@
 extends Button
 class_name ButtonFx
 
-@onready var press_audio: AudioStreamPlayer = Sounds.get_node("ButtonPressAudio")
-@onready var hover_audio: AudioStreamPlayer = Sounds.get_node("ButtonHoverAudio")
-
 @export var smooth_factor = 20.0
 
 var _target_scale: Vector2 = Vector2.ONE
@@ -23,12 +20,12 @@ func _process(delta: float):
 
 
 func _on_pressed():
-	press_audio.play()
+	Sounds.play_button_press()
 
 
 func _on_hovered():
 	_target_scale = Vector2.ONE * 1.1
-	hover_audio.play()
+	Sounds.play_button_hover()
 
 
 func _on_unhovered():
