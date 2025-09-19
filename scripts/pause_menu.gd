@@ -4,9 +4,9 @@ signal closed
 signal request_settings
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var settings_button: Button = $MenuBackground/VBox/SettingsButton
-@onready var credits_button: Button = $MenuBackground/VBox/CreditsButton
-@onready var close_button: Button = $CloseButton
+@onready var settings_button: ButtonFx = $MenuBackground/VBox/SettingsButton
+@onready var credits_button: ButtonFx = $MenuBackground/VBox/CreditsButton
+@onready var close_button: ButtonFx = $CloseButton
 
 
 func open():

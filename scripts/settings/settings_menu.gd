@@ -5,7 +5,7 @@ signal closed
 
 @onready var background: TextureRect = $Background
 @onready var tab_container: TabContainer = $MarginContainer/VBox/TabContainer
-@onready var close_button: Button = $CloseButton
+@onready var close_button: ButtonFx = $CloseButton
 
 @onready var fov: SliderBar = $MarginContainer/VBox/TabContainer/VIDEO/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
 
