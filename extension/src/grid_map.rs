@@ -19,11 +19,8 @@ struct LevelMap {
 impl IGridMap for LevelMap {
     fn init(base: Base<GridMap>) -> Self {
         let map = Map::from_actions(Actions::from_str("R").unwrap()).unwrap();
-        Self { map, base }
-    }
 
-    fn ready(&mut self) {
-        godot_print!("LevelMap is ready!");
+        Self { map, base }
     }
 }
 
@@ -54,15 +51,19 @@ impl LevelMap {
     }
 
     fn build(&mut self) {
-        let mut item_idx = HashMap::new();
+        let mut item_ids = HashMap::new();
         let mesh_library = self.base().get_mesh_library().unwrap();
-        for idx in 0..mesh_library.get_item_list().len() {
-            let name = mesh_library.get_item_name(idx as i32);
-            item_idx.insert(name.to_string(), idx as i32);
+        for id in (0..mesh_library.get_item_list().len()).map(|id| id as i32) {
+            let name = mesh_library.get_item_name(id);
+            let tile = match name.to_string().as_str() {
+                "floor" => Tiles::Floor,
+                "wall" => Tiles::Wall,
+                "goal" => Tiles::Goal,
+                _ => continue,
+            };
+            item_ids.insert(tile, id);
         }
-        let floor_idx = item_idx[&"floor".to_string()];
-        let wall_idx = item_idx[&"wall".to_string()];
-        let goal_idx = item_idx[&"goal".to_string()];
+        assert_eq!(item_ids.len(), 3);
 
         self.base_mut().clear();
         for x in 0..self.map.dimensions().x {
@@ -70,17 +71,15 @@ impl LevelMap {
                 let tiles = self.map[Vector2::new(x, y)];
 
                 if tiles.contains(Tiles::Floor) {
+                    let floor_id = item_ids[&Tiles::Floor];
                     self.base_mut()
-                        .set_cell_item(Vector3i::new(x, -1, y), floor_idx);
+                        .set_cell_item(Vector3i::new(x, -1, y), floor_id);
                 }
-
-                let item_id = match tiles & !Tiles::Floor {
-                    Tiles::Wall => wall_idx,
-                    Tiles::Goal => goal_idx,
-                    _ => continue,
-                };
-                self.base_mut()
-                    .set_cell_item(Vector3i::new(x, 0, y), item_id);
+                if tiles.intersects(Tiles::Wall | Tiles::Goal) {
+                    let item_id = item_ids[&(tiles & !Tiles::Floor)];
+                    self.base_mut()
+                        .set_cell_item(Vector3i::new(x, 0, y), item_id);
+                }
             }
         }
 
