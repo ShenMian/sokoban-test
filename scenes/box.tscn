@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bslwjbitr74ja"]
 
-[ext_resource type="ArrayMesh" uid="uid://cf5aouovlxjw1" path="res://assets/models/box.tres" id="1_3inec"]
+[ext_resource type="ArrayMesh" uid="uid://c5rmp0hffhq40" path="res://assets/models/box.res" id="2_c2ln5"]
 [ext_resource type="Script" uid="uid://cbi4yqk5h6hmq" path="res://scripts/box.gd" id="2_ks2v0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ks2v0"]
@@ -10,7 +10,7 @@ script = ExtResource("2_ks2v0")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
-mesh = ExtResource("1_3inec")
+mesh = ExtResource("2_c2ln5")
 
 [node name="Area" type="Area3D" parent="Mesh"]
 
