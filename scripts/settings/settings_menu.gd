@@ -26,7 +26,7 @@ func close():
 
 func _ready() -> void:
 	tabs.tab_changed.connect(_on_active_tab_changed)
-	close_button.pressed.connect(_on_close_pressed)
+	close_button.pressed.connect(close)
 	restore_button.pressed.connect(_on_restore_pressed)
 
 	video.fov_changed.connect(fov_changed.emit)
@@ -48,10 +48,6 @@ func _on_active_tab_changed(index: int):
 func _on_fov_changed(value: float):
 	fov_changed.emit(value)
 	Settings.set_value("video", "fov", value)
-
-
-func _on_close_pressed():
-	close()
 
 
 func _on_restore_pressed():

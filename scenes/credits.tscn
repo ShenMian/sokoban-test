@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://bm6kt2o4osafx"]
+
+[ext_resource type="Script" uid="uid://bb7v14ykhqcok" path="res://scripts/credits.gd" id="1_0ctdu"]
+[ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="1_2ckv8"]
+[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_8gwij"]
+[ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="2_0ctdu"]
+[ext_resource type="Texture2D" uid="uid://drl0jx1t84dor" path="res://assets/textures/backgrounds/backgroundForest.png" id="2_2fbfq"]
+[ext_resource type="FontFile" uid="uid://cgutx5j2agjlw" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Bold.ttf" id="4_mah5v"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_7l7mv"]
+action = &"pause"
+
+[sub_resource type="Shortcut" id="Shortcut_2fbfq"]
+events = [SubResource("InputEventAction_7l7mv")]
+
+[node name="Credits" type="Control"]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_8gwij")
+script = ExtResource("1_0ctdu")
+
+[node name="Background" type="TextureRect" parent="."]
+modulate = Color(0.50219375, 0.50219357, 0.5021936, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -188.0
+offset_bottom = 188.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_2fbfq")
+stretch_mode = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.86600006
+offset_bottom = -0.16802979
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/bold_font = ExtResource("4_mah5v")
+bbcode_enabled = true
+text = "[font_size=26][color=lime][b]Assets[/b][/color][/font_size]
+[font_size=22]Prototype Kit - [url=https://kenney.nl/assets/prototype-kit]kenney.nl[/url] (CC0)
+Input Prompts - [url=https://kenney.nl/assets/input-prompts]kenney.nl[/url] (CC0)
+Background Elements Redux - [url=https://kenney.nl/assets/background-elements-redux]kenney.nl[/url] (CC0)
+Sarasa Gothic - [url=https://github.com/be5invis/Sarasa-Gothic]GitHub[/url] (OFL-1.1)[/font_size]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -66.0
+offset_right = 142.0
+offset_bottom = -20.0
+grow_vertical = 0
+shortcut = SubResource("Shortcut_2fbfq")
+shortcut_in_tooltip = false
+text = "CLOSE"
+icon = ExtResource("1_2ckv8")
+script = ExtResource("2_0ctdu")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"

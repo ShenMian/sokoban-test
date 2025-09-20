@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxgyp85axyufh"]
+[gd_scene load_steps=13 format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/meshes/mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://d2l2mcb536frf" path="res://scripts/gameplay.gd" id="1_l1v76"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/settings_menu.tscn" id="6_din8e"]
+[ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/credits.tscn" id="9_101mb"]
 
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1
@@ -180,6 +181,9 @@ layer = 2
 visible = false
 
 [node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("6_din8e")]
+visible = false
+
+[node name="Credits" parent="MenuLayer" instance=ExtResource("9_101mb")]
 visible = false
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]

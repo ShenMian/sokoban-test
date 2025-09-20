@@ -3,12 +3,15 @@ extends Node3D
 @onready var hud: Control = $HudLayer/HUD
 @onready var pause_menu: Control = $MenuLayer/PauseMenu
 @onready var settings_menu: Control = $MenuLayer/SettingsMenu
+@onready var credits: Control = $MenuLayer/Credits
 
 
 func _ready():
 	pause_menu.closed.connect(_on_pause_closed)
 	pause_menu.request_settings.connect(_on_pause_request_settings)
-	settings_menu.closed.connect(_on_settings_closed)
+	pause_menu.request_credits.connect(_on_pause_request_credits)
+	settings_menu.closed.connect(pause_menu.show)
+	credits.closed.connect(pause_menu.show)
 
 
 func _input(_event):
@@ -27,5 +30,6 @@ func _on_pause_request_settings():
 	settings_menu.open()
 
 
-func _on_settings_closed():
-	pause_menu.show()
+func _on_pause_request_credits():
+	pause_menu.hide()
+	credits.open()

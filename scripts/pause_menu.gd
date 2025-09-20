@@ -2,6 +2,7 @@ extends Control
 
 signal closed
 signal request_settings
+signal request_credits
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var settings_button: ButtonFx = $MenuBackground/VBox/SettingsButton
@@ -24,6 +25,7 @@ func close():
 func _ready():
 	close_button.pressed.connect(close)
 	settings_button.pressed.connect(_on_settings_pressed)
+	credits_button.pressed.connect(_on_credits_pressed)
 
 
 func _input(_event: InputEvent):
@@ -33,3 +35,7 @@ func _input(_event: InputEvent):
 
 func _on_settings_pressed():
 	request_settings.emit()
+
+
+func _on_credits_pressed():
+	request_credits.emit()
