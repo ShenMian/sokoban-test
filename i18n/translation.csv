@@ -7,10 +7,10 @@ GAMEPLAY,Gameplay,玩法
 GENERAL,General,通用
 LANGUAGE,Language,语言
 LANGUAGE_TIP,Select the interface language,选择界面语言
-CHECKERBOARD,Checkerboard,棋盘格
+CHECKERBOARD,Checkerboard,棋盘纹
 CHECKERBOARD_TIP,Toggle to color floor tiles in a checkerboard pattern,以棋盘格样式给地砖上色
 DEADLOCK,Deadlocks,死锁
-DEADLOCK_TIP,Show static deadlock locations,显示静态死锁位置
+DEADLOCK_TIP,Highlight static deadlock locations,标出静态死锁位置
 SOLVER,Solver,求解器
 STRATEGY,Strategy,策略
 STRATEGY_TIP,Choose solver strategy,选择解算器策略
