@@ -8,12 +8,18 @@ signal unhovered
 @onready var mesh_instance: MeshInstance3D = $Mesh
 @onready var area: Area3D = $Mesh/Area
 
-@export var selected_outline_color: Color = Color.GREEN
-@export var hovered_outline_color: Color = Color.WHITE
-@export var outline_width: float = 0.1
+@onready var hover_indicator: MeshInstance3D = $HoverIndicator
+@onready var select_indicator: MeshInstance3D = $SelectIndicator
 
-var is_selected: bool = false
-var is_hovered: bool = false
+@export_group("Indicator Animation")
+@export var indicator_tween_duration: float = 1.0
+@export var indicator_scale_min: float = 0.8
+@export var indicator_scale_max: float = 1.2
+
+var indicator_tween: Tween
+
+var _is_selected: bool = false
+var _is_hovered: bool = false
 
 
 func _ready():
@@ -22,44 +28,49 @@ func _ready():
 	area.mouse_entered.connect(_on_area_mouse_entered)
 	area.mouse_exited.connect(_on_area_mouse_exited)
 
+	indicator_tween = create_tween()
+	indicator_tween.set_loops()
+	indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
+	indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
+	indicator_tween.pause()
+
 
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		is_selected = !is_selected
+		_is_selected = !_is_selected
 		_apply_highlight()
-		if is_selected:
+		if _is_selected:
 			selected.emit()
 		else:
 			unselected.emit()
 
 
 func _on_area_mouse_entered():
-	is_hovered = true
+	_is_hovered = true
 	_apply_highlight()
 	hovered.emit()
 
 
 func _on_area_mouse_exited():
-	is_hovered = false
+	_is_hovered = false
 	_apply_highlight()
 	unhovered.emit()
 
 
 func _apply_highlight():
-	if is_selected:
-		_hightlight(selected_outline_color)
-	elif is_hovered:
-		_hightlight(hovered_outline_color)
+	select_indicator.visible = _is_selected
+	hover_indicator.visible = _is_hovered and not _is_selected
+	
+	if _is_selected:
+		_start_indicator_tween()
 	else:
-		_unhighlight()
+		_stop_indicator_tween()
 
 
-func _hightlight(color: Color):
-	var material = mesh_instance.mesh.surface_get_material(0);
-	material.next_pass.set_shader_parameter("color", color)
-	material.next_pass.set_shader_parameter("width", outline_width)
+func _start_indicator_tween():
+	indicator_tween.play()
 
 
-func _unhighlight():
-	var material = mesh_instance.mesh.surface_get_material(0);
-	material.next_pass.set_shader_parameter("width", 0.0)
+func _stop_indicator_tween():
+	indicator_tween.pause()
+	select_indicator.scale = Vector3.ONE

@@ -10,10 +10,12 @@ signal unhovered
 @onready var area: Area3D = $Meshes/Area
 @onready var animation_tree: AnimationTree = $AnimationTree
 
+@export_group("Move Animation")
 @export var move_duration := 0.5
 @export var move_ease: Tween.EaseType = Tween.EASE_IN_OUT
 @export var move_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
+@export_group("Rotate Animation")
 @export var rotate_duration := 0.1
 @export var rotate_ease: Tween.EaseType = Tween.EASE_IN_OUT
 @export var rotate_transition: Tween.TransitionType = Tween.TRANS_LINEAR
