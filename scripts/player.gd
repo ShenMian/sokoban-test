@@ -8,6 +8,7 @@ signal unhovered
 
 @onready var meshes: Node3D = $Meshes
 @onready var area: Area3D = $Meshes/Area
+@onready var idle_timer: Timer = $IdleTimer
 @onready var animation_tree: AnimationTree = $AnimationTree
 
 @export_group("Move Animation")
@@ -30,6 +31,13 @@ func _ready():
 	area.input_event.connect(_on_area_input_event)
 	area.mouse_entered.connect(_on_area_mouse_entered)
 	area.mouse_exited.connect(_on_area_mouse_exited)
+	
+	idle_timer.timeout.connect(_idle_timer_timeout)
+
+
+func _idle_timer_timeout():
+	animation_tree["parameters/playback"].travel("Idle")
+	idle_timer.start()
 
 
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
