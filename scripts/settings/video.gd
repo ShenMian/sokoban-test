@@ -48,7 +48,9 @@ func _ready():
 
 
 func apply_settings():
-	window_mode.select(Settings.get_value("video", "window_mode"))
+	var window_mode_index = WINDOW_MODE_TO_INDEX[Settings.get_value("video", "window_mode")]
+	window_mode.select(window_mode_index)
+	window_mode.item_selected.emit(window_mode_index)
 
 	vsync.button_pressed = Settings.get_value("video", "vsync")
 	vsync.toggled.emit(Settings.get_value("video", "vsync"))
@@ -58,10 +60,14 @@ func apply_settings():
 
 	fov.value = Settings.get_value("video", "fov")
 
-	screen_space_aa.select(SCREEN_SPACE_AA_TO_INDEX[Settings.get_value("video", "screen_space_aa")])
-	
-	msaa.select(MSAA_TO_INDEX[Settings.get_value("video", "msaa")])
-	
+	var screen_space_aa_index = SCREEN_SPACE_AA_TO_INDEX[Settings.get_value("video", "screen_space_aa")]
+	screen_space_aa.select(screen_space_aa_index)
+	screen_space_aa.item_selected.emit(screen_space_aa_index)
+
+	var msaa_index = MSAA_TO_INDEX[Settings.get_value("video", "msaa")]
+	msaa.select(msaa_index)
+	msaa.item_selected.emit(msaa_index)
+
 	taa.button_pressed = Settings.get_value("video", "taa")
 	taa.toggled.emit(Settings.get_value("video", "taa"))
 
