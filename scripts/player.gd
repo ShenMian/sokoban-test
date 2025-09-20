@@ -1,19 +1,27 @@
 extends Node3D
+class_name Player
 
 signal selected
 signal unselected
 signal hovered
 signal unhovered
 
-@onready var mesh_instance: MeshInstance3D = $Mesh
-@onready var area: Area3D = $Mesh/Area
+@onready var meshes: Node3D = $Meshes
+@onready var area: Area3D = $Meshes/Area
+@onready var animation_tree: AnimationTree = $AnimationTree
 
-@export var selected_outline_color: Color = Color.GREEN
-@export var hovered_outline_color: Color = Color.WHITE
-@export var outline_thickness: float = 0.1
+@export var move_duration := 0.5
+@export var move_ease: Tween.EaseType = Tween.EASE_IN_OUT
+@export var move_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
-var is_selected: bool = false
-var is_hovered: bool = false
+@export var rotate_duration := 0.1
+@export var rotate_ease: Tween.EaseType = Tween.EASE_IN_OUT
+@export var rotate_transition: Tween.TransitionType = Tween.TRANS_LINEAR
+
+var _is_selected: bool = false
+var _is_hovered: bool = false
+
+var _is_walking: bool = false
 
 
 func _ready():
@@ -22,38 +30,67 @@ func _ready():
 	area.mouse_exited.connect(_on_area_mouse_exited)
 
 
-func _input(_event: InputEvent):
-	if is_selected:
-		_hightlight(selected_outline_color)
-	elif is_hovered:
-		_hightlight(hovered_outline_color)
-	else:
-		_unhighlight()
-
-
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		is_selected = !is_selected
-		if is_selected:
+		_is_selected = !_is_selected
+		if _is_selected:
 			selected.emit()
 		else:
 			unselected.emit()
 
 
 func _on_area_mouse_entered():
-	is_hovered = true
+	_is_hovered = true
 	hovered.emit()
 
 
 func _on_area_mouse_exited():
-	is_hovered = false
+	_is_hovered = false
 	unhovered.emit()
 
 
-func _hightlight(color: Color):
-	mesh_instance.mesh.material.next_pass["shader_parameter/thickness"] = outline_thickness
-	mesh_instance.mesh.material.next_pass["shader_parameter/color"] = color
+func _input(_event: InputEvent):
+	if not _is_walking:
+		if Input.is_action_just_pressed("move_right"):
+			_move(Vector3.RIGHT)
+		elif Input.is_action_just_pressed("move_left"):
+			_move(Vector3.LEFT)
+		elif Input.is_action_just_pressed("move_up"):
+			_move(Vector3.MODEL_REAR)
+		elif Input.is_action_just_pressed("move_down"):
+			_move(Vector3.MODEL_FRONT)
 
 
-func _unhighlight():
-	mesh_instance.mesh.material.next_pass["shader_parameter/thickness"] = 0.0
+func _move(direction: Vector3):
+	_is_walking = true
+
+	var target_rotation: float
+	match direction:
+		Vector3.RIGHT:
+			target_rotation = 90.0
+		Vector3.LEFT:
+			target_rotation = -90.0
+		Vector3.MODEL_REAR:
+			target_rotation = 180.0
+		Vector3.MODEL_FRONT:
+			target_rotation = 0.0
+		_:
+			assert(false)
+	# Constrain rotation angle to [-180°, 180°] to prevent long-way-around turns
+	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
+	target_rotation = meshes.rotation_degrees.y + delta
+
+	var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
+	rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, rotate_duration)
+	await rotate_tween.finished
+
+	animation_tree["parameters/playback"].travel("Walking")
+
+	var target_position := global_position + direction
+	var translate_tween = create_tween().set_ease(move_ease).set_trans(move_transition)
+	translate_tween.tween_property(self, "global_position", target_position, move_duration)
+	await translate_tween.finished
+
+	animation_tree["parameters/playback"].travel("Static")
+
+	_is_walking = false

@@ -1,10 +1,9 @@
-use std::collections::HashMap;
 use std::str::FromStr;
 
 use godot::classes::{GridMap, IGridMap};
 use godot::prelude::*;
 use nalgebra::Vector2;
-use soukoban::{Actions, Map, Tiles};
+use soukoban::{Actions, Map, Tiles, deadlock::calculate_static_deadlocks};
 
 use crate::utils::*;
 
@@ -12,6 +11,7 @@ use crate::utils::*;
 #[class(base=GridMap)]
 struct LevelMap {
     map: Map,
+    box_scene: Gd<PackedScene>,
     base: Base<GridMap>,
 }
 
@@ -20,6 +20,7 @@ impl IGridMap for LevelMap {
     fn init(base: Base<GridMap>) -> Self {
         Self {
             map: Map::from_actions(Actions::from_str("R").unwrap()).unwrap(),
+            box_scene: load("res://scenes/box.tscn"),
             base,
         }
     }
@@ -43,32 +44,47 @@ impl LevelMap {
 
     #[func]
     fn dimensions(&self) -> Vector2i {
-        to_gd_vec2(self.map.dimensions())
+        to_gd_vec2(&self.map.dimensions())
     }
 
     #[func]
     fn player_position(&self) -> Vector2i {
-        to_gd_vec2(self.map.player_position())
+        to_gd_vec2(&self.map.player_position())
+    }
+
+    #[func]
+    fn box_positions(&self) -> Array<Vector2i> {
+        self.map.box_positions().iter().map(to_gd_vec2).collect()
     }
 
     fn build(&mut self) {
-        let mut item_ids = HashMap::new();
+        let mut floor_id = None;
+        let mut wall_id = None;
+        let mut goal_id = None;
+        let mut deadlock_id = None;
+
         let mesh_library = self.base().get_mesh_library().unwrap();
         for id in (0..mesh_library.get_item_list().len()).map(|id| id as i32) {
             let name = mesh_library.get_item_name(id);
-            let tile = match name.to_string().as_str() {
-                "floor" => Tiles::Floor,
-                "wall" => Tiles::Wall,
-                "goal" => Tiles::Goal,
+            match name.to_string().as_str() {
+                "floor" => floor_id = Some(id),
+                "wall" => wall_id = Some(id),
+                "goal" => goal_id = Some(id),
+                "deadlock" => deadlock_id = Some(id),
                 _ => continue,
-            };
-            item_ids.insert(tile, id);
+            }
         }
-        assert_eq!(item_ids.len(), 3, "missing required mesh items");
+        assert!(
+            floor_id.is_some() && wall_id.is_some() && goal_id.is_some() && deadlock_id.is_some(),
+        );
+        let floor_id = floor_id.unwrap();
+        let wall_id = wall_id.unwrap();
+        let goal_id = goal_id.unwrap();
+        let deadlock_id = deadlock_id.unwrap();
 
         let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
-        for r#box in boxes.get_children().iter_shared() {
-            boxes.remove_child(&r#box);
+        for mut child in boxes.get_children().iter_shared() {
+            child.queue_free();
         }
 
         self.base_mut().clear();
@@ -77,21 +93,29 @@ impl LevelMap {
                 let tiles = self.map[Vector2::new(x, y)];
 
                 if tiles.contains(Tiles::Floor) {
-                    let floor_id = item_ids[&Tiles::Floor];
                     self.base_mut()
                         .set_cell_item(Vector3i::new(x, -1, y), floor_id);
                 }
                 if tiles.intersects(Tiles::Wall | Tiles::Goal) {
-                    let item_id = item_ids[&(tiles & !Tiles::Floor)];
+                    let item_id = match tiles & !Tiles::Floor {
+                        Tiles::Wall => wall_id,
+                        Tiles::Goal => goal_id,
+                        _ => continue,
+                    };
                     self.base_mut()
                         .set_cell_item(Vector3i::new(x, 0, y), item_id);
                 }
             }
         }
 
-        let box_scene: Gd<PackedScene> = load("res://scenes/box.tscn");
+        // let deadlocks = calculate_static_deadlocks(&self.map);
+        // for position in deadlocks {
+        //     self.base_mut()
+        //         .set_cell_item(Vector3i::new(position.x, 0, position.y), deadlock_id);
+        // }
+
         for position in self.map.box_positions() {
-            let mut r#box: Gd<Node3D> = box_scene.instantiate().unwrap().cast();
+            let mut r#box = self.box_scene.instantiate_as::<Node3D>();
             r#box.set_global_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
             boxes.add_child(&r#box);
         }

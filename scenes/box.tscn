@@ -17,3 +17,5 @@ mesh = ExtResource("2_c2ln5")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Area"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.25, 0)
 shape = SubResource("BoxShape3D_ks2v0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]

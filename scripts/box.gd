@@ -10,7 +10,7 @@ signal unhovered
 
 @export var selected_outline_color: Color = Color.GREEN
 @export var hovered_outline_color: Color = Color.WHITE
-@export var outline_thickness: float = 0.1
+@export var outline_width: float = 0.1
 
 var is_selected: bool = false
 var is_hovered: bool = false
@@ -23,18 +23,10 @@ func _ready():
 	area.mouse_exited.connect(_on_area_mouse_exited)
 
 
-func _input(_event: InputEvent):
-	if is_selected:
-		_hightlight(selected_outline_color)
-	elif is_hovered:
-		_hightlight(hovered_outline_color)
-	else:
-		_unhighlight()
-
-
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		is_selected = !is_selected
+		_apply_highlight()
 		if is_selected:
 			selected.emit()
 		else:
@@ -43,18 +35,31 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 
 func _on_area_mouse_entered():
 	is_hovered = true
+	_apply_highlight()
 	hovered.emit()
 
 
 func _on_area_mouse_exited():
 	is_hovered = false
+	_apply_highlight()
 	unhovered.emit()
 
 
+func _apply_highlight():
+	if is_selected:
+		_hightlight(selected_outline_color)
+	elif is_hovered:
+		_hightlight(hovered_outline_color)
+	else:
+		_unhighlight()
+
+
 func _hightlight(color: Color):
-	mesh_instance.mesh["surface_0/material"].next_pass["shader_parameter/thickness"] = outline_thickness
-	mesh_instance.mesh["surface_0/material"].next_pass["shader_parameter/color"] = color
+	var material = mesh_instance.mesh.surface_get_material(0);
+	material.next_pass.set_shader_parameter("color", color)
+	material.next_pass.set_shader_parameter("width", outline_width)
 
 
 func _unhighlight():
-	mesh_instance.mesh["surface_0/material"].next_pass["shader_parameter/thickness"] = 0.0
+	var material = mesh_instance.mesh.surface_get_material(0);
+	material.next_pass.set_shader_parameter("width", 0.0)
