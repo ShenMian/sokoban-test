@@ -39,7 +39,7 @@ func _input(event):
 				switch_to_3d()
 
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_MIDDLE:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
 			_is_dragging = event.pressed
 		elif self.is_3d_view():
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
