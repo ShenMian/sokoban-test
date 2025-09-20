@@ -1,6 +1,6 @@
 use godot::prelude::*;
 
-mod grid_map;
+mod level_map;
 mod utils;
 
 struct Extension;
