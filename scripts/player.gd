@@ -41,7 +41,7 @@ func _ready():
 	area.input_event.connect(_on_area_input_event)
 	area.mouse_entered.connect(_on_area_mouse_entered)
 	area.mouse_exited.connect(_on_area_mouse_exited)
-	
+
 	idle_timer.timeout.connect(_idle_timer_timeout)
 
 	_indicator_tween = create_tween()
