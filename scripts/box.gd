@@ -6,7 +6,7 @@ signal hovered
 signal unhovered
 
 @onready var mesh_instance: MeshInstance3D = $Mesh
-@onready var area: Area3D = $Mesh/Area
+@onready var area: Area3D = $Area
 
 @onready var hover_indicator: MeshInstance3D = $HoverIndicator
 @onready var select_indicator: MeshInstance3D = $SelectIndicator

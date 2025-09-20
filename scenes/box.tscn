@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bslwjbitr74ja"]
+[gd_scene load_steps=7 format=3 uid="uid://bslwjbitr74ja"]
 
 [ext_resource type="ArrayMesh" uid="uid://c5rmp0hffhq40" path="res://assets/meshes/box.res" id="2_c2ln5"]
 [ext_resource type="Script" uid="uid://cbi4yqk5h6hmq" path="res://scripts/box.gd" id="2_ks2v0"]
@@ -6,6 +6,9 @@
 [ext_resource type="ArrayMesh" uid="uid://bca7jsquyhgs" path="res://assets/meshes/indicator_e.res" id="4_telwu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ks2v0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_telwu"]
+size = Vector3(1, 0.01, 1)
 
 [node name="Box" type="Node3D"]
 script = ExtResource("2_ks2v0")
@@ -16,11 +19,15 @@ indicator_scale_max = 1.1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 mesh = ExtResource("2_c2ln5")
 
-[node name="Area" type="Area3D" parent="Mesh"]
+[node name="Area" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area"]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.25, 0)
 shape = SubResource("BoxShape3D_ks2v0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Area"]
+shape = SubResource("BoxShape3D_telwu")
 
 [node name="HoverIndicator" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
