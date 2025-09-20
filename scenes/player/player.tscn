@@ -1,9 +1,11 @@
-[gd_scene load_steps=47 format=4 uid="uid://d3bx7fp67oyvm"]
+[gd_scene load_steps=49 format=4 uid="uid://d3bx7fp67oyvm"]
 
 [ext_resource type="Texture2D" uid="uid://btqlvtno83hj" path="res://assets/models/Textures/colormap.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://d00rrxvy7irsm" path="res://scripts/player.gd" id="1_gmlin"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://lc3g74mqowmf" path="res://scenes/player/state_machine.tres" id="2_dovo2"]
 [ext_resource type="PackedScene" uid="uid://qfpcm2irmvkb" path="res://assets/models/hat-hard.glb" id="3_lvxji"]
+[ext_resource type="ArrayMesh" uid="uid://cnr4b8oogdane" path="res://assets/meshes/indiactor_c.res" id="4_75vfm"]
+[ext_resource type="ArrayMesh" uid="uid://bca7jsquyhgs" path="res://assets/meshes/indicator_e.res" id="5_0owmy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ko57w"]
 resource_name = "colormap"
@@ -1917,6 +1919,16 @@ transform = Transform3D(-3.934025e-08, 0, 0.9, 0, 0.9, 0, -0.9, 0, -3.934025e-08
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Meshes/Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27661133, 0)
 shape = SubResource("CapsuleShape3D_gmlin")
+
+[node name="HoverIndicator" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
+visible = false
+mesh = ExtResource("4_75vfm")
+
+[node name="SelectIndicator" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
+visible = false
+mesh = ExtResource("5_0owmy")
 
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 5.0
