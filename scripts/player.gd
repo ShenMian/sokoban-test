@@ -52,8 +52,9 @@ func _ready():
 
 
 func _idle_timer_timeout():
-	# TODO: Check if the current state is "Static"
-	animation_tree["parameters/playback"].travel("Idle")
+	var state_machine = animation_tree["parameters/playback"]
+	if state_machine.get_current_node() == "Static":
+		state_machine.travel("Idle")
 	idle_timer.start()
 
 
