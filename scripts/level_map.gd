@@ -16,9 +16,14 @@ enum Direction {
 
 func _ready():
 	settings_menu.deadlock_changed.connect(self.set_show_deadlocks)
+	self.solved.connect(_on_solved)
 
 	self.load_from_string("DuLLrUUdrR");
 	# self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD");
 
 	camera.global_position.x = self.dimensions().x / 2.0
 	camera.global_position.z = self.dimensions().y / 2.0
+
+
+func _on_solved():
+	print("Level Solved!")

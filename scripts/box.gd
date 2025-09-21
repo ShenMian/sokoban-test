@@ -14,7 +14,7 @@ signal unhovered
 @onready var select_indicator: MeshInstance3D = $SelectIndicator
 
 @export_group("Move Animation")
-@export var duration := 0.5
+@export var duration := 0.4
 @export var ease_: Tween.EaseType = Tween.EASE_IN_OUT
 @export var transition: Tween.TransitionType = Tween.TRANS_LINEAR
 

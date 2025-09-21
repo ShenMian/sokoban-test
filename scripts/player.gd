@@ -17,7 +17,7 @@ signal unhovered
 @onready var select_indicator: MeshInstance3D = $SelectIndicator
 
 @export_group("Move Animation")
-@export var move_duration := 0.5
+@export var move_duration := 0.4
 @export var move_ease: Tween.EaseType = Tween.EASE_IN_OUT
 @export var move_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
@@ -43,8 +43,6 @@ func move(direction: Vector3, is_pushing: bool):
 	if direction == Vector3.ZERO:
 		state_machine.travel("EmoteNo")
 		return
-	
-	_is_walking = true
 
 	var target_rotation: float
 	match direction:
@@ -62,6 +60,7 @@ func move(direction: Vector3, is_pushing: bool):
 	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
 	target_rotation = meshes.rotation_degrees.y + delta
 
+	_is_walking = true
 	var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
 	rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, rotate_duration)
 	await rotate_tween.finished
@@ -75,9 +74,8 @@ func move(direction: Vector3, is_pushing: bool):
 	translate_tween.tween_property(self, "global_position", global_position + direction, move_duration)
 	await translate_tween.finished
 
-	state_machine.travel("Static")
-
 	_is_walking = false
+	state_machine.travel("Static")
 
 
 func _ready():
@@ -150,11 +148,11 @@ func _stop_indicator_tween():
 
 func _input(_event: InputEvent):
 	if not _is_walking:
-		if Input.is_action_just_pressed("move_right"):
+		if Input.is_action_pressed("move_right"):
 			level_map.move_by(level_map.Direction.Right)
-		elif Input.is_action_just_pressed("move_left"):
+		elif Input.is_action_pressed("move_left"):
 			level_map.move_by(level_map.Direction.Left)
-		elif Input.is_action_just_pressed("move_up"):
+		elif Input.is_action_pressed("move_up"):
 			level_map.move_by(level_map.Direction.Up)
-		elif Input.is_action_just_pressed("move_down"):
+		elif Input.is_action_pressed("move_down"):
 			level_map.move_by(level_map.Direction.Down)

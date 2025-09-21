@@ -50,6 +50,9 @@ impl LevelMap {
     #[signal]
     fn box_move(from: Vector2i, to: Vector2i);
 
+    #[signal]
+    fn solved();
+
     #[func]
     fn load_from_string(&mut self, lurd: GString) {
         let Ok(actions) = Actions::from_str(&lurd.to_string()) else {
@@ -112,6 +115,10 @@ impl LevelMap {
             self.signals()
                 .box_move()
                 .emit(to_gd_vec2(box_position), to_gd_vec2(new_box_position));
+        }
+
+        if self.map().is_solved() {
+            self.signals().solved().emit();
         }
     }
 

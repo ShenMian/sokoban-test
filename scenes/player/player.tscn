@@ -1883,15 +1883,15 @@ script = ExtResource("1_gmlin")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 
 [node name="root" type="Node3D" parent="Meshes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07706105, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08960001, 0)
 
 [node name="leg-left" type="MeshInstance3D" parent="Meshes/root"]
-transform = Transform3D(1, 0, 0, 0, 0.6916817, 0.7222025, 0, -0.7222025, 0.6916817, 0.1, 0.15, 1.490189e-09)
+transform = Transform3D(1, 0, 0, 0, 0.5081226, 0.86128473, 0, -0.86128473, 0.5081226, 0.1, 0.15, 1.490189e-09)
 mesh = SubResource("ArrayMesh_gmdcx")
 skeleton = NodePath("")
 
 [node name="leg-right" type="MeshInstance3D" parent="Meshes/root"]
-transform = Transform3D(1, 0, 0, 0, 0.6916817, -0.7222025, 0, 0.7222025, 0.6916817, -0.1, 0.15, -1.4901897e-09)
+transform = Transform3D(1, 0, 0, 0, 0.5081226, -0.86128473, 0, 0.86128473, 0.5081226, -0.1, 0.15, -1.4901897e-09)
 mesh = SubResource("ArrayMesh_dfdd7")
 skeleton = NodePath("")
 
