@@ -6,17 +6,19 @@ signal hovered
 signal unhovered
 
 @onready var level_map: LevelMap = $"../.."
+@onready var player: Node3D = $"../../Player"
 
 @onready var mesh_instance: MeshInstance3D = $Mesh
-@onready var area: Area3D = $Area
+@onready var mesh_area: Area3D = $Area
+@onready var indicator_area: Area3D = $Indicator/Area
 
-@onready var hover_indicator: MeshInstance3D = $HoverIndicator
-@onready var select_indicator: MeshInstance3D = $SelectIndicator
+@onready var hover_indicator: MeshInstance3D = $Indicator/HoverIndicator
+@onready var select_indicator: MeshInstance3D = $Indicator/SelectIndicator
 
 @export_group("Move Animation")
 @export var duration := 0.4
-@export var ease_: Tween.EaseType = Tween.EASE_IN_OUT
-@export var transition: Tween.TransitionType = Tween.TRANS_LINEAR
+@export var ease_: Tween.EaseType = Tween.EASE_OUT
+@export var transition: Tween.TransitionType = Tween.TRANS_SINE
 
 @export_group("Indicator Animation")
 @export var indicator_tween_duration: float = 1.0
@@ -30,19 +32,21 @@ var _indicator_tween: Tween
 
 
 func move(direction: Vector3):
-	# await get_tree().create_timer(0.35).timeout
 	var tween = create_tween().set_ease(ease_).set_trans(transition)
 	tween.tween_property(self, "global_position", global_position + direction, duration)
 	await tween.finished
 
 
 func _ready():
-	level_map.box_move.connect(self._on_box_move)
+	mesh_area.area_entered.connect(_on_area_entered)
 
 	mesh_instance.mesh = mesh_instance.mesh.duplicate(true)
-	area.input_event.connect(_on_area_input_event)
-	area.mouse_entered.connect(_on_area_mouse_entered)
-	area.mouse_exited.connect(_on_area_mouse_exited)
+	mesh_area.input_event.connect(_on_area_input_event)
+	mesh_area.mouse_entered.connect(_on_area_mouse_entered)
+	mesh_area.mouse_exited.connect(_on_area_mouse_exited)
+	indicator_area.input_event.connect(_on_area_input_event)
+	indicator_area.mouse_entered.connect(_on_area_mouse_entered)
+	indicator_area.mouse_exited.connect(_on_area_mouse_exited)
 
 	_indicator_tween = create_tween()
 	_indicator_tween.set_loops()
@@ -51,12 +55,10 @@ func _ready():
 	_indicator_tween.pause()
 
 
-func _on_box_move(from: Vector2i, to: Vector2i):
-	var from_ = Vector3(from.x, 0.0, from.y)
-	var to_ = Vector3(to.x, 0.0, to.y)
-	if global_position != from_:
+func _on_area_entered(area: Area3D):
+	if area != player.mesh_area:
 		return
-	move(to_ - from_)
+	move((global_position - player.global_position).normalized())
 
 
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):

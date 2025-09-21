@@ -9,12 +9,13 @@ signal unhovered
 @onready var level_map: LevelMap = $".."
 
 @onready var meshes: Node3D = $Meshes
-@onready var area: Area3D = $Meshes/Area
+@onready var mesh_area: Area3D = $Meshes/Area
+@onready var indicator_area: Area3D = $Indicator/Area
 @onready var idle_timer: Timer = $IdleTimer
 @onready var state_machine = $AnimationTree["parameters/playback"]
 
-@onready var hover_indicator: MeshInstance3D = $HoverIndicator
-@onready var select_indicator: MeshInstance3D = $SelectIndicator
+@onready var hover_indicator: MeshInstance3D = $Indicator/HoverIndicator
+@onready var select_indicator: MeshInstance3D = $Indicator/SelectIndicator
 
 @export_group("Move Animation")
 @export var move_duration := 0.4
@@ -34,7 +35,7 @@ signal unhovered
 var _is_selected: bool = false
 var _is_hovered: bool = false
 
-var _is_walking: bool = false
+var _is_moving: bool = false
 
 var _indicator_tween: Tween
 
@@ -60,7 +61,7 @@ func move(direction: Vector3, is_pushing: bool):
 	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
 	target_rotation = meshes.rotation_degrees.y + delta
 
-	_is_walking = true
+	_is_moving = true
 	var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
 	rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, rotate_duration)
 	await rotate_tween.finished
@@ -74,16 +75,19 @@ func move(direction: Vector3, is_pushing: bool):
 	translate_tween.tween_property(self, "global_position", global_position + direction, move_duration)
 	await translate_tween.finished
 
-	_is_walking = false
+	_is_moving = false
 	state_machine.travel("Static")
 
 
 func _ready():
 	level_map.player_move.connect(_on_player_move)
 
-	area.input_event.connect(_on_area_input_event)
-	area.mouse_entered.connect(_on_area_mouse_entered)
-	area.mouse_exited.connect(_on_area_mouse_exited)
+	mesh_area.input_event.connect(_on_area_input_event)
+	mesh_area.mouse_entered.connect(_on_area_mouse_entered)
+	mesh_area.mouse_exited.connect(_on_area_mouse_exited)
+	indicator_area.input_event.connect(_on_area_input_event)
+	indicator_area.mouse_entered.connect(_on_area_mouse_entered)
+	indicator_area.mouse_exited.connect(_on_area_mouse_exited)
 
 	idle_timer.timeout.connect(_idle_timer_timeout)
 
@@ -147,7 +151,7 @@ func _stop_indicator_tween():
 
 
 func _input(_event: InputEvent):
-	if not _is_walking:
+	if not _is_moving:
 		if Input.is_action_pressed("move_right"):
 			level_map.move_by(level_map.Direction.Right)
 		elif Input.is_action_pressed("move_left"):

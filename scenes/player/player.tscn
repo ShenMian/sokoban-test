@@ -1548,7 +1548,7 @@ tracks/7/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
 tracks/8/type = "audio"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("FootstepPlayer")
+tracks/8/path = NodePath("Meshes/FootstepPlayer")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -1943,22 +1943,28 @@ transform = Transform3D(-3.934025e-08, 0, 0.9, 0, 0.9, 0, -0.9, 0, -3.934025e-08
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27661133, 0)
 shape = SubResource("CapsuleShape3D_gmlin")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Meshes/Area"]
-shape = SubResource("BoxShape3D_75vfm")
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="Meshes"]
+volume_db = -5.0
 
-[node name="HoverIndicator" type="MeshInstance3D" parent="."]
+[node name="Indicator" type="Node3D" parent="."]
+
+[node name="HoverIndicator" type="MeshInstance3D" parent="Indicator"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 visible = false
 mesh = ExtResource("4_75vfm")
+skeleton = NodePath("../..")
 
-[node name="SelectIndicator" type="MeshInstance3D" parent="."]
+[node name="SelectIndicator" type="MeshInstance3D" parent="Indicator"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 visible = false
 mesh = ExtResource("5_0owmy")
+skeleton = NodePath("../..")
 
-[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="."]
+[node name="Area" type="Area3D" parent="Indicator"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Indicator/Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
-volume_db = -5.0
+shape = SubResource("BoxShape3D_75vfm")
 
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 5.0

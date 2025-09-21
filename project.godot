@@ -23,7 +23,6 @@ buses/default_bus_layout="res://assets/audio/default_bus_layout.tres"
 
 Sounds="*res://scenes/sounds.tscn"
 Settings="*res://scripts/settings/settings.gd"
-LevelManager="*res://scripts/level_manager.gd"
 
 [input]
 
