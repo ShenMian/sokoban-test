@@ -31,7 +31,7 @@ func reset_gameplay_settings():
 	else:
 		config.set_value("gameplay", "language", "en")
 	# config.set_value("gameplay", "checkerboard", false)
-	# config.set_value("gameplay", "deadlock", true)
+	config.set_value("gameplay", "deadlock", true)
 	# config.set_value("gameplay", "heatmap", true)
 	config.save(CONFIG_PATH)
 

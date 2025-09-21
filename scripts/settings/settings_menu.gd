@@ -1,6 +1,7 @@
 extends Control
 
 signal fov_changed(fov: float)
+signal deadlock_changed(on: bool)
 signal closed
 
 @onready var background: TextureRect = $Background
@@ -11,8 +12,6 @@ signal closed
 @onready var gameplay: CenterContainer = $MarginContainer/VBox/Tabs/GAMEPLAY
 @onready var video: ScrollContainer = $MarginContainer/VBox/Tabs/VIDEO
 @onready var audio: CenterContainer = $MarginContainer/VBox/Tabs/AUDIO
-
-@onready var fov: SliderBar = $MarginContainer/VBox/Tabs/VIDEO/VBox/FieldOfViewPanel/Margin/HBox/SliderBar
 
 
 func open():
@@ -30,6 +29,7 @@ func _ready() -> void:
 	restore_button.pressed.connect(_on_restore_pressed)
 
 	video.fov_changed.connect(fov_changed.emit)
+	gameplay.deadlock_changed.connect(deadlock_changed.emit)
 
 
 func _input(_event: InputEvent):
