@@ -5,11 +5,18 @@ signal unselected
 signal hovered
 signal unhovered
 
+@onready var level_map: LevelMap = $"../.."
+
 @onready var mesh_instance: MeshInstance3D = $Mesh
 @onready var area: Area3D = $Area
 
 @onready var hover_indicator: MeshInstance3D = $HoverIndicator
 @onready var select_indicator: MeshInstance3D = $SelectIndicator
+
+@export_group("Move Animation")
+@export var duration := 0.5
+@export var ease_: Tween.EaseType = Tween.EASE_IN_OUT
+@export var transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
 @export_group("Indicator Animation")
 @export var indicator_tween_duration: float = 1.0
@@ -22,7 +29,16 @@ var _is_hovered: bool = false
 var _indicator_tween: Tween
 
 
+func move(direction: Vector3):
+	# await get_tree().create_timer(0.35).timeout
+	var tween = create_tween().set_ease(ease_).set_trans(transition)
+	tween.tween_property(self, "global_position", global_position + direction, duration)
+	await tween.finished
+
+
 func _ready():
+	level_map.box_move.connect(self._on_box_move)
+
 	mesh_instance.mesh = mesh_instance.mesh.duplicate(true)
 	area.input_event.connect(_on_area_input_event)
 	area.mouse_entered.connect(_on_area_mouse_entered)
@@ -33,6 +49,14 @@ func _ready():
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
+
+
+func _on_box_move(from: Vector2i, to: Vector2i):
+	var from_ = Vector3(from.x, 0.0, from.y)
+	var to_ = Vector3(to.x, 0.0, to.y)
+	if global_position != from_:
+		return
+	move(to_ - from_)
 
 
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):

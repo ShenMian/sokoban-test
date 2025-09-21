@@ -6,10 +6,12 @@ signal unselected
 signal hovered
 signal unhovered
 
+@onready var level_map: LevelMap = $".."
+
 @onready var meshes: Node3D = $Meshes
 @onready var area: Area3D = $Meshes/Area
 @onready var idle_timer: Timer = $IdleTimer
-@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var state_machine = $AnimationTree["parameters/playback"]
 
 @onready var hover_indicator: MeshInstance3D = $HoverIndicator
 @onready var select_indicator: MeshInstance3D = $SelectIndicator
@@ -37,7 +39,50 @@ var _is_walking: bool = false
 var _indicator_tween: Tween
 
 
+func move(direction: Vector3, is_pushing: bool):
+	if direction == Vector3.ZERO:
+		state_machine.travel("EmoteNo")
+		return
+	
+	_is_walking = true
+
+	var target_rotation: float
+	match direction:
+		Vector3.RIGHT:
+			target_rotation = 90.0
+		Vector3.LEFT:
+			target_rotation = -90.0
+		Vector3.MODEL_REAR:
+			target_rotation = 180.0
+		Vector3.MODEL_FRONT:
+			target_rotation = 0.0
+		_:
+			assert(false)
+	# Constrain rotation angle to [-180°, 180°] to prevent long-way-around turns
+	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
+	target_rotation = meshes.rotation_degrees.y + delta
+
+	var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
+	rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, rotate_duration)
+	await rotate_tween.finished
+
+	if is_pushing:
+		state_machine.travel("Pushing")
+	else:
+		state_machine.travel("Walking")
+
+	var translate_tween = create_tween().set_ease(move_ease).set_trans(move_transition)
+	translate_tween.tween_property(self, "global_position", global_position + direction, move_duration)
+	await translate_tween.finished
+
+	state_machine.travel("Static")
+
+	_is_walking = false
+
+
 func _ready():
+	level_map.player_move.connect(_on_player_move)
+
 	area.input_event.connect(_on_area_input_event)
 	area.mouse_entered.connect(_on_area_mouse_entered)
 	area.mouse_exited.connect(_on_area_mouse_exited)
@@ -51,8 +96,12 @@ func _ready():
 	_indicator_tween.pause()
 
 
+func _on_player_move(to: Vector2i, is_pushing: bool):
+	var to_ = Vector3(to.x, 0.0, to.y)
+	move(to_ - global_position, is_pushing)
+
+
 func _idle_timer_timeout():
-	var state_machine = animation_tree["parameters/playback"]
 	if state_machine.get_current_node() == "Static":
 		state_machine.travel("Idle")
 	idle_timer.start()
@@ -102,45 +151,10 @@ func _stop_indicator_tween():
 func _input(_event: InputEvent):
 	if not _is_walking:
 		if Input.is_action_just_pressed("move_right"):
-			_move(Vector3.RIGHT)
+			level_map.move_by(level_map.Direction.Right)
 		elif Input.is_action_just_pressed("move_left"):
-			_move(Vector3.LEFT)
+			level_map.move_by(level_map.Direction.Left)
 		elif Input.is_action_just_pressed("move_up"):
-			_move(Vector3.MODEL_REAR)
+			level_map.move_by(level_map.Direction.Up)
 		elif Input.is_action_just_pressed("move_down"):
-			_move(Vector3.MODEL_FRONT)
-
-
-func _move(direction: Vector3):
-	_is_walking = true
-
-	var target_rotation: float
-	match direction:
-		Vector3.RIGHT:
-			target_rotation = 90.0
-		Vector3.LEFT:
-			target_rotation = -90.0
-		Vector3.MODEL_REAR:
-			target_rotation = 180.0
-		Vector3.MODEL_FRONT:
-			target_rotation = 0.0
-		_:
-			assert(false)
-	# Constrain rotation angle to [-180°, 180°] to prevent long-way-around turns
-	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
-	target_rotation = meshes.rotation_degrees.y + delta
-
-	var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
-	rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, rotate_duration)
-	await rotate_tween.finished
-
-	animation_tree["parameters/playback"].travel("Walking")
-
-	var target_position := global_position + direction
-	var translate_tween = create_tween().set_ease(move_ease).set_trans(move_transition)
-	translate_tween.tween_property(self, "global_position", target_position, move_duration)
-	await translate_tween.finished
-
-	animation_tree["parameters/playback"].travel("Static")
-
-	_is_walking = false
+			level_map.move_by(level_map.Direction.Down)

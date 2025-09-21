@@ -32,11 +32,11 @@ impl IGridMap for LevelMap {
         Self {
             show_deadlocks: true,
             level: Level::from_map(map),
-            box_scene: load("res://scenes/box.tscn"),
             floor_id: -1,
             wall_id: -1,
             goal_id: -1,
             deadlock_id: -1,
+            box_scene: load("res://scenes/box.tscn"),
             base,
         }
     }
@@ -45,7 +45,10 @@ impl IGridMap for LevelMap {
 #[godot_api]
 impl LevelMap {
     #[signal]
-    fn player_move(to: Vector2i);
+    fn player_move(to: Vector2i, is_pushing: bool);
+
+    #[signal]
+    fn box_move(from: Vector2i, to: Vector2i);
 
     #[func]
     fn load_from_string(&mut self, lurd: GString) {
@@ -90,10 +93,26 @@ impl LevelMap {
             3 => soukoban::direction::Direction::Right,
             _ => unreachable!(),
         };
+
+        let box_positions = self.map().box_positions().clone();
         let _ = self.level.do_action(direction);
 
-        let player_position = to_gd_vec2(&self.map().player_position());
-        self.signals().player_move().emit(player_position);
+        let new_box_positions = self.map().box_positions().clone();
+
+        let box_position = box_positions.difference(&new_box_positions).next();
+        let new_box_position = new_box_positions.difference(&box_positions).next();
+        debug_assert!(box_position.is_some() == new_box_position.is_some());
+
+        let player_position = self.map().player_position();
+        self.signals()
+            .player_move()
+            .emit(to_gd_vec2(&player_position), new_box_position.is_some());
+
+        if let (Some(box_position), Some(new_box_position)) = (box_position, new_box_position) {
+            self.signals()
+                .box_move()
+                .emit(to_gd_vec2(box_position), to_gd_vec2(new_box_position));
+        }
     }
 
     fn map(&self) -> &Map {

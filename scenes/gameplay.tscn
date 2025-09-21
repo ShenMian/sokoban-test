@@ -131,6 +131,7 @@ text = "0"
 horizontal_alignment = 1
 
 [node name="ToolbarPanel" type="Panel" parent="HudLayer/HUD"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
