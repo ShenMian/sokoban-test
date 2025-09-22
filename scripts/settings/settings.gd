@@ -3,6 +3,30 @@ extends Node
 var config := ConfigFile.new()
 const CONFIG_PATH = "user://settings.ini"
 
+const DEFAULT_CONFIG = {
+	"gameplay": {
+		"language": "en",
+		"checkerboard": false,
+		"deadlock": true,
+		"heatmap": true
+	},
+	"video": {
+		"window_mode": DisplayServer.WINDOW_MODE_WINDOWED,
+		"vsync": DisplayServer.VSYNC_ENABLED,
+		"frame_rate_limit": 0,
+		"fov": 60.0,
+		"screen_space_aa": Viewport.SCREEN_SPACE_AA_SMAA,
+		"msaa": Viewport.MSAA_DISABLED,
+		"taa": false
+	},
+	"audio": {
+		"master_volume": 1.0,
+		"music_volume": 1.0,
+		"sfx_volume": 1.0,
+		"mute_when_not_focused": true
+	}
+}
+
 
 func set_value(section: String, key: String, value: Variant):
 	config.set_value(section, key, value)
@@ -11,6 +35,35 @@ func set_value(section: String, key: String, value: Variant):
 
 func get_value(section: String, key: String):
 	return config.get_value(section, key)
+
+
+func reset_gameplay_settings():
+	config.erase_section("gameplay")
+	for key in DEFAULT_CONFIG.gameplay:
+		var value = DEFAULT_CONFIG.gameplay[key]
+		config.set_value("gameplay", key, value)
+
+	var locale = OS.get_locale()
+	if locale in TranslationServer.get_loaded_locales():
+		config.set_value("gameplay", "language", locale)
+
+	config.save(CONFIG_PATH)
+
+
+func reset_video_settings():
+	config.erase_section("video")
+	for key in DEFAULT_CONFIG.video:
+		var value = DEFAULT_CONFIG.video[key]
+		config.set_value("video", key, value)
+	config.save(CONFIG_PATH)
+
+
+func reset_audio_settings():
+	config.erase_section("audio")
+	for key in DEFAULT_CONFIG.audio:
+		var value = DEFAULT_CONFIG.audio[key]
+		config.set_value("audio", key, value)
+	config.save(CONFIG_PATH)
 
 
 func _ready() -> void:
@@ -22,34 +75,3 @@ func _ready() -> void:
 		reset_gameplay_settings()
 		reset_video_settings()
 		reset_audio_settings()
-
-
-func reset_gameplay_settings():
-	var locale = OS.get_locale()
-	if locale in TranslationServer.get_loaded_locales():
-		config.set_value("gameplay", "language", locale)
-	else:
-		config.set_value("gameplay", "language", "en")
-	# config.set_value("gameplay", "checkerboard", false)
-	config.set_value("gameplay", "deadlock", true)
-	# config.set_value("gameplay", "heatmap", true)
-	config.save(CONFIG_PATH)
-
-
-func reset_video_settings():
-	config.set_value("video", "window_mode", DisplayServer.WINDOW_MODE_WINDOWED)
-	config.set_value("video", "vsync", DisplayServer.VSYNC_ENABLED)
-	config.set_value("video", "frame_rate_limit", 0)
-	config.set_value("video", "fov", 60.0)
-	config.set_value("video", "screen_space_aa", Viewport.SCREEN_SPACE_AA_SMAA)
-	config.set_value("video", "msaa", Viewport.MSAA_DISABLED)
-	config.set_value("video", "taa", false)
-	config.save(CONFIG_PATH)
-
-
-func reset_audio_settings():
-	config.set_value("audio", "master_volume", 1.0)
-	config.set_value("audio", "music_volume", 1.0)
-	config.set_value("audio", "sfx_volume", 1.0)
-	config.set_value("audio", "mute_when_not_focused", true)
-	config.save(CONFIG_PATH)
