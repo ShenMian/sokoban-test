@@ -101,7 +101,7 @@ func _ready():
 	_indicator_tween.pause()
 
 
-func _unhandled_input(_event: InputEvent):
+func _process(_delta: float):
 	if not _is_moving:
 		if Input.is_action_pressed("move_right"):
 			level_map.move_by(level_map.Direction.Right)
