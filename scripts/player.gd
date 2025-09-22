@@ -62,19 +62,23 @@ func move(direction: Vector3, is_pushing: bool):
 
 	_is_moving = true
 	if meshes.rotation_degrees.y != target_rotation:
-		var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
 		var duration = abs(meshes.rotation_degrees.y - target_rotation) / 90.0 * 0.1
-		rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, duration)
-		await rotate_tween.finished
+		await create_tween() \
+			.set_ease(rotate_ease) \
+			.set_trans(rotate_transition) \
+			.tween_property(meshes, "rotation_degrees:y", target_rotation, duration) \
+			.finished
 
 	if is_pushing:
 		state_machine.travel("Pushing")
 	else:
 		state_machine.travel("Walking")
 
-	var translate_tween = create_tween().set_ease(move_ease).set_trans(move_transition)
-	translate_tween.tween_property(self, "global_position", global_position + direction, move_duration)
-	await translate_tween.finished
+	await create_tween() \
+		.set_ease(move_ease) \
+		.set_trans(move_transition) \
+		.tween_property(self, "global_position", global_position + direction, move_duration) \
+		.finished
 
 	state_machine.travel("Static")
 	_is_moving = false
@@ -82,6 +86,7 @@ func move(direction: Vector3, is_pushing: bool):
 
 func _ready():
 	level_map.player_move.connect(_on_player_move)
+	idle_timer.timeout.connect(_idle_timer_timeout)
 
 	mesh_area.input_event.connect(_on_area_input_event)
 	mesh_area.mouse_entered.connect(_on_area_mouse_entered)
@@ -90,10 +95,7 @@ func _ready():
 	indicator_area.mouse_entered.connect(_on_area_mouse_entered)
 	indicator_area.mouse_exited.connect(_on_area_mouse_exited)
 
-	idle_timer.timeout.connect(_idle_timer_timeout)
-
-	_indicator_tween = create_tween()
-	_indicator_tween.set_loops()
+	_indicator_tween = create_tween().set_loops()
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()

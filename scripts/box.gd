@@ -32,9 +32,11 @@ var _indicator_tween: Tween
 
 
 func move(direction: Vector3):
-	var tween = create_tween().set_ease(ease_).set_trans(transition)
-	tween.tween_property(self, "global_position", global_position + direction, duration)
-	await tween.finished
+	await create_tween() \
+		.set_ease(ease_) \
+		.set_trans(transition) \
+		.tween_property(self, "global_position", global_position + direction, duration) \
+		.finished
 
 
 func _ready():
@@ -48,8 +50,7 @@ func _ready():
 	indicator_area.mouse_entered.connect(_on_area_mouse_entered)
 	indicator_area.mouse_exited.connect(_on_area_mouse_exited)
 
-	_indicator_tween = create_tween()
-	_indicator_tween.set_loops()
+	_indicator_tween = create_tween().set_loops()
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
