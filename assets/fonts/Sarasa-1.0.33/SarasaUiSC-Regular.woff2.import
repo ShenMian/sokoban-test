@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cabruwiqx3byq"
-path="res://.godot/imported/SarasaUiSC-ExtraLight.ttf-2c55979b5448cccbaa99a56a3c06100e.fontdata"
+uid="uid://cblhkb0qyu5vk"
+path="res://.godot/imported/SarasaUiSC-Regular.woff2-7673cd7dd60d743a1e2a67035671d45b.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-ExtraLight.ttf"
-dest_files=["res://.godot/imported/SarasaUiSC-ExtraLight.ttf-2c55979b5448cccbaa99a56a3c06100e.fontdata"]
+source_file="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Regular.woff2"
+dest_files=["res://.godot/imported/SarasaUiSC-Regular.woff2-7673cd7dd60d743a1e2a67035671d45b.fontdata"]
 
 [params]
 

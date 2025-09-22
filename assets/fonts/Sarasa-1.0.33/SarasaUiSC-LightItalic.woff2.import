@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cgutx5j2agjlw"
-path="res://.godot/imported/SarasaUiSC-Bold.ttf-85dd3e984acbcfadcc5f3708af80ecbc.fontdata"
+uid="uid://c70howvvn28d7"
+path="res://.godot/imported/SarasaUiSC-LightItalic.woff2-9b662d0c36a3834c6c1553e71777fed7.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Bold.ttf"
-dest_files=["res://.godot/imported/SarasaUiSC-Bold.ttf-85dd3e984acbcfadcc5f3708af80ecbc.fontdata"]
+source_file="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-LightItalic.woff2"
+dest_files=["res://.godot/imported/SarasaUiSC-LightItalic.woff2-9b662d0c36a3834c6c1553e71777fed7.fontdata"]
 
 [params]
 
