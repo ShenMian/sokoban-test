@@ -18,12 +18,6 @@ var INDEX_TO_LOCALE := LOCALE_TO_INDEX.keys()
 
 
 func _ready() -> void:
-	var locales = TranslationServer.get_loaded_locales()
-	for i in range(locales.size()):
-		var locale = locales[i]
-		language.add_item("%s (%s)" % [LOCALE_TO_NAME[locale], TranslationServer.get_locale_name(locale)])
-		language.set_item_metadata(i, locale)
-
 	language.item_selected.connect(_on_language_item_selected)
 	deadlock.toggled.connect(_on_deadlock_toggled)
 
