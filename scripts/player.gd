@@ -23,7 +23,6 @@ signal unhovered
 @export var move_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
 @export_group("Rotate Animation")
-@export var rotate_duration := 0.1
 @export var rotate_ease: Tween.EaseType = Tween.EASE_IN_OUT
 @export var rotate_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
@@ -62,9 +61,11 @@ func move(direction: Vector3, is_pushing: bool):
 	target_rotation = meshes.rotation_degrees.y + delta
 
 	_is_moving = true
-	var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
-	rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, rotate_duration)
-	await rotate_tween.finished
+	if meshes.rotation_degrees.y != target_rotation:
+		var rotate_tween = create_tween().set_ease(rotate_ease).set_trans(rotate_transition)
+		var duration = abs(meshes.rotation_degrees.y - target_rotation) / 90.0 * 0.1
+		rotate_tween.tween_property(meshes, "rotation_degrees:y", target_rotation, duration)
+		await rotate_tween.finished
 
 	if is_pushing:
 		state_machine.travel("Pushing")
@@ -75,8 +76,8 @@ func move(direction: Vector3, is_pushing: bool):
 	translate_tween.tween_property(self, "global_position", global_position + direction, move_duration)
 	await translate_tween.finished
 
-	_is_moving = false
 	state_machine.travel("Static")
+	_is_moving = false
 
 
 func _ready():
@@ -96,6 +97,18 @@ func _ready():
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
+
+
+func _unhandled_input(_event: InputEvent):
+	if not _is_moving:
+		if Input.is_action_pressed("move_right"):
+			level_map.move_by(level_map.Direction.Right)
+		elif Input.is_action_pressed("move_left"):
+			level_map.move_by(level_map.Direction.Left)
+		elif Input.is_action_pressed("move_up"):
+			level_map.move_by(level_map.Direction.Up)
+		elif Input.is_action_pressed("move_down"):
+			level_map.move_by(level_map.Direction.Down)
 
 
 func _on_player_move(to: Vector2i, is_pushing: bool):
@@ -148,15 +161,3 @@ func _start_indicator_tween():
 func _stop_indicator_tween():
 	_indicator_tween.pause()
 	select_indicator.scale = Vector3.ONE
-
-
-func _input(_event: InputEvent):
-	if not _is_moving:
-		if Input.is_action_pressed("move_right"):
-			level_map.move_by(level_map.Direction.Right)
-		elif Input.is_action_pressed("move_left"):
-			level_map.move_by(level_map.Direction.Left)
-		elif Input.is_action_pressed("move_up"):
-			level_map.move_by(level_map.Direction.Up)
-		elif Input.is_action_pressed("move_down"):
-			level_map.move_by(level_map.Direction.Down)
