@@ -1,0 +1,192 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "MOVES"
+msgstr "Moves"
+
+msgid "PUSHES"
+msgstr "Pushes"
+
+msgid "GAMEPLAY"
+msgstr "Gameplay"
+
+msgid "GENERAL"
+msgstr "General"
+
+msgid "LANGUAGE"
+msgstr "Language"
+
+msgid "LANGUAGE_TIP"
+msgstr "Select the interface language"
+
+msgid "CHECKERBOARD"
+msgstr "Checkerboard"
+
+msgid "CHECKERBOARD_TIP"
+msgstr "Toggle to color floor tiles in a checkerboard pattern"
+
+msgid "DEADLOCK"
+msgstr "Deadlocks"
+
+msgid "DEADLOCK_TIP"
+msgstr "Highlight static deadlock locations"
+
+msgid "SOLVER"
+msgstr "Solver"
+
+msgid "STRATEGY"
+msgstr "Strategy"
+
+msgid "STRATEGY_TIP"
+msgstr "Choose solver strategy"
+
+msgid "FAST"
+msgstr "Fast"
+
+msgid "OPTIMAL_PUSH"
+msgstr "Optimal Push"
+
+msgid "OPTIMAL_MOVE"
+msgstr "Optimal Move"
+
+msgid "HEATMAP"
+msgstr "Heatmap"
+
+msgid "HEATMAP_TIP"
+msgstr "Visualize push lower bounds as a heatmap"
+
+msgid "AUDIO"
+msgstr "Audio"
+
+msgid "VOLUME"
+msgstr "Volume"
+
+msgid "MASTER_VOLUME"
+msgstr "Master Volume"
+
+msgid "MASTER_VOLUME_TIP"
+msgstr "Master volume controls overall audio level"
+
+msgid "MUSIC_VOLUME"
+msgstr "Music Volume"
+
+msgid "MUSIC_VOLUME_TIP"
+msgstr "Adjust music volume separately from sound effects"
+
+msgid "SFX_VOLUME"
+msgstr "SFX Volume"
+
+msgid "SFX_VOLUME_TIP"
+msgstr "Adjust sound effects volume separately from music"
+
+msgid "OUTPUT"
+msgstr "Output"
+
+msgid "MUTE_WHEN_NOT_FOCUSED"
+msgstr "Mute When Not Focused"
+
+msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
+msgstr "Mute audio when the game window is not focused"
+
+msgid "VIDEO"
+msgstr "Video"
+
+msgid "DISPLAY"
+msgstr "Display"
+
+msgid "WINDOW_MODE"
+msgstr "Window Mode"
+
+msgid "WINDOW_MODE_TIP"
+msgstr ""
+"Choose window mode\n"
+"• Windowed.\n"
+"• Borderless fullscreen.\n"
+"• Exclusive fullscreen."
+
+msgid "WINDOWED"
+msgstr "Windowed"
+
+msgid "BORDERLESS_FULLSCREEN"
+msgstr "Borderless Fullscreen"
+
+msgid "EXCLUSIVE_FULLSCREEN"
+msgstr "Exclusive Fullscreen"
+
+msgid "VSYNC"
+msgstr "VSync"
+
+msgid "VSYNC_TIP"
+msgstr "Toggle vertical sync to reduce screen tearing"
+
+msgid "FRAME_RATE_LIMIT"
+msgstr "Frame Rate Limit"
+
+msgid "FRAME_RATE_LIMIT_TIP"
+msgstr "Limit the maximum frame rate"
+
+msgid "UNLIMITED"
+msgstr "Unlimited"
+
+msgid "GRAPHICS"
+msgstr "Graphics"
+
+msgid "FIELD_OF_VIEW"
+msgstr "Field of View"
+
+msgid "FIELD_OF_VIEW_TIP"
+msgstr "Adjust the camera's field of view"
+
+msgid "ANTI_ALIASING"
+msgstr "Anti Aliasing"
+
+msgid "SCREEN_SPACE_AA"
+msgstr "Screen Space AA"
+
+msgid "SCREEN_SPACE_AA_TIP"
+msgstr ""
+"Screen-space anti-aliasing methods\n"
+"• SMAA (Enhanced Subpixel Morphological Antialiasing)\n"
+"  Quality: High, Overhead: Medium\n"
+"• FXAA (Fast Approximate Anti-Aliasing)\n"
+"  Quality: Low, Overhead: Low"
+
+msgid "SMAA"
+msgstr "SMAA"
+
+msgid "FXAA"
+msgstr "FXAA"
+
+msgid "TAA"
+msgstr "TAA"
+
+msgid "TAA_TIP"
+msgstr ""
+"Temporal anti-aliasing.\n"
+"Quality: High, Overhead: Medium"
+
+msgid "MSAA"
+msgstr "MSAA"
+
+msgid "MSAA_TIP"
+msgstr ""
+"Multisample anti-aliasing.\n"
+"Quality: Medium, Overhead: High"
+
+msgid "DISABLED"
+msgstr "Disabled"
+
+msgid "SETTINGS"
+msgstr "Settings"
+
+msgid "CREDITS"
+msgstr "Credits"
+
+msgid "CLOSE"
+msgstr "Close"
+
+msgid "RESTORE_DEFAULTS"
+msgstr "Restore Defaults"

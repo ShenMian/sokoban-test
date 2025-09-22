@@ -1,0 +1,188 @@
+msgid ""
+msgstr ""
+"Language: zh\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "MOVES"
+msgstr "移动数"
+
+msgid "PUSHES"
+msgstr "推动数"
+
+msgid "GAMEPLAY"
+msgstr "玩法"
+
+msgid "GENERAL"
+msgstr "通用"
+
+msgid "LANGUAGE"
+msgstr "语言"
+
+msgid "LANGUAGE_TIP"
+msgstr "选择界面语言"
+
+msgid "CHECKERBOARD"
+msgstr "棋盘纹"
+
+msgid "CHECKERBOARD_TIP"
+msgstr "以棋盘格样式给地砖上色"
+
+msgid "DEADLOCK"
+msgstr "死锁"
+
+msgid "DEADLOCK_TIP"
+msgstr "标出静态死锁位置"
+
+msgid "SOLVER"
+msgstr "求解器"
+
+msgid "STRATEGY"
+msgstr "策略"
+
+msgid "STRATEGY_TIP"
+msgstr "选择解算器策略"
+
+msgid "FAST"
+msgstr "快速"
+
+msgid "OPTIMAL_PUSH"
+msgstr "最优推动"
+
+msgid "OPTIMAL_MOVE"
+msgstr "最优移动"
+
+msgid "HEATMAP"
+msgstr "热力图"
+
+msgid "HEATMAP_TIP"
+msgstr "将推动下界以热力图的形式可视化"
+
+msgid "AUDIO"
+msgstr "音频"
+
+msgid "VOLUME"
+msgstr "音量"
+
+msgid "MASTER_VOLUME"
+msgstr "主音量"
+
+msgid "MASTER_VOLUME_TIP"
+msgstr "主音量控制整体音量"
+
+msgid "MUSIC_VOLUME"
+msgstr "音乐音量"
+
+msgid "MUSIC_VOLUME_TIP"
+msgstr "单独调整音乐音量"
+
+msgid "SFX_VOLUME"
+msgstr "音效音量"
+
+msgid "SFX_VOLUME_TIP"
+msgstr "单独调整音效音量"
+
+msgid "OUTPUT"
+msgstr "输出设备"
+
+msgid "MUTE_WHEN_NOT_FOCUSED"
+msgstr "失去焦点时静音"
+
+msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
+msgstr "在游戏窗口不在焦点时静音"
+
+msgid "VIDEO"
+msgstr "视频"
+
+msgid "DISPLAY"
+msgstr "显示"
+
+msgid "WINDOW_MODE"
+msgstr "窗口模式"
+
+msgid "WINDOW_MODE_TIP"
+msgstr ""
+"选择窗口模式\n"
+"• 窗口化.\n"
+"• 无边框全屏.\n"
+"• 独占全屏."
+
+msgid "WINDOWED"
+msgstr "窗口化"
+
+msgid "BORDERLESS_FULLSCREEN"
+msgstr "无边框全屏"
+
+msgid "EXCLUSIVE_FULLSCREEN"
+msgstr "独占全屏"
+
+msgid "VSYNC"
+msgstr "垂直同步"
+
+msgid "VSYNC_TIP"
+msgstr "切换垂直同步以减少画面撕裂"
+
+msgid "FRAME_RATE_LIMIT"
+msgstr "帧率限制"
+
+msgid "FRAME_RATE_LIMIT_TIP"
+msgstr "限制最大帧率"
+
+msgid "UNLIMITED"
+msgstr "无限制"
+
+msgid "GRAPHICS"
+msgstr "图形"
+
+msgid "FIELD_OF_VIEW"
+msgstr "视野"
+
+msgid "FIELD_OF_VIEW_TIP"
+msgstr "调整摄像机的视野"
+
+msgid "ANTI_ALIASING"
+msgstr "抗锯齿"
+
+msgid "SCREEN_SPACE_AA"
+msgstr "屏幕空间抗锯齿"
+
+msgid "SCREEN_SPACE_AA_TIP"
+msgstr ""
+"屏幕空间抗锯齿方法\n"
+"• SMAA (子像素增强抗锯齿)\n"
+"  质量: 高, 开销: 中\n"
+"• FXAA (快速近似抗锯齿)\n"
+"  质量: 低, 开销: 低"
+
+msgid "SMAA"
+msgstr "SMAA"
+
+msgid "FXAA"
+msgstr "FXAA"
+
+msgid "TAA"
+msgstr "TAA"
+
+msgid "TAA_TIP"
+msgstr "时间抗锯齿.\n质量: 高, 开销: 中"
+
+msgid "MSAA"
+msgstr "MSAA"
+
+msgid "MSAA_TIP"
+msgstr "多重采样抗锯齿.\n质量: 中, 开销: 高"
+
+msgid "DISABLED"
+msgstr "禁用"
+
+msgid "SETTINGS"
+msgstr "设置"
+
+msgid "CREDITS"
+msgstr "鸣谢"
+
+msgid "CLOSE"
+msgstr "关闭"
+
+msgid "RESTORE_DEFAULTS"
+msgstr "恢复默认"

@@ -73,4 +73,4 @@ restore_defaults={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://i18n/translation.en.translation", "res://i18n/translation.zh.translation")
+locale/translations=PackedStringArray("res://i18n/en.po", "res://i18n/zh.po")
