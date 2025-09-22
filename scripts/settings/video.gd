@@ -55,8 +55,8 @@ func apply_settings():
 	vsync.button_pressed = Settings.get_value("video", "vsync")
 	vsync.toggled.emit(Settings.get_value("video", "vsync"))
 
-	frame_rate_limit.value_changed.emit(Settings.get_value("video", "frame_rate_limit"))
-	frame_rate_limit.value = frame_rate_limit.max_value if Engine.max_fps == 0 else Engine.max_fps
+	var max_fps = Settings.get_value("video", "frame_rate_limit")
+	frame_rate_limit.value = frame_rate_limit.max_value if max_fps == 0 else max_fps
 
 	fov.value = Settings.get_value("video", "fov")
 
