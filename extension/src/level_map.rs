@@ -83,6 +83,11 @@ impl LevelMap {
     }
 
     #[func]
+    fn goal_positions(&self) -> Array<Vector2i> {
+        self.map().goal_positions().iter().map(to_gd_vec2).collect()
+    }
+
+    #[func]
     fn is_solved(&self) -> bool {
         self.map().is_solved()
     }
@@ -98,7 +103,9 @@ impl LevelMap {
         };
 
         let box_positions = self.map().box_positions().clone();
-        let _ = self.level.do_action(direction);
+        if let Err(err) = self.level.do_action(direction) {
+            godot_print!("failed to do action: {}", err);
+        }
 
         let new_box_positions = self.map().box_positions().clone();
 
