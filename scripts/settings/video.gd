@@ -40,8 +40,8 @@ func _ready():
 	vsync.toggled.connect(_on_vsync_toggled)
 	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_changed)
 	fov.value_changed.connect(_on_fov_changed)
-	screen_space_aa.item_selected.connect(_on_screen_space_aa_item_selected)
-	msaa.item_selected.connect(_on_msaa_item_selected)
+	screen_space_aa.item_selected.connect(_on_screen_space_aa_selected)
+	msaa.item_selected.connect(_on_msaa_selected)
 	taa.toggled.connect(_on_taa_toggled)
 
 	apply_settings()
@@ -98,12 +98,12 @@ func _on_fov_changed(value: float):
 	Settings.set_and_save_value(SECTION_NAME, "fov", value)
 
 
-func _on_screen_space_aa_item_selected(index: int):
+func _on_screen_space_aa_selected(index: int):
 	get_viewport().screen_space_aa = INDEX_TO_SCREEN_SPACE_AA[index]
 	Settings.set_and_save_value(SECTION_NAME, "screen_space_aa", INDEX_TO_SCREEN_SPACE_AA[index])
 
 
-func _on_msaa_item_selected(index: int):
+func _on_msaa_selected(index: int):
 	get_viewport().msaa_3d = INDEX_TO_MSAA[index]
 	Settings.set_and_save_value(SECTION_NAME, "msaa", INDEX_TO_MSAA[index])
 

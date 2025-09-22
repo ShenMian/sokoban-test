@@ -18,7 +18,7 @@ var INDEX_TO_LOCALE := LOCALE_TO_INDEX.keys()
 
 
 func _ready() -> void:
-	language.item_selected.connect(_on_language_item_selected)
+	language.item_selected.connect(_on_language_selected)
 	deadlock.toggled.connect(_on_deadlock_toggled)
 
 	apply_settings()
@@ -32,7 +32,7 @@ func apply_settings() -> void:
 	deadlock.toggled.emit(deadlock.button_pressed)
 
 
-func _on_language_item_selected(index: int):
+func _on_language_selected(index: int):
 	var locale: String = INDEX_TO_LOCALE[index]
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value(SECTION_NAME, "language", locale)
