@@ -56,6 +56,7 @@ func _ready():
 
 
 func _on_area_entered(area: Area3D):
+	# Move in the opposite direction when touched by a player
 	if area != player.mesh_area:
 		return
 	move((global_position - player.global_position).normalized())
