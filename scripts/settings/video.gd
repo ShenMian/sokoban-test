@@ -10,29 +10,29 @@ extends ScrollContainer
 @onready var msaa: OptionButton = $VBox/MsaaPanel/Margin/HBox/OptionButton
 @onready var taa: CheckButton = $VBox/TaaPanel/Margin/HBox/CheckButton
 
-const SECTION_NAME = "video"
+const SECTION_NAME := "video"
 
-const WINDOW_MODE_TO_INDEX = {
+const WINDOW_MODE_TO_INDEX := {
 	DisplayServer.WINDOW_MODE_WINDOWED: 0,
 	DisplayServer.WINDOW_MODE_FULLSCREEN: 1,
 	DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN: 2
 }
-var INDEX_TO_WINDOW_MODE = WINDOW_MODE_TO_INDEX.keys()
+var INDEX_TO_WINDOW_MODE := WINDOW_MODE_TO_INDEX.keys()
 
 const SCREEN_SPACE_AA_TO_INDEX = {
 	Viewport.SCREEN_SPACE_AA_DISABLED: 0,
 	Viewport.SCREEN_SPACE_AA_SMAA: 1,
 	Viewport.SCREEN_SPACE_AA_FXAA: 2
 }
-var INDEX_TO_SCREEN_SPACE_AA = SCREEN_SPACE_AA_TO_INDEX.keys()
+var INDEX_TO_SCREEN_SPACE_AA := SCREEN_SPACE_AA_TO_INDEX.keys()
 
-const MSAA_TO_INDEX = {
+const MSAA_TO_INDEX := {
 	Viewport.MSAA_DISABLED: 0,
 	Viewport.MSAA_2X: 1,
 	Viewport.MSAA_4X: 2,
 	Viewport.MSAA_8X: 3
 }
-var INDEX_TO_MSAA = MSAA_TO_INDEX.keys()
+var INDEX_TO_MSAA := MSAA_TO_INDEX.keys()
 
 
 func _ready():

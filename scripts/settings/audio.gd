@@ -9,7 +9,7 @@ extends CenterContainer
 @onready var music_bus_index := AudioServer.get_bus_index("Music")
 @onready var sfx_bus_index := AudioServer.get_bus_index("Sfx")
 
-const SECTION_NAME = "audio"
+const SECTION_NAME := "audio"
 
 
 func _ready():

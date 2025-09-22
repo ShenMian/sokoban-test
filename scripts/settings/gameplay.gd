@@ -3,17 +3,18 @@ extends CenterContainer
 @onready var language: OptionButton = $VBox/LanguagePanel/Margin/HBox/OptionButton
 @onready var deadlock: SwitchFx = $VBox/DeadlockPanel/Margin/HBox/CheckButton
 
-const SECTION_NAME = "gameplay"
+const SECTION_NAME := "gameplay"
 
-const LOCALE_TO_NAME = {
+const LOCALE_TO_NAME := {
 	"en": "English",
 	"zh": "中文"
 }
 
-const LOCALE_TO_INDEX = {
+const LOCALE_TO_INDEX := {
 	"en": 0,
 	"zh": 1
 }
+var INDEX_TO_LOCALE := LOCALE_TO_INDEX.keys()
 
 
 func _ready() -> void:
@@ -38,7 +39,7 @@ func apply_settings() -> void:
 
 
 func _on_language_item_selected(index: int):
-	var locale := str(language.get_item_metadata(index))
+	var locale: String = INDEX_TO_LOCALE[index]
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value(SECTION_NAME, "language", locale)
 
