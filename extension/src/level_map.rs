@@ -205,7 +205,6 @@ impl LevelMap {
 
     #[func]
     fn set_show_deadlocks(&mut self, show: bool) {
-        godot_print!("set_show_deadlocks: {}", show);
         if show {
             self.show_deadlocks();
         } else {
