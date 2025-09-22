@@ -1,6 +1,6 @@
 [gd_resource type="AnimationNodeStateMachine" load_steps=19 format=3 uid="uid://lc3g74mqowmf"]
 
-[ext_resource type="AnimationNodeBlendTree" uid="uid://bpku4m4m01lof" path="res://scenes/player/pushing.tres" id="1_qjl0q"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://bpku4m4m01lof" path="res://assets/pushing_blend_tree.tres" id="1_qjl0q"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ro80u"]
 animation = &"emote-no"

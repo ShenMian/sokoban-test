@@ -12,8 +12,6 @@ size = Vector3(1, 0.01, 1)
 
 [node name="Box" type="Node3D"]
 script = ExtResource("2_ks2v0")
-ease_ = 1
-transition = 1
 indicator_scale_min = 0.9
 indicator_scale_max = 1.1
 
