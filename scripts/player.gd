@@ -55,7 +55,7 @@ func move(direction: Vector3, is_pushing: bool):
 		Vector3.MODEL_FRONT:
 			target_rotation = 0.0
 		_:
-			assert(false)
+			assert(false, "unreachable")
 	# Constrain rotation angle to [-180°, 180°] to prevent long-way-around turns
 	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
 	target_rotation = meshes.rotation_degrees.y + delta

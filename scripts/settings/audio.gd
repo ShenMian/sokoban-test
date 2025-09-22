@@ -5,12 +5,14 @@ extends CenterContainer
 @onready var sfx_volumn: SliderBar = $VBox/SfxVolumePanel/Margin/HBox/SliderBar
 @onready var mute_when_not_focused: CheckButton = $VBox/MuteWhenNotFocusedPanel/Margin/HBox/CheckButton
 
+@onready var master_bus_index := AudioServer.get_bus_index("Master")
+@onready var music_bus_index := AudioServer.get_bus_index("Music")
+@onready var sfx_bus_index := AudioServer.get_bus_index("Sfx")
+
+const SECTION_NAME = "audio"
+
 
 func _ready():
-	var master_bus_index := AudioServer.get_bus_index("Master")
-	var music_bus_index := AudioServer.get_bus_index("Music")
-	var sfx_bus_index := AudioServer.get_bus_index("Sfx")
-
 	master_volumn.value_changed.connect(_on_volume_changed.bind(master_bus_index))
 	music_volumn.value_changed.connect(_on_volume_changed.bind(music_bus_index))
 	sfx_volumn.value_changed.connect(_on_volume_changed.bind(sfx_bus_index))
@@ -30,11 +32,11 @@ func apply_settings():
 func _on_volume_changed(value: float, bus_index: int):
 	var volume = linear_to_db(value)
 	AudioServer.set_bus_volume_db(bus_index, volume)
-	Settings.set_and_save_value("audio", "%s_volume" % AudioServer.get_bus_name(bus_index).to_lower(), value)
+	Settings.set_and_save_value(SECTION_NAME, "%s_volume" % AudioServer.get_bus_name(bus_index).to_lower(), value)
 
 
-func _on_mute_when_not_focused_toggled(toggled: bool):
-	Settings.set_and_save_value("audio", "mute_when_not_focused", toggled)
+func _on_mute_when_not_focused_toggled(toggled_on: bool):
+	Settings.set_and_save_value(SECTION_NAME, "mute_when_not_focused", toggled_on)
 
 
 func _notification(what: int):
@@ -49,14 +51,10 @@ func _notification(what: int):
 func _on_window_minimized():
 	if not mute_when_not_focused.button_pressed:
 		return
-	
-	var master_bus_index := AudioServer.get_bus_index("Master")
 	AudioServer.set_bus_mute(master_bus_index, true)
 
 
 func _on_window_restored():
 	if not mute_when_not_focused.button_pressed:
 		return
-	
-	var master_bus_index := AudioServer.get_bus_index("Master")
 	AudioServer.set_bus_mute(master_bus_index, false)

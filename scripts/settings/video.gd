@@ -10,6 +10,8 @@ extends ScrollContainer
 @onready var msaa: OptionButton = $VBox/MsaaPanel/Margin/HBox/OptionButton
 @onready var taa: CheckButton = $VBox/TaaPanel/Margin/HBox/CheckButton
 
+const SECTION_NAME = "video"
+
 const WINDOW_MODE_TO_INDEX = {
 	DisplayServer.WINDOW_MODE_WINDOWED: 0,
 	DisplayServer.WINDOW_MODE_FULLSCREEN: 1,
@@ -46,33 +48,30 @@ func _ready():
 
 
 func apply_settings():
-	var window_mode_index = WINDOW_MODE_TO_INDEX[Settings.get_value("video", "window_mode")]
-	window_mode.select(window_mode_index)
-	window_mode.item_selected.emit(window_mode_index)
+	window_mode.select(WINDOW_MODE_TO_INDEX[Settings.get_value(SECTION_NAME, "window_mode")])
+	window_mode.item_selected.emit(window_mode.selected)
 
-	vsync.button_pressed = Settings.get_value("video", "vsync")
-	vsync.toggled.emit(Settings.get_value("video", "vsync"))
+	vsync.button_pressed = Settings.get_value(SECTION_NAME, "vsync")
+	vsync.toggled.emit(vsync.button_pressed)
 
-	var max_fps = Settings.get_value("video", "frame_rate_limit")
+	var max_fps = Settings.get_value(SECTION_NAME, "frame_rate_limit")
 	frame_rate_limit.value = frame_rate_limit.max_value if max_fps == 0 else max_fps
 
-	fov.value = Settings.get_value("video", "fov")
+	fov.value = Settings.get_value(SECTION_NAME, "fov")
 
-	var screen_space_aa_index = SCREEN_SPACE_AA_TO_INDEX[Settings.get_value("video", "screen_space_aa")]
-	screen_space_aa.select(screen_space_aa_index)
-	screen_space_aa.item_selected.emit(screen_space_aa_index)
+	screen_space_aa.select(SCREEN_SPACE_AA_TO_INDEX[Settings.get_value(SECTION_NAME, "screen_space_aa")])
+	screen_space_aa.item_selected.emit(screen_space_aa.selected)
 
-	var msaa_index = MSAA_TO_INDEX[Settings.get_value("video", "msaa")]
-	msaa.select(msaa_index)
-	msaa.item_selected.emit(msaa_index)
+	msaa.select(MSAA_TO_INDEX[Settings.get_value(SECTION_NAME, "msaa")])
+	msaa.item_selected.emit(msaa.selected)
 
-	taa.button_pressed = Settings.get_value("video", "taa")
-	taa.toggled.emit(Settings.get_value("video", "taa"))
+	taa.button_pressed = Settings.get_value(SECTION_NAME, "taa")
+	taa.toggled.emit(taa.button_pressed)
 
 
 func _on_window_mode_selected(index: int):
 	DisplayServer.window_set_mode(INDEX_TO_WINDOW_MODE[index])
-	Settings.set_and_save_value("video", "window_mode", INDEX_TO_WINDOW_MODE[index])
+	Settings.set_and_save_value(SECTION_NAME, "window_mode", INDEX_TO_WINDOW_MODE[index])
 
 
 func _on_vsync_toggled(toggled_on: bool):
@@ -82,7 +81,7 @@ func _on_vsync_toggled(toggled_on: bool):
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		frame_rate_limit.disabled = false
-	Settings.set_and_save_value("video", "vsync", DisplayServer.window_get_vsync_mode())
+	Settings.set_and_save_value(SECTION_NAME, "vsync", DisplayServer.window_get_vsync_mode())
 
 
 func _on_frame_rate_limit_changed(value: float):
@@ -92,23 +91,23 @@ func _on_frame_rate_limit_changed(value: float):
 		Engine.max_fps = 0
 	else:
 		Engine.max_fps = int(value)
-	Settings.set_and_save_value("video", "frame_rate_limit", Engine.max_fps)
+	Settings.set_and_save_value(SECTION_NAME, "frame_rate_limit", Engine.max_fps)
 
 
 func _on_fov_changed(value: float):
-	Settings.set_and_save_value("video", "fov", value)
+	Settings.set_and_save_value(SECTION_NAME, "fov", value)
 
 
 func _on_screen_space_aa_item_selected(index: int):
 	get_viewport().screen_space_aa = INDEX_TO_SCREEN_SPACE_AA[index]
-	Settings.set_and_save_value("video", "screen_space_aa", INDEX_TO_SCREEN_SPACE_AA[index])
+	Settings.set_and_save_value(SECTION_NAME, "screen_space_aa", INDEX_TO_SCREEN_SPACE_AA[index])
 
 
 func _on_msaa_item_selected(index: int):
 	get_viewport().msaa_3d = INDEX_TO_MSAA[index]
-	Settings.set_and_save_value("video", "msaa", INDEX_TO_MSAA[index])
+	Settings.set_and_save_value(SECTION_NAME, "msaa", INDEX_TO_MSAA[index])
 
 
 func _on_taa_toggled(toggled_on: bool):
 	get_viewport().use_taa = toggled_on
-	Settings.set_and_save_value("video", "taa", toggled_on)
+	Settings.set_and_save_value(SECTION_NAME, "taa", toggled_on)

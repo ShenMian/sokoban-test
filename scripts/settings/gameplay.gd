@@ -3,6 +3,8 @@ extends CenterContainer
 @onready var language: OptionButton = $VBox/LanguagePanel/Margin/HBox/OptionButton
 @onready var deadlock: SwitchFx = $VBox/DeadlockPanel/Margin/HBox/CheckButton
 
+const SECTION_NAME = "gameplay"
+
 const LOCALE_TO_NAME = {
 	"en": "English",
 	"zh": "中文"
@@ -28,19 +30,18 @@ func _ready() -> void:
 
 
 func apply_settings() -> void:
-	var index = LOCALE_TO_INDEX[Settings.get_value("gameplay", "language")];
-	language.select(index)
-	language.item_selected.emit(index)
+	language.select(LOCALE_TO_INDEX[Settings.get_value(SECTION_NAME, "language")])
+	language.item_selected.emit(language.selected)
 
-	deadlock.button_pressed = Settings.get_value("gameplay", "deadlock")
-	deadlock.toggled.emit(Settings.get_value("gameplay", "deadlock"))
+	deadlock.button_pressed = Settings.get_value(SECTION_NAME, "deadlock")
+	deadlock.toggled.emit(deadlock.button_pressed)
 
 
 func _on_language_item_selected(index: int):
 	var locale := str(language.get_item_metadata(index))
 	TranslationServer.set_locale(locale)
-	Settings.set_and_save_value("gameplay", "language", locale)
+	Settings.set_and_save_value(SECTION_NAME, "language", locale)
 
 
-func _on_deadlock_toggled(toggled: bool):
-	Settings.set_and_save_value("gameplay", "deadlock", toggled)
+func _on_deadlock_toggled(toggled_on: bool):
+	Settings.set_and_save_value(SECTION_NAME, "deadlock", toggled_on)
