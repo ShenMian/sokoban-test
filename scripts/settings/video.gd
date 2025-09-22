@@ -74,7 +74,7 @@ func apply_settings():
 
 func _on_window_mode_selected(index: int):
 	DisplayServer.window_set_mode(INDEX_TO_WINDOW_MODE[index])
-	Settings.set_value("video", "window_mode", INDEX_TO_WINDOW_MODE[index])
+	Settings.set_and_save_value("video", "window_mode", INDEX_TO_WINDOW_MODE[index])
 
 
 func _on_vsync_toggled(toggled_on: bool):
@@ -84,7 +84,7 @@ func _on_vsync_toggled(toggled_on: bool):
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 		frame_rate_limit.disabled = false
-	Settings.set_value("video", "vsync", DisplayServer.window_get_vsync_mode())
+	Settings.set_and_save_value("video", "vsync", DisplayServer.window_get_vsync_mode())
 
 
 func _on_frame_rate_limit_changed(value: float):
@@ -94,24 +94,24 @@ func _on_frame_rate_limit_changed(value: float):
 		Engine.max_fps = 0
 	else:
 		Engine.max_fps = int(value)
-	Settings.set_value("video", "frame_rate_limit", Engine.max_fps)
+	Settings.set_and_save_value("video", "frame_rate_limit", Engine.max_fps)
 
 
 func _on_fov_changed(value: float):
 	fov_changed.emit(value)
-	Settings.set_value("video", "fov", value)
+	Settings.set_and_save_value("video", "fov", value)
 
 
 func _on_screen_space_aa_item_selected(index: int):
 	get_viewport().screen_space_aa = INDEX_TO_SCREEN_SPACE_AA[index]
-	Settings.set_value("video", "screen_space_aa", INDEX_TO_SCREEN_SPACE_AA[index])
+	Settings.set_and_save_value("video", "screen_space_aa", INDEX_TO_SCREEN_SPACE_AA[index])
 
 
 func _on_msaa_item_selected(index: int):
 	get_viewport().msaa_3d = INDEX_TO_MSAA[index]
-	Settings.set_value("video", "msaa", INDEX_TO_MSAA[index])
+	Settings.set_and_save_value("video", "msaa", INDEX_TO_MSAA[index])
 
 
 func _on_taa_toggled(toggled_on: bool):
 	get_viewport().use_taa = toggled_on
-	Settings.set_value("video", "taa", toggled_on)
+	Settings.set_and_save_value("video", "taa", toggled_on)

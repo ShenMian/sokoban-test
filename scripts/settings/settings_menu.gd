@@ -47,7 +47,7 @@ func _on_active_tab_changed(index: int):
 
 func _on_fov_changed(value: float):
 	fov_changed.emit(value)
-	Settings.set_value("video", "fov", value)
+	Settings.set_and_save_value("video", "fov", value)
 
 
 func _on_restore_pressed():

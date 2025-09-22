@@ -1,5 +1,7 @@
 extends Node
 
+signal setting_changed(section: String, key: String, value: Variant)
+
 var config := ConfigFile.new()
 const CONFIG_PATH = "user://settings.ini"
 
@@ -28,9 +30,14 @@ const DEFAULT_CONFIG = {
 }
 
 
+func set_and_save_value(section: String, key: String, value: Variant):
+	set_value(section, key, value)
+	config.save(CONFIG_PATH)
+
+
 func set_value(section: String, key: String, value: Variant):
 	config.set_value(section, key, value)
-	config.save(CONFIG_PATH)
+	setting_changed.emit(section, key, value)
 
 
 func get_value(section: String, key: String):
@@ -41,7 +48,7 @@ func reset_gameplay_settings():
 	config.erase_section("gameplay")
 	for key in DEFAULT_CONFIG.gameplay:
 		var value = DEFAULT_CONFIG.gameplay[key]
-		config.set_value("gameplay", key, value)
+		set_value("gameplay", key, value)
 
 	var locale = OS.get_locale()
 	if locale in TranslationServer.get_loaded_locales():
@@ -54,7 +61,7 @@ func reset_video_settings():
 	config.erase_section("video")
 	for key in DEFAULT_CONFIG.video:
 		var value = DEFAULT_CONFIG.video[key]
-		config.set_value("video", key, value)
+		set_value("video", key, value)
 	config.save(CONFIG_PATH)
 
 
@@ -62,7 +69,7 @@ func reset_audio_settings():
 	config.erase_section("audio")
 	for key in DEFAULT_CONFIG.audio:
 		var value = DEFAULT_CONFIG.audio[key]
-		config.set_value("audio", key, value)
+		set_value("audio", key, value)
 	config.save(CONFIG_PATH)
 
 

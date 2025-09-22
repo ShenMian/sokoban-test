@@ -41,4 +41,4 @@ func apply_settings() -> void:
 func _on_language_item_selected(index: int):
 	var locale := str(language.get_item_metadata(index))
 	TranslationServer.set_locale(locale)
-	Settings.set_value("gameplay", "language", locale)
+	Settings.set_and_save_value("gameplay", "language", locale)

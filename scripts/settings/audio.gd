@@ -30,11 +30,11 @@ func apply_settings():
 func _on_volume_changed(value: float, bus_index: int):
 	var volume = linear_to_db(value)
 	AudioServer.set_bus_volume_db(bus_index, volume)
-	Settings.set_value("audio", "%s_volume" % AudioServer.get_bus_name(bus_index).to_lower(), value)
+	Settings.set_and_save_value("audio", "%s_volume" % AudioServer.get_bus_name(bus_index).to_lower(), value)
 
 
 func _on_mute_when_not_focused_toggled(toggled: bool):
-	Settings.set_value("audio", "mute_when_not_focused", toggled)
+	Settings.set_and_save_value("audio", "mute_when_not_focused", toggled)
 
 
 func _notification(what: int):
