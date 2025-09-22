@@ -1,7 +1,5 @@
 extends CenterContainer
 
-signal deadlock_changed(on: bool)
-
 @onready var language: OptionButton = $VBox/LanguagePanel/Margin/HBox/OptionButton
 @onready var deadlock: SwitchFx = $VBox/DeadlockPanel/Margin/HBox/CheckButton
 
@@ -24,7 +22,7 @@ func _ready() -> void:
 		language.set_item_metadata(i, locale)
 
 	language.item_selected.connect(_on_language_item_selected)
-	deadlock.toggled.connect(deadlock_changed.emit)
+	deadlock.toggled.connect(_on_deadlock_toggled)
 
 	apply_settings()
 
@@ -42,3 +40,7 @@ func _on_language_item_selected(index: int):
 	var locale := str(language.get_item_metadata(index))
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value("gameplay", "language", locale)
+
+
+func _on_deadlock_toggled(toggled: bool):
+	Settings.set_and_save_value("gameplay", "deadlock", toggled)

@@ -1,7 +1,5 @@
 extends ScrollContainer
 
-signal fov_changed(fov: float)
-
 @onready var window_mode: OptionButton = $VBox/WindowModePanel/Margin/HBox/OptionButton
 @onready var vsync: CheckButton = $VBox/VsyncPanel/Margin/HBox/CheckButton
 @onready var frame_rate_limit: SliderBar = $VBox/FrameRateLimitPanel/Margin/HBox/SliderBar
@@ -98,7 +96,6 @@ func _on_frame_rate_limit_changed(value: float):
 
 
 func _on_fov_changed(value: float):
-	fov_changed.emit(value)
 	Settings.set_and_save_value("video", "fov", value)
 
 

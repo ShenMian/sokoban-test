@@ -1,7 +1,5 @@
 extends Control
 
-signal fov_changed(fov: float)
-signal deadlock_changed(on: bool)
 signal closed
 
 @onready var background: TextureRect = $Background
@@ -28,9 +26,6 @@ func _ready() -> void:
 	close_button.pressed.connect(close)
 	restore_button.pressed.connect(_on_restore_pressed)
 
-	video.fov_changed.connect(fov_changed.emit)
-	gameplay.deadlock_changed.connect(deadlock_changed.emit)
-
 
 func _input(_event: InputEvent):
 	if not self.visible:
@@ -43,11 +38,6 @@ func _on_active_tab_changed(index: int):
 		background.visible = false
 	else:
 		background.visible = true
-
-
-func _on_fov_changed(value: float):
-	fov_changed.emit(value)
-	Settings.set_and_save_value("video", "fov", value)
 
 
 func _on_restore_pressed():

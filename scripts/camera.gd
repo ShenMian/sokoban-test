@@ -1,7 +1,5 @@
 extends Camera3D
 
-@onready var settings_menu: Control = $"../MenuLayer/SettingsMenu"
-
 @export var drag_sensitivity = 1
 @export var zoom_sensitivity = 0.5
 @export var smooth_factor = 15.0
@@ -13,8 +11,13 @@ var _target_size: float = 10.0
 
 func _ready():
 	_target_position = global_position
-	
-	settings_menu.fov_changed.connect(self.set_fov)
+
+	Settings.setting_changed.connect(_on_setting_changed)
+
+
+func _on_setting_changed(section: String, key: String, value: Variant):
+	if section == "video" and key == "fov":
+		self.set_fov(value)
 
 
 func _process(delta):
