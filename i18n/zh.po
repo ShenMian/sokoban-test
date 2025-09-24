@@ -4,6 +4,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+# HUD
+
 msgid "MOVES"
 msgstr "移动数"
 
@@ -57,6 +59,8 @@ msgstr "热力图"
 
 msgid "HEATMAP_TIP"
 msgstr "将推动下界以热力图的形式可视化"
+
+# Video
 
 msgid "VIDEO"
 msgstr "视频"
@@ -142,6 +146,8 @@ msgstr "多重采样抗锯齿.\n质量: 中, 开销: 高"
 msgid "DISABLED"
 msgstr "禁用"
 
+# Audio
+
 msgid "AUDIO"
 msgstr "音频"
 
@@ -175,23 +181,36 @@ msgstr "失去焦点时静音"
 msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
 msgstr "在游戏窗口不在焦点时静音"
 
+# Input
+
 msgid "INPUT"
 msgstr "输入"
 
 msgid "KEY_BINDINGS"
 msgstr "按键绑定"
 
-msgid "ACTION_UP"
+msgid "CANCEL"
+msgstr "取消"
+
+msgid "CLEAR"
+msgstr "清空"
+
+msgid "CONFIRM"
+msgstr "确认"
+
+msgid "MOVE_UP"
 msgstr "上移"
 
-msgid "ACTION_DOWN"
+msgid "MOVE_DOWN"
 msgstr "下移"
 
-msgid "ACTION_LEFT"
+msgid "MOVE_LEFT"
 msgstr "左移"
 
-msgid "ACTION_RIGHT"
+msgid "MOVE_RIGHT"
 msgstr "右移"
+
+# Pause Menu
 
 msgid "SETTINGS"
 msgstr "设置"

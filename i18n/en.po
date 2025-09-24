@@ -4,6 +4,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+# HUD
+
 msgid "MOVES"
 msgstr "Moves"
 
@@ -57,6 +59,8 @@ msgstr "Heatmap"
 
 msgid "HEATMAP_TIP"
 msgstr "Visualize push lower bounds as a heatmap"
+
+# Video
 
 msgid "VIDEO"
 msgstr "Video"
@@ -146,6 +150,8 @@ msgstr ""
 msgid "DISABLED"
 msgstr "Disabled"
 
+# Audio
+
 msgid "AUDIO"
 msgstr "Audio"
 
@@ -179,23 +185,36 @@ msgstr "Mute When Not Focused"
 msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
 msgstr "Mute audio when the game window is not focused"
 
+# Input
+
 msgid "INPUT"
 msgstr "Input"
 
 msgid "KEY_BINDINGS"
 msgstr "Key Bindings"
 
-msgid "ACTION_UP"
+msgid "CANCEL"
+msgstr "Cancel"
+
+msgid "CLEAR"
+msgstr "Clear"
+
+msgid "CONFIRM"
+msgstr "Confirm"
+
+msgid "MOVE_UP"
 msgstr "Up"
 
-msgid "ACTION_DOWN"
+msgid "MOVE_DOWN"
 msgstr "Down"
 
-msgid "ACTION_LEFT"
+msgid "MOVE_LEFT"
 msgstr "Left"
 
-msgid "ACTION_RIGHT"
+msgid "MOVE_RIGHT"
 msgstr "Right"
+
+# Pause Menu
 
 msgid "SETTINGS"
 msgstr "Settings"
