@@ -1,0 +1,130 @@
+[gd_scene load_steps=8 format=3 uid="uid://bgou1t8ve7r2j"]
+
+[ext_resource type="Material" uid="uid://f7k4fqqjs8id" path="res://assets/materials/blur.tres" id="1_dbx47"]
+[ext_resource type="Script" uid="uid://cgs0hu63210sd" path="res://scripts/binding_popup.gd" id="1_ogujs"]
+[ext_resource type="Theme" uid="uid://el10yav48fuk" path="res://assets/title_theme.tres" id="2_m7nm2"]
+[ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="2_sycsx"]
+[ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="3_sycsx"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_jpbdv"]
+action = &"pause"
+
+[sub_resource type="Shortcut" id="Shortcut_m7nm2"]
+events = [SubResource("InputEventAction_jpbdv")]
+
+[node name="BindingPopup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ogujs")
+
+[node name="BlurBackground" type="ColorRect" parent="."]
+material = ExtResource("1_dbx47")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 205)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.11372549, 0.105882354, 0.1254902, 1)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -102.0
+offset_bottom = 102.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_m7nm2")
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBox"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+stretch_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+color = Color(0.2, 0.19215687, 0.21176471, 1)
+
+[node name="HBox" type="HBoxContainer" parent="VBox/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="CancelButton" type="Button" parent="VBox/ColorRect/HBox"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+text = "CANCEL"
+script = ExtResource("2_sycsx")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
+[node name="ClearButton" type="Button" parent="VBox/ColorRect/HBox"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "CLEAR"
+script = ExtResource("2_sycsx")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
+[node name="ConfirmButton" type="Button" parent="VBox/ColorRect/HBox"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+text = "CONFIRM"
+script = ExtResource("2_sycsx")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
+[node name="CancelButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -66.0
+offset_right = 142.0
+offset_bottom = -20.0
+grow_vertical = 0
+shortcut = SubResource("Shortcut_m7nm2")
+shortcut_in_tooltip = false
+text = "CANCEL"
+icon = ExtResource("3_sycsx")
+script = ExtResource("2_sycsx")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"

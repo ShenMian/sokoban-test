@@ -1,5 +1,7 @@
 extends CenterContainer
 
+@onready var binding_popup: Control = $"../../../../BindingPopup"
+
 @onready var up_button: Button = $VBox/GridContainer/UpButton
 @onready var down_button: Button = $VBox/GridContainer/DownButton
 @onready var left_button: Button = $VBox/GridContainer/LeftButton
@@ -9,13 +11,14 @@ var _rebinding_action: StringName
 
 
 func _ready():
-	set_process_input(false)
 	apply_settings()
 	
 	up_button.pressed.connect(_on_button_pressed.bind("move_up", up_button))
 	down_button.pressed.connect(_on_button_pressed.bind("move_down", down_button))
 	left_button.pressed.connect(_on_button_pressed.bind("move_left", left_button))
 	right_button.pressed.connect(_on_button_pressed.bind("move_right", right_button))
+
+	binding_popup.closed.connect(apply_settings)
 
 
 func apply_settings():
@@ -28,26 +31,8 @@ func apply_settings():
 func _on_button_pressed(action: StringName, button: Button):
 	_rebinding_action = action
 	button.icon = _get_icon_by_key_name(_get_key_name_by_action(_rebinding_action) + "_outline")
-	set_process_input(true)
 
-
-func _input(event):
-	assert(_rebinding_action != "")
-
-	if event.is_released():
-		return
-	set_process_input(false)
-
-	if event is InputEventKey and event.keycode == KEY_ESCAPE:
-		pass
-	elif event is InputEventKey and event.pressed:
-		var key_event := event as InputEventKey
-		InputMap.action_erase_events(_rebinding_action)
-		InputMap.action_add_event(_rebinding_action, key_event)
-
-	_rebinding_action = ""
-	apply_settings()
-	get_viewport().set_input_as_handled()
+	binding_popup.open(action)
 
 
 func _get_key_name_by_action(action: StringName) -> String:
