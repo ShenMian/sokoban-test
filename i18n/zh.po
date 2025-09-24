@@ -58,39 +58,6 @@ msgstr "热力图"
 msgid "HEATMAP_TIP"
 msgstr "将推动下界以热力图的形式可视化"
 
-msgid "AUDIO"
-msgstr "音频"
-
-msgid "VOLUME"
-msgstr "音量"
-
-msgid "MASTER_VOLUME"
-msgstr "主音量"
-
-msgid "MASTER_VOLUME_TIP"
-msgstr "主音量控制整体音量"
-
-msgid "MUSIC_VOLUME"
-msgstr "音乐音量"
-
-msgid "MUSIC_VOLUME_TIP"
-msgstr "单独调整音乐音量"
-
-msgid "SFX_VOLUME"
-msgstr "音效音量"
-
-msgid "SFX_VOLUME_TIP"
-msgstr "单独调整音效音量"
-
-msgid "OUTPUT"
-msgstr "输出设备"
-
-msgid "MUTE_WHEN_NOT_FOCUSED"
-msgstr "失去焦点时静音"
-
-msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
-msgstr "在游戏窗口不在焦点时静音"
-
 msgid "VIDEO"
 msgstr "视频"
 
@@ -174,6 +141,57 @@ msgstr "多重采样抗锯齿.\n质量: 中, 开销: 高"
 
 msgid "DISABLED"
 msgstr "禁用"
+
+msgid "AUDIO"
+msgstr "音频"
+
+msgid "VOLUME"
+msgstr "音量"
+
+msgid "MASTER_VOLUME"
+msgstr "主音量"
+
+msgid "MASTER_VOLUME_TIP"
+msgstr "主音量控制整体音量"
+
+msgid "MUSIC_VOLUME"
+msgstr "音乐音量"
+
+msgid "MUSIC_VOLUME_TIP"
+msgstr "单独调整音乐音量"
+
+msgid "SFX_VOLUME"
+msgstr "音效音量"
+
+msgid "SFX_VOLUME_TIP"
+msgstr "单独调整音效音量"
+
+msgid "OUTPUT"
+msgstr "输出设备"
+
+msgid "MUTE_WHEN_NOT_FOCUSED"
+msgstr "失去焦点时静音"
+
+msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
+msgstr "在游戏窗口不在焦点时静音"
+
+msgid "INPUT"
+msgstr "输入"
+
+msgid "KEY_BINDINGS"
+msgstr "按键绑定"
+
+msgid "ACTION_UP"
+msgstr "上移"
+
+msgid "ACTION_DOWN"
+msgstr "下移"
+
+msgid "ACTION_LEFT"
+msgstr "左移"
+
+msgid "ACTION_RIGHT"
+msgstr "右移"
 
 msgid "SETTINGS"
 msgstr "设置"

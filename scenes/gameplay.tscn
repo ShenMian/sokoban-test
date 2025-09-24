@@ -165,15 +165,15 @@ layout_mode = 2
 
 [node name="UndoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
-text = "Undo"
+text = "UNDO"
 
 [node name="ResetButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
-text = "Reset"
+text = "RESET"
 
 [node name="SolveButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
 layout_mode = 2
-text = "Solve"
+text = "SOLVE"
 
 [node name="MenuLayer" type="CanvasLayer" parent="."]
 layer = 2

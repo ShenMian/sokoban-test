@@ -58,39 +58,6 @@ msgstr "Heatmap"
 msgid "HEATMAP_TIP"
 msgstr "Visualize push lower bounds as a heatmap"
 
-msgid "AUDIO"
-msgstr "Audio"
-
-msgid "VOLUME"
-msgstr "Volume"
-
-msgid "MASTER_VOLUME"
-msgstr "Master Volume"
-
-msgid "MASTER_VOLUME_TIP"
-msgstr "Master volume controls overall audio level"
-
-msgid "MUSIC_VOLUME"
-msgstr "Music Volume"
-
-msgid "MUSIC_VOLUME_TIP"
-msgstr "Adjust music volume separately from sound effects"
-
-msgid "SFX_VOLUME"
-msgstr "SFX Volume"
-
-msgid "SFX_VOLUME_TIP"
-msgstr "Adjust sound effects volume separately from music"
-
-msgid "OUTPUT"
-msgstr "Output"
-
-msgid "MUTE_WHEN_NOT_FOCUSED"
-msgstr "Mute When Not Focused"
-
-msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
-msgstr "Mute audio when the game window is not focused"
-
 msgid "VIDEO"
 msgstr "Video"
 
@@ -178,6 +145,57 @@ msgstr ""
 
 msgid "DISABLED"
 msgstr "Disabled"
+
+msgid "AUDIO"
+msgstr "Audio"
+
+msgid "VOLUME"
+msgstr "Volume"
+
+msgid "MASTER_VOLUME"
+msgstr "Master Volume"
+
+msgid "MASTER_VOLUME_TIP"
+msgstr "Master volume controls overall audio level"
+
+msgid "MUSIC_VOLUME"
+msgstr "Music Volume"
+
+msgid "MUSIC_VOLUME_TIP"
+msgstr "Adjust music volume separately from sound effects"
+
+msgid "SFX_VOLUME"
+msgstr "SFX Volume"
+
+msgid "SFX_VOLUME_TIP"
+msgstr "Adjust sound effects volume separately from music"
+
+msgid "OUTPUT"
+msgstr "Output"
+
+msgid "MUTE_WHEN_NOT_FOCUSED"
+msgstr "Mute When Not Focused"
+
+msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
+msgstr "Mute audio when the game window is not focused"
+
+msgid "INPUT"
+msgstr "Input"
+
+msgid "KEY_BINDINGS"
+msgstr "Key Bindings"
+
+msgid "ACTION_UP"
+msgstr "Up"
+
+msgid "ACTION_DOWN"
+msgstr "Down"
+
+msgid "ACTION_LEFT"
+msgstr "Left"
+
+msgid "ACTION_RIGHT"
+msgstr "Right"
 
 msgid "SETTINGS"
 msgstr "Settings"

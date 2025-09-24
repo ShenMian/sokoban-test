@@ -103,9 +103,7 @@ impl LevelMap {
         };
 
         let box_positions = self.map().box_positions().clone();
-        if let Err(err) = self.level.do_action(direction) {
-            godot_print!("failed to do action: {}", err);
-        }
+        let _ = self.level.do_action(direction);
 
         let new_box_positions = self.map().box_positions().clone();
 

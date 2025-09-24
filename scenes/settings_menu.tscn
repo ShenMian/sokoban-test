@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=22 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_6wm04"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://bc8nqwx2f77uu" path="res://scripts/ui/switch_fx.gd" id="6_jrqig"]
 [ext_resource type="PackedScene" uid="uid://bolx2df8w721l" path="res://scenes/slider_bar.tscn" id="6_n35ux"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="7_n35ux"]
+[ext_resource type="Script" uid="uid://cfr860c1yrp7d" path="res://scripts/settings/input.gd" id="10_jpbdv"]
 [ext_resource type="Texture2D" uid="uid://c3gjvvql86lqt" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_r.svg" id="12_n0fy7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4mfi"]
@@ -120,9 +121,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_2ctot")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 0
+current_tab = 3
 
 [node name="GAMEPLAY" type="CenterContainer" parent="MarginContainer/VBox/Tabs"]
+visible = false
 layout_mode = 2
 script = ExtResource("4_fb6cq")
 metadata/_tab_index = 0
@@ -739,6 +741,134 @@ layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
+
+[node name="INPUT" type="CenterContainer" parent="MarginContainer/VBox/Tabs"]
+layout_mode = 2
+script = ExtResource("10_jpbdv")
+metadata/_tab_index = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/Tabs/INPUT"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="KeyBindingsLabel" type="Label" parent="MarginContainer/VBox/Tabs/INPUT/VBox"]
+layout_mode = 2
+theme = ExtResource("2_f4mfi")
+text = "KEY_BINDINGS"
+uppercase = true
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBox/Tabs/INPUT/VBox"]
+layout_mode = 2
+columns = 2
+
+[node name="UpPanel" type="Panel" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+custom_minimum_size = Vector2(500, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "MUTE_WHEN_NOT_FOCUSED_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/UpPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/UpPanel/Margin"]
+layout_mode = 2
+text = "ACTION_UP"
+
+[node name="UpButton" type="Button" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="DownPanel" type="Panel" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "MUTE_WHEN_NOT_FOCUSED_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/DownPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/DownPanel/Margin"]
+layout_mode = 2
+text = "ACTION_DOWN"
+
+[node name="DownButton" type="Button" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="LeftPanel" type="Panel" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "MUTE_WHEN_NOT_FOCUSED_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/LeftPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/LeftPanel/Margin"]
+layout_mode = 2
+text = "ACTION_LEFT"
+
+[node name="LeftButton" type="Button" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="RightPanel" type="Panel" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "MUTE_WHEN_NOT_FOCUSED_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/RightPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer/RightPanel/Margin"]
+layout_mode = 2
+text = "ACTION_RIGHT"
+
+[node name="RightButton" type="Button" parent="MarginContainer/VBox/Tabs/INPUT/VBox/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
 
 [node name="HSpacer" type="HSeparator" parent="MarginContainer/VBox"]
 modulate = Color(1, 1, 1, 0)
