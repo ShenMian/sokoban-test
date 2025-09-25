@@ -1,4 +1,5 @@
 extends Control
+class_name PauseMenu
 
 signal closed
 signal request_settings

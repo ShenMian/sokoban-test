@@ -1,8 +1,8 @@
 extends Node3D
 
 @onready var hud: Control = $HudLayer/HUD
-@onready var pause_menu: Control = $MenuLayer/PauseMenu
-@onready var settings_menu: Control = $MenuLayer/SettingsMenu
+@onready var pause_menu: PauseMenu = $MenuLayer/PauseMenu
+@onready var settings_menu: SettingsMenu = $MenuLayer/SettingsMenu
 @onready var credits: Control = $MenuLayer/Credits
 
 

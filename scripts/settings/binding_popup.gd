@@ -1,4 +1,5 @@
 extends Control
+class_name BindingPopup
 
 signal closed
 
@@ -57,19 +58,22 @@ func _input(event):
 
 	if event is InputEventKey and event.pressed:
 		_new_event = event as InputEventKey
-		texture_rect.texture = _get_icon_by_key_name(OS.get_keycode_string(_new_event.physical_keycode))
+		texture_rect.texture = _get_icon_by_key_name(_get_key_name_by_event(_new_event))
 
 
 func _get_key_name_by_action(action: StringName) -> String:
 	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
-			var key_event := event as InputEventKey
-			if key_event.physical_keycode != 0:
-				return OS.get_keycode_string(key_event.physical_keycode)
-			if key_event.keycode != 0:
-				return OS.get_keycode_string(key_event.keycode)
-			return key_event.as_text()
+			return _get_key_name_by_event(event as InputEventKey)
 	return ""
+
+
+func _get_key_name_by_event(event: InputEventKey) -> String:
+	if event.physical_keycode != 0:
+		return OS.get_keycode_string(event.physical_keycode)
+	if event.keycode != 0:
+		return OS.get_keycode_string(event.keycode)
+	return event.as_text()
 
 
 func _get_icon_by_key_name(key: String) -> Texture2D:
