@@ -76,7 +76,7 @@ func reset_audio_settings():
 func _ready() -> void:
 	var error := config.load(CONFIG_PATH)
 	if error:
-		print("failed to load config file: ", error)
+		printerr("failed to load config file: ", error_string(error))
 
 		# Creates default settings
 		reset_gameplay_settings()

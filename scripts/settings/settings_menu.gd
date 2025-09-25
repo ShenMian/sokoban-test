@@ -11,6 +11,7 @@ signal closed
 @onready var gameplay: CenterContainer = $MarginContainer/VBox/Tabs/GAMEPLAY
 @onready var video: ScrollContainer = $MarginContainer/VBox/Tabs/VIDEO
 @onready var audio: CenterContainer = $MarginContainer/VBox/Tabs/AUDIO
+@onready var input: CenterContainer = $MarginContainer/VBox/Tabs/INPUT
 
 
 func open():
@@ -52,3 +53,6 @@ func _on_restore_pressed():
 		"AUDIO":
 			Settings.reset_audio_settings()
 			audio.apply_settings()
+		"INPUT":
+			input.reset_settings()
+			input.apply_settings()

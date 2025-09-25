@@ -17,8 +17,8 @@ func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
 	self.solved.connect(_on_solved)
 
-	# self.load_from_string("DuLLrUUdrR");
-	self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD");
+	self.load_from_string("DuLLrUUdrR");
+	# self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD");
 
 	camera.global_position.x = self.dimensions().x / 2.0
 	camera.global_position.z = self.dimensions().y / 2.0
