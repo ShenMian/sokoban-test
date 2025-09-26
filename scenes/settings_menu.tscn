@@ -200,7 +200,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBox/Tabs/GAMEPLAY/VBox/CheckerboardPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
-text = "CHECKERBOARD"
+text = "CHECKERBOARD_SHADING"
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/Tabs/GAMEPLAY/VBox/CheckerboardPanel/Margin/HBox"]
 layout_mode = 2
@@ -232,7 +232,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/VBox/Tabs/GAMEPLAY/VBox/DeadlockPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
-text = "DEADLOCK"
+text = "DEADLOCK_HINT"
 
 [node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/Tabs/GAMEPLAY/VBox/DeadlockPanel/Margin/HBox"]
 layout_mode = 2
