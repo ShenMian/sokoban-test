@@ -54,5 +54,5 @@ func _on_restore_pressed():
 			Settings.reset_audio_settings()
 			audio.apply_settings()
 		"INPUT":
-			input.reset_settings()
+			Settings.reset_input_settings()
 			input.apply_settings()

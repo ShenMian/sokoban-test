@@ -29,6 +29,23 @@ const DEFAULT_CONFIG = {
 	}
 }
 
+const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
+const BINDINGS_PATH := "user://bindings.tres"
+
+
+func _ready() -> void:
+	var error := config.load(CONFIG_PATH)
+	if error:
+		printerr("failed to load config file: ", error_string(error))
+
+		# Creates default settings
+		reset_gameplay_settings()
+		reset_video_settings()
+		reset_audio_settings()
+	
+	save_input_bindings(DEFAULT_BINDINGS_PATH)
+	load_input_bindings()
+
 
 func set_and_save_value(section: String, key: String, value: Variant):
 	set_value(section, key, value)
@@ -73,12 +90,28 @@ func reset_audio_settings():
 	config.save(CONFIG_PATH)
 
 
-func _ready() -> void:
-	var error := config.load(CONFIG_PATH)
-	if error:
-		printerr("failed to load config file: ", error_string(error))
+func reset_input_settings():
+	load_input_bindings(DEFAULT_BINDINGS_PATH)
+	save_input_bindings()
 
-		# Creates default settings
-		reset_gameplay_settings()
-		reset_video_settings()
-		reset_audio_settings()
+
+func save_input_bindings(path: String = BINDINGS_PATH):
+	var map = DictionaryResource.new()
+	for action in InputMap.get_actions():
+		if action.begins_with("editor_") or action.begins_with("ui_"):
+			continue
+		map.dict[action] = InputMap.action_get_events(action)
+	var error := ResourceSaver.save(map, path)
+	if error:
+		printerr("failed to save bindings: ", error_string(error))
+
+
+func load_input_bindings(path: String = BINDINGS_PATH):
+	var map: DictionaryResource = ResourceLoader.load(path, "DictionaryResource")
+	if not is_instance_valid(map):
+		printerr("failed to load bindings")
+		return
+	for action in map.dict:
+		InputMap.action_erase_events(action)
+		for event in map.dict[action]:
+			InputMap.action_add_event(action, event)
