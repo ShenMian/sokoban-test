@@ -1,4 +1,4 @@
-extends CenterContainer
+extends ScrollContainer
 
 @onready var language: OptionButton = $VBox/LanguagePanel/Margin/HBox/OptionButton
 @onready var deadlock: SwitchFx = $VBox/DeadlockPanel/Margin/HBox/CheckButton
@@ -17,14 +17,14 @@ const LOCALE_TO_INDEX := {
 var INDEX_TO_LOCALE := LOCALE_TO_INDEX.keys()
 
 
-func _ready() -> void:
+func _ready():
 	language.item_selected.connect(_on_language_selected)
 	deadlock.toggled.connect(_on_deadlock_toggled)
 
 	apply_settings()
 
 
-func apply_settings() -> void:
+func apply_settings():
 	language.select(LOCALE_TO_INDEX[Settings.get_value(SECTION_NAME, "language")])
 	language.item_selected.emit(language.selected)
 

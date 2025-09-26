@@ -4,14 +4,17 @@ class_name SettingsMenu
 signal closed
 
 @onready var background: TextureRect = $Background
-@onready var tabs: TabContainer = $MarginContainer/VBox/Tabs
+@onready var tabs: TabContainer = $MarginContainer/VBox/HSplit/Tabs
+@onready var tooltip: RichTextLabel = $MarginContainer/VBox/HSplit/Margin/Tooltip
 @onready var close_button: ButtonFx = $CloseButton
 @onready var restore_button: ButtonFx = $RestoreButton
 
-@onready var gameplay: CenterContainer = $MarginContainer/VBox/Tabs/GAMEPLAY
-@onready var video: ScrollContainer = $MarginContainer/VBox/Tabs/VIDEO
-@onready var audio: CenterContainer = $MarginContainer/VBox/Tabs/AUDIO
-@onready var input: CenterContainer = $MarginContainer/VBox/Tabs/INPUT
+@onready var gameplay: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/GAMEPLAY
+@onready var video: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/VIDEO
+@onready var audio: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/AUDIO
+@onready var input: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/INPUT
+
+var _hovered_control: Control = null
 
 
 func open():
@@ -23,15 +26,10 @@ func close():
 	closed.emit()
 
 
-func _ready() -> void:
+func _ready():
 	tabs.tab_changed.connect(_on_active_tab_changed)
 	close_button.pressed.connect(close)
 	restore_button.pressed.connect(_on_restore_pressed)
-
-
-func _input(_event: InputEvent):
-	if not self.visible:
-		return
 
 
 func _on_active_tab_changed(index: int):
@@ -56,3 +54,61 @@ func _on_restore_pressed():
 		"INPUT":
 			Settings.reset_input_settings()
 			input.apply_settings()
+
+
+func _input(_event: InputEvent):
+	if not self.visible:
+		return
+	_update_tooltip()
+
+
+func _update_tooltip():
+	var active_tab := tabs.get_current_tab_control()
+	if not active_tab:
+		return
+
+	var control_under_mouse := _find_control_at_point(active_tab, get_global_mouse_position())
+
+	if control_under_mouse == _hovered_control:
+		return
+	_hovered_control = control_under_mouse
+
+	var tooltip_control := _find_tooltip_control(_hovered_control, active_tab)
+	if tooltip_control:
+		var title: String = tooltip_control.get_meta("title")
+		var description: String = tooltip_control.get_meta("description")
+		tooltip.text = "[font_size=26][b][i]%s[/i][/b][/font_size]\n%s" % [tr(title), tr(description)]
+	else:
+		tooltip.text = ""
+
+
+func _find_tooltip_control(control: Control, root: Control) -> Control:
+	var current := control
+	while current:
+		if current.has_meta("title"):
+			return current
+		var parent := current.get_parent()
+		if parent == root || not parent is Control:
+			return null
+		current = parent
+	return null
+
+
+func _find_control_at_point(parent: Control, point: Vector2) -> Control:
+	var children := parent.get_children()
+	# Reverse it in-place to check topmost nodes first
+	children.reverse()
+	
+	for child in children:
+		if not child is Control:
+			continue
+		var child_control = child as Control
+
+		if child_control.get_global_rect().has_point(point):
+			# This child is a candidate. Check if one of its children is a better candidate.
+			var deeper_control := _find_control_at_point(child_control, point)
+			# If we found a deeper child, that's our answer. Otherwise, this child is it.
+			return deeper_control if deeper_control else child_control
+
+	# No child at this level contains the point
+	return null

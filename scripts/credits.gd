@@ -15,7 +15,7 @@ func close():
 	closed.emit()
 
 
-func _ready() -> void:
+func _ready():
 	rich_text_label.meta_clicked.connect(_on_meta_clicked)
 	close_button.pressed.connect(close)
 

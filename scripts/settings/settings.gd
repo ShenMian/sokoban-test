@@ -33,7 +33,7 @@ const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
 const BINDINGS_PATH := "user://bindings.tres"
 
 
-func _ready() -> void:
+func _ready():
 	var error := config.load(CONFIG_PATH)
 	if error:
 		printerr("failed to load config file: ", error_string(error))

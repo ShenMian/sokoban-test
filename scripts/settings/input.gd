@@ -1,6 +1,6 @@
-extends CenterContainer
+extends ScrollContainer
 
-@onready var binding_popup: BindingPopup = $"../../../../BindingPopup"
+@onready var binding_popup: BindingPopup = $"../../../../../BindingPopup"
 
 @onready var action_buttons := {
 	"move_up": $VBox/GridContainer/UpButton,

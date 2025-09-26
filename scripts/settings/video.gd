@@ -2,9 +2,9 @@ extends ScrollContainer
 
 @onready var window_mode: OptionButton = $VBox/WindowModePanel/Margin/HBox/OptionButton
 @onready var vsync: CheckButton = $VBox/VsyncPanel/Margin/HBox/CheckButton
-@onready var frame_rate_limit: SliderBar = $VBox/FrameRateLimitPanel/Margin/HBox/SliderBar
+@onready var frame_rate_limit: SliderBar = $VBox/FrameRateLimitPanel/Margin/HSplit/SliderBar
 
-@onready var fov: SliderBar = $VBox/FieldOfViewPanel/Margin/HBox/SliderBar
+@onready var fov: SliderBar = $VBox/FieldOfViewPanel/Margin/HSplit/SliderBar
 
 @onready var screen_space_aa: OptionButton = $VBox/ScreenSpaceAAPanel/Margin/HBox/OptionButton
 @onready var msaa: OptionButton = $VBox/MsaaPanel/Margin/HBox/OptionButton

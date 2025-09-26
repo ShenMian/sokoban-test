@@ -23,7 +23,7 @@ func _ready():
 	label.text = str(int(round(progress_bar.value)))
 
 
-func _on_value_changed(value: float) -> void:
+func _on_value_changed(value: float):
 	progress_bar.value = value
 	if self.min_value == 0.0 and self.max_value == 1.0:
 		label.text = str(int(round(value * 100))) + "%"

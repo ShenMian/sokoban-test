@@ -1,8 +1,8 @@
-extends CenterContainer
+extends ScrollContainer
 
-@onready var master_volumn: SliderBar = $VBox/MasterVolumePanel/Margin/HBox/SliderBar
-@onready var music_volumn: SliderBar = $VBox/MusicVolumePanel/Margin/HBox/SliderBar
-@onready var sfx_volumn: SliderBar = $VBox/SfxVolumePanel/Margin/HBox/SliderBar
+@onready var master_volumn: SliderBar = $VBox/MasterVolumePanel/Margin/HSplit/SliderBar
+@onready var music_volumn: SliderBar = $VBox/MusicVolumePanel/Margin/HSplit/SliderBar
+@onready var sfx_volumn: SliderBar = $VBox/SfxVolumePanel/Margin/HSplit/SliderBar
 @onready var mute_when_not_focused: CheckButton = $VBox/MuteWhenNotFocusedPanel/Margin/HBox/CheckButton
 
 @onready var master_bus_index := AudioServer.get_bus_index("Master")
