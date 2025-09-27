@@ -1,9 +1,9 @@
 [gd_scene load_steps=51 format=4 uid="uid://d3bx7fp67oyvm"]
 
-[ext_resource type="Texture2D" uid="uid://btqlvtno83hj" path="res://assets/models/Textures/colormap.png" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://btqlvtno83hj" path="res://assets/models/prototype_kit/Textures/colormap.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://d00rrxvy7irsm" path="res://scripts/player.gd" id="1_gmlin"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://lc3g74mqowmf" path="res://assets/state_machine.tres" id="2_dovo2"]
-[ext_resource type="PackedScene" uid="uid://qfpcm2irmvkb" path="res://assets/models/hat-hard.glb" id="3_lvxji"]
+[ext_resource type="PackedScene" uid="uid://qfpcm2irmvkb" path="res://assets/models/prototype_kit/hat-hard.glb" id="3_lvxji"]
 [ext_resource type="ArrayMesh" uid="uid://cnr4b8oogdane" path="res://assets/meshes/indiactor_c.res" id="4_75vfm"]
 [ext_resource type="ArrayMesh" uid="uid://bca7jsquyhgs" path="res://assets/meshes/indicator_e.res" id="5_0owmy"]
 [ext_resource type="AudioStream" uid="uid://bf16e3vtraye4" path="res://assets/audio/sfx/footsteps_randomizer_b.tres" id="6_0owmy"]

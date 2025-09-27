@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://21pc424cssvj"]
 
-[ext_resource type="PackedScene" uid="uid://cxfu2k25lu4id" path="res://assets/models/floor-square.glb" id="1_djgao"]
-[ext_resource type="PackedScene" uid="uid://cmgcpw3ygff0d" path="res://assets/models/floor-thick.glb" id="2_s3a7k"]
-[ext_resource type="PackedScene" uid="uid://df64hj7bo34kt" path="res://assets/models/indicator-special-area.glb" id="3_lcowe"]
-[ext_resource type="PackedScene" uid="uid://c5wu8kj4yesbo" path="res://assets/models/indicator-special-lines.glb" id="4_s3a7k"]
+[ext_resource type="PackedScene" uid="uid://cxfu2k25lu4id" path="res://assets/models/prototype_kit/floor-square.glb" id="1_djgao"]
+[ext_resource type="PackedScene" uid="uid://cmgcpw3ygff0d" path="res://assets/models/prototype_kit/floor-thick.glb" id="2_s3a7k"]
+[ext_resource type="PackedScene" uid="uid://df64hj7bo34kt" path="res://assets/models/prototype_kit/indicator-special-area.glb" id="3_lcowe"]
+[ext_resource type="PackedScene" uid="uid://c5wu8kj4yesbo" path="res://assets/models/prototype_kit/indicator-special-lines.glb" id="4_s3a7k"]
 
 [node name="MeshLibrary" type="Node3D"]
 
