@@ -120,6 +120,7 @@ shortcut = SubResource("Shortcut_v4r4p")
 shortcut_in_tooltip = false
 text = "CLOSE"
 icon = ExtResource("3_kukqi")
+flat = true
 script = ExtResource("4_7l7mv")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
 

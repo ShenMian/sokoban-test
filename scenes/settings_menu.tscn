@@ -952,6 +952,7 @@ shortcut = SubResource("Shortcut_puhno")
 shortcut_in_tooltip = false
 text = "CLOSE"
 icon = ExtResource("6_48ojb")
+flat = true
 script = ExtResource("7_n35ux")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
@@ -969,6 +970,7 @@ shortcut = SubResource("Shortcut_jpbdv")
 shortcut_in_tooltip = false
 text = "RESTORE_DEFAULTS"
 icon = ExtResource("12_n0fy7")
+flat = true
 script = ExtResource("7_n35ux")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
 

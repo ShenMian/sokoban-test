@@ -126,5 +126,6 @@ shortcut = SubResource("Shortcut_m7nm2")
 shortcut_in_tooltip = false
 text = "CANCEL"
 icon = ExtResource("3_sycsx")
+flat = true
 script = ExtResource("2_sycsx")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
