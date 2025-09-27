@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cixpuprgvgi1u"]
+[gd_scene load_steps=25 format=3 uid="uid://cixpuprgvgi1u"]
 
 [ext_resource type="Script" uid="uid://0dia0lhl1jhw" path="res://scripts/settings/audio.gd" id="1_5p8wc"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_6wm04"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="7_n35ux"]
 [ext_resource type="Script" uid="uid://cfr860c1yrp7d" path="res://scripts/settings/input.gd" id="10_jpbdv"]
 [ext_resource type="FontFile" uid="uid://c3j7cxolf53qi" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-BoldItalic.woff2" id="11_75x6d"]
+[ext_resource type="FontFile" uid="uid://dh020jxovl25i" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Bold.woff2" id="11_x0dr5"]
 [ext_resource type="Texture2D" uid="uid://c3gjvvql86lqt" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_r.svg" id="12_n0fy7"]
 [ext_resource type="PackedScene" uid="uid://bgou1t8ve7r2j" path="res://scenes/binding_popup.tscn" id="14_puhno"]
 
@@ -133,10 +134,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_2ctot")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 2
+current_tab = 0
 
 [node name="GAMEPLAY" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs"]
-visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("4_fb6cq")
@@ -620,6 +620,7 @@ popup/item_3/text = "8x"
 popup/item_3/id = 3
 
 [node name="AUDIO" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs"]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("1_5p8wc")
@@ -928,6 +929,7 @@ theme_override_constants/margin_top = 50
 
 [node name="Tooltip" type="RichTextLabel" parent="MarginContainer/VBox/HSplit/Margin"]
 layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("11_x0dr5")
 theme_override_fonts/bold_italics_font = ExtResource("11_75x6d")
 bbcode_enabled = true
 
