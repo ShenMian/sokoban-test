@@ -35,13 +35,11 @@ func _physics_process(delta: float):
 
 
 func _input(event):
-	# FIXME: DEBUG
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_SPACE:
-			if self.is_3d_view():
-				switch_to_2d()
-			else:
-				switch_to_3d()
+	if Input.is_action_just_pressed("switch_view"):
+		if self.is_3d_view():
+			switch_to_2d()
+		else:
+			switch_to_3d()
 
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
