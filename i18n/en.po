@@ -51,8 +51,11 @@ msgstr ""
 "[b]Optimal Move[/b]: Find the optimal solution with the least moves"
 "[/ul]"
 
-msgid "FAST"
-msgstr "Fast"
+msgid "FAST_PUSH"
+msgstr "Fast (Push priority)"
+
+msgid "FAST_MOVE"
+msgstr "Fast (Move priority)"
 
 msgid "OPTIMAL_PUSH"
 msgstr "Optimal Push"

@@ -51,8 +51,11 @@ msgstr ""
 "[b]最优移动[/b]: 寻找移动次数最少的最优解"
 "[/ul]"
 
-msgid "FAST"
-msgstr "快速"
+msgid "FAST_PUSH"
+msgstr "快速 (推动优先)"
+
+msgid "FAST_MOVE"
+msgstr "快速 (移动优先)"
 
 msgid "OPTIMAL_PUSH"
 msgstr "最优推动"
