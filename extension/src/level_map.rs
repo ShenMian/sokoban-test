@@ -3,7 +3,7 @@ use std::str::FromStr;
 use godot::classes::{GridMap, IGridMap};
 use godot::prelude::*;
 use nalgebra::Vector2;
-use soukoban::{Actions, Level, Map, Tiles, deadlock::calculate_static_deadlocks};
+use soukoban::{Actions, Level, Map, Tiles, deadlock::compute_static_deadlocks};
 
 use crate::utils::*;
 
@@ -103,7 +103,7 @@ impl LevelMap {
         };
 
         let box_positions = self.map().box_positions().clone();
-        let _ = self.level.do_action(direction);
+        let _ = self.level.execute(direction);
 
         let new_box_positions = self.map().box_positions().clone();
 
@@ -212,7 +212,7 @@ impl LevelMap {
 
     fn show_deadlocks(&mut self) {
         let deadlock_id = self.deadlock_id;
-        let deadlocks = calculate_static_deadlocks(self.map());
+        let deadlocks = compute_static_deadlocks(self.map());
         for position in deadlocks {
             self.base_mut()
                 .set_cell_item(Vector3i::new(position.x, 0, position.y), deadlock_id);
