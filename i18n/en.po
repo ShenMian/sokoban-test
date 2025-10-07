@@ -86,7 +86,7 @@ msgstr ""
 "[ul]"
 "[b]Windowed[/b]\n"
 "[b]Borderless fullscreen[/b]\n"
-"[b]Exclusive fullscreen[/b] (not recommended)"
+"[b]Exclusive fullscreen[/b]"
 "[/ul]"
 
 msgid "WINDOWED"
