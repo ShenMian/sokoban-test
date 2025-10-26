@@ -291,15 +291,13 @@ text = "STRATEGY"
 layout_mode = 2
 size_flags_horizontal = 10
 selected = 0
-item_count = 4
-popup/item_0/text = "FAST_PUSH"
+item_count = 3
+popup/item_0/text = "FAST"
 popup/item_0/id = 0
-popup/item_1/text = "FAST_MOVE"
-popup/item_1/id = 3
-popup/item_2/text = "OPTIMAL_PUSH"
-popup/item_2/id = 1
-popup/item_3/text = "OPTIMAL_MOVE"
-popup/item_3/id = 2
+popup/item_1/text = "OPTIMAL_PUSH"
+popup/item_1/id = 1
+popup/item_2/text = "OPTIMAL_MOVE"
+popup/item_2/id = 2
 
 [node name="HeatmapPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
 custom_minimum_size = Vector2(0, 40)
