@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://bef3cb8eg20mo"]
+
+[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_2db0o"]
+[ext_resource type="Script" uid="uid://c5tskalfqb860" path="res://scripts/level_selector.gd" id="1_5xyw6"]
+
+[node name="LevelSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_2db0o")
+script = ExtResource("1_5xyw6")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="ItemList" type="ItemList" parent="MarginContainer"]
+layout_mode = 2
+icon_mode = 0
