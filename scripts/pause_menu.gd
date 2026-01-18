@@ -29,11 +29,6 @@ func _ready():
 	credits_button.pressed.connect(_on_credits_pressed)
 
 
-func _input(_event: InputEvent):
-	if not self.visible:
-		return
-
-
 func _on_settings_pressed():
 	request_settings.emit()
 
