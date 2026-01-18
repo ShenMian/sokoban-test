@@ -1,8 +1,8 @@
 extends ScrollContainer
 
-@onready var master_volumn: SliderBar = $VBox/MasterVolumePanel/Margin/HSplit/SliderBar
-@onready var music_volumn: SliderBar = $VBox/MusicVolumePanel/Margin/HSplit/SliderBar
-@onready var sfx_volumn: SliderBar = $VBox/SfxVolumePanel/Margin/HSplit/SliderBar
+@onready var master_volume: SliderBar = $VBox/MasterVolumePanel/Margin/HSplit/SliderBar
+@onready var music_volume: SliderBar = $VBox/MusicVolumePanel/Margin/HSplit/SliderBar
+@onready var sfx_volume: SliderBar = $VBox/SfxVolumePanel/Margin/HSplit/SliderBar
 @onready var mute_when_not_focused: CheckButton = $VBox/MuteWhenNotFocusedPanel/Margin/HBox/CheckButton
 
 @onready var master_bus_index := AudioServer.get_bus_index("Master")
@@ -13,9 +13,9 @@ const SECTION_NAME := "audio"
 
 
 func _ready():
-	master_volumn.value_changed.connect(_on_volume_changed.bind(master_bus_index))
-	music_volumn.value_changed.connect(_on_volume_changed.bind(music_bus_index))
-	sfx_volumn.value_changed.connect(_on_volume_changed.bind(sfx_bus_index))
+	master_volume.value_changed.connect(_on_volume_changed.bind(master_bus_index))
+	music_volume.value_changed.connect(_on_volume_changed.bind(music_bus_index))
+	sfx_volume.value_changed.connect(_on_volume_changed.bind(sfx_bus_index))
 
 	mute_when_not_focused.toggled.connect(_on_mute_when_not_focused_toggled)
 
@@ -23,9 +23,9 @@ func _ready():
 
 
 func apply_settings():
-	master_volumn.value = Settings.get_value("audio", "master_volume")
-	music_volumn.value = Settings.get_value("audio", "music_volume")
-	sfx_volumn.value = Settings.get_value("audio", "sfx_volume")
+	master_volume.value = Settings.get_value("audio", "master_volume")
+	music_volume.value = Settings.get_value("audio", "music_volume")
+	sfx_volume.value = Settings.get_value("audio", "sfx_volume")
 	mute_when_not_focused.button_pressed = Settings.get_value("audio", "mute_when_not_focused")
 
 
