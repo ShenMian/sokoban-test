@@ -20,14 +20,12 @@ func _on_setting_changed(section: String, key: String, value: Variant):
 		self.set_fov(value)
 
 
-func _process(delta):
+func _process(delta: float):
 	if abs(self.size - _target_size) > 0.001:
 		self.size = lerp(self.size, _target_size, smooth_factor * delta)
 	else:
 		self.size = _target_size
 
-
-func _physics_process(delta: float):
 	if global_position.distance_to(_target_position) > 0.001:
 		global_position = lerp(global_position, _target_position, smooth_factor * delta)
 	else:
