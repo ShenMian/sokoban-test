@@ -10,11 +10,7 @@ const LOCALE_TO_NAME := {
 	"zh": "中文"
 }
 
-const LOCALE_TO_INDEX := {
-	"en": 0,
-	"zh": 1
-}
-var INDEX_TO_LOCALE := LOCALE_TO_INDEX.keys()
+const LOCALES := ["en", "zh"]
 
 
 func _ready():
@@ -25,7 +21,7 @@ func _ready():
 
 
 func apply_settings():
-	language.select(LOCALE_TO_INDEX[Settings.get_value(SECTION_NAME, "language")])
+	language.select(LOCALES.find(Settings.get_value(SECTION_NAME, "language")))
 	language.item_selected.emit(language.selected)
 
 	deadlock.button_pressed = Settings.get_value(SECTION_NAME, "deadlock")
@@ -33,7 +29,7 @@ func apply_settings():
 
 
 func _on_language_selected(index: int):
-	var locale: String = INDEX_TO_LOCALE[index]
+	var locale: String = LOCALES[index]
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value(SECTION_NAME, "language", locale)
 
