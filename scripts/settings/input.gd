@@ -3,10 +3,10 @@ extends ScrollContainer
 @onready var binding_popup: BindingPopup = $"../../../../../BindingPopup"
 
 @onready var action_buttons := {
-	"move_up": $VBox/GridContainer/UpButton,
-	"move_down": $VBox/GridContainer/DownButton,
-	"move_left": $VBox/GridContainer/LeftButton,
-	"move_right": $VBox/GridContainer/RightButton,
+	"move_up": $Margin/VBox/GridContainer/UpButton,
+	"move_down": $Margin/VBox/GridContainer/DownButton,
+	"move_left": $Margin/VBox/GridContainer/LeftButton,
+	"move_right": $Margin/VBox/GridContainer/RightButton,
 }
 
 

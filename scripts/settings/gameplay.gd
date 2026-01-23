@@ -1,7 +1,7 @@
 extends ScrollContainer
 
-@onready var language: OptionButton = $VBox/LanguagePanel/Margin/HBox/OptionButton
-@onready var deadlock: SwitchFx = $VBox/DeadlockPanel/Margin/HBox/CheckButton
+@onready var language: OptionButton = $Margin/VBox/LanguagePanel/Margin/HBox/OptionButton
+@onready var deadlock: SwitchFx = $Margin/VBox/DeadlockPanel/Margin/HBox/CheckButton
 
 const SECTION_NAME := "gameplay"
 

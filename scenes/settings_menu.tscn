@@ -142,25 +142,30 @@ horizontal_scroll_mode = 0
 script = ExtResource("4_fb6cq")
 metadata/_tab_index = 0
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 5
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="GeneralLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
+[node name="GeneralLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "GENERAL"
 uppercase = true
 
-[node name="LanguagePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
+[node name="LanguagePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "LANGUAGE"
 metadata/description = "LANGUAGE_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LanguagePanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/LanguagePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -172,15 +177,15 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LanguagePanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/LanguagePanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LanguagePanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/LanguagePanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
 text = "LANGUAGE"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LanguagePanel/Margin/HBox"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/LanguagePanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 item_count = 2
@@ -189,14 +194,14 @@ popup/item_0/id = 0
 popup/item_1/text = "中文"
 popup/item_1/id = 1
 
-[node name="CheckerboardPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
+[node name="CheckerboardPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "CHECKERBOARD_SHADING"
 metadata/description = "CHECKERBOARD_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/CheckerboardPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/CheckerboardPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -208,28 +213,28 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/CheckerboardPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/CheckerboardPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/CheckerboardPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/CheckerboardPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
 text = "CHECKERBOARD_SHADING"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/CheckerboardPanel/Margin/HBox"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/CheckerboardPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
-[node name="DeadlockPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
+[node name="DeadlockPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "DEADLOCK_HINT"
 metadata/description = "DEADLOCK_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/DeadlockPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/DeadlockPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -241,34 +246,34 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/DeadlockPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/DeadlockPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/DeadlockPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/DeadlockPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
 text = "DEADLOCK_HINT"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/DeadlockPanel/Margin/HBox"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/DeadlockPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
-[node name="SolverLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
+[node name="SolverLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "SOLVER"
 uppercase = true
 
-[node name="StrategyPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
+[node name="StrategyPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "STRATEGY"
 metadata/description = "STRATEGY_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/StrategyPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/StrategyPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -280,14 +285,14 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/StrategyPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/StrategyPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/StrategyPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/StrategyPanel/Margin/HBox"]
 layout_mode = 2
 text = "STRATEGY"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/StrategyPanel/Margin/HBox"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/StrategyPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 selected = 0
@@ -299,14 +304,14 @@ popup/item_1/id = 1
 popup/item_2/text = "OPTIMAL_MOVE"
 popup/item_2/id = 2
 
-[node name="HeatmapPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox"]
+[node name="HeatmapPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "HEATMAP"
 metadata/description = "HEATMAP_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/HeatmapPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/HeatmapPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -318,15 +323,15 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/HeatmapPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/HeatmapPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/HeatmapPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/HeatmapPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
 text = "HEATMAP"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/HeatmapPanel/Margin/HBox"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/HeatmapPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
@@ -339,25 +344,30 @@ horizontal_scroll_mode = 0
 script = ExtResource("2_r6d6q")
 metadata/_tab_index = 1
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 5
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="DisplayLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="DisplayLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "DISPLAY"
 uppercase = true
 
-[node name="WindowModePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="WindowModePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "WINDOW_MODE"
 metadata/description = "WINDOW_MODE_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/WindowModePanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/WindowModePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -369,14 +379,14 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/WindowModePanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/WindowModePanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/WindowModePanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/WindowModePanel/Margin/HBox"]
 layout_mode = 2
 text = "WINDOW_MODE"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/WindowModePanel/Margin/HBox"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/WindowModePanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 item_count = 3
@@ -387,14 +397,14 @@ popup/item_1/id = 1
 popup/item_2/text = "EXCLUSIVE_FULLSCREEN"
 popup/item_2/id = 2
 
-[node name="VsyncPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="VsyncPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "VSYNC"
 metadata/description = "VSYNC_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/VsyncPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/VsyncPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -406,27 +416,27 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/VsyncPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/VsyncPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/VsyncPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/VsyncPanel/Margin/HBox"]
 layout_mode = 2
 text = "VSYNC"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/VsyncPanel/Margin/HBox"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/VsyncPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
-[node name="FrameRateLimitPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="FrameRateLimitPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "FRAME_RATE_LIMIT"
 metadata/description = "FRAME_RATE_LIMIT_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FrameRateLimitPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FrameRateLimitPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -438,16 +448,16 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FrameRateLimitPanel/Margin"]
+[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FrameRateLimitPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FrameRateLimitPanel/Margin/HSplit"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FrameRateLimitPanel/Margin/HSplit"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "FRAME_RATE_LIMIT"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FrameRateLimitPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FrameRateLimitPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -457,20 +467,20 @@ min_value = 30.0
 max_value = 361.0
 value = 60.0
 
-[node name="GraphicsLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="GraphicsLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "GRAPHICS"
 uppercase = true
 
-[node name="FieldOfViewPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="FieldOfViewPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "FIELD_OF_VIEW"
 metadata/description = "FIELD_OF_VIEW_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FieldOfViewPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FieldOfViewPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -482,16 +492,16 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FieldOfViewPanel/Margin"]
+[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FieldOfViewPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FieldOfViewPanel/Margin/HSplit"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FieldOfViewPanel/Margin/HSplit"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "FIELD_OF_VIEW"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FieldOfViewPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FieldOfViewPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -500,20 +510,20 @@ size_flags_stretch_ratio = 4.0
 min_value = 45.0
 value = 60.0
 
-[node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "ANTI_ALIASING"
 uppercase = true
 
-[node name="ScreenSpaceAAPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="ScreenSpaceAAPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "SCREEN_SPACE_AA"
 metadata/description = "SCREEN_SPACE_AA_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/ScreenSpaceAAPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScreenSpaceAAPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -525,15 +535,15 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/ScreenSpaceAAPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScreenSpaceAAPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/ScreenSpaceAAPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScreenSpaceAAPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
 text = "SCREEN_SPACE_AA"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/ScreenSpaceAAPanel/Margin/HBox"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScreenSpaceAAPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 selected = 0
@@ -545,14 +555,14 @@ popup/item_1/id = 1
 popup/item_2/text = "FXAA"
 popup/item_2/id = 2
 
-[node name="TaaPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="TaaPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "TAA"
 metadata/description = "TAA_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/TaaPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/TaaPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -564,28 +574,28 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/TaaPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/TaaPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/TaaPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/TaaPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
 text = "TAA"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/TaaPanel/Margin/HBox"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/TaaPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
-[node name="MsaaPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox"]
+[node name="MsaaPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MSAA"
 metadata/description = "MSAA_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/MsaaPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/MsaaPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -597,15 +607,15 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/MsaaPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/MsaaPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/MsaaPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/MsaaPanel/Margin/HBox"]
 layout_mode = 2
 mouse_filter = 1
 text = "MSAA"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/MsaaPanel/Margin/HBox"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/MsaaPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 selected = 0
@@ -626,25 +636,30 @@ horizontal_scroll_mode = 0
 script = ExtResource("1_5p8wc")
 metadata/_tab_index = 2
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 5
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="VolumeLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox"]
+[node name="VolumeLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "VOLUME"
 uppercase = true
 
-[node name="MasterVolumePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox"]
+[node name="MasterVolumePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MASTER_VOLUME"
 metadata/description = "MASTER_VOLUME_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MasterVolumePanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MasterVolumePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -656,16 +671,16 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MasterVolumePanel/Margin"]
+[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MasterVolumePanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MasterVolumePanel/Margin/HSplit"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MasterVolumePanel/Margin/HSplit"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "MASTER_VOLUME"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MasterVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MasterVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -674,14 +689,14 @@ size_flags_stretch_ratio = 4.0
 max_value = 1.0
 step = 0.01
 
-[node name="MusicVolumePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox"]
+[node name="MusicVolumePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MUSIC_VOLUME"
 metadata/description = "MUSIC_VOLUME_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MusicVolumePanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MusicVolumePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -693,16 +708,16 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MusicVolumePanel/Margin"]
+[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MusicVolumePanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MusicVolumePanel/Margin/HSplit"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MusicVolumePanel/Margin/HSplit"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "MUSIC_VOLUME"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MusicVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MusicVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -711,14 +726,14 @@ size_flags_stretch_ratio = 4.0
 max_value = 1.0
 step = 0.01
 
-[node name="SfxVolumePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox"]
+[node name="SfxVolumePanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "SFX_VOLUME"
 metadata/description = "SFX_VOLUME_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/SfxVolumePanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/SfxVolumePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -730,16 +745,16 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/SfxVolumePanel/Margin"]
+[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/SfxVolumePanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/SfxVolumePanel/Margin/HSplit"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/SfxVolumePanel/Margin/HSplit"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "SFX_VOLUME"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/SfxVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/SfxVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -748,20 +763,20 @@ size_flags_stretch_ratio = 4.0
 max_value = 1.0
 step = 0.01
 
-[node name="OutputLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox"]
+[node name="OutputLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "OUTPUT"
 uppercase = true
 
-[node name="MuteWhenNotFocusedPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox"]
+[node name="MuteWhenNotFocusedPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MUTE_WHEN_NOT_FOCUSED"
 metadata/description = "MUTE_WHEN_NOT_FOCUSED_TIP"
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteWhenNotFocusedPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MuteWhenNotFocusedPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -773,14 +788,14 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteWhenNotFocusedPanel/Margin"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MuteWhenNotFocusedPanel/Margin"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteWhenNotFocusedPanel/Margin/HBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MuteWhenNotFocusedPanel/Margin/HBox"]
 layout_mode = 2
 text = "MUTE_WHEN_NOT_FOCUSED"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteWhenNotFocusedPanel/Margin/HBox"]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MuteWhenNotFocusedPanel/Margin/HBox"]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
@@ -793,22 +808,27 @@ horizontal_scroll_mode = 0
 script = ExtResource("10_jpbdv")
 metadata/_tab_index = 3
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 5
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="KeyBindingsLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox"]
+[node name="KeyBindingsLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "KEY_BINDINGS"
 uppercase = true
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox"]
 layout_mode = 2
 columns = 2
 
-[node name="UpPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="UpPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 custom_minimum_size = Vector2(550, 40)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -816,7 +836,7 @@ size_flags_vertical = 3
 metadata/title = "MOVE_UP"
 metadata/description = ""
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/UpPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UpPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -828,23 +848,23 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/UpPanel/Margin"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UpPanel/Margin"]
 layout_mode = 2
 text = "MOVE_UP"
 
-[node name="UpButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="UpButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
 
-[node name="DownPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="DownPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MOVE_DOWN"
 metadata/description = ""
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/DownPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/DownPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -856,23 +876,23 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/DownPanel/Margin"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/DownPanel/Margin"]
 layout_mode = 2
 text = "MOVE_DOWN"
 
-[node name="DownButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="DownButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
 
-[node name="LeftPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="LeftPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MOVE_LEFT"
 metadata/description = ""
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/LeftPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/LeftPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -884,23 +904,23 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/LeftPanel/Margin"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/LeftPanel/Margin"]
 layout_mode = 2
 text = "MOVE_LEFT"
 
-[node name="LeftButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="LeftButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
 
-[node name="RightPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="RightPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MOVE_RIGHT"
 metadata/description = ""
 
-[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/RightPanel"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/RightPanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -912,11 +932,11 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer/RightPanel/Margin"]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/RightPanel/Margin"]
 layout_mode = 2
 text = "MOVE_RIGHT"
 
-[node name="RightButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/VBox/GridContainer"]
+[node name="RightButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
