@@ -12,19 +12,19 @@ extends ScrollContainer
 
 const SECTION_NAME := "video"
 
-const WINDOW_MODES := [
+const WINDOW_MODES: Array[DisplayServer.WindowMode] = [
 	DisplayServer.WINDOW_MODE_WINDOWED,
 	DisplayServer.WINDOW_MODE_FULLSCREEN,
 	DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 ]
 
-const SCREEN_SPACE_AA_MODES := [
+const SCREEN_SPACE_AA_MODES: Array[Viewport.ScreenSpaceAA] = [
 	Viewport.SCREEN_SPACE_AA_DISABLED,
 	Viewport.SCREEN_SPACE_AA_SMAA,
 	Viewport.SCREEN_SPACE_AA_FXAA
 ]
 
-const MSAA_MODES := [
+const MSAA_MODES: Array[Viewport.MSAA] = [
 	Viewport.MSAA_DISABLED,
 	Viewport.MSAA_2X,
 	Viewport.MSAA_4X,
@@ -67,8 +67,9 @@ func apply_settings():
 
 
 func _on_window_mode_selected(index: int):
-	DisplayServer.window_set_mode(WINDOW_MODES[index])
-	Settings.set_and_save_value(SECTION_NAME, "window_mode", WINDOW_MODES[index])
+	var mode := WINDOW_MODES[index]
+	DisplayServer.window_set_mode(mode)
+	Settings.set_and_save_value(SECTION_NAME, "window_mode", mode)
 
 
 func _on_vsync_toggled(toggled_on: bool):
@@ -96,13 +97,15 @@ func _on_fov_changed(value: float):
 
 
 func _on_screen_space_aa_selected(index: int):
-	get_viewport().screen_space_aa = SCREEN_SPACE_AA_MODES[index]
-	Settings.set_and_save_value(SECTION_NAME, "screen_space_aa", SCREEN_SPACE_AA_MODES[index])
+	var mode := SCREEN_SPACE_AA_MODES[index]
+	get_viewport().screen_space_aa = mode
+	Settings.set_and_save_value(SECTION_NAME, "screen_space_aa", mode)
 
 
 func _on_msaa_selected(index: int):
-	get_viewport().msaa_3d = MSAA_MODES[index]
-	Settings.set_and_save_value(SECTION_NAME, "msaa", MSAA_MODES[index])
+	var mode := MSAA_MODES[index]
+	get_viewport().msaa_3d = mode
+	Settings.set_and_save_value(SECTION_NAME, "msaa", mode)
 
 
 func _on_taa_toggled(toggled_on: bool):

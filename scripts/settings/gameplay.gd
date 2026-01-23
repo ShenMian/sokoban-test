@@ -5,12 +5,7 @@ extends ScrollContainer
 
 const SECTION_NAME := "gameplay"
 
-const LOCALE_TO_NAME := {
-	"en": "English",
-	"zh": "中文"
-}
-
-const LOCALES := ["en", "zh"]
+const LOCALES: Array[String] = ["en", "zh"]
 
 
 func _ready():
@@ -29,7 +24,7 @@ func apply_settings():
 
 
 func _on_language_selected(index: int):
-	var locale: String = LOCALES[index]
+	var locale := LOCALES[index]
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value(SECTION_NAME, "language", locale)
 
