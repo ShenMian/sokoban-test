@@ -30,4 +30,4 @@ func _on_setting_changed(section: String, key: String, value: Variant):
 
 
 func _on_solved():
-	print("Level Solved!")
+	print("Level solved!")
