@@ -47,12 +47,19 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/bold_font = ExtResource("4_mah5v")
 bbcode_enabled = true
-text = "[font_size=26][color=lime][b]Assets[/b][/color][/font_size]
-[font_size=22]Prototype Kit - [url=https://kenney.nl/assets/prototype-kit]kenney.nl[/url] (CC0)
-Input Prompts - [url=https://kenney.nl/assets/input-prompts]kenney.nl[/url] (CC0)
-Background Elements Redux - [url=https://kenney.nl/assets/background-elements-redux]kenney.nl[/url] (CC0)
-RPG Audio - [url=https://kenney.nl/assets/rpg-audio]kenney.nl[/url] (CC0)
-Sarasa Gothic - [url=https://github.com/be5invis/Sarasa-Gothic]GitHub[/url] (OFL-1.1)[/font_size]"
+text = "[font_size=26][b]Assets[/b][/font_size]
+[color=light_gray][table=2]
+[cell][right]Prototype Kit[/right][/cell][cell]  [url=https://kenney.nl/assets/prototype-kit]kenney.nl[/url] (CC0)                   [/cell]
+[cell][right]Input Prompts[/right][/cell][cell]  [url=https://kenney.nl/assets/input-prompts]kenney.nl[/url] (CC0)                   [/cell]
+[cell][right]Background Elements Redux[/right][/cell][cell]  [url=https://kenney.nl/assets/background-elements-redux]kenney.nl[/url] (CC0)                   [/cell]
+[cell][right]RPG Audio[/right][/cell][cell]  [url=https://kenney.nl/assets/rpg-audio]kenney.nl[/url] (CC0)                   [/cell]
+[cell][right]Sarasa Gothic[/right][/cell][cell]     [url=https://github.com/be5invis/Sarasa-Gothic]be5invis[/url] (OFL-1.1)                  [/cell]
+[/table][/color]
+
+[font_size=26][b]License[/b][/font_size]
+[color=light_gray]Licensed under the [url=https://www.apache.org/licenses/LICENSE-2.0]Apache License 2.0[/url]
+Source code available on [url=https://github.com/ShenMian/sokoban]GitHub[/url][/color]
+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -70,5 +77,6 @@ shortcut = SubResource("Shortcut_2fbfq")
 shortcut_in_tooltip = false
 text = "CLOSE"
 icon = ExtResource("1_2ckv8")
+flat = true
 script = ExtResource("2_0ctdu")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
