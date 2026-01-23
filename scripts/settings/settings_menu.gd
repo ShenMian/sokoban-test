@@ -77,7 +77,11 @@ func _update_tooltip():
 	if tooltip_control:
 		var title: String = tooltip_control.get_meta("title")
 		var description: String = tooltip_control.get_meta("description")
-		tooltip.text = "[font_size=26][b][i]%s[/i][/b][/font_size]\n[font_size=10]\n[/font_size]%s" % [tr(title), tr(description)]
+		tooltip.text = (
+			"[font_size=26][b][i]%s[/i][/b][/font_size]\n" +
+			"[font_size=10]\n[/font_size]" +
+			"%s"
+		) % [tr(title), tr(description)]
 	else:
 		tooltip.text = ""
 
