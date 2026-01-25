@@ -119,8 +119,34 @@ msgstr "Field of View"
 msgid "FIELD_OF_VIEW_TIP"
 msgstr "Adjust the camera's field of view"
 
-msgid "ANTI_ALIASING"
-msgstr "Anti Aliasing"
+msgid "SCALING_AND_AA"
+msgstr "Resolution Scaling & Anti-Aliasing"
+
+msgid "SCALING_METHOD"
+msgstr "Scaling Method"
+
+msgid "SCALING_METHOD_TIP"
+msgstr ""
+"3D rendering upscale method\n"
+"[ul]"
+"[b]Bilinear[/b]: Simple bilinear interpolation\n"
+"[b]FSR 1.0[/b]\r"
+"[b]Quality[/b]: Medium, [b]Overhead[/b]: [color=green]Low[/color]\n"
+"[b]FSR 2.2[/b]\r"
+"[b]Quality[/b]: High, [b]Overhead[/b]: [color=yellow]Medium[/color]"
+"[/ul]"
+
+msgid "UPSCALED_RESOLUTION"
+msgstr "Upscaled Resolution"
+
+msgid "UPSCALED_RESOLUTION_TIP"
+msgstr "Adjust the internal 3D rendering resolution scale. Lower values improve performance at the cost of image quality"
+
+msgid "FSR_SHARPNESS"
+msgstr "FSR Sharpness"
+
+msgid "FSR_SHARPNESS_TIP"
+msgstr "Adjust the sharpness of FSR upscaling. Lower values are sharper, higher values are softer"
 
 msgid "SCREEN_SPACE_AA"
 msgstr "Screen Space AA"

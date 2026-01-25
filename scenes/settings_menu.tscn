@@ -510,11 +510,126 @@ size_flags_stretch_ratio = 4.0
 min_value = 45.0
 value = 60.0
 
-[node name="AntiAliasingLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
+[node name="ScalingAndAALabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
-text = "ANTI_ALIASING"
+text = "SCALING_AND_AA"
 uppercase = true
+
+[node name="ScalingMethodPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+metadata/title = "SCALING_METHOD"
+metadata/description = "SCALING_METHOD_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScalingMethodPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScalingMethodPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScalingMethodPanel/Margin/HBox"]
+layout_mode = 2
+text = "SCALING_METHOD"
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/ScalingMethodPanel/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+selected = 0
+item_count = 3
+popup/item_0/text = "Bilinear"
+popup/item_0/id = 0
+popup/item_1/text = "FSR 1.0"
+popup/item_1/id = 1
+popup/item_2/text = "FSR 2.2"
+popup/item_2/id = 2
+
+[node name="UpscaledResolutionPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+metadata/title = "UPSCALED_RESOLUTION"
+metadata/description = "UPSCALED_RESOLUTION_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/UpscaledResolutionPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/UpscaledResolutionPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/UpscaledResolutionPanel/Margin/HSplit"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+text = "UPSCALED_RESOLUTION"
+
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/UpscaledResolutionPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 4.0
+min_value = 0.5
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="FsrSharpnessPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+metadata/title = "FSR_SHARPNESS"
+metadata/description = "FSR_SHARPNESS_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FsrSharpnessPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FsrSharpnessPanel/Margin"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FsrSharpnessPanel/Margin/HSplit"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 6.0
+text = "FSR_SHARPNESS"
+
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FsrSharpnessPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 4.0
+max_value = 1.0
+step = 0.01
+value = 0.2
 
 [node name="ScreenSpaceAAPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox"]
 custom_minimum_size = Vector2(0, 40)

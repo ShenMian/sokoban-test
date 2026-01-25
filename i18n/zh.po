@@ -119,8 +119,34 @@ msgstr "视野"
 msgid "FIELD_OF_VIEW_TIP"
 msgstr "调整摄像机的视野"
 
-msgid "ANTI_ALIASING"
-msgstr "抗锯齿"
+msgid "SCALING_AND_AA"
+msgstr "分辨率缩放与抗锯齿"
+
+msgid "SCALING_METHOD"
+msgstr "缩放方法"
+
+msgid "SCALING_METHOD_TIP"
+msgstr ""
+"3D 渲染放大方法\n"
+"[ul]"
+"[b]双线性[/b]: 简单双线性插值\n"
+"[b]FSR 1.0[/b]\r"
+"[b]质量[/b]: 中, [b]开销[/b]: [color=green]低[/color]\n"
+"[b]FSR 2.2[/b]\r"
+"[b]质量[/b]: 高, [b]开销[/b]: [color=yellow]中[/color]"
+"[/ul]"
+
+msgid "UPSCALED_RESOLUTION"
+msgstr "渲染分辨率"
+
+msgid "UPSCALED_RESOLUTION_TIP"
+msgstr "调整内部 3D 渲染分辨率比例。较低的值可以提高性能, 但会降低图像质量"
+
+msgid "FSR_SHARPNESS"
+msgstr "FSR 锐度"
+
+msgid "FSR_SHARPNESS_TIP"
+msgstr "调整 FSR 放大的锐度。较低的值更锐利, 较高的值更柔和"
 
 msgid "SCREEN_SPACE_AA"
 msgstr "屏幕空间抗锯齿"
@@ -134,6 +160,7 @@ msgstr ""
 "[b]FXAA[/b] (快速近似抗锯齿)\r"
 "[b]质量[/b]: 低, [b]开销[/b]: [color=green]低[/color]"
 "[/ul]"
+
 msgid "SMAA"
 msgstr "SMAA"
 
