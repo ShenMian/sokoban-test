@@ -15,7 +15,7 @@ func _ready():
 
 
 func _process(delta: float):
-	self.pivot_offset = self.size / 2
+	self.pivot_offset_ratio = Vector2.ONE / 2
 	self.scale = lerp(self.scale, _target_scale, delta * smooth_factor)
 
 
