@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="6_48ojb"]
 [ext_resource type="Script" uid="uid://bc8nqwx2f77uu" path="res://scripts/ui/switch_fx.gd" id="6_jrqig"]
 [ext_resource type="PackedScene" uid="uid://bolx2df8w721l" path="res://scenes/slider_bar.tscn" id="6_n35ux"]
+[ext_resource type="PackedScene" uid="uid://bupwsnlvxthny" path="res://scenes/percent_slider_bar.tscn" id="6_prcnt"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="7_n35ux"]
 [ext_resource type="Script" uid="uid://cfr860c1yrp7d" path="res://scripts/settings/input.gd" id="10_jpbdv"]
 [ext_resource type="FontFile" uid="uid://c3j7cxolf53qi" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-BoldItalic.woff2" id="11_75x6d"]
@@ -582,7 +583,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "UPSCALED_RESOLUTION"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/UpscaledResolutionPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/UpscaledResolutionPanel/Margin/HSplit" instance=ExtResource("6_prcnt")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -621,7 +622,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "FSR_SHARPNESS"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FsrSharpnessPanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/Margin/VBox/FsrSharpnessPanel/Margin/HSplit" instance=ExtResource("6_prcnt")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -795,7 +796,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "MASTER_VOLUME"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MasterVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MasterVolumePanel/Margin/HSplit" instance=ExtResource("6_prcnt")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -832,7 +833,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "MUSIC_VOLUME"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MusicVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/MusicVolumePanel/Margin/HSplit" instance=ExtResource("6_prcnt")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -869,7 +870,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 6.0
 text = "SFX_VOLUME"
 
-[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/SfxVolumePanel/Margin/HSplit" instance=ExtResource("6_n35ux")]
+[node name="SliderBar" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/Margin/VBox/SfxVolumePanel/Margin/HSplit" instance=ExtResource("6_prcnt")]
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
