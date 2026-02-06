@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://f7k4fqqjs8id"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://f7k4fqqjs8id"]
 
 [ext_resource type="Shader" uid="uid://o7om27yfrbib" path="res://assets/shaders/blur.gdshader" id="1_nc0xw"]
 

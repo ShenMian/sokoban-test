@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxgyp85axyufh"]
+[gd_scene format=3 uid="uid://dxgyp85axyufh"]
 
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/meshes/mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://d2l2mcb536frf" path="res://scripts/gameplay.gd" id="1_l1v76"]
@@ -34,34 +34,33 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_detail = 5
 
-[node name="Gameplay" type="Node3D"]
+[node name="Gameplay" type="Node3D" unique_id=918217711]
 script = ExtResource("1_l1v76")
 
-[node name="LevelMap" type="LevelMap" parent="."]
+[node name="LevelMap" type="LevelMap" parent="." unique_id=1068863980]
 mesh_library = ExtResource("1_7biu0")
 cell_size = Vector3(1, 1, 1)
 script = ExtResource("3_e124b")
 
-[node name="Boxes" type="Node3D" parent="LevelMap"]
+[node name="Boxes" type="Node3D" parent="LevelMap" unique_id=1541519836]
 
-[node name="Player" parent="LevelMap" instance=ExtResource("3_4bh5q")]
+[node name="Player" parent="LevelMap" unique_id=1363809863 instance=ExtResource("3_4bh5q")]
 
-[node name="Camera" type="Camera3D" parent="."]
+[node name="Camera" type="Camera3D" parent="." unique_id=414650077]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 9, -3.98)
 fov = 60.0
 script = ExtResource("3_l1v76")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=218060666]
 transform = Transform3D(0.5234231, 0.8254555, -0.21130912, -0.21130912, 0.36599812, 0.9063078, 0.8254555, -0.42973083, 0.36599812, 0, 7.885663, 0)
 shadow_enabled = true
-shadow_bias = 0.01
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1875092080]
 environment = SubResource("Environment_00tan")
 
-[node name="HudLayer" type="CanvasLayer" parent="."]
+[node name="HudLayer" type="CanvasLayer" parent="." unique_id=1118850135]
 
-[node name="HUD" type="Control" parent="HudLayer"]
+[node name="HUD" type="Control" parent="HudLayer" unique_id=2095515787]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,7 +70,7 @@ grow_vertical = 2
 mouse_filter = 1
 theme = ExtResource("4_ocj2s")
 
-[node name="ScoreboardPanel" type="Panel" parent="HudLayer/HUD"]
+[node name="ScoreboardPanel" type="Panel" parent="HudLayer/HUD" unique_id=1569907026]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -82,7 +81,7 @@ offset_bottom = 47.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HudLayer/HUD/ScoreboardPanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HudLayer/HUD/ScoreboardPanel" unique_id=1317735746]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -98,39 +97,39 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="MovesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer"]
+[node name="MovesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer" unique_id=1462512116]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Moves" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
+[node name="Moves" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox" unique_id=1264860209]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "MOVES"
 
-[node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox"]
+[node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox" unique_id=834427515]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "0"
 horizontal_alignment = 1
 
-[node name="PushesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer"]
+[node name="PushesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer" unique_id=1897535302]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Pushes" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
+[node name="Pushes" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox" unique_id=685130270]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "PUSHES"
 
-[node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox"]
+[node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox" unique_id=1009331402]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "0"
 horizontal_alignment = 1
 
-[node name="ToolbarPanel" type="Panel" parent="HudLayer/HUD"]
+[node name="ToolbarPanel" type="Panel" parent="HudLayer/HUD" unique_id=1089101440]
 visible = false
 layout_mode = 1
 anchors_preset = 7
@@ -145,7 +144,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
 
-[node name="MarginContainer" type="MarginContainer" parent="HudLayer/HUD/ToolbarPanel"]
+[node name="MarginContainer" type="MarginContainer" parent="HudLayer/HUD/ToolbarPanel" unique_id=2119833829]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -160,31 +159,31 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HudLayer/HUD/ToolbarPanel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HudLayer/HUD/ToolbarPanel/MarginContainer" unique_id=2084447934]
 layout_mode = 2
 
-[node name="UndoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
+[node name="UndoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=353608717]
 layout_mode = 2
 text = "UNDO"
 
-[node name="ResetButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
+[node name="ResetButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=758754747]
 layout_mode = 2
 text = "RESET"
 
-[node name="SolveButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer"]
+[node name="SolveButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=1566909949]
 layout_mode = 2
 text = "SOLVE"
 
-[node name="MenuLayer" type="CanvasLayer" parent="."]
+[node name="MenuLayer" type="CanvasLayer" parent="." unique_id=2061582100]
 layer = 2
 
-[node name="PauseMenu" parent="MenuLayer" instance=ExtResource("4_ct7aa")]
+[node name="PauseMenu" parent="MenuLayer" unique_id=863539780 instance=ExtResource("4_ct7aa")]
 visible = false
 
-[node name="SettingsMenu" parent="MenuLayer" instance=ExtResource("6_din8e")]
+[node name="SettingsMenu" parent="MenuLayer" unique_id=156490402 instance=ExtResource("6_din8e")]
 visible = false
 
-[node name="Credits" parent="MenuLayer" instance=ExtResource("9_101mb")]
+[node name="Credits" parent="MenuLayer" unique_id=1627154753 instance=ExtResource("9_101mb")]
 visible = false
 
-[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1799446341]
