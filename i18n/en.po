@@ -39,6 +39,17 @@ msgstr "Highlight static deadlock locations"
 msgid "SOLVER"
 msgstr "Solver"
 
+msgid "ALGORITHM"
+msgstr "Algorithm"
+
+msgid "ALGORITHM_TIP"
+msgstr ""
+"Select the search algorithm\n"
+"[ul]"
+"[b]A*[/b]: Fast, extremely high memory footprint\n"
+"[b]IDA*[/b]: Slower, low memory footprint"
+"[/ul]"
+
 msgid "STRATEGY"
 msgstr "Strategy"
 

@@ -39,6 +39,17 @@ msgstr "标出静态死锁位置"
 msgid "SOLVER"
 msgstr "求解器"
 
+msgid "ALGORITHM"
+msgstr "算法"
+
+msgid "ALGORITHM_TIP"
+msgstr ""
+"选择搜索算法\n"
+"[ul]"
+"[b]A*[/b]: 快速, 内存占用极高\n"
+"[b]IDA*[/b]: 较慢, 内存占用较低"
+"[/ul]"
+
 msgid "STRATEGY"
 msgstr "策略"
 

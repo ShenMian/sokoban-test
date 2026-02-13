@@ -2,15 +2,20 @@ extends ScrollContainer
 
 @onready var language: OptionButton = $Margin/VBox/LanguagePanel/Margin/HBox/OptionButton
 @onready var deadlock: SwitchFx = $Margin/VBox/DeadlockPanel/Margin/HBox/CheckButton
+@onready var strategy: OptionButton = $Margin/VBox/StrategyPanel/Margin/HBox/OptionButton
+@onready var algorithm: OptionButton = $Margin/VBox/AlgorithmPanel/Margin/HBox/OptionButton
 
 const SECTION_NAME := "gameplay"
 
 const LOCALES: Array[String] = ["en", "zh"]
+const ALGORITHMS: Array[String] = ["A*", "IDA*"]
 
 
 func _ready():
 	language.item_selected.connect(_on_language_selected)
 	deadlock.toggled.connect(_on_deadlock_toggled)
+	strategy.item_selected.connect(_on_strategy_selected)
+	algorithm.item_selected.connect(_on_algorithm_selected)
 
 	apply_settings()
 
@@ -22,6 +27,12 @@ func apply_settings():
 	deadlock.button_pressed = Settings.get_value(SECTION_NAME, "deadlock")
 	deadlock.toggled.emit(deadlock.button_pressed)
 
+	strategy.select(Settings.get_value(SECTION_NAME, "strategy"))
+	strategy.item_selected.emit(strategy.selected)
+	
+	algorithm.select(ALGORITHMS.find(Settings.get_value(SECTION_NAME, "algorithm")))
+	algorithm.item_selected.emit(algorithm.selected)
+
 
 func _on_language_selected(index: int):
 	var locale := LOCALES[index]
@@ -31,3 +42,11 @@ func _on_language_selected(index: int):
 
 func _on_deadlock_toggled(toggled_on: bool):
 	Settings.set_and_save_value(SECTION_NAME, "deadlock", toggled_on)
+
+
+func _on_strategy_selected(index: int):
+	Settings.set_and_save_value(SECTION_NAME, "strategy", index)
+
+
+func _on_algorithm_selected(index: int):
+	Settings.set_and_save_value(SECTION_NAME, "algorithm", ALGORITHMS[index])

@@ -10,7 +10,9 @@ const DEFAULT_CONFIG = {
 		"language": "en",
 		"checkerboard": false,
 		"deadlock": true,
-		"heatmap": true
+		"heatmap": true,
+		"strategy": 0,
+		"algorithm": "A*"
 	},
 	"video": {
 		"window_mode": DisplayServer.WINDOW_MODE_WINDOWED,
