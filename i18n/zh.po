@@ -73,18 +73,18 @@ msgstr ""
 "求解器策略\n"
 "[ul]"
 "[b]快速[/b]: 快速寻找任意解\n"
-"[b]最优推动[/b]: 寻找推动次数最少的最优解\n"
-"[b]最优移动[/b]: 寻找移动次数最少的最优解"
+"[b]推动最优[/b]: 寻找推动次数最少的最优解\n"
+"[b]移动最优[/b]: 寻找移动次数最少的最优解"
 "[/ul]"
 
 msgid "FAST"
 msgstr "快速"
 
 msgid "OPTIMAL_PUSH"
-msgstr "最优推动"
+msgstr "推动最优"
 
 msgid "OPTIMAL_MOVE"
-msgstr "最优移动"
+msgstr "移动最优"
 
 msgid "HEATMAP"
 msgstr "热力图"
