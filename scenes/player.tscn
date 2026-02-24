@@ -1,11 +1,12 @@
-[gd_scene load_steps=51 format=4 uid="uid://d3bx7fp67oyvm"]
+[gd_scene format=4 uid="uid://d3bx7fp67oyvm"]
 
-[ext_resource type="Texture2D" uid="uid://btqlvtno83hj" path="res://assets/models/prototype_kit/Textures/colormap.png" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://dulwo8iblpe3u" path="res://assets/models/prototype_kit/Textures/colormap.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://d00rrxvy7irsm" path="res://scripts/player.gd" id="1_gmlin"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://lc3g74mqowmf" path="res://assets/state_machine.tres" id="2_dovo2"]
 [ext_resource type="PackedScene" uid="uid://qfpcm2irmvkb" path="res://assets/models/prototype_kit/hat-hard.glb" id="3_lvxji"]
 [ext_resource type="ArrayMesh" uid="uid://cnr4b8oogdane" path="res://assets/meshes/indiactor_c.res" id="4_75vfm"]
 [ext_resource type="ArrayMesh" uid="uid://bca7jsquyhgs" path="res://assets/meshes/indicator_e.res" id="5_0owmy"]
+[ext_resource type="Material" uid="uid://cc0ey1qnfltcy" path="res://assets/materials/indicator_material.tres" id="5_smehm"]
 [ext_resource type="AudioStream" uid="uid://bf16e3vtraye4" path="res://assets/audio/sfx/footsteps_randomizer_b.tres" id="6_0owmy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ko57w"]
@@ -1896,86 +1897,80 @@ _data = {
 &"wheelchair-sit": SubResource("Animation_mv5a3")
 }
 
-[node name="Player" type="Node3D"]
+[node name="Player" type="Node3D" unique_id=1252982032]
 script = ExtResource("1_gmlin")
 
-[node name="Meshes" type="Node3D" parent="."]
+[node name="Meshes" type="Node3D" parent="." unique_id=187660166]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 
-[node name="root" type="Node3D" parent="Meshes"]
+[node name="root" type="Node3D" parent="Meshes" unique_id=698433751]
 
-[node name="leg-left" type="MeshInstance3D" parent="Meshes/root"]
+[node name="leg-left" type="MeshInstance3D" parent="Meshes/root" unique_id=311496407]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.15, 1.490189e-09)
 mesh = SubResource("ArrayMesh_gmdcx")
-skeleton = NodePath("")
 
-[node name="leg-right" type="MeshInstance3D" parent="Meshes/root"]
+[node name="leg-right" type="MeshInstance3D" parent="Meshes/root" unique_id=974666331]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.15, -1.4901897e-09)
 mesh = SubResource("ArrayMesh_dfdd7")
-skeleton = NodePath("")
 
-[node name="torso" type="MeshInstance3D" parent="Meshes/root"]
+[node name="torso" type="MeshInstance3D" parent="Meshes/root" unique_id=2140510865]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 mesh = SubResource("ArrayMesh_qdqp3")
-skeleton = NodePath("")
 
-[node name="arm-left" type="MeshInstance3D" parent="Meshes/root/torso"]
+[node name="arm-left" type="MeshInstance3D" parent="Meshes/root/torso" unique_id=720691508]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.2, 5.6229665e-09)
 mesh = SubResource("ArrayMesh_21ems")
-skeleton = NodePath("")
 
-[node name="arm-right" type="MeshInstance3D" parent="Meshes/root/torso"]
+[node name="arm-right" type="MeshInstance3D" parent="Meshes/root/torso" unique_id=458834565]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.2, -2.9454836e-09)
 mesh = SubResource("ArrayMesh_spkg3")
-skeleton = NodePath("")
 
-[node name="head" type="MeshInstance3D" parent="Meshes/root/torso"]
+[node name="head" type="MeshInstance3D" parent="Meshes/root/torso" unique_id=535097308]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, -3.573967e-10, 0.25, 7.450862e-10)
 mesh = SubResource("ArrayMesh_ioa0q")
-skeleton = NodePath("")
 
-[node name="hat" parent="Meshes/root/torso/head" instance=ExtResource("3_lvxji")]
+[node name="hat" parent="Meshes/root/torso/head" unique_id=1132998855 instance=ExtResource("3_lvxji")]
 transform = Transform3D(-3.934025e-08, 0, 0.9, 0, 0.9, 0, -0.9, 0, -3.934025e-08, 0, 0.13269576, 0.038100958)
 
-[node name="Area" type="Area3D" parent="Meshes"]
+[node name="Area" type="Area3D" parent="Meshes" unique_id=1946469265]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Meshes/Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Meshes/Area" unique_id=319355699]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27661133, 0)
 shape = SubResource("CapsuleShape3D_gmlin")
 
-[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="Meshes"]
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="Meshes" unique_id=2067121084]
 volume_db = -5.0
 
-[node name="Indicator" type="Node3D" parent="."]
+[node name="Indicator" type="Node3D" parent="." unique_id=547723692]
 
-[node name="HoverIndicator" type="MeshInstance3D" parent="Indicator"]
+[node name="HoverIndicator" type="MeshInstance3D" parent="Indicator" unique_id=1243197865]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 visible = false
 mesh = ExtResource("4_75vfm")
 skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("5_smehm")
 
-[node name="SelectIndicator" type="MeshInstance3D" parent="Indicator"]
+[node name="SelectIndicator" type="MeshInstance3D" parent="Indicator" unique_id=437885795]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 visible = false
 mesh = ExtResource("5_0owmy")
 skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("5_smehm")
 
-[node name="Area" type="Area3D" parent="Indicator"]
+[node name="Area" type="Area3D" parent="Indicator" unique_id=125499272]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Indicator/Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Indicator/Area" unique_id=1075040059]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 shape = SubResource("BoxShape3D_75vfm")
 
-[node name="IdleTimer" type="Timer" parent="."]
+[node name="IdleTimer" type="Timer" parent="." unique_id=39559891]
 wait_time = 5.0
 autostart = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_xfhkx")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=39631146]
+libraries/ = SubResource("AnimationLibrary_xfhkx")
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=1271812115]
 tree_root = ExtResource("2_dovo2")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Pushing/Blend2/blend_amount = 1.0
