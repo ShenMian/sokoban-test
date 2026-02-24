@@ -8,6 +8,7 @@ const CONFIG_PATH = "user://settings.ini"
 const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
+		"animation_speed": 1,
 		"checkerboard": false,
 		"deadlock": true,
 		"heatmap": true,

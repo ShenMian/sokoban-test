@@ -24,6 +24,21 @@ msgstr "语言"
 msgid "LANGUAGE_TIP"
 msgstr "选择界面语言"
 
+msgid "ANIMATION_SPEED"
+msgstr "动画速度"
+
+msgid "ANIMATION_SPEED_TIP"
+msgstr "控制角色移动动画速度"
+
+msgid "ANIM_SLOW"
+msgstr "慢速"
+
+msgid "ANIM_FAST"
+msgstr "快速"
+
+msgid "ANIM_INSTANT"
+msgstr "瞬间完成"
+
 msgid "CHECKERBOARD_SHADING"
 msgstr "棋盘纹"
 

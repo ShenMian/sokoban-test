@@ -24,6 +24,21 @@ msgstr "Language"
 msgid "LANGUAGE_TIP"
 msgstr "Select the interface language"
 
+msgid "ANIMATION_SPEED"
+msgstr "Animation Speed"
+
+msgid "ANIMATION_SPEED_TIP"
+msgstr "Adjust the speed of the character movement animation"
+
+msgid "ANIM_SLOW"
+msgstr "Slow"
+
+msgid "ANIM_FAST"
+msgstr "Fast"
+
+msgid "ANIM_INSTANT"
+msgstr "Instant"
+
 msgid "CHECKERBOARD_SHADING"
 msgstr "Checkerboard Shading"
 

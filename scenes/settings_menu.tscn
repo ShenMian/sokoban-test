@@ -195,6 +195,44 @@ popup/item_0/id = 0
 popup/item_1/text = "中文"
 popup/item_1/id = 1
 
+[node name="AnimationSpeedPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox" unique_id=1746115866]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+metadata/title = "ANIMATION_SPEED"
+metadata/description = "ANIMATION_SPEED_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/AnimationSpeedPanel" unique_id=357219741]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/AnimationSpeedPanel/Margin" unique_id=187354507]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/AnimationSpeedPanel/Margin/HBox" unique_id=1670922536]
+layout_mode = 2
+mouse_filter = 1
+text = "ANIMATION_SPEED"
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/AnimationSpeedPanel/Margin/HBox" unique_id=1048294716]
+layout_mode = 2
+size_flags_horizontal = 10
+item_count = 3
+popup/item_0/text = "ANIM_SLOW"
+popup/item_0/id = 0
+popup/item_1/text = "ANIM_FAST"
+popup/item_1/id = 1
+popup/item_2/text = "ANIM_INSTANT"
+popup/item_2/id = 2
+
 [node name="CheckerboardPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox" unique_id=1224806806]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
