@@ -1942,6 +1942,7 @@ shape = SubResource("CapsuleShape3D_gmlin")
 volume_db = -5.0
 
 [node name="Indicator" type="Node3D" parent="." unique_id=547723692]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 
 [node name="HoverIndicator" type="MeshInstance3D" parent="Indicator" unique_id=1243197865]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
