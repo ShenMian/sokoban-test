@@ -17,8 +17,8 @@ func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
 	self.solved.connect(_on_solved)
 
-	self.load_from_string("DuLLrUUdrR");
-	# self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD");
+	# self.load_from_string("DuLLrUUdrR");
+	self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD");
 
 	camera.global_position.x = self.dimensions().x / 2.0
 	camera.global_position.z = self.dimensions().y / 2.0
@@ -26,7 +26,9 @@ func _ready():
 
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "gameplay" and key == "deadlock":
-		self.set_show_deadlocks(value)
+		self.set_deadlock_hint(value)
+	if section == "gameplay" and key == "checkerboard":
+		self.set_checkerboard_shading(value)
 
 
 func _on_solved():

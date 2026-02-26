@@ -1,25 +1,36 @@
 use std::str::FromStr;
 
-use godot::classes::{GridMap, IGridMap};
-use godot::prelude::*;
+use godot::{
+    classes::{ArrayMesh, GridMap, IGridMap, MeshLibrary, StandardMaterial3D},
+    prelude::*,
+};
 use nalgebra::Vector2;
-use soukoban::{Actions, Level, Map, Tiles, deadlock::compute_static_deadlocks};
+use soukoban::{
+    Actions, Level, Map, Tiles, deadlock::compute_static_deadlocks, direction::Direction,
+};
 
 use crate::utils::*;
 
 #[derive(GodotClass)]
 #[class(base=GridMap)]
 struct LevelMap {
-    #[var(set = set_show_deadlocks)]
+    #[var(set = set_deadlock_hint)]
     #[export]
-    show_deadlocks: bool,
+    deadlock_hint: bool,
+
+    #[var(set = set_checkerboard_shading)]
+    #[export]
+    checkerboard_shading: bool,
 
     level: Level,
 
     floor_id: i32,
+    floor_dark_id: i32,
+    floor_deadlock_id: i32,
+    floor_deadlock_dark_id: i32,
     wall_id: i32,
     goal_id: i32,
-    deadlock_id: i32,
+
     box_scene: Gd<PackedScene>,
 
     base: Base<GridMap>,
@@ -30,12 +41,15 @@ impl IGridMap for LevelMap {
     fn init(base: Base<GridMap>) -> Self {
         let map = Map::from_actions(Actions::from_str("R").unwrap()).unwrap();
         Self {
-            show_deadlocks: true,
+            deadlock_hint: true,
+            checkerboard_shading: false,
             level: Level::from_map(map),
             floor_id: -1,
+            floor_dark_id: -1,
+            floor_deadlock_id: -1,
+            floor_deadlock_dark_id: -1,
             wall_id: -1,
             goal_id: -1,
-            deadlock_id: -1,
             box_scene: load("res://scenes/box.tscn"),
             base,
         }
@@ -95,10 +109,10 @@ impl LevelMap {
     #[func]
     fn move_by(&mut self, direction: i32) {
         let direction = match direction {
-            0 => soukoban::direction::Direction::Up,
-            1 => soukoban::direction::Direction::Down,
-            2 => soukoban::direction::Direction::Left,
-            3 => soukoban::direction::Direction::Right,
+            0 => Direction::Up,
+            1 => Direction::Down,
+            2 => Direction::Left,
+            3 => Direction::Right,
             _ => unreachable!(),
         };
 
@@ -132,44 +146,61 @@ impl LevelMap {
     }
 
     fn build(&mut self) {
-        let mut floor_id = None;
-        let mut wall_id = None;
-        let mut goal_id = None;
-        let mut deadlock_id = None;
+        if self.floor_id == -1 {
+            let mut mesh_library = self.base().get_mesh_library().unwrap();
 
-        let mesh_library = self.base().get_mesh_library().unwrap();
-        for id in (0..mesh_library.get_item_list().len()).map(|id| id as i32) {
-            let name = mesh_library.get_item_name(id);
-            match name.to_string().as_str() {
-                "floor" => floor_id = Some(id),
-                "wall" => wall_id = Some(id),
-                "goal" => goal_id = Some(id),
-                "deadlock" => deadlock_id = Some(id),
-                _ => continue,
+            let mut floor_id = None;
+            let mut wall_id = None;
+            let mut goal_id = None;
+            for id in 0..mesh_library.get_item_list().len() as i32 {
+                let name = mesh_library.get_item_name(id);
+                match name.to_string().as_str() {
+                    "floor" => floor_id = Some(id),
+                    "wall" => wall_id = Some(id),
+                    "goal" => goal_id = Some(id),
+                    _ => continue,
+                }
             }
+            self.floor_id = floor_id.unwrap();
+            self.wall_id = wall_id.unwrap();
+            self.goal_id = goal_id.unwrap();
+
+            self.floor_dark_id = self.create_floor(&mut mesh_library, "floor_dark", 0.15, false);
+            self.floor_deadlock_id =
+                self.create_floor(&mut mesh_library, "floor_deadlock", 0.0, true);
+            self.floor_deadlock_dark_id =
+                self.create_floor(&mut mesh_library, "floor_deadlock_dark", 0.15, true);
         }
-        assert!(
-            floor_id.is_some() && wall_id.is_some() && goal_id.is_some() && deadlock_id.is_some(),
-        );
-        self.floor_id = floor_id.unwrap();
-        self.wall_id = wall_id.unwrap();
-        self.goal_id = goal_id.unwrap();
-        self.deadlock_id = deadlock_id.unwrap();
 
         let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
         for mut child in boxes.get_children().iter_shared() {
             child.queue_free();
         }
 
+        let deadlocks = compute_static_deadlocks(self.map());
+
         self.base_mut().clear();
         for x in 0..self.map().dimensions().x {
             for y in 0..self.map().dimensions().y {
-                let tiles = self.map()[Vector2::new(x, y)];
+                let position = Vector2::new(x, y);
+                let tiles = self.map()[position];
 
                 if tiles.contains(Tiles::Floor) {
-                    let floor_id = self.floor_id;
+                    let tile_id = if self.deadlock_hint && deadlocks.contains(&position) {
+                        if self.checkerboard_shading && (x + y) % 2 == 1 {
+                            self.floor_deadlock_dark_id
+                        } else {
+                            self.floor_deadlock_id
+                        }
+                    } else {
+                        if self.checkerboard_shading && (x + y) % 2 == 1 {
+                            self.floor_dark_id
+                        } else {
+                            self.floor_id
+                        }
+                    };
                     self.base_mut()
-                        .set_cell_item(Vector3i::new(x, -1, y), floor_id);
+                        .set_cell_item(Vector3i::new(x, -1, y), tile_id);
                 }
                 if tiles.intersects(Tiles::Wall | Tiles::Goal) {
                     let item_id = match tiles & !Tiles::Floor {
@@ -195,37 +226,61 @@ impl LevelMap {
             0.0,
             self.map().player_position().y as f32,
         ));
-
-        if self.show_deadlocks {
-            self.show_deadlocks();
-        }
     }
 
     #[func]
-    fn set_show_deadlocks(&mut self, show: bool) {
-        if show {
-            self.show_deadlocks();
-        } else {
-            self.hide_deadlocks();
-        }
+    fn set_deadlock_hint(&mut self, enable: bool) {
+        self.deadlock_hint = enable;
+        self.build();
     }
 
-    fn show_deadlocks(&mut self) {
-        let deadlock_id = self.deadlock_id;
-        let deadlocks = compute_static_deadlocks(self.map());
-        for position in deadlocks {
-            self.base_mut()
-                .set_cell_item(Vector3i::new(position.x, 0, position.y), deadlock_id);
-        }
+    #[func]
+    fn set_checkerboard_shading(&mut self, enable: bool) {
+        self.checkerboard_shading = enable;
+        self.build();
     }
 
-    fn hide_deadlocks(&mut self) {
-        for position in self
-            .base()
-            .get_used_cells_by_item(self.deadlock_id)
-            .iter_shared()
-        {
-            self.base_mut().set_cell_item(position, -1);
-        }
+    fn create_floor(
+        &self,
+        mesh_library: &mut Gd<MeshLibrary>,
+        name: &str,
+        darken: f64,
+        red_tint: bool,
+    ) -> i32 {
+        let next_id = mesh_library.get_last_unused_item_id();
+        mesh_library.create_item(next_id);
+        mesh_library.set_item_name(next_id, name);
+
+        let mesh = mesh_library.get_item_mesh(self.floor_id).unwrap();
+
+        let material = mesh.surface_get_material(0).unwrap();
+        let standard_material = material.clone().cast::<StandardMaterial3D>();
+        let mut new_standard_material = standard_material
+            .duplicate()
+            .unwrap()
+            .cast::<StandardMaterial3D>();
+
+        let apply_color = |mut color: Color| -> Color {
+            if red_tint {
+                color = Color::from_rgb((color.r + 1.0) / 2.0, color.g * 0.5, color.b * 0.5);
+            }
+            if darken > 0.0 {
+                color = color.darkened(darken);
+            }
+            color
+        };
+
+        let color = new_standard_material.get_albedo();
+        new_standard_material.set_albedo(apply_color(color));
+
+        let mut new_mesh = mesh.duplicate().unwrap().cast::<ArrayMesh>();
+        new_mesh.surface_set_material(0, &new_standard_material);
+
+        mesh_library.set_item_mesh(next_id, &new_mesh);
+
+        let transform = mesh_library.get_item_mesh_transform(self.floor_id);
+        mesh_library.set_item_mesh_transform(next_id, transform);
+
+        next_id
     }
 }
