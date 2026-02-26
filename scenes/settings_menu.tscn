@@ -135,9 +135,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_2ctot")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 0
+current_tab = 3
 
 [node name="GAMEPLAY" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1471899089]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("4_fb6cq")
@@ -992,7 +993,6 @@ script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
 [node name="INPUT" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1208102701]
-visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("10_jpbdv")
@@ -1019,7 +1019,7 @@ layout_mode = 2
 columns = 2
 
 [node name="UpPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=913001614]
-custom_minimum_size = Vector2(550, 40)
+custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1047,8 +1047,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
 
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UpButton" unique_id=1430372835]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
 [node name="DownPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=1067586093]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MOVE_DOWN"
@@ -1075,8 +1084,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
 
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/DownButton" unique_id=1440997199]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
 [node name="LeftPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=1887133728]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MOVE_LEFT"
@@ -1103,8 +1121,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
 
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/LeftButton" unique_id=2015261067]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
 [node name="RightPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=383899421]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 3
 metadata/title = "MOVE_RIGHT"
@@ -1130,6 +1157,91 @@ text = "MOVE_RIGHT"
 layout_mode = 2
 size_flags_horizontal = 3
 icon_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/RightButton" unique_id=932644399]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="UndoPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=855200337]
+custom_minimum_size = Vector2(500, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/title = "UNDO"
+metadata/description = ""
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UndoPanel" unique_id=2045799397]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UndoPanel/Margin" unique_id=964383973]
+layout_mode = 2
+text = "UNDO"
+
+[node name="UndoButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=951533674]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UndoButton" unique_id=1734169100]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="RedoPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=1955592382]
+custom_minimum_size = Vector2(500, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/title = "REDO"
+metadata/description = ""
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/RedoPanel" unique_id=1039718291]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/RedoPanel/Margin" unique_id=1928072783]
+layout_mode = 2
+text = "REDO"
+
+[node name="RedoButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=1680022372]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/RedoButton" unique_id=1757655264]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit" unique_id=365115458]
 layout_mode = 2

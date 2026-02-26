@@ -4,7 +4,7 @@ class_name BindingPopup
 signal closed
 
 @onready var title_label: Label = $VBox/TitleLabel
-@onready var texture_rect: TextureRect = $VBox/TextureRect
+@onready var icon_container: HBoxContainer = $VBox/HBox
 
 @onready var cancel_button: ButtonFx = $VBox/ColorRect/HBox/CancelButton
 @onready var clear_button: ButtonFx = $VBox/ColorRect/HBox/ClearButton
@@ -20,7 +20,7 @@ func open(action: StringName):
 	_action = action
 	_new_event = null
 	title_label.text = action.to_upper()
-	texture_rect.texture = _get_icon_by_key_name(_get_key_name_by_action(action))
+	_update_icons(_get_icons_by_event(_get_event_by_action(action)))
 	show()
 	set_process_input(true)
 
@@ -41,7 +41,7 @@ func _ready():
 
 
 func _on_clear_pressed():
-	texture_rect.texture = null
+	_update_icons([])
 	_new_event = null
 
 
@@ -58,22 +58,43 @@ func _input(event):
 
 	if event is InputEventKey and event.pressed:
 		_new_event = event as InputEventKey
-		texture_rect.texture = _get_icon_by_key_name(_get_key_name_by_event(_new_event))
+		_update_icons(_get_icons_by_event(_new_event))
 
 
-func _get_key_name_by_action(action: StringName) -> String:
+func _get_event_by_action(action: StringName) -> InputEventKey:
 	for event in InputMap.action_get_events(action):
 		if event is InputEventKey:
-			return _get_key_name_by_event(event as InputEventKey)
-	return ""
+			return event as InputEventKey
+	return null
 
 
-func _get_key_name_by_event(event: InputEventKey) -> String:
-	if event.physical_keycode != 0:
-		return OS.get_keycode_string(event.physical_keycode)
-	if event.keycode != 0:
-		return OS.get_keycode_string(event.keycode)
-	return event.as_text()
+func _get_icons_by_event(event: InputEventKey) -> Array[Texture2D]:
+	var icons: Array[Texture2D] = []
+
+	if event.ctrl_pressed:
+		icons.append(_get_icon_by_key_name("Control"))
+	if event.shift_pressed:
+		icons.append(_get_icon_by_key_name("Shift"))
+	if event.alt_pressed:
+		icons.append(_get_icon_by_key_name("Alt"))
+	if event.meta_pressed:
+		icons.append(_get_icon_by_key_name("Meta"))
+	
+	var key_name = OS.get_keycode_string(event.physical_keycode)
+	icons.append(_get_icon_by_key_name(key_name))
+	
+	return icons
+
+
+func _update_icons(icons: Array[Texture2D]):
+	for child in icon_container.get_children():
+		child.queue_free()
+	
+	for icon in icons:
+		var rect = TextureRect.new()
+		rect.texture = icon
+		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		icon_container.add_child(rect)
 
 
 func _get_icon_by_key_name(key: String) -> Texture2D:
@@ -90,5 +111,9 @@ func _get_icon_by_key_name(key: String) -> Texture2D:
 			key = "arrow_left"
 		"Right":
 			key = "arrow_right"
+		"Control":
+			key = "ctrl"
+		"Meta":
+			key = "win"
 	var path := ICON_PATH + "keyboard_%s.svg" % key.to_lower()
 	return load(path) as Texture2D

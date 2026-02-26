@@ -276,6 +276,12 @@ msgstr "Left"
 msgid "MOVE_RIGHT"
 msgstr "Right"
 
+msgid "UNDO"
+msgstr "Undo"
+
+msgid "REDO"
+msgstr "Redo"
+
 # Pause Menu
 
 msgid "SETTINGS"

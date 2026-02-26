@@ -276,6 +276,12 @@ msgstr "左移"
 msgid "MOVE_RIGHT"
 msgstr "右移"
 
+msgid "UNDO"
+msgstr "撤销"
+
+msgid "REDO"
+msgstr "重做"
+
 # Pause Menu
 
 msgid "SETTINGS"
