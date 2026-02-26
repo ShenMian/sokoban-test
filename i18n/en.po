@@ -51,6 +51,12 @@ msgstr "Deadlock Hint"
 msgid "DEADLOCK_TIP"
 msgstr "Highlight static deadlock locations"
 
+msgid "PATHFINDING_STRATEGY"
+msgstr "Pathfinding Strategy"
+
+msgid "PATHFINDING_STRATEGY_TIP"
+msgstr "Box pathfinding prioritizes paths with the minimum number of pushes or moves"
+
 msgid "SOLVER"
 msgstr "Solver"
 
@@ -80,10 +86,10 @@ msgstr ""
 msgid "FAST"
 msgstr "Quick"
 
-msgid "OPTIMAL_PUSH"
+msgid "PUSH_OPTIMAL"
 msgstr "Push-Optimal"
 
-msgid "OPTIMAL_MOVE"
+msgid "MOVE_OPTIMAL"
 msgstr "Move-Optimal"
 
 msgid "HEATMAP"

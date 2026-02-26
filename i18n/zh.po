@@ -51,6 +51,12 @@ msgstr "死锁提示"
 msgid "DEADLOCK_TIP"
 msgstr "标出静态死锁位置"
 
+msgid "PATHFINDING_STRATEGY"
+msgstr "寻路策略"
+
+msgid "PATHFINDING_STRATEGY_TIP"
+msgstr "箱子寻路首选最少推动或移动的路径."
+
 msgid "SOLVER"
 msgstr "求解器"
 
@@ -80,10 +86,10 @@ msgstr ""
 msgid "FAST"
 msgstr "快速"
 
-msgid "OPTIMAL_PUSH"
+msgid "PUSH_OPTIMAL"
 msgstr "推动最优"
 
-msgid "OPTIMAL_MOVE"
+msgid "MOVE_OPTIMAL"
 msgstr "移动最优"
 
 msgid "HEATMAP"

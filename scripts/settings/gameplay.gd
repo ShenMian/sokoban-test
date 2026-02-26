@@ -4,13 +4,13 @@ extends ScrollContainer
 @onready var animation_speed: OptionButton = $Margin/VBox/AnimationSpeedPanel/Margin/HBox/OptionButton
 @onready var checkerboard: SwitchFx = $Margin/VBox/CheckerboardPanel/Margin/HBox/CheckButton
 @onready var deadlock: SwitchFx = $Margin/VBox/DeadlockPanel/Margin/HBox/CheckButton
-@onready var strategy: OptionButton = $Margin/VBox/StrategyPanel/Margin/HBox/OptionButton
+@onready var pathfinding_strategy: OptionButton = $Margin/VBox/PathfindingStrategyPanel/Margin/HBox/OptionButton
 @onready var algorithm: OptionButton = $Margin/VBox/AlgorithmPanel/Margin/HBox/OptionButton
+@onready var solver_strategy: OptionButton = $Margin/VBox/StrategyPanel/Margin/HBox/OptionButton
 
 const SECTION_NAME := "gameplay"
 
 const LOCALES: Array[String] = ["en", "zh"]
-const ALGORITHMS: Array[String] = ["A*", "IDA*"]
 
 
 func _ready():
@@ -18,8 +18,9 @@ func _ready():
 	animation_speed.item_selected.connect(_on_animation_speed_selected)
 	checkerboard.toggled.connect(_on_checkerboard_toggled)
 	deadlock.toggled.connect(_on_deadlock_toggled)
-	strategy.item_selected.connect(_on_strategy_selected)
+	pathfinding_strategy.item_selected.connect(_on_pathfinding_strategy_selected)
 	algorithm.item_selected.connect(_on_algorithm_selected)
+	solver_strategy.item_selected.connect(_on_strategy_selected)
 
 	apply_settings()
 
@@ -37,11 +38,14 @@ func apply_settings():
 	deadlock.button_pressed = Settings.get_value(SECTION_NAME, "deadlock")
 	deadlock.toggled.emit(deadlock.button_pressed)
 
-	strategy.select(Settings.get_value(SECTION_NAME, "strategy"))
-	strategy.item_selected.emit(strategy.selected)
+	pathfinding_strategy.select(Settings.get_value(SECTION_NAME, "pathfinding_strategy"))
+	pathfinding_strategy.item_selected.emit(pathfinding_strategy.selected)
 	
-	algorithm.select(ALGORITHMS.find(Settings.get_value(SECTION_NAME, "algorithm")))
+	algorithm.select(Settings.get_value(SECTION_NAME, "algorithm"))
 	algorithm.item_selected.emit(algorithm.selected)
+
+	solver_strategy.select(Settings.get_value(SECTION_NAME, "solver_strategy"))
+	solver_strategy.item_selected.emit(solver_strategy.selected)
 
 
 func _on_language_selected(index: int):
@@ -62,9 +66,13 @@ func _on_deadlock_toggled(toggled_on: bool):
 	Settings.set_and_save_value(SECTION_NAME, "deadlock", toggled_on)
 
 
-func _on_strategy_selected(index: int):
-	Settings.set_and_save_value(SECTION_NAME, "strategy", index)
+func _on_pathfinding_strategy_selected(index: int):
+	Settings.set_and_save_value(SECTION_NAME, "pathfinding_strategy", index)
 
 
 func _on_algorithm_selected(index: int):
-	Settings.set_and_save_value(SECTION_NAME, "algorithm", ALGORITHMS[index])
+	Settings.set_and_save_value(SECTION_NAME, "algorithm", index)
+
+
+func _on_strategy_selected(index: int):
+	Settings.set_and_save_value(SECTION_NAME, "solver_strategy", index)

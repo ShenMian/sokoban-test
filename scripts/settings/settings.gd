@@ -11,9 +11,10 @@ const DEFAULT_CONFIG = {
 		"animation_speed": 1,
 		"checkerboard": true,
 		"deadlock": true,
+		"pathfinding_strategy": 0,
 		"heatmap": true,
-		"strategy": 0,
-		"algorithm": "A*"
+		"algorithm": 0,
+		"solver_strategy": 0,
 	},
 	"video": {
 		"window_mode": DisplayServer.WINDOW_MODE_WINDOWED,
