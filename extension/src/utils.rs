@@ -12,3 +12,15 @@ impl ToGodot for Vector2<i32> {
         Vector2i::new(self.x, self.y)
     }
 }
+
+pub trait ToNalgebra {
+    type Out;
+    fn to_na(&self) -> Self::Out;
+}
+
+impl ToNalgebra for Vector2i {
+    type Out = Vector2<i32>;
+    fn to_na(&self) -> Self::Out {
+        Vector2::new(self.x, self.y)
+    }
+}
