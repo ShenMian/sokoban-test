@@ -93,7 +93,9 @@ func _update_icons(icons: Array[Texture2D]):
 	for icon in icons:
 		var rect = TextureRect.new()
 		rect.texture = icon
+		rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		rect.custom_minimum_size = Vector2(70, 70)
 		icon_container.add_child(rect)
 
 
