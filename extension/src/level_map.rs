@@ -22,14 +22,18 @@ struct LevelMap {
     #[export]
     checkerboard_shading: bool,
 
-    level: Level,
+    #[export]
+    floor_item_id: i32,
+    #[export]
+    wall_item_id: i32,
+    #[export]
+    goal_item_id: i32,
 
-    floor_id: i32,
-    floor_dark_id: i32,
-    floor_deadlock_id: i32,
-    floor_deadlock_dark_id: i32,
-    wall_id: i32,
-    goal_id: i32,
+    floor_dark_item_id: i32,
+    deadlock_item_id: i32,
+    deadlock_dark_item_id: i32,
+
+    level: Level,
 
     box_scene: Gd<PackedScene>,
 
@@ -39,20 +43,24 @@ struct LevelMap {
 #[godot_api]
 impl IGridMap for LevelMap {
     fn init(base: Base<GridMap>) -> Self {
-        let map = Map::from_actions(Actions::from_str("R").unwrap()).unwrap();
+        let level = Level::from_map(Map::from_actions(Actions::from_str("R").unwrap()).unwrap());
         Self {
             deadlock_hint: true,
             checkerboard_shading: true,
-            level: Level::from_map(map),
-            floor_id: -1,
-            floor_dark_id: -1,
-            floor_deadlock_id: -1,
-            floor_deadlock_dark_id: -1,
-            wall_id: -1,
-            goal_id: -1,
+            level,
+            floor_item_id: GridMap::INVALID_CELL_ITEM,
+            wall_item_id: GridMap::INVALID_CELL_ITEM,
+            goal_item_id: GridMap::INVALID_CELL_ITEM,
+            floor_dark_item_id: GridMap::INVALID_CELL_ITEM,
+            deadlock_item_id: GridMap::INVALID_CELL_ITEM,
+            deadlock_dark_item_id: GridMap::INVALID_CELL_ITEM,
             box_scene: load("res://scenes/box.tscn"),
             base,
         }
+    }
+
+    fn ready(&mut self) {
+        godot_print!("LevelMap ready");
     }
 }
 
@@ -73,12 +81,12 @@ impl LevelMap {
             self.level = Level::from_map(map);
             self.build();
         } else if let Ok(actions) = Actions::from_str(&string.to_string()) {
-        let Ok(map) = Map::from_actions(actions) else {
+            let Ok(map) = Map::from_actions(actions) else {
                 godot_warn!("failed to create map from actions");
-            return;
-        };
-        self.level = Level::from_map(map);
-        self.build();
+                return;
+            };
+            self.level = Level::from_map(map);
+            self.build();
         } else {
             godot_warn!("failed to parse map or actions from string: '{string}'");
         }
@@ -162,45 +170,22 @@ impl LevelMap {
     }
 
     fn build(&mut self) {
-        if self.floor_id == -1 {
+        if self.floor_dark_item_id == GridMap::INVALID_CELL_ITEM {
             let mut mesh_library = self.base().get_mesh_library().unwrap();
-
-            let mut floor_id = None;
-            let mut wall_id = None;
-            let mut goal_id = None;
-            for id in 0..mesh_library.get_item_list().len() as i32 {
-                let name = mesh_library.get_item_name(id);
-                match name.to_string().as_str() {
-                    "floor" => floor_id = Some(id),
-                    "wall" => wall_id = Some(id),
-                    "goal" => goal_id = Some(id),
-                    _ => continue,
-                }
-            }
-            self.floor_id = floor_id.unwrap();
-            self.wall_id = wall_id.unwrap();
-            self.goal_id = goal_id.unwrap();
-
-            self.floor_dark_id = self.create_floor(&mut mesh_library, "floor_dark", |color| {
+            self.floor_dark_item_id = self.create_floor(&mut mesh_library, "floor_dark", |color| {
                 color.darkened(0.15)
             });
-            self.floor_deadlock_id =
+            self.deadlock_item_id =
                 self.create_floor(&mut mesh_library, "floor_deadlock", |color| {
                     color.darkened(0.3)
                 });
-            self.floor_deadlock_dark_id =
+            self.deadlock_dark_item_id =
                 self.create_floor(&mut mesh_library, "floor_deadlock_dark", |color| {
                     color.darkened(0.3 + 0.15)
                 });
         }
 
-        let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
-        for mut child in boxes.get_children().iter_shared() {
-            child.queue_free();
-        }
-
         let deadlocks = compute_static_deadlocks(self.map());
-
         self.base_mut().clear();
         for x in 0..self.map().dimensions().x {
             for y in 0..self.map().dimensions().y {
@@ -210,15 +195,15 @@ impl LevelMap {
                 if tiles.contains(Tiles::Floor) {
                     let tile_id = if self.deadlock_hint && deadlocks.contains(&position) {
                         if self.checkerboard_shading && (x + y) % 2 == 1 {
-                            self.floor_deadlock_dark_id
+                            self.deadlock_dark_item_id
                         } else {
-                            self.floor_deadlock_id
+                            self.deadlock_item_id
                         }
                     } else {
                         if self.checkerboard_shading && (x + y) % 2 == 1 {
-                            self.floor_dark_id
+                            self.floor_dark_item_id
                         } else {
-                            self.floor_id
+                            self.floor_item_id
                         }
                     };
                     self.base_mut()
@@ -226,8 +211,8 @@ impl LevelMap {
                 }
                 if tiles.intersects(Tiles::Wall | Tiles::Goal) {
                     let item_id = match tiles & !Tiles::Floor {
-                        Tiles::Wall => self.wall_id,
-                        Tiles::Goal => self.goal_id,
+                        Tiles::Wall => self.wall_item_id,
+                        Tiles::Goal => self.goal_item_id,
                         _ => continue,
                     };
                     self.base_mut()
@@ -236,6 +221,10 @@ impl LevelMap {
             }
         }
 
+        let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
+        for mut child in boxes.get_children().iter_shared() {
+            child.queue_free();
+        }
         for position in self.map().box_positions() {
             let mut r#box = self.box_scene.instantiate_as::<Node3D>();
             r#box.set_global_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
@@ -272,7 +261,7 @@ impl LevelMap {
         mesh_library.create_item(next_id);
         mesh_library.set_item_name(next_id, name);
 
-        let mesh = mesh_library.get_item_mesh(self.floor_id).unwrap();
+        let mesh = mesh_library.get_item_mesh(self.floor_item_id).unwrap();
 
         let material = mesh.surface_get_material(0).unwrap();
         let standard_material = material.clone().cast::<StandardMaterial3D>();
@@ -289,7 +278,7 @@ impl LevelMap {
 
         mesh_library.set_item_mesh(next_id, &new_mesh);
 
-        let transform = mesh_library.get_item_mesh_transform(self.floor_id);
+        let transform = mesh_library.get_item_mesh_transform(self.floor_item_id);
         mesh_library.set_item_mesh_transform(next_id, transform);
 
         next_id

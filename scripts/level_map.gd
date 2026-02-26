@@ -6,8 +6,6 @@ extends LevelMap
 @onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox/Value"
 @onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox/Value"
 
-const BOX = preload("uid://bslwjbitr74ja")
-
 enum Direction {
 	Up = 0,
 	Down = 1,
@@ -22,10 +20,9 @@ func _ready():
 	self.solved.connect(_on_solved)
 
 	# self.load_from_string("DuLLrUUdrR")
-	self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD")
+	self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
 
-	camera.global_position.x = self.dimensions().x / 2.0
-	camera.global_position.z = self.dimensions().y / 2.0
+	_reset_camera_position()
 
 
 func _input(_event: InputEvent):
@@ -50,3 +47,8 @@ func _on_player_move(_to: Vector2, is_pushing: bool):
 
 func _on_solved():
 	print("Level solved!")
+
+
+func _reset_camera_position():
+	camera.global_position.x = self.dimensions().x / 2.0
+	camera.global_position.z = self.dimensions().y / 2.0

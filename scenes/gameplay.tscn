@@ -38,6 +38,9 @@ corner_detail = 5
 script = ExtResource("1_l1v76")
 
 [node name="LevelMap" type="LevelMap" parent="." unique_id=1068863980]
+floor_item_id = 0
+wall_item_id = 1
+goal_item_id = 2
 mesh_library = ExtResource("1_7biu0")
 cell_size = Vector3(1, 1, 1)
 script = ExtResource("3_e124b")
