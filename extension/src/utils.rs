@@ -1,11 +1,14 @@
 use godot::prelude::*;
 use nalgebra::Vector2;
 
-#[expect(dead_code)]
-pub fn to_na_vec2(v: &Vector2i) -> Vector2<i32> {
-    Vector2::new(v.x, v.y)
+pub trait ToGodot {
+    type Out;
+    fn to_gd(&self) -> Self::Out;
 }
 
-pub fn to_gd_vec2(v: &Vector2<i32>) -> Vector2i {
-    Vector2i::new(v.x, v.y)
+impl ToGodot for Vector2<i32> {
+    type Out = Vector2i;
+    fn to_gd(&self) -> Self::Out {
+        Vector2i::new(self.x, self.y)
+    }
 }

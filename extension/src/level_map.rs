@@ -9,7 +9,7 @@ use soukoban::{
     Actions, Level, Map, Tiles, deadlock::compute_static_deadlocks, direction::Direction,
 };
 
-use crate::utils::*;
+use crate::utils::ToGodot;
 
 #[derive(GodotClass)]
 #[class(base=GridMap)]
@@ -83,22 +83,30 @@ impl LevelMap {
 
     #[func]
     fn dimensions(&self) -> Vector2i {
-        to_gd_vec2(&self.map().dimensions())
+        self.map().dimensions().to_gd()
     }
 
     #[func]
     fn player_position(&self) -> Vector2i {
-        to_gd_vec2(&self.map().player_position())
+        self.map().player_position().to_gd()
     }
 
     #[func]
     fn box_positions(&self) -> Array<Vector2i> {
-        self.map().box_positions().iter().map(to_gd_vec2).collect()
+        self.map()
+            .box_positions()
+            .iter()
+            .map(ToGodot::to_gd)
+            .collect()
     }
 
     #[func]
     fn goal_positions(&self) -> Array<Vector2i> {
-        self.map().goal_positions().iter().map(to_gd_vec2).collect()
+        self.map()
+            .goal_positions()
+            .iter()
+            .map(ToGodot::to_gd)
+            .collect()
     }
 
     #[func]
@@ -128,12 +136,12 @@ impl LevelMap {
         let player_position = self.map().player_position();
         self.signals()
             .player_move()
-            .emit(to_gd_vec2(&player_position), new_box_position.is_some());
+            .emit(player_position.to_gd(), new_box_position.is_some());
 
         if let (Some(box_position), Some(new_box_position)) = (box_position, new_box_position) {
             self.signals()
                 .box_move()
-                .emit(to_gd_vec2(box_position), to_gd_vec2(new_box_position));
+                .emit(box_position.to_gd(), new_box_position.to_gd());
         }
 
         if self.map().is_solved() {
