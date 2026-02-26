@@ -3,6 +3,9 @@ extends LevelMap
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
 
+@onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox/Value"
+@onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox/Value"
+
 const BOX = preload("uid://bslwjbitr74ja")
 
 enum Direction {
@@ -15,6 +18,7 @@ enum Direction {
 
 func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
+	self.player_move.connect(_on_player_move)
 	self.solved.connect(_on_solved)
 
 	# self.load_from_string("DuLLrUUdrR");
@@ -29,6 +33,12 @@ func _on_setting_changed(section: String, key: String, value: Variant):
 		self.set_deadlock_hint(value)
 	if section == "gameplay" and key == "checkerboard":
 		self.set_checkerboard_shading(value)
+
+
+func _on_player_move(_to: Vector2, is_pushing: bool):
+	moves.text = str(int(moves.text) + 1);
+	if is_pushing:
+		pushes.text = str(int(pushes.text) + 1);
 
 
 func _on_solved():
