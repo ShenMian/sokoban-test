@@ -68,17 +68,25 @@ impl LevelMap {
     fn solved();
 
     #[func]
-    fn load_from_string(&mut self, lurd: GString) {
-        let Ok(actions) = Actions::from_str(&lurd.to_string()) else {
-            godot_print!("failed to parse actions from string");
-            return;
-        };
+    fn load_from_string(&mut self, string: GString) {
+        if let Ok(map) = Map::from_str(&string.to_string()) {
+            self.level = Level::from_map(map);
+            self.build();
+        } else if let Ok(actions) = Actions::from_str(&string.to_string()) {
         let Ok(map) = Map::from_actions(actions) else {
-            godot_print!("failed to create map from actions");
+                godot_warn!("failed to create map from actions");
             return;
         };
         self.level = Level::from_map(map);
         self.build();
+        } else {
+            godot_warn!("failed to parse map or actions from string: '{string}'");
+        }
+    }
+
+    #[func]
+    fn export_to_string(&self) -> GString {
+        (&self.map().to_string()).into()
     }
 
     #[func]

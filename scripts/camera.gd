@@ -32,13 +32,13 @@ func _process(delta: float):
 		global_position = _target_position
 
 
-func _input(event):
-	if Input.is_action_just_pressed("switch_view"):
-		if self.is_3d_view():
-			switch_to_2d()
-		else:
-			switch_to_3d()
-
+func _input(event: InputEvent):
+	# FIXME
+	# if Input.is_action_just_pressed("switch_view"):
+	# 	if self.is_3d_view():
+	# 		switch_to_2d()
+	# 	else:
+	# 		switch_to_3d()
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			_is_dragging = event.pressed

@@ -21,11 +21,18 @@ func _ready():
 	self.player_move.connect(_on_player_move)
 	self.solved.connect(_on_solved)
 
-	# self.load_from_string("DuLLrUUdrR");
-	self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD");
+	# self.load_from_string("DuLLrUUdrR")
+	self.load_from_string("rRRddrruULuullllDDldRuuurrrrddLLLrrruulllldDDurDurrrrruLdllllluurrrrDrdLLLLrrddrUruululllldDldRurrrdrruLLLLrrruulllldD")
 
 	camera.global_position.x = self.dimensions().x / 2.0
 	camera.global_position.z = self.dimensions().y / 2.0
+
+
+func _input(_event: InputEvent):
+	if Input.is_action_just_pressed("import_from_clipboard"):
+		self.load_from_string(DisplayServer.clipboard_get())
+	if Input.is_action_just_pressed("export_to_clipboard"):
+		DisplayServer.clipboard_set(self.export_to_string())
 
 
 func _on_setting_changed(section: String, key: String, value: Variant):
