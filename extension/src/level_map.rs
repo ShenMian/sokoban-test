@@ -173,11 +173,17 @@ impl LevelMap {
             self.wall_id = wall_id.unwrap();
             self.goal_id = goal_id.unwrap();
 
-            self.floor_dark_id = self.create_floor(&mut mesh_library, "floor_dark", 0.15, false);
+            self.floor_dark_id = self.create_floor(&mut mesh_library, "floor_dark", |color| {
+                color.darkened(0.15)
+            });
             self.floor_deadlock_id =
-                self.create_floor(&mut mesh_library, "floor_deadlock", 0.0, true);
+                self.create_floor(&mut mesh_library, "floor_deadlock", |color| {
+                    color.darkened(0.3)
+                });
             self.floor_deadlock_dark_id =
-                self.create_floor(&mut mesh_library, "floor_deadlock_dark", 0.15, true);
+                self.create_floor(&mut mesh_library, "floor_deadlock_dark", |color| {
+                    color.darkened(0.3 + 0.15)
+                });
         }
 
         let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
@@ -252,8 +258,7 @@ impl LevelMap {
         &self,
         mesh_library: &mut Gd<MeshLibrary>,
         name: &str,
-        darken: f64,
-        red_tint: bool,
+        f: fn(Color) -> Color,
     ) -> i32 {
         let next_id = mesh_library.get_last_unused_item_id();
         mesh_library.create_item(next_id);
@@ -268,18 +273,8 @@ impl LevelMap {
             .unwrap()
             .cast::<StandardMaterial3D>();
 
-        let apply_color = |mut color: Color| -> Color {
-            if red_tint {
-                color = Color::from_rgb((color.r + 1.0) / 2.0, color.g * 0.5, color.b * 0.5);
-            }
-            if darken > 0.0 {
-                color = color.darkened(darken);
-            }
-            color
-        };
-
         let color = new_standard_material.get_albedo();
-        new_standard_material.set_albedo(apply_color(color));
+        new_standard_material.set_albedo(f(color));
 
         let mut new_mesh = mesh.duplicate().unwrap().cast::<ArrayMesh>();
         new_mesh.surface_set_material(0, &new_standard_material);
