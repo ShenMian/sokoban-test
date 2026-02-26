@@ -42,7 +42,7 @@ impl IGridMap for LevelMap {
         let map = Map::from_actions(Actions::from_str("R").unwrap()).unwrap();
         Self {
             deadlock_hint: true,
-            checkerboard_shading: false,
+            checkerboard_shading: true,
             level: Level::from_map(map),
             floor_id: -1,
             floor_dark_id: -1,

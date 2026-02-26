@@ -9,7 +9,7 @@ const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
 		"animation_speed": 1,
-		"checkerboard": false,
+		"checkerboard": true,
 		"deadlock": true,
 		"heatmap": true,
 		"strategy": 0,
