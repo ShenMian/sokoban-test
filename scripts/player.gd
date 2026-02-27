@@ -5,6 +5,7 @@ signal selected
 signal unselected
 signal hovered
 signal unhovered
+signal move_anim_finished
 
 @onready var level_map: LevelMap = $".."
 
@@ -82,6 +83,7 @@ func move(direction: Vector3, push: bool):
 
 	state_machine.travel("Static")
 	_is_moving = false
+	move_anim_finished.emit()
 
 
 func _ready():

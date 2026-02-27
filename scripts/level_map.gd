@@ -48,7 +48,20 @@ func _input(_event: InputEvent):
 
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		self.deselect_box()
+		if player._is_moving:
+			get_viewport().set_input_as_handled()
+			return
+
+		var space_state = get_world_3d().direct_space_state
+		var ray_origin = camera.project_ray_origin(event.position)
+		var ray_end = ray_origin + camera.project_ray_normal(event.position) * 1000.0
+		var query = PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
+		query.collide_with_areas = true
+		query.collide_with_bodies = false
+
+		# Checks if the click was on an empty space (without Area3D)
+		if space_state.intersect_ray(query).is_empty():
+			self.deselect_box()
 
 
 func _on_setting_changed(section: String, key: String, value: Variant):
@@ -84,5 +97,4 @@ func on_waypoint_clicked(_box: Node3D, box_position: Vector2i, waypoint_position
 		if self.is_solved():
 			break
 		self.move_by(direction)
-		while player._is_moving:
-			await get_tree().process_frame
+		await player.move_anim_finished
