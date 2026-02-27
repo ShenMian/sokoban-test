@@ -30,13 +30,17 @@ pub enum PathfindingStrategy {
 #[derive(GodotClass)]
 #[class(base=GridMap)]
 struct LevelMap {
-    #[var(set = set_deadlock_hint)]
     #[export]
+    #[var(get = get_deadlock_hint, set = set_deadlock_hint)]
     deadlock_hint: bool,
 
-    #[var(set = set_checkerboard_shading)]
     #[export]
+    #[var(get = get_checkerboard_shading, set = set_checkerboard_shading)]
     checkerboard_shading: bool,
+
+    #[export]
+    #[var(get = get_deadlock_tint, set = set_deadlock_tint)]
+    deadlock_tint: Color,
 
     #[export]
     pathfinding_strategy: PathfindingStrategy,
@@ -68,6 +72,7 @@ impl IGridMap for LevelMap {
         Self {
             deadlock_hint: true,
             checkerboard_shading: true,
+            deadlock_tint: Color::from_rgb(0.5, 0.5, 0.5),
             pathfinding_strategy: PathfindingStrategy::PushOptimal,
             floor_item_id: GridMap::INVALID_CELL_ITEM,
             wall_item_id: GridMap::INVALID_CELL_ITEM,
@@ -261,13 +266,15 @@ impl LevelMap {
             self.floor_dark_item_id = self.create_floor(&mut mesh_library, "floor_dark", |color| {
                 color.darkened(0.15)
             });
+
+            let deadlock_tint = self.deadlock_tint;
             self.deadlock_item_id =
                 self.create_floor(&mut mesh_library, "floor_deadlock", |color| {
-                    color.darkened(0.3)
+                    color * deadlock_tint
                 });
             self.deadlock_dark_item_id =
                 self.create_floor(&mut mesh_library, "floor_deadlock_dark", |color| {
-                    color.darkened(0.3 + 0.15)
+                    color.darkened(0.15) * deadlock_tint
                 });
         }
 
@@ -355,7 +362,7 @@ impl LevelMap {
         let waypoint_scene: Gd<PackedScene> = load("res://scenes/waypoint.tscn");
         for position in waypoints.keys().map(|dp| dp.position()) {
             let mut waypoint = waypoint_scene.instantiate_as::<Node3D>();
-            waypoint.set_global_position(Vector3::new(position.x as f32, 0.02, position.y as f32));
+            waypoint.set_global_position(Vector3::new(position.x as f32, 0.01, position.y as f32));
             waypoint.connect(
                 "clicked",
                 &self.to_gd().callable("on_waypoint_clicked").bind(&[
@@ -400,9 +407,19 @@ impl LevelMap {
     }
 
     #[func]
+    fn get_deadlock_hint(&self) -> bool {
+        self.deadlock_hint
+    }
+
+    #[func]
     fn set_deadlock_hint(&mut self, enable: bool) {
         self.deadlock_hint = enable;
         self.build();
+    }
+
+    #[func]
+    fn get_checkerboard_shading(&self) -> bool {
+        self.checkerboard_shading
     }
 
     #[func]
@@ -411,12 +428,22 @@ impl LevelMap {
         self.build();
     }
 
-    fn create_floor(
-        &self,
-        mesh_library: &mut Gd<MeshLibrary>,
-        name: &str,
-        f: fn(Color) -> Color,
-    ) -> i32 {
+    #[func]
+    fn get_deadlock_tint(&self) -> Color {
+        self.deadlock_tint
+    }
+
+    #[func]
+    fn set_deadlock_tint(&mut self, color: Color) {
+        self.deadlock_tint = color;
+        self.floor_dark_item_id = GridMap::INVALID_CELL_ITEM;
+        self.build();
+    }
+
+    fn create_floor<F>(&self, mesh_library: &mut Gd<MeshLibrary>, name: &str, f: F) -> i32
+    where
+        F: Fn(Color) -> Color,
+    {
         let next_id = mesh_library.get_last_unused_item_id();
         mesh_library.create_item(next_id);
         mesh_library.set_item_name(next_id, name);
