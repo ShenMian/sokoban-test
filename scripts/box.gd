@@ -35,8 +35,13 @@ func move(direction: Vector3):
 	await create_tween() \
 		.set_ease(ease_) \
 		.set_trans(transition) \
-		.tween_property(self, "global_position", global_position + direction, duration) \
+		.tween_property(self , "global_position", global_position + direction, duration) \
 		.finished
+
+
+func deselect():
+	_is_selected = false
+	_apply_indicator()
 
 
 func _ready():
@@ -71,6 +76,7 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 			selected.emit()
 		else:
 			unselected.emit()
+		get_viewport().set_input_as_handled()
 
 
 func _on_area_mouse_entered():

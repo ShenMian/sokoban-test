@@ -39,7 +39,7 @@ var _is_moving: bool = false
 var _indicator_tween: Tween
 
 
-func move(direction: Vector3, is_pushing: bool):
+func move(direction: Vector3, push: bool):
 	if direction == Vector3.ZERO:
 		state_machine.travel("EmoteNo")
 		return
@@ -69,7 +69,7 @@ func move(direction: Vector3, is_pushing: bool):
 			.tween_property(meshes, "rotation_degrees:y", target_rotation, duration) \
 			.finished
 
-	if is_pushing:
+	if push:
 		state_machine.travel("Pushing")
 	else:
 		state_machine.travel("Walking")
@@ -77,7 +77,7 @@ func move(direction: Vector3, is_pushing: bool):
 	await create_tween() \
 		.set_ease(move_ease) \
 		.set_trans(move_transition) \
-		.tween_property(self, "global_position", global_position + direction, move_duration) \
+		.tween_property(self , "global_position", global_position + direction, move_duration) \
 		.finished
 
 	state_machine.travel("Static")
@@ -85,7 +85,7 @@ func move(direction: Vector3, is_pushing: bool):
 
 
 func _ready():
-	level_map.player_move.connect(_on_player_move)
+	level_map.player_moved.connect(_on_player_moved)
 	idle_timer.timeout.connect(_idle_timer_timeout)
 
 	mesh_area.input_event.connect(_on_area_input_event)
@@ -113,9 +113,9 @@ func _process(_delta: float):
 			level_map.move_by(level_map.Direction.Down)
 
 
-func _on_player_move(to: Vector2i, is_pushing: bool):
+func _on_player_moved(to: Vector2i, pushed: bool):
 	var to_ = Vector3(to.x, 0.0, to.y)
-	move(to_ - global_position, is_pushing)
+	move((to_ - global_position).round(), pushed)
 
 
 func _idle_timer_timeout():
@@ -132,7 +132,7 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 			selected.emit()
 		else:
 			unselected.emit()
-
+		get_viewport().set_input_as_handled()
 
 func _on_area_mouse_entered():
 	_is_hovered = true

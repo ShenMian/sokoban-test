@@ -2,6 +2,7 @@ extends LevelMap
 
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
+@onready var waypoints_container: Node3D = $Waypoints
 
 @onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox/Value"
 @onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox/Value"
@@ -16,11 +17,24 @@ enum Direction {
 
 func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
-	self.player_move.connect(_on_player_move)
+	self.player_moved.connect(_on_player_moved)
 	self.solved.connect(_on_solved)
 
 	# self.load_from_string("DuLLrUUdrR")
-	self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
+	# self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
+	self.load_from_string(
+		"---#######---\n" +
+		"####_____#---\n" +
+		"#___.###_#---\n" +
+		"#_#_#____##--\n" +
+		"#_#_$_$#._#--\n" +
+		"#_#__*__#_#--\n" +
+		"#_.#$_$_#_#--\n" +
+		"##____#_#_###\n" +
+		"-#_###.____@#\n" +
+		"-#_____##___#\n" +
+		"-############"
+	)
 
 	_reset_camera_position()
 
@@ -32,16 +46,23 @@ func _input(_event: InputEvent):
 		DisplayServer.clipboard_set(self.export_to_string())
 
 
+func _unhandled_input(event: InputEvent):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		self.deselect_box()
+
+
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "gameplay" and key == "deadlock":
 		self.set_deadlock_hint(value)
 	if section == "gameplay" and key == "checkerboard":
 		self.set_checkerboard_shading(value)
+	if section == "gameplay" and key == "pathfinding_strategy":
+		self.pathfinding_strategy = value
 
 
-func _on_player_move(_to: Vector2, is_pushing: bool):
+func _on_player_moved(_to: Vector2, pushed: bool):
 	moves.text = str(int(moves.text) + 1);
-	if is_pushing:
+	if pushed:
 		pushes.text = str(int(pushes.text) + 1);
 
 
@@ -52,3 +73,16 @@ func _on_solved():
 func _reset_camera_position():
 	camera.global_position.x = self.dimensions().x / 2.0
 	camera.global_position.z = self.dimensions().y / 2.0
+
+
+func on_waypoint_clicked(_box: Node3D, box_position: Vector2i, waypoint_position: Vector2i):
+	self.deselect_box()
+
+	var directions = self.box_move_path(box_position, waypoint_position)
+	
+	for direction in directions:
+		if self.is_solved():
+			break
+		self.move_by(direction)
+		while player._is_moving:
+			await get_tree().process_frame
