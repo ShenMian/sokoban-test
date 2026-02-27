@@ -353,10 +353,15 @@ impl LevelMap {
         };
 
         let start = std::time::Instant::now();
-        let (waypoints, costs) =
+        let (mut waypoints, costs) =
             path_finding::box_move_waypoints(self.map(), box_position, strategy);
         let elapsed = start.elapsed();
         godot_print!("found {} waypoints in {:?}", waypoints.len(), elapsed);
+
+        if self.deadlock_hint {
+            let deadlocks = compute_static_deadlocks(self.map());
+            waypoints.retain(|dp, _| !deadlocks.contains(&dp.position()));
+        }
 
         let mut container = self.base_mut().get_node_as::<Node3D>("Waypoints");
         let waypoint_scene: Gd<PackedScene> = load("res://scenes/waypoint.tscn");
