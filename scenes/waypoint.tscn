@@ -4,11 +4,17 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_omn23"]
 transparency = 1
-albedo_color = Color(0, 0.78431374, 0, 0.78431374)
+albedo_color = Color(0.1, 0.5, 1, 0.3)
+emission_enabled = true
+emission = Color(0.1, 0.5, 1, 1)
+emission_energy_multiplier = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kvbum"]
 transparency = 1
-albedo_color = Color(0, 1, 0, 0.78431374)
+albedo_color = Color(0.2, 0.8, 1, 0.5)
+emission_enabled = true
+emission = Color(0.2, 0.8, 1, 1)
+emission_energy_multiplier = 1.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_8hlp4"]
 size = Vector2(1, 1)
