@@ -7,13 +7,6 @@ extends LevelMap
 @onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox/Value"
 @onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox/Value"
 
-enum Direction {
-	Up = 0,
-	Down = 1,
-	Left = 2,
-	Right = 3
-}
-
 
 func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
@@ -21,20 +14,20 @@ func _ready():
 	self.solved.connect(_on_solved)
 
 	# self.load_from_string("DuLLrUUdrR")
-	# self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
-	self.load_from_string(
-		"---#######---\n" +
-		"####_____#---\n" +
-		"#___.###_#---\n" +
-		"#_#_#____##--\n" +
-		"#_#_$_$#._#--\n" +
-		"#_#__*__#_#--\n" +
-		"#_.#$_$_#_#--\n" +
-		"##____#_#_###\n" +
-		"-#_###.____@#\n" +
-		"-#_____##___#\n" +
-		"-############"
-	)
+	self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
+	# self.load_from_string(
+	# 	"---#######---\n" +
+	# 	"####_____#---\n" +
+	# 	"#___.###_#---\n" +
+	# 	"#_#_#____##--\n" +
+	# 	"#_#_$_$#._#--\n" +
+	# 	"#_#__*__#_#--\n" +
+	# 	"#_.#$_$_#_#--\n" +
+	# 	"##____#_#_###\n" +
+	# 	"-#_###.____@#\n" +
+	# 	"-#_____##___#\n" +
+	# 	"-############"
+	# )
 
 	_reset_camera_position()
 
@@ -92,7 +85,6 @@ func on_waypoint_clicked(_box: Node3D, box_position: Vector2i, waypoint_position
 	self.deselect_box()
 
 	var directions = self.box_move_path(box_position, waypoint_position)
-	
 	for direction in directions:
 		if self.is_solved():
 			break

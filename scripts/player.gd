@@ -32,6 +32,13 @@ signal move_anim_finished
 @export var indicator_scale_min: float = 0.8
 @export var indicator_scale_max: float = 1.2
 
+enum Direction {
+	Up = 0,
+	Down = 1,
+	Left = 2,
+	Right = 3
+}
+
 var _is_selected: bool = false
 var _is_hovered: bool = false
 
@@ -106,13 +113,13 @@ func _ready():
 func _process(_delta: float):
 	if not _is_moving:
 		if Input.is_action_pressed("move_right"):
-			level_map.move_by(level_map.Direction.Right)
+			level_map.move_by(Direction.Right)
 		elif Input.is_action_pressed("move_left"):
-			level_map.move_by(level_map.Direction.Left)
+			level_map.move_by(Direction.Left)
 		elif Input.is_action_pressed("move_up"):
-			level_map.move_by(level_map.Direction.Up)
+			level_map.move_by(Direction.Up)
 		elif Input.is_action_pressed("move_down"):
-			level_map.move_by(level_map.Direction.Down)
+			level_map.move_by(Direction.Down)
 
 
 func _on_player_moved(to: Vector2i, pushed: bool):

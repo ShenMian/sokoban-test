@@ -31,15 +31,15 @@ pub enum PathfindingStrategy {
 #[class(base=GridMap)]
 struct LevelMap {
     #[export]
-    #[var(get = get_deadlock_hint, set = set_deadlock_hint)]
+    #[var(get, set = set_deadlock_hint)]
     deadlock_hint: bool,
 
     #[export]
-    #[var(get = get_checkerboard_shading, set = set_checkerboard_shading)]
+    #[var(get, set = set_checkerboard_shading)]
     checkerboard_shading: bool,
 
     #[export]
-    #[var(get = get_deadlock_tint, set = set_deadlock_tint)]
+    #[var(get, set = set_deadlock_tint)]
     deadlock_tint: Color,
 
     #[export]
@@ -73,7 +73,7 @@ impl IGridMap for LevelMap {
             deadlock_hint: true,
             checkerboard_shading: true,
             deadlock_tint: Color::from_rgb(0.5, 0.5, 0.5),
-            pathfinding_strategy: PathfindingStrategy::PushOptimal,
+            pathfinding_strategy: PathfindingStrategy::default(),
             floor_item_id: GridMap::INVALID_CELL_ITEM,
             wall_item_id: GridMap::INVALID_CELL_ITEM,
             goal_item_id: GridMap::INVALID_CELL_ITEM,
@@ -356,6 +356,7 @@ impl LevelMap {
         let (mut waypoints, costs) =
             path_finding::box_move_waypoints(self.map(), box_position, strategy);
         let elapsed = start.elapsed();
+
         godot_print!("found {} waypoints in {:?}", waypoints.len(), elapsed);
 
         if self.deadlock_hint {
@@ -412,30 +413,15 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_deadlock_hint(&self) -> bool {
-        self.deadlock_hint
-    }
-
-    #[func]
     fn set_deadlock_hint(&mut self, enable: bool) {
         self.deadlock_hint = enable;
         self.build();
     }
 
     #[func]
-    fn get_checkerboard_shading(&self) -> bool {
-        self.checkerboard_shading
-    }
-
-    #[func]
     fn set_checkerboard_shading(&mut self, enable: bool) {
         self.checkerboard_shading = enable;
         self.build();
-    }
-
-    #[func]
-    fn get_deadlock_tint(&self) -> Color {
-        self.deadlock_tint
     }
 
     #[func]
