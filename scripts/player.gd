@@ -5,7 +5,7 @@ signal selected
 signal unselected
 signal hovered
 signal unhovered
-signal move_anim_finished
+signal move_finished
 
 @onready var level_map: LevelMap = $".."
 
@@ -32,17 +32,10 @@ signal move_anim_finished
 @export var indicator_scale_min: float = 0.8
 @export var indicator_scale_max: float = 1.2
 
-enum Direction {
-	Up = 0,
-	Down = 1,
-	Left = 2,
-	Right = 3
-}
+var is_moving: bool = false
 
 var _is_selected: bool = false
 var _is_hovered: bool = false
-
-var _is_moving: bool = false
 
 var _indicator_tween: Tween
 
@@ -68,7 +61,7 @@ func move(direction: Vector3, push: bool):
 	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
 	target_rotation = meshes.rotation_degrees.y + delta
 
-	_is_moving = true
+	is_moving = true
 	if meshes.rotation_degrees.y != target_rotation:
 		var duration = abs(meshes.rotation_degrees.y - target_rotation) / 90.0 * 0.1
 		await create_tween() \
@@ -89,8 +82,8 @@ func move(direction: Vector3, push: bool):
 		.finished
 
 	state_machine.travel("Static")
-	_is_moving = false
-	move_anim_finished.emit()
+	is_moving = false
+	move_finished.emit()
 
 
 func _ready():
@@ -108,18 +101,6 @@ func _ready():
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
-
-
-func _process(_delta: float):
-	if not _is_moving:
-		if Input.is_action_pressed("move_right"):
-			level_map.move_by(Direction.Right)
-		elif Input.is_action_pressed("move_left"):
-			level_map.move_by(Direction.Left)
-		elif Input.is_action_pressed("move_up"):
-			level_map.move_by(Direction.Up)
-		elif Input.is_action_pressed("move_down"):
-			level_map.move_by(Direction.Down)
 
 
 func _on_player_moved(to: Vector2i, pushed: bool):

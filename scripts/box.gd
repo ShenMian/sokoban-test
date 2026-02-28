@@ -1,9 +1,11 @@
 extends Node3D
+class_name Box
 
 signal selected
 signal unselected
 signal hovered
 signal unhovered
+signal move_finished
 
 @onready var level_map: LevelMap = $"../.."
 @onready var player: Node3D = $"../../Player"
@@ -25,6 +27,21 @@ signal unhovered
 @export var indicator_scale_min: float = 0.8
 @export var indicator_scale_max: float = 1.2
 
+
+var disabled: bool = false:
+	set(value):
+		if disabled == value:
+			return
+		disabled = value
+		
+		if disabled:
+			deselect()
+			if _is_hovered:
+				_on_area_mouse_exited()
+				
+		if is_node_ready():
+			_apply_disabled()
+
 var _is_selected: bool = false
 var _is_hovered: bool = false
 
@@ -37,11 +54,16 @@ func move(direction: Vector3):
 		.set_trans(transition) \
 		.tween_property(self , "global_position", global_position + direction, duration) \
 		.finished
+	move_finished.emit()
 
 
 func deselect():
 	_is_selected = false
 	_apply_indicator()
+
+
+func grid_position() -> Vector2i:
+	return Vector2i(round(global_position.x), round(global_position.z))
 
 
 func _ready():
@@ -60,6 +82,9 @@ func _ready():
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
 
+	if disabled:
+		_apply_disabled()
+
 
 func _on_area_entered(area: Area3D):
 	# Move in the opposite direction when touched by a player
@@ -69,6 +94,8 @@ func _on_area_entered(area: Area3D):
 
 
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
+	if disabled:
+		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_is_selected = !_is_selected
 		_apply_indicator()
@@ -80,6 +107,8 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 
 
 func _on_area_mouse_entered():
+	if disabled:
+		return
 	_is_hovered = true
 	_apply_indicator()
 	hovered.emit()
@@ -108,3 +137,8 @@ func _start_indicator_tween():
 func _stop_indicator_tween():
 	_indicator_tween.pause()
 	select_indicator.scale = Vector3.ONE
+
+
+func _apply_disabled():
+	var target_transparency = 0.5 if disabled else 0.0
+	create_tween().tween_property(mesh_instance, "transparency", target_transparency, 0.2)

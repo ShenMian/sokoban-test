@@ -142,6 +142,14 @@ impl LevelMap {
     }
 
     #[func]
+    fn pushable_box_positions(&self) -> Array<Vector2i> {
+        path_finding::pushable_boxes(self.map())
+            .iter()
+            .map(ToGodot::to_gd)
+            .collect()
+    }
+
+    #[func]
     fn goal_positions(&self) -> Array<Vector2i> {
         self.map()
             .goal_positions()
@@ -343,8 +351,8 @@ impl LevelMap {
         self.selected_box = Some(r#box.clone());
 
         let box_position = Vector2::<i32>::new(
-            r#box.get_global_position().x as i32,
-            r#box.get_global_position().z as i32,
+            r#box.get_global_position().x.round() as i32,
+            r#box.get_global_position().z.round() as i32,
         );
 
         let strategy = match self.pathfinding_strategy {
@@ -372,7 +380,6 @@ impl LevelMap {
             waypoint.connect(
                 "clicked",
                 &self.to_gd().callable("on_waypoint_clicked").bind(&[
-                    r#box.to_variant(),
                     box_position.to_gd().to_variant(),
                     position.to_gd().to_variant(),
                 ]),

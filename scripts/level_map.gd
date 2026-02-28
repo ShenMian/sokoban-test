@@ -7,6 +7,13 @@ extends LevelMap
 @onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox/Value"
 @onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox/Value"
 
+enum Direction {
+	Up = 0,
+	Down = 1,
+	Left = 2,
+	Right = 3
+}
+
 
 func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
@@ -31,17 +38,33 @@ func _ready():
 
 	_reset_camera_position()
 
+	await get_tree().process_frame
+	_update_boxes_availability()
+
+
+func _process(_delta: float):
+	if not player.is_moving:
+		if Input.is_action_pressed("move_right"):
+			self.move_by(Direction.Right)
+		elif Input.is_action_pressed("move_left"):
+			self.move_by(Direction.Left)
+		elif Input.is_action_pressed("move_up"):
+			self.move_by(Direction.Up)
+		elif Input.is_action_pressed("move_down"):
+			self.move_by(Direction.Down)
+
 
 func _input(_event: InputEvent):
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		self.load_from_string(DisplayServer.clipboard_get())
+		_update_boxes_availability()
 	if Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(self.export_to_string())
 
 
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if player._is_moving:
+		if player.is_moving:
 			get_viewport().set_input_as_handled()
 			return
 
@@ -72,16 +95,25 @@ func _on_player_moved(_to: Vector2, pushed: bool):
 		pushes.text = str(int(pushes.text) + 1);
 
 
+func _update_boxes_availability():
+	var pushable_positions := self.pushable_box_positions()
+	for box: Box in $Boxes.get_children():
+		if not box.move_finished.is_connected(_update_boxes_availability):
+			box.move_finished.connect(_update_boxes_availability)
+		box.disabled = not pushable_positions.has(box.grid_position())
+
+
 func _on_solved():
 	print("Level solved!")
 
 
 func _reset_camera_position():
-	camera.global_position.x = self.dimensions().x / 2.0
-	camera.global_position.z = self.dimensions().y / 2.0
+	var center = self.dimensions() / 2.0
+	camera.global_position.x = center.x
+	camera.global_position.z = center.y
 
 
-func on_waypoint_clicked(_box: Node3D, box_position: Vector2i, waypoint_position: Vector2i):
+func on_waypoint_clicked(box_position: Vector2i, waypoint_position: Vector2i):
 	self.deselect_box()
 
 	var directions = self.box_move_path(box_position, waypoint_position)
@@ -89,4 +121,4 @@ func on_waypoint_clicked(_box: Node3D, box_position: Vector2i, waypoint_position
 		if self.is_solved():
 			break
 		self.move_by(direction)
-		await player.move_anim_finished
+		await player.move_finished
