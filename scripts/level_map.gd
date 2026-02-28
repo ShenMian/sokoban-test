@@ -22,19 +22,6 @@ func _ready():
 
 	# self.load_from_string("DuLLrUUdrR")
 	self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
-	# self.load_from_string(
-	# 	"---#######---\n" +
-	# 	"####_____#---\n" +
-	# 	"#___.###_#---\n" +
-	# 	"#_#_#____##--\n" +
-	# 	"#_#_$_$#._#--\n" +
-	# 	"#_#__*__#_#--\n" +
-	# 	"#_.#$_$_#_#--\n" +
-	# 	"##____#_#_###\n" +
-	# 	"-#_###.____@#\n" +
-	# 	"-#_____##___#\n" +
-	# 	"-############"
-	# )
 
 	_reset_camera_position()
 
@@ -81,7 +68,7 @@ func _unhandled_input(event: InputEvent):
 
 
 func _on_setting_changed(section: String, key: String, value: Variant):
-	if section == "gameplay" and key == "deadlock":
+	if section == "gameplay" and key == "deadlock_hint":
 		self.deadlock_hint = value
 	if section == "gameplay" and key == "checkerboard":
 		self.checkerboard_shading = value

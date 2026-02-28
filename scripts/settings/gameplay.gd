@@ -37,7 +37,7 @@ func apply_settings():
 	checkerboard.button_pressed = Settings.get_value(SECTION_NAME, "checkerboard")
 	checkerboard.toggled.emit(checkerboard.button_pressed)
 
-	deadlock.button_pressed = Settings.get_value(SECTION_NAME, "deadlock")
+	deadlock.button_pressed = Settings.get_value(SECTION_NAME, "deadlock_hint")
 	deadlock.toggled.emit(deadlock.button_pressed)
 
 	pushable_hint.button_pressed = Settings.get_value(SECTION_NAME, "pushable_hint")
@@ -68,7 +68,7 @@ func _on_checkerboard_toggled(toggled_on: bool):
 
 
 func _on_deadlock_toggled(toggled_on: bool):
-	Settings.set_and_save_value(SECTION_NAME, "deadlock", toggled_on)
+	Settings.set_and_save_value(SECTION_NAME, "deadlock_hint", toggled_on)
 
 
 func _on_pushable_hint_toggled(toggled_on: bool):

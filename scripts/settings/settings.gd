@@ -10,7 +10,7 @@ const DEFAULT_CONFIG = {
 		"language": "en",
 		"animation_speed": 1,
 		"checkerboard": true,
-		"deadlock": true,
+		"deadlock_hint": true,
 		"pushable_hint": true,
 		"pathfinding_strategy": 0,
 		"heatmap": true,
