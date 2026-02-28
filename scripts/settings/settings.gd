@@ -11,6 +11,7 @@ const DEFAULT_CONFIG = {
 		"animation_speed": 1,
 		"checkerboard": true,
 		"deadlock": true,
+		"pushable_hint": true,
 		"pathfinding_strategy": 0,
 		"heatmap": true,
 		"algorithm": 0,

@@ -28,16 +28,20 @@ pub enum PathfindingStrategy {
 #[class(base=GridMap)]
 struct LevelMap {
     #[export]
-    #[var(get, set = set_deadlock_hint)]
-    deadlock_hint: bool,
-
-    #[export]
     #[var(get, set = set_checkerboard_shading)]
     checkerboard_shading: bool,
 
     #[export]
+    #[var(get, set = set_deadlock_hint)]
+    deadlock_hint: bool,
+
+    #[export]
     #[var(get, set = set_deadlock_tint)]
     deadlock_tint: Color,
+
+    #[export]
+    #[var(get, set = set_pushable_hint)]
+    pushable_hint: bool,
 
     #[export]
     pathfinding_strategy: PathfindingStrategy,
@@ -67,9 +71,10 @@ impl IGridMap for LevelMap {
     fn init(base: Base<GridMap>) -> Self {
         let level = Level::from_map(Map::from_actions(Actions::from_str("R").unwrap()).unwrap());
         Self {
-            deadlock_hint: true,
             checkerboard_shading: true,
+            deadlock_hint: true,
             deadlock_tint: Color::from_rgb(0.5, 0.5, 0.5),
+            pushable_hint: true,
             pathfinding_strategy: PathfindingStrategy::default(),
             floor_item_id: GridMap::INVALID_CELL_ITEM,
             wall_item_id: GridMap::INVALID_CELL_ITEM,
@@ -400,6 +405,43 @@ impl LevelMap {
     fn set_checkerboard_shading(&mut self, enable: bool) {
         self.checkerboard_shading = enable;
         self.build();
+    }
+
+    #[func]
+    fn set_pushable_hint(&mut self, enable: bool) {
+        self.pushable_hint = enable;
+        let boxes = self.base().get_node_as::<Node3D>("Boxes");
+        for mut r#box in boxes.get_children().iter_shared() {
+            let callable = self.to_gd().callable("update_pushable_hint");
+            if enable {
+                r#box.connect("move_finished", &callable);
+            } else {
+                r#box.disconnect("move_finished", &callable);
+            }
+        }
+        self.update_pushable_hint();
+    }
+
+    #[func]
+    fn update_pushable_hint(&mut self) {
+        if self.pushable_hint {
+            // Disable non-pushable boxes
+            let pushable_positions = self.pushable_box_positions();
+            let boxes = self.base().get_node_as::<Node3D>("Boxes");
+            for mut r#box in boxes.get_children().iter_shared() {
+                let grid_position: Vector2i = r#box.call("grid_position", &[]).to();
+                let is_pushable = pushable_positions
+                    .iter_shared()
+                    .any(|position| position == grid_position);
+                r#box.set("disabled", &(!is_pushable).to_variant());
+            }
+        } else {
+            // Enables all boxes
+            let boxes = self.base().get_node_as::<Node3D>("Boxes");
+            for mut r#box in boxes.get_children().iter_shared() {
+                r#box.set("disabled", &false.to_variant());
+            }
+        }
     }
 
     #[func]

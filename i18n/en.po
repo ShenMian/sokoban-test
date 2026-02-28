@@ -51,6 +51,12 @@ msgstr "Deadlock Hint"
 msgid "DEADLOCK_TIP"
 msgstr "Highlight static deadlock locations"
 
+msgid "PUSHABLE_HINT"
+msgstr "Pushable Hint"
+
+msgid "PUSHABLE_TIP"
+msgstr "Highlight boxes that can currently be pushed"
+
 msgid "PATHFINDING_STRATEGY"
 msgstr "Pathfinding Strategy"
 

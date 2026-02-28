@@ -299,6 +299,39 @@ size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
+[node name="PushableHintPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox" unique_id=2061986771]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+metadata/title = "PUSHABLE_HINT"
+metadata/description = "PUSHABLE_TIP"
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/PushableHintPanel" unique_id=1188609697]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/PushableHintPanel/Margin" unique_id=1063472660]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/PushableHintPanel/Margin/HBox" unique_id=1402921646]
+layout_mode = 2
+mouse_filter = 1
+text = "PUSHABLE_HINT"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/PushableHintPanel/Margin/HBox" unique_id=1408398353]
+layout_mode = 2
+size_flags_horizontal = 10
+script = ExtResource("6_jrqig")
+metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
+
 [node name="PathfindingStrategyPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox" unique_id=1659579391]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2

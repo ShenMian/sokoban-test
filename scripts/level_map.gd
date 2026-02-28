@@ -39,7 +39,7 @@ func _ready():
 	_reset_camera_position()
 
 	await get_tree().process_frame
-	_update_boxes_availability()
+	self.update_pushable_hint()
 
 
 func _process(_delta: float):
@@ -57,7 +57,7 @@ func _process(_delta: float):
 func _input(_event: InputEvent):
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		self.load_from_string(DisplayServer.clipboard_get())
-		_update_boxes_availability()
+		self.update_pushable_hint()
 	if Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(self.export_to_string())
 
@@ -82,25 +82,19 @@ func _unhandled_input(event: InputEvent):
 
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "gameplay" and key == "deadlock":
-		self.set_deadlock_hint(value)
+		self.deadlock_hint = value
 	if section == "gameplay" and key == "checkerboard":
-		self.set_checkerboard_shading(value)
+		self.checkerboard_shading = value
 	if section == "gameplay" and key == "pathfinding_strategy":
 		self.pathfinding_strategy = value
+	if section == "gameplay" and key == "pushable_hint":
+		self.pushable_hint = value
 
 
 func _on_player_moved(_to: Vector2, pushed: bool):
 	moves.text = str(int(moves.text) + 1);
 	if pushed:
 		pushes.text = str(int(pushes.text) + 1);
-
-
-func _update_boxes_availability():
-	var pushable_positions := self.pushable_box_positions()
-	for box: Box in $Boxes.get_children():
-		if not box.move_finished.is_connected(_update_boxes_availability):
-			box.move_finished.connect(_update_boxes_availability)
-		box.disabled = not pushable_positions.has(box.grid_position())
 
 
 func _on_solved():

@@ -4,6 +4,7 @@ extends ScrollContainer
 @onready var animation_speed: OptionButton = $Margin/VBox/AnimationSpeedPanel/Margin/HBox/OptionButton
 @onready var checkerboard: SwitchFx = $Margin/VBox/CheckerboardPanel/Margin/HBox/CheckButton
 @onready var deadlock: SwitchFx = $Margin/VBox/DeadlockPanel/Margin/HBox/CheckButton
+@onready var pushable_hint: SwitchFx = $Margin/VBox/PushableHintPanel/Margin/HBox/CheckButton
 @onready var pathfinding_strategy: OptionButton = $Margin/VBox/PathfindingStrategyPanel/Margin/HBox/OptionButton
 @onready var algorithm: OptionButton = $Margin/VBox/AlgorithmPanel/Margin/HBox/OptionButton
 @onready var solver_strategy: OptionButton = $Margin/VBox/StrategyPanel/Margin/HBox/OptionButton
@@ -18,6 +19,7 @@ func _ready():
 	animation_speed.item_selected.connect(_on_animation_speed_selected)
 	checkerboard.toggled.connect(_on_checkerboard_toggled)
 	deadlock.toggled.connect(_on_deadlock_toggled)
+	pushable_hint.toggled.connect(_on_pushable_hint_toggled)
 	pathfinding_strategy.item_selected.connect(_on_pathfinding_strategy_selected)
 	algorithm.item_selected.connect(_on_algorithm_selected)
 	solver_strategy.item_selected.connect(_on_strategy_selected)
@@ -37,6 +39,9 @@ func apply_settings():
 
 	deadlock.button_pressed = Settings.get_value(SECTION_NAME, "deadlock")
 	deadlock.toggled.emit(deadlock.button_pressed)
+
+	pushable_hint.button_pressed = Settings.get_value(SECTION_NAME, "pushable_hint")
+	pushable_hint.toggled.emit(pushable_hint.button_pressed)
 
 	pathfinding_strategy.select(Settings.get_value(SECTION_NAME, "pathfinding_strategy"))
 	pathfinding_strategy.item_selected.emit(pathfinding_strategy.selected)
@@ -64,6 +69,10 @@ func _on_checkerboard_toggled(toggled_on: bool):
 
 func _on_deadlock_toggled(toggled_on: bool):
 	Settings.set_and_save_value(SECTION_NAME, "deadlock", toggled_on)
+
+
+func _on_pushable_hint_toggled(toggled_on: bool):
+	Settings.set_and_save_value(SECTION_NAME, "pushable_hint", toggled_on)
 
 
 func _on_pathfinding_strategy_selected(index: int):
