@@ -1,7 +1,4 @@
-use std::{
-    collections::{HashMap, HashSet},
-    str::FromStr,
-};
+use std::{collections::HashMap, str::FromStr};
 
 use godot::{
     classes::{ArrayMesh, GridMap, IGridMap, MeshLibrary, StandardMaterial3D},
@@ -161,32 +158,6 @@ impl LevelMap {
     #[func]
     fn is_solved(&self) -> bool {
         self.map().is_solved()
-    }
-
-    #[func]
-    fn box_move_waypoints(&mut self, box_position: Vector2i) -> Array<Vector2i> {
-        let box_position = box_position.to_na();
-        debug_assert!(self.map().box_positions().contains(&box_position));
-
-        let strategy = match self.pathfinding_strategy {
-            PathfindingStrategy::PushOptimal => Strategy::OptimalPush,
-            PathfindingStrategy::MoveOptimal => Strategy::OptimalMove,
-        };
-        let (waypoints, costs) =
-            path_finding::box_move_waypoints(self.map(), box_position, strategy);
-
-        let mut positions = Array::new();
-        let mut unique_positions = HashSet::new();
-        for &dp in waypoints.keys() {
-            if unique_positions.insert(dp.position()) {
-                positions.push(dp.position().to_gd());
-            }
-        }
-
-        self.waypoints = waypoints;
-        self.costs = costs;
-
-        positions
     }
 
     #[func]

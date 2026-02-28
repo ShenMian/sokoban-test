@@ -33,14 +33,13 @@ var disabled: bool = false:
 		if disabled == value:
 			return
 		disabled = value
-		
-		if disabled:
+
+		if disabled and _is_selected:
 			deselect()
 			if _is_hovered:
 				_on_area_mouse_exited()
-				
-		if is_node_ready():
-			_apply_disabled()
+
+		_apply_disabled()
 
 var _is_selected: bool = false
 var _is_hovered: bool = false
@@ -140,5 +139,5 @@ func _stop_indicator_tween():
 
 
 func _apply_disabled():
-	var target_transparency = 0.5 if disabled else 0.0
-	create_tween().tween_property(mesh_instance, "transparency", target_transparency, 0.2)
+	var target_albedo = Color.WHITE.darkened(0.5) if disabled else Color.WHITE
+	create_tween().tween_property(mesh_instance, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
