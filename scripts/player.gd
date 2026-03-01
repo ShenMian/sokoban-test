@@ -124,6 +124,7 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 			unselected.emit()
 		get_viewport().set_input_as_handled()
 
+
 func _on_area_mouse_entered():
 	_is_hovered = true
 	_apply_indicator()

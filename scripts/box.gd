@@ -27,7 +27,6 @@ signal move_finished
 @export var indicator_scale_min: float = 0.8
 @export var indicator_scale_max: float = 1.2
 
-
 var disabled: bool = false:
 	set(value):
 		if disabled == value:
