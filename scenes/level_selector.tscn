@@ -3,6 +3,12 @@
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_gkmvm"]
 [ext_resource type="Script" uid="uid://c5tskalfqb860" path="res://scripts/level_selector.gd" id="2_tr5s6"]
 
+[sub_resource type="Gradient" id="Gradient_gkmvm"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tr5s6"]
+gradient = SubResource("Gradient_gkmvm")
+
 [node name="LevelSelector" type="Control" unique_id=532100692]
 layout_mode = 3
 anchors_preset = 15
@@ -12,6 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_gkmvm")
 script = ExtResource("2_tr5s6")
+preview_placeholder = SubResource("GradientTexture2D_tr5s6")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1029444989]
 layout_mode = 1

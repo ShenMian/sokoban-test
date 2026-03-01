@@ -1,4 +1,4 @@
-use std::{collections::HashMap, str::FromStr};
+use std::{collections::HashMap, fs::File, io::BufReader, str::FromStr};
 
 use godot::{
     classes::{ArrayMesh, GridMap, IGridMap, MeshLibrary, StandardMaterial3D},
@@ -101,6 +101,30 @@ impl LevelMap {
 
     #[signal]
     fn solved();
+
+    /// Loads levels from an XSB file.
+    #[func]
+    fn load_collection(path: GString) -> Array<VarDictionary> {
+        let path = path.to_string();
+        let reader = BufReader::new(File::open(&path).unwrap());
+        let mut levels = Array::new();
+        for result in Level::load_from_reader(reader) {
+            match result {
+                Ok(level) => {
+                    let mut dict = VarDictionary::new();
+                    dict.set("map", level.map().to_string());
+                    for (key, value) in level.metadata() {
+                        dict.set(key.as_str(), value.as_str());
+                    }
+                    levels.push(&dict);
+                }
+                Err(e) => {
+                    godot_warn!("load_collection: failed to parse level: {}", e);
+                }
+            }
+        }
+        levels
+    }
 
     #[func]
     fn load_from_string(&mut self, string: GString) {
