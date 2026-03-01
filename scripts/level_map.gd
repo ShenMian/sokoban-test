@@ -21,11 +21,9 @@ func _ready():
 	self.solved.connect(_on_solved)
 
 	self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
-	if Settings.selected_collection != null && Settings.selected_level_index != null:
-		var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + Settings.selected_collection + ".xsb")
-		self.load_from_file(full_path, Settings.selected_level_index + 1)
-	Settings.selected_collection = null
-	Settings.selected_level_index = null
+	if Settings.current_collection != null && Settings.current_level_index != null:
+		var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + Settings.current_collection + ".xsb")
+		self.load_from_file(full_path, Settings.current_level_index + 1)
 
 	_reset_camera_position()
 
@@ -50,7 +48,7 @@ func _input(_event: InputEvent):
 		self.load_from_string(DisplayServer.clipboard_get())
 		self.update_pushable_hint()
 	if Input.is_action_just_pressed("export_to_clipboard"):
-		DisplayServer.clipboard_set(self.export_to_string())
+		DisplayServer.clipboard_set(self.get_map())
 
 
 func _unhandled_input(event: InputEvent):
@@ -90,6 +88,7 @@ func _on_player_moved(_to: Vector2, pushed: bool):
 
 func _on_solved():
 	print("Level solved!")
+	Settings.set_level_solution(Settings.current_collection, Settings.current_level_index, self.get_actions())
 
 
 func _reset_camera_position():

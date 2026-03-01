@@ -5,6 +5,9 @@ extends Control
 
 @export var level_item_min_width: int = 150
 
+@export var uncompleted_color: Color = Color(0.0, 0.0, 0.0, 0.0)
+@export var completed_color: Color = Color(0.18, 0.44, 0.18, 0.5)
+
 @export var preview_placeholder: GradientTexture2D
 
 var _start_item_index: int
@@ -107,6 +110,12 @@ func _load_levels(path: String):
 		level_list.add_item(label, preview_placeholder, true)
 		level_list.set_item_tooltip(idx, _make_tooltip(idx, _levels[idx]))
 
+		var solution := Settings.get_level_solution(_selected_collection, idx)
+		if solution["pushes_optimal"].is_empty():
+			level_list.set_item_custom_bg_color(idx, uncompleted_color)
+		else:
+			level_list.set_item_custom_bg_color(idx, completed_color)
+
 
 func _make_tooltip(index: int, data: Dictionary) -> String:
 	var lines := PackedStringArray()
@@ -127,8 +136,8 @@ func _make_tooltip(index: int, data: Dictionary) -> String:
 func _on_level_clicked(index: int, _at_position: Vector2, mouse_button_index: int):
 	if mouse_button_index != MOUSE_BUTTON_LEFT:
 		return
-	Settings.selected_collection = _selected_collection
-	Settings.selected_level_index = index
+	Settings.current_collection = _selected_collection
+	Settings.current_level_index = index
 	get_tree().change_scene_to_file("res://scenes/gameplay.tscn")
 
 

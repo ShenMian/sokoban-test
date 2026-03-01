@@ -152,8 +152,13 @@ impl LevelMap {
     }
 
     #[func]
-    fn export_to_string(&self) -> GString {
+    fn get_map(&self) -> GString {
         (&self.map().to_string()).into()
+    }
+
+    #[func]
+    fn get_actions(&self) -> GString {
+        (&self.level.actions().to_string()).into()
     }
 
     #[func]

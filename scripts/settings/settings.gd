@@ -2,8 +2,13 @@ extends Node
 
 signal setting_changed(section: String, key: String, value: Variant)
 
+const INT_MAX := Vector3i.MAX.x
+
 var config := ConfigFile.new()
 const CONFIG_PATH = "user://settings.ini"
+
+var solutions := ConfigFile.new()
+const SOLUTIONS_PATH = "user://solutions.ini"
 
 const DEFAULT_CONFIG = {
 	"gameplay": {
@@ -41,8 +46,8 @@ const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
 const BINDINGS_PATH := "user://bindings.tres"
 const LEVEL_PATH := "res://assets/levels/"
 
-var selected_collection
-var selected_level_index
+var current_collection
+var current_level_index
 
 
 func _ready():
@@ -55,6 +60,10 @@ func _ready():
 		reset_video_settings()
 		reset_audio_settings()
 	
+	var solutions_error := solutions.load(SOLUTIONS_PATH)
+	if solutions_error:
+		printerr("failed to load solutions file: ", error_string(solutions_error))
+
 	save_input_bindings(DEFAULT_BINDINGS_PATH)
 	load_input_bindings()
 
@@ -127,3 +136,41 @@ func load_input_bindings(path: String = BINDINGS_PATH):
 		InputMap.action_erase_events(action)
 		for event in map.dict[action]:
 			InputMap.action_add_event(action, event)
+
+
+func _count_uppercase(text: String) -> int:
+	var count = 0
+	for i in range(text.length()):
+		var ascii := text.unicode_at(i)
+		if ascii >= int('A') and ascii <= int('Z'):
+			count += 1
+	return count
+
+
+func set_level_solution(collection: String, level: int, actions: String):
+	var solution := get_level_solution(collection, level)
+	var best_pushes: int = _count_uppercase(solution["pushes_optimal"])
+	var best_moves: int = solution["moves_optimal"].length()
+
+	var new_pushes: int = _count_uppercase(actions)
+	var new_moves: int = actions.length()
+	var new_solution := solution.duplicate()
+
+	if solution["pushes_optimal"].is_empty() or new_pushes < best_pushes:
+		new_solution["pushes_optimal"] = actions
+	if solution["moves_optimal"].is_empty() or new_moves < best_moves:
+		new_solution["moves_optimal"] = actions
+
+	solutions.set_value(collection, str(level), new_solution)
+	solutions.save(SOLUTIONS_PATH)
+
+
+const DEFAULT_SOLUTION := {
+	"pushes_optimal": "",
+	"moves_optimal": "",
+}
+
+
+func get_level_solution(collection: String, level: int) -> Dictionary:
+	var solution: Dictionary = solutions.get_value(collection, str(level), DEFAULT_SOLUTION)
+	return solution
