@@ -3,7 +3,9 @@ extends Control
 @onready var collection_list: ItemList = $MarginContainer/HSplit/CollectionList
 @onready var level_list: ItemList = $MarginContainer/HSplit/LevelList
 
-@export var level_item_min_width: int = 100
+@export var level_item_min_width: int = 150
+
+const LEVEL_PATH := "res://assets/levels/"
 
 var start_item_index: int
 var end_item_index: int
@@ -22,12 +24,11 @@ func _ready():
 
 func _load_collections():
 	collection_list.clear()
-	var files = DirAccess.get_files_at("res://assets/levels")
-	if files:
-		for file in files:
-			if file.ends_with(".xsb"):
-				var collection_name = file.trim_suffix(".xsb")
-				collection_list.add_item(collection_name)
+	var files = DirAccess.get_files_at(LEVEL_PATH)
+	for file in files:
+		if file.ends_with(".xsb"):
+			var collection_name = file.trim_suffix(".xsb")
+			collection_list.add_item(collection_name)
 
 
 func _process(_delta: float):
@@ -53,10 +54,11 @@ func _on_collection_list_clicked(index: int, _at_position: Vector2, _mouse_butto
 
 
 func _on_level_list_resized():
-	var content_width = get_content_width(level_list)
+	var content_width = _get_content_width(level_list)
 	var h_separation = level_list.get_theme_constant("h_separation")
 
 	var items_per_row = int(content_width / level_item_min_width)
+	assert(items_per_row >= 0)
 	var item_width = content_width / items_per_row - h_separation
 
 	level_list.max_columns = items_per_row
@@ -64,7 +66,7 @@ func _on_level_list_resized():
 	level_list.set_fixed_icon_size(Vector2(item_width, item_width))
 
 
-func get_content_width(item_list: ItemList) -> float:
+func _get_content_width(item_list: ItemList) -> float:
 	var width = item_list.size.x
 
 	# Subtract left and right margins
