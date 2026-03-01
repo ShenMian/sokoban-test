@@ -176,13 +176,12 @@ impl LevelMap {
         let mut min_cost = i32::MAX;
 
         for &dp in self.waypoints.keys() {
-            if dp.position() == to {
-                if let Some(&cost) = self.costs.get(&dp) {
-                    if cost < min_cost {
-                        min_cost = cost;
-                        best_dp = Some(dp);
-                    }
-                }
+            if dp.position() == to
+                && let Some(&cost) = self.costs.get(&dp)
+                && cost < min_cost
+            {
+                min_cost = cost;
+                best_dp = Some(dp);
             }
         }
 
@@ -276,12 +275,10 @@ impl LevelMap {
                         } else {
                             self.deadlock_item_id
                         }
+                    } else if self.checkerboard_shading && (x + y) % 2 == 1 {
+                        self.floor_dark_item_id
                     } else {
-                        if self.checkerboard_shading && (x + y) % 2 == 1 {
-                            self.floor_dark_item_id
-                        } else {
-                            self.floor_item_id
-                        }
+                        self.floor_item_id
                     };
                     self.base_mut()
                         .set_cell_item(Vector3i::new(x, -1, y), tile_id);
