@@ -12,9 +12,22 @@ var end_item_index: int
 func _ready():
 	collection_list.item_clicked.connect(_on_collection_list_clicked)
 	level_list.resized.connect(_on_level_list_resized)
+
+	_load_collections()
+
 	for i in range(1000):
 		var placeholder = PlaceholderTexture2D.new()
 		level_list.add_item(str(i + 1), placeholder, true)
+
+
+func _load_collections():
+	collection_list.clear()
+	var files = DirAccess.get_files_at("res://assets/levels")
+	if files:
+		for file in files:
+			if file.ends_with(".xsb"):
+				var collection_name = file.trim_suffix(".xsb")
+				collection_list.add_item(collection_name)
 
 
 func _process(_delta: float):
