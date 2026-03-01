@@ -39,6 +39,10 @@ const DEFAULT_CONFIG = {
 
 const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
 const BINDINGS_PATH := "user://bindings.tres"
+const LEVEL_PATH := "res://assets/levels/"
+
+var selected_collection
+var selected_level_index
 
 
 func _ready():

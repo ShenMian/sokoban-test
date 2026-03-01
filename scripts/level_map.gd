@@ -20,8 +20,12 @@ func _ready():
 	self.player_moved.connect(_on_player_moved)
 	self.solved.connect(_on_solved)
 
-	# self.load_from_string("DuLLrUUdrR")
 	self.load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
+	if Settings.selected_collection != null && Settings.selected_level_index != null:
+		var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + Settings.selected_collection + ".xsb")
+		self.load_from_file(full_path, Settings.selected_level_index + 1)
+	Settings.selected_collection = null
+	Settings.selected_level_index = null
 
 	_reset_camera_position()
 

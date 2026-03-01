@@ -7,8 +7,6 @@ extends Control
 
 @export var preview_placeholder: GradientTexture2D
 
-const LEVEL_PATH := "res://assets/levels/"
-
 var _start_item_index: int
 var _end_item_index: int
 
@@ -17,9 +15,12 @@ var _generated_previews: Array[int] = []
 
 var _preview_generator: LevelPreviewGenerator
 
+var _selected_collection: String
+
 
 func _ready():
 	collection_list.item_clicked.connect(_on_collection_list_clicked)
+	level_list.item_clicked.connect(_on_level_clicked)
 	level_list.resized.connect(_on_level_list_resized)
 
 	# Setup the level preview generator
@@ -36,7 +37,7 @@ func _ready():
 
 func _load_collections():
 	collection_list.clear()
-	var files = DirAccess.get_files_at(LEVEL_PATH)
+	var files = DirAccess.get_files_at(Settings.LEVEL_PATH)
 	assert(files)
 	for file in files:
 		if file.ends_with(".xsb"):
@@ -86,8 +87,8 @@ func _on_preview_generated(index: int, texture: Texture2D):
 func _on_collection_list_clicked(index: int, _at_position: Vector2, mouse_button_index: int):
 	if mouse_button_index != MOUSE_BUTTON_LEFT:
 		return
-	var collection_name = collection_list.get_item_text(index)
-	_load_levels(LEVEL_PATH + collection_name + ".xsb")
+	_selected_collection = collection_list.get_item_text(index)
+	_load_levels(Settings.LEVEL_PATH + _selected_collection + ".xsb")
 
 
 func _load_levels(path: String):
@@ -101,10 +102,10 @@ func _load_levels(path: String):
 	_levels = Array(LevelMap.load_collection(full_path), TYPE_DICTIONARY, "", null)
 	_preview_generator.set_levels(_levels)
 
-	for i in range(_levels.size()):
-		var label = str(i + 1)
+	for idx in range(_levels.size()):
+		var label = str(idx + 1)
 		level_list.add_item(label, preview_placeholder, true)
-		level_list.set_item_tooltip(i, _make_tooltip(i, _levels[i]))
+		level_list.set_item_tooltip(idx, _make_tooltip(idx, _levels[idx]))
 
 
 func _make_tooltip(index: int, data: Dictionary) -> String:
@@ -121,6 +122,14 @@ func _make_tooltip(index: int, data: Dictionary) -> String:
 		lines.append("")
 		lines.append(comment)
 	return "\n".join(lines)
+
+
+func _on_level_clicked(index: int, _at_position: Vector2, mouse_button_index: int):
+	if mouse_button_index != MOUSE_BUTTON_LEFT:
+		return
+	Settings.selected_collection = _selected_collection
+	Settings.selected_level_index = index
+	get_tree().change_scene_to_file("res://scenes/gameplay.tscn")
 
 
 func _on_level_list_resized():

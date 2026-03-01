@@ -127,6 +127,14 @@ impl LevelMap {
     }
 
     #[func]
+    fn load_from_file(&mut self, path: GString, index: i32) {
+        let file = File::open(path.to_string()).unwrap();
+        let reader = BufReader::new(file);
+        self.level = Level::load_nth_from_reader(reader, index as usize).unwrap();
+        self.build();
+    }
+
+    #[func]
     fn load_from_string(&mut self, string: GString) {
         if let Ok(map) = Map::from_str(&string.to_string()) {
             self.level = Level::from_map(map);
