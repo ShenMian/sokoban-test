@@ -146,8 +146,8 @@ impl LevelMap {
 
     #[func]
     fn load_from_string(&mut self, string: GString) {
-        if let Ok(map) = Map::from_str(&string.to_string()) {
-            self.level = Level::from_map(map);
+        if let Ok(level) = Level::from_str(&string.to_string()) {
+            self.level = level;
             self.build();
         } else if let Ok(actions) = Actions::from_str(&string.to_string()) {
             let Ok(map) = Map::from_actions(actions) else {
@@ -157,7 +157,7 @@ impl LevelMap {
             self.level = Level::from_map(map);
             self.build();
         } else {
-            godot_warn!("failed to parse map or actions from string: '{string}'");
+            godot_warn!("failed to parse level or actions from string: '{string}'");
         }
     }
 
@@ -391,7 +391,7 @@ impl LevelMap {
             path_finding::box_move_waypoints(self.map(), box_position, strategy);
         let elapsed = start.elapsed();
 
-        godot_print!("found {} waypoints in {:?}", waypoints.len(), elapsed);
+        godot_print!("found {} waypoints ({:?})", waypoints.len(), elapsed);
 
         if self.deadlock_hint {
             let deadlocks = compute_static_deadlocks(self.map());
@@ -471,7 +471,9 @@ impl LevelMap {
                     r#box.connect("move_finished", &callable);
                 }
             } else {
-                r#box.disconnect("move_finished", &callable);
+                if r#box.is_connected("move_finished", &callable) {
+                    r#box.disconnect("move_finished", &callable);
+                }
             }
         }
         self.update_pushable_hint();
