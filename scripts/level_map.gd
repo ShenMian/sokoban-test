@@ -48,6 +48,7 @@ func _input(_event: InputEvent):
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		self.load_from_string(DisplayServer.clipboard_get())
 		self.update_pushable_hint()
+		_reset_camera_position()
 	if Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(self.get_map())
 
