@@ -95,6 +95,8 @@ func _on_solved():
 
 func _reset_camera_position():
 	var center = self.dimensions() / 2.0
+	camera._target_position.x = center.x
+	camera._target_position.z = center.y
 	camera.global_position.x = center.x
 	camera.global_position.z = center.y
 
