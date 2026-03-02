@@ -101,8 +101,8 @@ func _load_levels(path: String):
 	_start_item_index = -1
 	_end_item_index = -1
 
-	var full_path := ProjectSettings.globalize_path(path)
-	_levels = Array(LevelMap.load_collection(full_path), TYPE_DICTIONARY, "", null)
+	# var full_path := ProjectSettings.globalize_path(path)
+	_levels = Array(LevelMap.load_collection(path), TYPE_DICTIONARY, "", null)
 	_preview_generator.set_levels(_levels)
 
 	for idx in range(_levels.size()):

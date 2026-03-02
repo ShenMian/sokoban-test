@@ -1,7 +1,14 @@
-use std::{collections::HashMap, fs::File, io::BufReader, str::FromStr};
+use std::{
+    collections::HashMap,
+    io::{BufReader, Cursor},
+    str::FromStr,
+};
 
 use godot::{
-    classes::{ArrayMesh, GridMap, IGridMap, MeshLibrary, StandardMaterial3D},
+    classes::{
+        ArrayMesh, FileAccess, GridMap, IGridMap, MeshLibrary, StandardMaterial3D,
+        file_access::ModeFlags,
+    },
     meta::ToGodot as _,
     prelude::*,
 };
@@ -106,7 +113,9 @@ impl LevelMap {
     #[func]
     fn load_collection(path: GString) -> Array<VarDictionary> {
         let path = path.to_string();
-        let reader = BufReader::new(File::open(&path).unwrap());
+        let file = FileAccess::open(&path, ModeFlags::READ).unwrap();
+        let buffer = file.get_buffer(file.get_length() as i64).to_vec();
+        let reader = BufReader::new(Cursor::new(buffer));
         let mut levels = Array::new();
         for result in Level::load_from_reader(reader) {
             match result {
@@ -128,8 +137,9 @@ impl LevelMap {
 
     #[func]
     fn load_from_file(&mut self, path: GString, index: i32) {
-        let file = File::open(path.to_string()).unwrap();
-        let reader = BufReader::new(file);
+        let file = FileAccess::open(&path, ModeFlags::READ).unwrap();
+        let buffer = file.get_buffer(file.get_length() as i64).to_vec();
+        let reader = BufReader::new(Cursor::new(buffer));
         self.level = Level::load_nth_from_reader(reader, index as usize).unwrap();
         self.build();
     }
