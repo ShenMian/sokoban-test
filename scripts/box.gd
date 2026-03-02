@@ -27,16 +27,24 @@ signal move_finished
 @export var indicator_scale_min: float = 0.8
 @export var indicator_scale_max: float = 1.2
 
+@export
 var disabled: bool = false:
 	set(value):
 		if disabled == value:
 			return
 		disabled = value
 
-		if disabled and _is_selected:
-			deselect()
-			if _is_hovered:
-				_on_area_mouse_exited()
+		if disabled:
+			mesh_area.input_ray_pickable = false
+			indicator_area.input_ray_pickable = false
+			
+			if _is_selected:
+				deselect()
+				if _is_hovered:
+					_on_area_mouse_exited()
+		else:
+			mesh_area.input_ray_pickable = true
+			indicator_area.input_ray_pickable = true
 
 		_apply_disabled()
 
@@ -92,8 +100,6 @@ func _on_area_entered(area: Area3D):
 
 
 func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
-	if disabled:
-		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_is_selected = !_is_selected
 		_apply_indicator()
@@ -105,8 +111,6 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 
 
 func _on_area_mouse_entered():
-	if disabled:
-		return
 	_is_hovered = true
 	_apply_indicator()
 	hovered.emit()
