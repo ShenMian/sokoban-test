@@ -176,6 +176,9 @@ func _stop_indicator_tween():
 
 
 func _apply_selectable():
+	if !is_node_ready():
+		return
+
 	if not selectable:
 		mesh_area.input_ray_pickable = false
 		indicator_area.input_ray_pickable = false
