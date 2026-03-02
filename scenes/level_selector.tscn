@@ -42,9 +42,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
 wraparound_items = false
-item_count = 2
-item_0/text = "Microban"
-item_1/text = "Microban II"
 
 [node name="LevelList" type="ItemList" parent="MarginContainer/HSplit" unique_id=2025772780]
 custom_minimum_size = Vector2(50, 0)
