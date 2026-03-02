@@ -95,9 +95,12 @@ func _on_collection_list_clicked(index: int, _at_position: Vector2, mouse_button
 
 
 func _load_levels(path: String):
+	level_list.get_v_scroll_bar().value = 0
 	level_list.clear()
+
 	_levels.clear()
 	_generated_previews.clear()
+
 	_start_item_index = -1
 	_end_item_index = -1
 
