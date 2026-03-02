@@ -32,6 +32,13 @@ signal move_finished
 @export var indicator_scale_min: float = 0.8
 @export var indicator_scale_max: float = 1.2
 
+@export_group("", "")
+@export
+var selectable: bool = true:
+	set(value):
+		selectable = value
+		_apply_selectable()
+
 var is_moving: bool = false
 
 var _is_selected: bool = false
@@ -111,6 +118,9 @@ func _ready():
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
 
+	if not selectable:
+		_apply_selectable()
+
 
 func _on_player_moved(to: Vector2i, pushed: bool):
 	var to_ = Vector3(to.x, 0.0, to.y)
@@ -163,3 +173,17 @@ func _start_indicator_tween():
 func _stop_indicator_tween():
 	_indicator_tween.pause()
 	select_indicator.scale = Vector3.ONE
+
+
+func _apply_selectable():
+	if not selectable:
+		mesh_area.input_ray_pickable = false
+		indicator_area.input_ray_pickable = false
+		
+		if _is_selected:
+			deselect()
+		if _is_hovered:
+			_on_area_mouse_exited()
+	else:
+		mesh_area.input_ray_pickable = true
+		indicator_area.input_ray_pickable = true

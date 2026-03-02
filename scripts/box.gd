@@ -27,24 +27,20 @@ signal move_finished
 @export var indicator_scale_min: float = 0.8
 @export var indicator_scale_max: float = 1.2
 
+@export_group("", "")
+@export
+var selectable: bool = true:
+	set(value):
+		selectable = value
+		_apply_selectable()
+
 @export
 var disabled: bool = false:
 	set(value):
 		if disabled == value:
 			return
 		disabled = value
-
-		if disabled:
-			mesh_area.input_ray_pickable = false
-			indicator_area.input_ray_pickable = false
-			
-			if _is_selected:
-				deselect()
-				if _is_hovered:
-					_on_area_mouse_exited()
-		else:
-			mesh_area.input_ray_pickable = true
-			indicator_area.input_ray_pickable = true
+		selectable = !value
 
 		_apply_disabled()
 
@@ -90,6 +86,9 @@ func _ready():
 
 	if disabled:
 		_apply_disabled()
+
+	if not selectable:
+		_apply_selectable()
 
 
 func _on_area_entered(area: Area3D):
@@ -144,3 +143,17 @@ func _stop_indicator_tween():
 func _apply_disabled():
 	var target_albedo = Color.WHITE.darkened(0.5) if disabled else Color.WHITE
 	create_tween().tween_property(mesh_instance, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
+
+
+func _apply_selectable():
+	if not selectable:
+		mesh_area.input_ray_pickable = false
+		indicator_area.input_ray_pickable = false
+		
+		if _is_selected:
+			deselect()
+		if _is_hovered:
+			_on_area_mouse_exited()
+	else:
+		mesh_area.input_ray_pickable = true
+		indicator_area.input_ray_pickable = true

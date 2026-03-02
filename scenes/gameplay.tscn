@@ -48,6 +48,7 @@ script = ExtResource("3_e124b")
 [node name="Boxes" type="Node3D" parent="LevelMap" unique_id=1541519836]
 
 [node name="Player" parent="LevelMap" unique_id=1363809863 instance=ExtResource("3_4bh5q")]
+selectable = false
 
 [node name="Waypoints" type="Node3D" parent="LevelMap" unique_id=1821682321]
 
