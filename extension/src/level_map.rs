@@ -347,7 +347,7 @@ impl LevelMap {
         let box_scene: Gd<PackedScene> = load("res://scenes/box.tscn");
         for position in self.map().box_positions() {
             let mut r#box = box_scene.instantiate_as::<Node3D>();
-            r#box.set_global_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
+            r#box.set_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
             let box_node = r#box.to_variant();
             r#box.connect(
                 "selected",
@@ -358,7 +358,7 @@ impl LevelMap {
         }
 
         let mut player = self.base().get_node_as::<Node3D>("Player");
-        player.set_global_position(Vector3::new(
+        player.set_position(Vector3::new(
             self.map().player_position().x as f32,
             0.0,
             self.map().player_position().y as f32,
@@ -371,8 +371,8 @@ impl LevelMap {
         self.selected_box = Some(r#box.clone());
 
         let box_position = Vector2::<i32>::new(
-            r#box.get_global_position().x.round() as i32,
-            r#box.get_global_position().z.round() as i32,
+            r#box.get_position().x.round() as i32,
+            r#box.get_position().z.round() as i32,
         );
 
         let strategy = match self.pathfinding_strategy {
@@ -396,7 +396,7 @@ impl LevelMap {
         let waypoint_scene: Gd<PackedScene> = load("res://scenes/waypoint.tscn");
         for position in waypoints.keys().map(|dp| dp.position()) {
             let mut waypoint = waypoint_scene.instantiate_as::<Node3D>();
-            waypoint.set_global_position(Vector3::new(position.x as f32, 0.01, position.y as f32));
+            waypoint.set_position(Vector3::new(position.x as f32, 0.01, position.y as f32));
             waypoint.connect(
                 "clicked",
                 &self.to_gd().callable("on_waypoint_clicked").bind(&[
