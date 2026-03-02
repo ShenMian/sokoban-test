@@ -291,8 +291,14 @@ impl LevelMap {
     }
 
     fn build(&mut self) {
+        if !self.base().is_inside_tree() {
+            return;
+        }
+
         if self.floor_dark_item_id == GridMap::INVALID_CELL_ITEM {
-            let mut mesh_library = self.base().get_mesh_library().unwrap();
+            let Some(mut mesh_library) = self.base().get_mesh_library() else {
+                return;
+            };
             self.floor_dark_item_id = self.create_floor(&mut mesh_library, "floor_dark", |color| {
                 color.darkened(0.15)
             });
@@ -454,11 +460,16 @@ impl LevelMap {
     #[func]
     fn set_pushable_hint(&mut self, enable: bool) {
         self.pushable_hint = enable;
+        if !self.base().is_inside_tree() {
+            return;
+        }
         let boxes = self.base().get_node_as::<Node3D>("Boxes");
         for mut r#box in boxes.get_children().iter_shared() {
             let callable = self.to_gd().callable("update_pushable_hint");
             if enable {
-                r#box.connect("move_finished", &callable);
+                if !r#box.is_connected("move_finished", &callable) {
+                    r#box.connect("move_finished", &callable);
+                }
             } else {
                 r#box.disconnect("move_finished", &callable);
             }
@@ -468,6 +479,10 @@ impl LevelMap {
 
     #[func]
     fn update_pushable_hint(&mut self) {
+        if !self.base().is_inside_tree() {
+            return;
+        }
+
         if self.pushable_hint {
             // Disable non-pushable boxes
             let pushable_positions = self.pushable_box_positions();
