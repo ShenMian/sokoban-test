@@ -86,6 +86,15 @@ func move(direction: Vector3, push: bool):
 	move_finished.emit()
 
 
+func deselect():
+	_is_selected = false
+	_apply_indicator()
+
+
+func grid_position() -> Vector2i:
+	return Vector2i(round(global_position.x), round(global_position.z))
+
+
 func _ready():
 	level_map.player_moved.connect(_on_player_moved)
 	idle_timer.timeout.connect(_idle_timer_timeout)
