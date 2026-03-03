@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bm6kt2o4osafx"]
+[gd_scene format=3 uid="uid://bm6kt2o4osafx"]
 
 [ext_resource type="Script" uid="uid://bb7v14ykhqcok" path="res://scripts/credits.gd" id="1_0ctdu"]
 [ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="1_2ckv8"]
@@ -13,7 +13,7 @@ action = &"pause"
 [sub_resource type="Shortcut" id="Shortcut_2fbfq"]
 events = [SubResource("InputEventAction_7l7mv")]
 
-[node name="Credits" type="Control"]
+[node name="Credits" type="Control" unique_id=290274121]
 process_mode = 2
 layout_mode = 3
 anchors_preset = 15
@@ -24,7 +24,7 @@ grow_vertical = 2
 theme = ExtResource("1_8gwij")
 script = ExtResource("1_0ctdu")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=357912033]
 modulate = Color(0.50219375, 0.50219357, 0.5021936, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -37,7 +37,7 @@ grow_vertical = 2
 texture = ExtResource("2_2fbfq")
 stretch_mode = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1944194542]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -63,7 +63,7 @@ Source code available on [url=https://github.com/ShenMian/sokoban]GitHub[/url][/
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CloseButton" type="Button" parent="."]
+[node name="CloseButton" type="Button" parent="." unique_id=114304992]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0

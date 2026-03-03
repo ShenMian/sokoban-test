@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bolx2df8w721l"]
+[gd_scene format=3 uid="uid://bolx2df8w721l"]
 
 [ext_resource type="Script" uid="uid://d4ilpf3t0f3re" path="res://scripts/ui/slider_bar.gd" id="1_bqkdu"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_edqov"]
 
-[node name="SliderBar" type="HSlider"]
+[node name="SliderBar" type="HSlider" unique_id=93878156]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ theme = ExtResource("1_edqov")
 scrollable = false
 script = ExtResource("1_bqkdu")
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=877312074]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,7 @@ grow_vertical = 2
 mouse_filter = 1
 show_percentage = false
 
-[node name="Label" type="Label" parent="ProgressBar"]
+[node name="Label" type="Label" parent="ProgressBar" unique_id=1060308374]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
