@@ -192,7 +192,7 @@ impl LevelMap {
 
     #[func]
     fn pushable_box_positions(&self) -> Array<Vector2i> {
-        path_finding::pushable_boxes(self.map())
+        path_finding::compute_pushable_boxes(self.map())
             .iter()
             .map(ToGodot::to_gd)
             .collect()
@@ -388,7 +388,7 @@ impl LevelMap {
 
         let start = std::time::Instant::now();
         let (mut waypoints, costs) =
-            path_finding::box_move_waypoints(self.map(), box_position, strategy);
+            path_finding::compute_box_waypoints(self.map(), box_position, strategy);
         let elapsed = start.elapsed();
 
         godot_print!("found {} waypoints ({:?})", waypoints.len(), elapsed);
