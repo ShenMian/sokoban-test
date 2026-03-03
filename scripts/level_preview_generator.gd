@@ -34,7 +34,7 @@ func submit_queue(new_queue: Array[int]):
 
 
 func set_preview_size(new_size: Vector2):
-	self.size = new_size
+	size = new_size
 
 
 func _process(_delta: float):

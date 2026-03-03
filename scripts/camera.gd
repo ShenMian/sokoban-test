@@ -17,14 +17,14 @@ func _ready():
 
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "video" and key == "fov":
-		self.set_fov(value)
+		set_fov(value)
 
 
 func _process(delta: float):
 	if abs(self.size - _target_size) > 0.001:
-		self.size = lerp(self.size, _target_size, smooth_factor * delta)
+		size = lerp(size, _target_size, smooth_factor * delta)
 	else:
-		self.size = _target_size
+		size = _target_size
 
 	if global_position.distance_to(_target_position) > 0.001:
 		global_position = lerp(global_position, _target_position, smooth_factor * delta)
@@ -60,14 +60,14 @@ func _input(event: InputEvent):
 
 
 func is_3d_view() -> bool:
-	return self.projection == PROJECTION_PERSPECTIVE
+	return projection == PROJECTION_PERSPECTIVE
 
 
 func switch_to_3d():
-	self.projection = PROJECTION_PERSPECTIVE
+	projection = PROJECTION_PERSPECTIVE
 
 
 func switch_to_2d():
-	self.projection = PROJECTION_ORTHOGONAL
-	self.size = 10.0
+	projection = PROJECTION_ORTHOGONAL
+	size = 10.0
 	_target_size = 10.0

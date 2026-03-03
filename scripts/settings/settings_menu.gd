@@ -57,7 +57,7 @@ func _on_restore_pressed():
 
 
 func _input(_event: InputEvent):
-	if not self.visible:
+	if not visible:
 		return
 	_update_tooltip()
 

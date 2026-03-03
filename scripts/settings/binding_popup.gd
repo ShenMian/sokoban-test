@@ -26,7 +26,7 @@ func open(action: StringName):
 
 
 func close():
-	self.hide()
+	hide()
 	closed.emit()
 
 
