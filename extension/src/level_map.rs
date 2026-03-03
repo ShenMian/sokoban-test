@@ -21,7 +21,7 @@ use soukoban::{
     solver::Strategy,
 };
 
-use crate::utils::{ToGodot, ToNalgebra};
+use crate::convert::{ToGodot, ToNalgebra};
 
 #[derive(GodotConvert, Var, Export, Default, Clone)]
 #[godot(via = i32)]
