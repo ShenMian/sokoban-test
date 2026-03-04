@@ -1,5 +1,5 @@
-extends Node3D
 class_name Box
+extends Node3D
 
 signal selected
 signal unselected
@@ -7,18 +7,8 @@ signal hovered
 signal unhovered
 signal move_finished
 
-@onready var level_map: LevelMap = $"../.."
-@onready var player: Node3D = $"../../Player"
-
-@onready var mesh_instance: MeshInstance3D = $Mesh
-@onready var mesh_area: Area3D = $Area
-@onready var indicator_area: Area3D = $Indicator/Area
-
-@onready var hover_indicator: MeshInstance3D = $Indicator/HoverIndicator
-@onready var select_indicator: MeshInstance3D = $Indicator/SelectIndicator
-
 @export_group("Move Animation")
-@export var duration := 0.4
+@export var duration: float = 0.4
 @export var ease_: Tween.EaseType = Tween.EASE_OUT
 @export var transition: Tween.TransitionType = Tween.TRANS_SINE
 
@@ -28,47 +18,33 @@ signal move_finished
 @export var indicator_scale_max: float = 1.2
 
 @export_group("", "")
-@export
-var selectable: bool = true:
+@export var selectable: bool = true:
 	set(value):
 		selectable = value
 		_apply_selectable()
 
-@export
-var disabled: bool = false:
+@export var disabled: bool = false:
 	set(value):
 		if disabled == value:
 			return
 		disabled = value
-		selectable = !value
-
+		selectable = not value
 		_apply_disabled()
 
 var _is_selected: bool = false
 var _is_hovered: bool = false
-
 var _indicator_tween: Tween
 
-
-func move(direction: Vector3):
-	await create_tween() \
-		.set_ease(ease_) \
-		.set_trans(transition) \
-		.tween_property(self , "global_position", global_position + direction, duration) \
-		.finished
-	move_finished.emit()
-
-
-func deselect():
-	_is_selected = false
-	_apply_indicator()
+@onready var level_map: LevelMap = $"../.."
+@onready var player: Node3D = $"../../Player"
+@onready var mesh_instance: MeshInstance3D = $Mesh
+@onready var mesh_area: Area3D = $Area
+@onready var indicator_area: Area3D = $Indicator/Area
+@onready var hover_indicator: MeshInstance3D = $Indicator/HoverIndicator
+@onready var select_indicator: MeshInstance3D = $Indicator/SelectIndicator
 
 
-func grid_position() -> Vector2i:
-	return Vector2i(round(global_position.x), round(global_position.z))
-
-
-func _ready():
+func _ready() -> void:
 	mesh_area.area_entered.connect(_on_area_entered)
 
 	mesh_instance.mesh = mesh_instance.mesh.duplicate(true)
@@ -91,16 +67,34 @@ func _ready():
 		_apply_selectable()
 
 
-func _on_area_entered(area: Area3D):
+func move(direction: Vector3) -> void:
+	await create_tween() \
+		.set_ease(ease_) \
+		.set_trans(transition) \
+		.tween_property(self , "global_position", global_position + direction, duration) \
+		.finished
+	move_finished.emit()
+
+
+func deselect() -> void:
+	_is_selected = false
+	_apply_indicator()
+
+
+func grid_position() -> Vector2i:
+	return Vector2i(round(global_position.x), round(global_position.z))
+
+
+func _on_area_entered(area: Area3D) -> void:
 	# Move in the opposite direction when touched by a player
 	if area != player.mesh_area:
 		return
 	move((global_position - player.global_position).normalized())
 
 
-func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
+func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_is_selected = !_is_selected
+		_is_selected = not _is_selected
 		_apply_indicator()
 		if _is_selected:
 			selected.emit()
@@ -109,19 +103,19 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 		get_viewport().set_input_as_handled()
 
 
-func _on_area_mouse_entered():
+func _on_area_mouse_entered() -> void:
 	_is_hovered = true
 	_apply_indicator()
 	hovered.emit()
 
 
-func _on_area_mouse_exited():
+func _on_area_mouse_exited() -> void:
 	_is_hovered = false
 	_apply_indicator()
 	unhovered.emit()
 
 
-func _apply_indicator():
+func _apply_indicator() -> void:
 	select_indicator.visible = _is_selected
 	hover_indicator.visible = _is_hovered and not _is_selected
 
@@ -131,28 +125,28 @@ func _apply_indicator():
 		_stop_indicator_tween()
 
 
-func _start_indicator_tween():
+func _start_indicator_tween() -> void:
 	_indicator_tween.play()
 
 
-func _stop_indicator_tween():
+func _stop_indicator_tween() -> void:
 	_indicator_tween.pause()
 	select_indicator.scale = Vector3.ONE
 
 
-func _apply_disabled():
-	var target_albedo = Color.WHITE.darkened(0.5) if disabled else Color.WHITE
+func _apply_disabled() -> void:
+	var target_albedo := Color.WHITE.darkened(0.5) if disabled else Color.WHITE
 	create_tween().tween_property(mesh_instance, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
 
 
-func _apply_selectable():
-	if !is_node_ready():
+func _apply_selectable() -> void:
+	if not is_node_ready():
 		return
 
 	if not selectable:
 		mesh_area.input_ray_pickable = false
 		indicator_area.input_ray_pickable = false
-		
+
 		if _is_selected:
 			deselect()
 		if _is_hovered:

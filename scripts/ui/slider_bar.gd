@@ -1,11 +1,9 @@
 extends Slider
 class_name SliderBar
 
-@onready var progress_bar: ProgressBar = $ProgressBar
-@onready var label: Label = $ProgressBar/Label
-
 @export var disabled: bool = false:
-	set(disabled):
+	set(value):
+		disabled = value
 		if disabled:
 			editable = false
 			modulate = Color.GRAY * 0.8
@@ -13,8 +11,11 @@ class_name SliderBar
 			editable = true
 			modulate = Color.WHITE
 
+@onready var progress_bar: ProgressBar = $ProgressBar
+@onready var label: Label = $ProgressBar/Label
 
-func _ready():
+
+func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	progress_bar.min_value = min_value
 	progress_bar.max_value = max_value
@@ -23,6 +24,6 @@ func _ready():
 	label.text = str(int(round(progress_bar.value)))
 
 
-func _on_value_changed(new_value: float):
+func _on_value_changed(new_value: float) -> void:
 	progress_bar.value = new_value
 	label.text = str(int(round(new_value)))

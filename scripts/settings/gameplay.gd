@@ -14,7 +14,7 @@ const SECTION_NAME := "gameplay"
 const LOCALES: Array[String] = ["en", "zh"]
 
 
-func _ready():
+func _ready() -> void:
 	language.item_selected.connect(_on_language_selected)
 	animation_speed.item_selected.connect(_on_animation_speed_selected)
 	checkerboard.toggled.connect(_on_checkerboard_toggled)
@@ -27,7 +27,7 @@ func _ready():
 	apply_settings()
 
 
-func apply_settings():
+func apply_settings() -> void:
 	language.select(LOCALES.find(Settings.get_value(SECTION_NAME, "language")))
 	language.item_selected.emit(language.selected)
 
@@ -45,7 +45,7 @@ func apply_settings():
 
 	pathfinding_strategy.select(Settings.get_value(SECTION_NAME, "pathfinding_strategy"))
 	pathfinding_strategy.item_selected.emit(pathfinding_strategy.selected)
-	
+
 	algorithm.select(Settings.get_value(SECTION_NAME, "algorithm"))
 	algorithm.item_selected.emit(algorithm.selected)
 
@@ -53,35 +53,35 @@ func apply_settings():
 	solver_strategy.item_selected.emit(solver_strategy.selected)
 
 
-func _on_language_selected(index: int):
+func _on_language_selected(index: int) -> void:
 	var locale := LOCALES[index]
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value(SECTION_NAME, "language", locale)
 
 
-func _on_animation_speed_selected(index: int):
+func _on_animation_speed_selected(index: int) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "animation_speed", index)
 
 
-func _on_checkerboard_toggled(toggled_on: bool):
+func _on_checkerboard_toggled(toggled_on: bool) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "checkerboard", toggled_on)
 
 
-func _on_deadlock_toggled(toggled_on: bool):
+func _on_deadlock_toggled(toggled_on: bool) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "deadlock_hint", toggled_on)
 
 
-func _on_pushable_hint_toggled(toggled_on: bool):
+func _on_pushable_hint_toggled(toggled_on: bool) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "pushable_hint", toggled_on)
 
 
-func _on_pathfinding_strategy_selected(index: int):
+func _on_pathfinding_strategy_selected(index: int) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "pathfinding_strategy", index)
 
 
-func _on_algorithm_selected(index: int):
+func _on_algorithm_selected(index: int) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "algorithm", index)
 
 
-func _on_strategy_selected(index: int):
+func _on_strategy_selected(index: int) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "solver_strategy", index)

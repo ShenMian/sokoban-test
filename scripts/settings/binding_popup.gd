@@ -16,7 +16,7 @@ var _action: StringName
 var _new_event: InputEvent = null
 
 
-func open(action: StringName):
+func open(action: StringName) -> void:
 	_action = action
 	_new_event = null
 	title_label.text = action.to_upper()
@@ -25,12 +25,12 @@ func open(action: StringName):
 	set_process_input(true)
 
 
-func close():
+func close() -> void:
 	hide()
 	closed.emit()
 
 
-func _ready():
+func _ready() -> void:
 	set_process_input(false)
 
 	cancel_button.pressed.connect(close)
@@ -40,19 +40,19 @@ func _ready():
 	confirm_button.pressed.connect(_on_confirm_pressed)
 
 
-func _on_clear_pressed():
+func _on_clear_pressed() -> void:
 	_update_icons([])
 	_new_event = null
 
 
-func _on_confirm_pressed():
+func _on_confirm_pressed() -> void:
 	InputMap.action_erase_events(_action)
 	if _new_event != null:
 		InputMap.action_add_event(_action, _new_event)
 	close()
 
 
-func _input(event):
+func _input(event: InputEvent) -> void:
 	if event.is_released():
 		return
 
@@ -79,19 +79,19 @@ func _get_icons_by_event(event: InputEventKey) -> Array[Texture2D]:
 		icons.append(_get_icon_by_key_name("Alt"))
 	if event.meta_pressed:
 		icons.append(_get_icon_by_key_name("Meta"))
-	
-	var key_name = OS.get_keycode_string(event.physical_keycode)
+
+	var key_name := OS.get_keycode_string(event.physical_keycode)
 	icons.append(_get_icon_by_key_name(key_name))
-	
+
 	return icons
 
 
-func _update_icons(icons: Array[Texture2D]):
+func _update_icons(icons: Array[Texture2D]) -> void:
 	for child in icon_container.get_children():
 		child.queue_free()
-	
+
 	for icon in icons:
-		var rect = TextureRect.new()
+		var rect := TextureRect.new()
 		rect.texture = icon
 		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 		icon_container.add_child(rect)
@@ -102,6 +102,7 @@ func _get_icon_by_key_name(key: String) -> Texture2D:
 
 	if key.is_empty():
 		return null
+
 	match key:
 		"Up":
 			key = "arrow_up"
@@ -115,5 +116,6 @@ func _get_icon_by_key_name(key: String) -> Texture2D:
 			key = "ctrl"
 		"Meta":
 			key = "win"
+
 	var path := ICON_PATH + "keyboard_%s.svg" % key.to_lower()
 	return load(path) as Texture2D

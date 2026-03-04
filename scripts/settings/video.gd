@@ -41,7 +41,7 @@ const SCALING_3D_MODES: Array[Viewport.Scaling3DMode] = [
 ]
 
 
-func _ready():
+func _ready() -> void:
 	window_mode.item_selected.connect(_on_window_mode_selected)
 	vsync.toggled.connect(_on_vsync_toggled)
 	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_changed)
@@ -56,15 +56,15 @@ func _ready():
 	apply_settings()
 
 
-func apply_settings():
+func apply_settings() -> void:
 	window_mode.select(WINDOW_MODES.find(Settings.get_value(SECTION_NAME, "window_mode")))
 	window_mode.item_selected.emit(window_mode.selected)
 
 	vsync.button_pressed = Settings.get_value(SECTION_NAME, "vsync")
 	vsync.toggled.emit(vsync.button_pressed)
 
-	var max_fps = Settings.get_value(SECTION_NAME, "frame_rate_limit")
-	frame_rate_limit.value = frame_rate_limit.max_value if max_fps == 0 else max_fps
+	var max_fps: int = Settings.get_value(SECTION_NAME, "frame_rate_limit")
+	frame_rate_limit.value = frame_rate_limit.max_value if max_fps == 0 else float(max_fps)
 
 	upscaled_resolution.value = Settings.get_value(SECTION_NAME, "scaling_3d_scale")
 	upscaled_resolution.value_changed.emit(upscaled_resolution.value)
@@ -87,13 +87,13 @@ func apply_settings():
 	scaling_method.item_selected.emit(scaling_method.selected)
 
 
-func _on_window_mode_selected(index: int):
+func _on_window_mode_selected(index: int) -> void:
 	var mode := WINDOW_MODES[index]
 	DisplayServer.window_set_mode(mode)
 	Settings.set_and_save_value(SECTION_NAME, "window_mode", mode)
 
 
-func _on_vsync_toggled(toggled_on: bool):
+func _on_vsync_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 		frame_rate_limit.disabled = true
@@ -103,8 +103,8 @@ func _on_vsync_toggled(toggled_on: bool):
 	Settings.set_and_save_value(SECTION_NAME, "vsync", DisplayServer.window_get_vsync_mode())
 
 
-func _on_frame_rate_limit_changed(value: float):
-	if value == 0 || value == frame_rate_limit.max_value:
+func _on_frame_rate_limit_changed(value: float) -> void:
+	if value == 0 or value == frame_rate_limit.max_value:
 		frame_rate_limit.value = frame_rate_limit.max_value
 		frame_rate_limit.label.text = "UNLIMITED"
 		Engine.max_fps = 0
@@ -113,34 +113,34 @@ func _on_frame_rate_limit_changed(value: float):
 	Settings.set_and_save_value(SECTION_NAME, "frame_rate_limit", Engine.max_fps)
 
 
-func _on_fov_changed(value: float):
+func _on_fov_changed(value: float) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "fov", value)
 
 
-func _on_screen_space_aa_selected(index: int):
+func _on_screen_space_aa_selected(index: int) -> void:
 	var mode := SCREEN_SPACE_AA_MODES[index]
 	get_viewport().screen_space_aa = mode
 	Settings.set_and_save_value(SECTION_NAME, "screen_space_aa", mode)
 
 
-func _on_msaa_selected(index: int):
+func _on_msaa_selected(index: int) -> void:
 	var mode := MSAA_MODES[index]
 	get_viewport().msaa_3d = mode
 	Settings.set_and_save_value(SECTION_NAME, "msaa", mode)
 
 
-func _on_taa_toggled(toggled_on: bool):
+func _on_taa_toggled(toggled_on: bool) -> void:
 	get_viewport().use_taa = toggled_on
 	Settings.set_and_save_value(SECTION_NAME, "taa", toggled_on)
 
 
-func _on_scaling_method_selected(index: int):
+func _on_scaling_method_selected(index: int) -> void:
 	var mode := SCALING_3D_MODES[index]
 	var last_mode := get_viewport().scaling_3d_mode
 	get_viewport().scaling_3d_mode = mode
 	Settings.set_and_save_value(SECTION_NAME, "scaling_3d_mode", mode)
 
-	fsr_sharpness.disabled = !(mode == Viewport.SCALING_3D_MODE_FSR || mode == Viewport.SCALING_3D_MODE_FSR2)
+	fsr_sharpness.disabled = not (mode == Viewport.SCALING_3D_MODE_FSR or mode == Viewport.SCALING_3D_MODE_FSR2)
 	# Disable AA when using FSR 2.2
 	if mode == Viewport.SCALING_3D_MODE_FSR2:
 		screen_space_aa.disabled = true
@@ -158,11 +158,11 @@ func _on_scaling_method_selected(index: int):
 		get_viewport().msaa_3d = msaa.selected as Viewport.MSAA
 
 
-func _on_upscaled_resolution_changed(value: float):
+func _on_upscaled_resolution_changed(value: float) -> void:
 	get_viewport().scaling_3d_scale = value
 	Settings.set_and_save_value(SECTION_NAME, "scaling_3d_scale", value)
 
 
-func _on_fsr_sharpness_changed(value: float):
+func _on_fsr_sharpness_changed(value: float) -> void:
 	get_viewport().fsr_sharpness = value
 	Settings.set_and_save_value(SECTION_NAME, "fsr_sharpness", value)

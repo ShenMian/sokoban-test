@@ -17,22 +17,22 @@ signal closed
 var _hovered_control: Control = null
 
 
-func open():
+func open() -> void:
 	show()
 
 
-func close():
+func close() -> void:
 	hide()
 	closed.emit()
 
 
-func _ready():
+func _ready() -> void:
 	tabs.tab_changed.connect(_on_active_tab_changed)
 	close_button.pressed.connect(close)
 	restore_button.pressed.connect(_on_restore_pressed)
 
 
-func _on_active_tab_changed(index: int):
+func _on_active_tab_changed(index: int) -> void:
 	Sounds.play_button_press()
 	if tabs.get_tab_title(index) == "VIDEO":
 		background.visible = false
@@ -40,7 +40,7 @@ func _on_active_tab_changed(index: int):
 		background.visible = true
 
 
-func _on_restore_pressed():
+func _on_restore_pressed() -> void:
 	match tabs.get_tab_title(tabs.current_tab):
 		"GAMEPLAY":
 			Settings.reset_gameplay_settings()
@@ -56,13 +56,13 @@ func _on_restore_pressed():
 			input.apply_settings()
 
 
-func _input(_event: InputEvent):
+func _input(_event: InputEvent) -> void:
 	if not visible:
 		return
 	_update_tooltip()
 
 
-func _update_tooltip():
+func _update_tooltip() -> void:
 	var active_tab := tabs.get_current_tab_control()
 	if not active_tab:
 		return
@@ -92,7 +92,7 @@ func _find_tooltip_control(control: Control, root: Control) -> Control:
 		if current.has_meta("title"):
 			return current
 		var parent := current.get_parent()
-		if parent == root || not parent is Control:
+		if parent == root or not parent is Control:
 			return null
 		current = parent
 	return null
@@ -102,11 +102,11 @@ func _find_control_at_point(parent: Control, point: Vector2) -> Control:
 	var children := parent.get_children()
 	# Reverse it in-place to check topmost nodes first
 	children.reverse()
-	
+
 	for child in children:
 		if not child is Control:
 			continue
-		var child_control = child as Control
+		var child_control := child as Control
 
 		if child_control.get_global_rect().has_point(point):
 			# This child is a candidate. Check if one of its children is a better candidate.

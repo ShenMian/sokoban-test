@@ -1,5 +1,5 @@
-extends Node3D
 class_name Player
+extends Node3D
 
 signal selected
 signal unselected
@@ -7,19 +7,8 @@ signal hovered
 signal unhovered
 signal move_finished
 
-@onready var level_map: LevelMap = $".."
-
-@onready var meshes: Node3D = $Meshes
-@onready var mesh_area: Area3D = $Meshes/Area
-@onready var indicator_area: Area3D = $Indicator/Area
-@onready var idle_timer: Timer = $IdleTimer
-@onready var state_machine = $AnimationTree["parameters/playback"]
-
-@onready var hover_indicator: MeshInstance3D = $Indicator/HoverIndicator
-@onready var select_indicator: MeshInstance3D = $Indicator/SelectIndicator
-
 @export_group("Move Animation")
-@export var move_duration := 0.4
+@export var move_duration: float = 0.4
 @export var move_ease: Tween.EaseType = Tween.EASE_IN_OUT
 @export var move_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
@@ -33,8 +22,7 @@ signal move_finished
 @export var indicator_scale_max: float = 1.2
 
 @export_group("", "")
-@export
-var selectable: bool = true:
+@export var selectable: bool = true:
 	set(value):
 		selectable = value
 		_apply_selectable()
@@ -43,11 +31,39 @@ var is_moving: bool = false
 
 var _is_selected: bool = false
 var _is_hovered: bool = false
-
 var _indicator_tween: Tween
 
+@onready var level_map: LevelMap = $".."
+@onready var meshes: Node3D = $Meshes
+@onready var mesh_area: Area3D = $Meshes/Area
+@onready var indicator_area: Area3D = $Indicator/Area
+@onready var idle_timer: Timer = $IdleTimer
+@onready var state_machine: AnimationNodeStateMachinePlayback = $AnimationTree["parameters/playback"]
+@onready var hover_indicator: MeshInstance3D = $Indicator/HoverIndicator
+@onready var select_indicator: MeshInstance3D = $Indicator/SelectIndicator
 
-func move(direction: Vector3, push: bool):
+
+func _ready() -> void:
+	level_map.player_moved.connect(_on_player_moved)
+	idle_timer.timeout.connect(_on_idle_timer_timeout)
+
+	mesh_area.input_event.connect(_on_area_input_event)
+	mesh_area.mouse_entered.connect(_on_area_mouse_entered)
+	mesh_area.mouse_exited.connect(_on_area_mouse_exited)
+	indicator_area.input_event.connect(_on_area_input_event)
+	indicator_area.mouse_entered.connect(_on_area_mouse_entered)
+	indicator_area.mouse_exited.connect(_on_area_mouse_exited)
+
+	_indicator_tween = create_tween().set_loops()
+	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
+	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
+	_indicator_tween.pause()
+
+	if not selectable:
+		_apply_selectable()
+
+
+func move(direction: Vector3, push: bool) -> void:
 	if direction == Vector3.ZERO:
 		state_machine.travel("EmoteNo")
 		return
@@ -64,13 +80,14 @@ func move(direction: Vector3, push: bool):
 			target_rotation = 0.0
 		_:
 			assert(false, "unreachable")
+
 	# Constrain rotation angle to [-180°, 180°] to prevent long-way-around turns
 	var delta := fposmod(target_rotation - meshes.rotation_degrees.y + 180.0, 360.0) - 180.0
 	target_rotation = meshes.rotation_degrees.y + delta
 
 	is_moving = true
 	if meshes.rotation_degrees.y != target_rotation:
-		var duration = abs(meshes.rotation_degrees.y - target_rotation) / 90.0 * 0.1
+		var duration: float = abs(meshes.rotation_degrees.y - target_rotation) / 90.0 * 0.1
 		await create_tween() \
 			.set_ease(rotate_ease) \
 			.set_trans(rotate_transition) \
@@ -93,7 +110,7 @@ func move(direction: Vector3, push: bool):
 	move_finished.emit()
 
 
-func deselect():
+func deselect() -> void:
 	_is_selected = false
 	_apply_indicator()
 
@@ -102,40 +119,20 @@ func grid_position() -> Vector2i:
 	return Vector2i(round(global_position.x), round(global_position.z))
 
 
-func _ready():
-	level_map.player_moved.connect(_on_player_moved)
-	idle_timer.timeout.connect(_idle_timer_timeout)
-
-	mesh_area.input_event.connect(_on_area_input_event)
-	mesh_area.mouse_entered.connect(_on_area_mouse_entered)
-	mesh_area.mouse_exited.connect(_on_area_mouse_exited)
-	indicator_area.input_event.connect(_on_area_input_event)
-	indicator_area.mouse_entered.connect(_on_area_mouse_entered)
-	indicator_area.mouse_exited.connect(_on_area_mouse_exited)
-
-	_indicator_tween = create_tween().set_loops()
-	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
-	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
-	_indicator_tween.pause()
-
-	if not selectable:
-		_apply_selectable()
-
-
-func _on_player_moved(to: Vector2i, pushed: bool):
-	var to_ = Vector3(to.x, 0.0, to.y)
+func _on_player_moved(to: Vector2i, pushed: bool) -> void:
+	var to_ := Vector3(to.x, 0.0, to.y)
 	move((to_ - global_position).round(), pushed)
 
 
-func _idle_timer_timeout():
+func _on_idle_timer_timeout() -> void:
 	if state_machine.get_current_node() == "Static":
 		state_machine.travel("Idle")
 	idle_timer.start()
 
 
-func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int):
+func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_is_selected = !_is_selected
+		_is_selected = not _is_selected
 		_apply_indicator()
 		if _is_selected:
 			selected.emit()
@@ -144,19 +141,19 @@ func _on_area_input_event(_camera: Node, event: InputEvent, _event_position: Vec
 		get_viewport().set_input_as_handled()
 
 
-func _on_area_mouse_entered():
+func _on_area_mouse_entered() -> void:
 	_is_hovered = true
 	_apply_indicator()
 	hovered.emit()
 
 
-func _on_area_mouse_exited():
+func _on_area_mouse_exited() -> void:
 	_is_hovered = false
 	_apply_indicator()
 	unhovered.emit()
 
 
-func _apply_indicator():
+func _apply_indicator() -> void:
 	select_indicator.visible = _is_selected
 	hover_indicator.visible = _is_hovered and not _is_selected
 
@@ -166,23 +163,23 @@ func _apply_indicator():
 		_stop_indicator_tween()
 
 
-func _start_indicator_tween():
+func _start_indicator_tween() -> void:
 	_indicator_tween.play()
 
 
-func _stop_indicator_tween():
+func _stop_indicator_tween() -> void:
 	_indicator_tween.pause()
 	select_indicator.scale = Vector3.ONE
 
 
-func _apply_selectable():
-	if !is_node_ready():
+func _apply_selectable() -> void:
+	if not is_node_ready():
 		return
 
 	if not selectable:
 		mesh_area.input_ray_pickable = false
 		indicator_area.input_ray_pickable = false
-		
+
 		if _is_selected:
 			deselect()
 		if _is_hovered:

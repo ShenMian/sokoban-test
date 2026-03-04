@@ -6,7 +6,7 @@ extends Node3D
 @onready var credits: Control = $MenuLayer/Credits
 
 
-func _ready():
+func _ready() -> void:
 	pause_menu.closed.connect(_on_pause_closed)
 	pause_menu.request_settings.connect(_on_pause_request_settings)
 	pause_menu.request_credits.connect(_on_pause_request_credits)
@@ -14,22 +14,22 @@ func _ready():
 	credits.closed.connect(pause_menu.show)
 
 
-func _input(_event):
+func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("pause"):
 		get_viewport().set_input_as_handled()
 		hud.hide()
 		pause_menu.open()
 
 
-func _on_pause_closed():
+func _on_pause_closed() -> void:
 	hud.show()
 
 
-func _on_pause_request_settings():
+func _on_pause_request_settings() -> void:
 	pause_menu.hide()
 	settings_menu.open()
 
 
-func _on_pause_request_credits():
+func _on_pause_request_credits() -> void:
 	pause_menu.hide()
 	credits.open()
