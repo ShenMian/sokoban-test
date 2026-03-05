@@ -9,14 +9,14 @@
 [ext_resource type="Script" uid="uid://mwdcehvdg02c" path="res://scripts/settings/gameplay.gd" id="4_fb6cq"]
 [ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="6_48ojb"]
 [ext_resource type="Script" uid="uid://bc8nqwx2f77uu" path="res://scripts/ui/switch_fx.gd" id="6_jrqig"]
-[ext_resource type="PackedScene" uid="uid://bolx2df8w721l" path="res://scenes/slider_bar.tscn" id="6_n35ux"]
-[ext_resource type="PackedScene" uid="uid://bupwsnlvxthny" path="res://scenes/percent_slider_bar.tscn" id="6_prcnt"]
+[ext_resource type="PackedScene" uid="uid://bolx2df8w721l" path="res://scenes/ui/slider_bar.tscn" id="6_n35ux"]
+[ext_resource type="PackedScene" uid="uid://bupwsnlvxthny" path="res://scenes/ui/percent_slider_bar.tscn" id="6_prcnt"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="7_n35ux"]
 [ext_resource type="Script" uid="uid://cfr860c1yrp7d" path="res://scripts/settings/input.gd" id="10_jpbdv"]
 [ext_resource type="FontFile" uid="uid://c3j7cxolf53qi" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-BoldItalic.woff2" id="11_75x6d"]
 [ext_resource type="FontFile" uid="uid://dh020jxovl25i" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Bold.woff2" id="11_x0dr5"]
 [ext_resource type="Texture2D" uid="uid://c3gjvvql86lqt" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_r.svg" id="12_n0fy7"]
-[ext_resource type="PackedScene" uid="uid://bgou1t8ve7r2j" path="res://scenes/binding_popup.tscn" id="14_puhno"]
+[ext_resource type="PackedScene" uid="uid://bgou1t8ve7r2j" path="res://scenes/ui/binding_popup.tscn" id="14_puhno"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4mfi"]
 content_margin_left = 10.0

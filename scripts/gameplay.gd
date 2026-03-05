@@ -55,4 +55,4 @@ func _on_request_next_level() -> void:
 
 
 func _on_request_menu() -> void:
-	SceneTransition.change_scene_to_file("res://scenes/level_selector.tscn")
+	SceneTransition.change_scene_to_file("res://scenes/ui/level_selector.tscn")

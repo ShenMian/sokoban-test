@@ -5,11 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://d3bx7fp67oyvm" path="res://scenes/player.tscn" id="3_4bh5q"]
 [ext_resource type="Script" uid="uid://byfwrccvjxb11" path="res://scripts/level_map.gd" id="3_e124b"]
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
-[ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/pause_menu.tscn" id="4_ct7aa"]
+[ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/ui/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
-[ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/settings_menu.tscn" id="6_din8e"]
-[ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/credits.tscn" id="9_101mb"]
-[ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/victory_menu.tscn" id="10_victory"]
+[ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/ui/settings_menu.tscn" id="6_din8e"]
+[ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
+[ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
 
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bm6kt2o4osafx"]
 
-[ext_resource type="Script" uid="uid://bb7v14ykhqcok" path="res://scripts/credits.gd" id="1_0ctdu"]
+[ext_resource type="Script" uid="uid://bb7v14ykhqcok" path="res://scripts/ui/credits.gd" id="1_0ctdu"]
 [ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="1_2ckv8"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_8gwij"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="2_0ctdu"]

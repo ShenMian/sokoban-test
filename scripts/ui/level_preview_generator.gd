@@ -3,7 +3,7 @@ class_name LevelPreviewGenerator
 
 signal preview_generated(index: int, texture: Texture2D)
 
-const PREVIEW_SCENE := preload("res://scenes/preview.tscn")
+const PREVIEW_SCENE := preload("res://scenes/ui/preview.tscn")
 
 var levels: Array[Dictionary] = []
 

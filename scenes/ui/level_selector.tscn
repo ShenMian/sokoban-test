@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bef3cb8eg20mo"]
 
-[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_gkmvm"]
-[ext_resource type="Script" uid="uid://c5tskalfqb860" path="res://scripts/level_selector.gd" id="2_tr5s6"]
+[ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="1_jhogm"]
+[ext_resource type="Script" uid="uid://c5tskalfqb860" path="res://scripts/ui/level_selector.gd" id="2_5irit"]
 
 [sub_resource type="Gradient" id="Gradient_gkmvm"]
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
@@ -16,8 +16,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_gkmvm")
-script = ExtResource("2_tr5s6")
+theme = ExtResource("1_jhogm")
+script = ExtResource("2_5irit")
 preview_placeholder = SubResource("GradientTexture2D_tr5s6")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1029444989]
