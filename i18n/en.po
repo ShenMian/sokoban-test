@@ -115,7 +115,7 @@ msgid "HEATMAP"
 msgstr "Heatmap"
 
 msgid "HEATMAP_TIP"
-msgstr "Visualize push lower bounds as a heatmap"
+msgstr "Visualize lower bounds as a heatmap"
 
 # Video
 

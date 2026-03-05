@@ -115,7 +115,7 @@ msgid "HEATMAP"
 msgstr "热力图"
 
 msgid "HEATMAP_TIP"
-msgstr "将推动下界以热力图的形式可视化"
+msgstr "将下界以热力图的形式可视化"
 
 # Video
 
