@@ -27,10 +27,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="HSplit" type="HSplitContainer" parent="MarginContainer" unique_id=1080622152]
 layout_mode = 2
@@ -41,6 +41,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
+theme = ExtResource("1_jhogm")
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 10
+theme_override_font_sizes/font_size = 26
 wraparound_items = false
 
 [node name="LevelList" type="ItemList" parent="MarginContainer/HSplit" unique_id=2025772780]
@@ -48,4 +52,5 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.8
+theme = ExtResource("1_jhogm")
 icon_mode = 0

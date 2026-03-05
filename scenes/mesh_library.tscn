@@ -120,5 +120,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 mesh = SubResource("ArrayMesh_djgao")
 
 [node name="goal" type="MeshInstance3D" parent="." unique_id=1675270226]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.49, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.499, 0)
 mesh = SubResource("ArrayMesh_s3a7k")
