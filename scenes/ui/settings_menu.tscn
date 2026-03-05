@@ -362,11 +362,13 @@ text = "PATHFINDING_STRATEGY"
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox/PathfindingStrategyPanel/Margin/HBox" unique_id=1406255690]
 layout_mode = 2
 size_flags_horizontal = 10
-item_count = 2
-popup/item_0/text = "PUSH_OPTIMAL"
+item_count = 3
+popup/item_0/text = "FAST"
 popup/item_0/id = 0
-popup/item_1/text = "MOVE_OPTIMAL"
+popup/item_1/text = "PUSH_OPTIMAL"
 popup/item_1/id = 1
+popup/item_2/text = "MOVE_OPTIMAL"
+popup/item_2/id = 2
 
 [node name="SolverLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox" unique_id=1344000682]
 layout_mode = 2

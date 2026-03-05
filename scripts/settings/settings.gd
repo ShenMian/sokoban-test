@@ -4,6 +4,17 @@ signal setting_changed(section: String, key: String, value: Variant)
 
 const INT_MAX := Vector3i.MAX.x
 
+enum Strategy {
+	QUICK = 0,
+	PUSH_OPTIMAL = 1,
+	MOVE_OPTIMAL = 2
+}
+
+enum Algorithm {
+	A_STAR = 0,
+	IDA_STAR = 1,
+}
+
 const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
@@ -11,10 +22,10 @@ const DEFAULT_CONFIG = {
 		"checkerboard": true,
 		"deadlock_hint": true,
 		"pushable_hint": true,
-		"pathfinding_strategy": 0,
+		"pathfinding_strategy": Strategy.PUSH_OPTIMAL,
 		"heatmap": true,
-		"algorithm": 0,
-		"solver_strategy": 0,
+		"algorithm": Algorithm.A_STAR,
+		"solver_strategy": Strategy.QUICK,
 	},
 	"video": {
 		"window_mode": DisplayServer.WINDOW_MODE_WINDOWED,

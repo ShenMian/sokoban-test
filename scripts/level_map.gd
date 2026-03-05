@@ -48,6 +48,8 @@ func _input(_event: InputEvent) -> void:
 		_reset_camera_position()
 	if Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(get_map())
+	if Input.is_action_just_pressed("solve"):
+		solve_level()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -68,26 +70,41 @@ func _unhandled_input(event: InputEvent) -> void:
 			deselect_box()
 
 
-func on_waypoint_clicked(box_position: Vector2i, waypoint_position: Vector2i) -> void:
-	deselect_box()
-
-	var directions := box_move_path(box_position, waypoint_position)
-	for direction in directions:
-		if is_solved():
-			break
-		move_by(direction)
-		await player.move_finished
-
-
 func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 	if section == "gameplay" and key == "deadlock_hint":
 		deadlock_hint = value
 	if section == "gameplay" and key == "checkerboard":
 		checkerboard_shading = value
-	if section == "gameplay" and key == "pathfinding_strategy":
-		pathfinding_strategy = value
 	if section == "gameplay" and key == "pushable_hint":
 		pushable_hint = value
+	if section == "gameplay" and key == "pathfinding_strategy":
+		pathfinding_strategy = value
+	if section == "gameplay" and key == "algorithm":
+		solver_algorithm = value
+	if section == "gameplay" and key == "solver_strategy":
+		solver_strategy = value
+
+
+func on_waypoint_clicked(from: Vector2i, to: Vector2i) -> void:
+	deselect_box()
+	await _execute_path(box_move_path(from, to))
+
+
+func solve_level() -> void:
+	deselect_box()
+
+	if player.is_moving:
+		return
+
+	await _execute_path(solve(solver_algorithm, solver_strategy))
+
+
+func _execute_path(directions: Array) -> void:
+	for direction in directions:
+		if is_solved():
+			break
+		move_by(direction)
+		await player.move_finished
 
 
 func _on_player_moved(_to: Vector2, pushed: bool) -> void:

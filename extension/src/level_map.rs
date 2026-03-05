@@ -16,19 +16,59 @@ use nalgebra::Vector2;
 use soukoban::{
     Actions, Level, Map, Tiles,
     deadlock::compute_static_deadlocks,
-    direction::{DirectedPosition, Direction},
+    direction::{self, DirectedPosition},
     path_finding,
-    solver::Strategy,
+    solver::{self, Solver},
 };
 
 use crate::convert::{ToGodot, ToNalgebra};
 
-#[derive(GodotConvert, Var, Export, Default, Clone)]
+#[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
 #[godot(via = i32)]
-pub enum PathfindingStrategy {
+pub enum Direction {
     #[default]
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+impl From<Direction> for direction::Direction {
+    fn from(direction: Direction) -> Self {
+        match direction {
+            Direction::Up => direction::Direction::Up,
+            Direction::Down => direction::Direction::Down,
+            Direction::Left => direction::Direction::Left,
+            Direction::Right => direction::Direction::Right,
+        }
+    }
+}
+
+#[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
+#[godot(via = i32)]
+pub enum Strategy {
+    #[default]
+    Quick,
     PushOptimal,
     MoveOptimal,
+}
+
+impl From<Strategy> for solver::Strategy {
+    fn from(strategy: Strategy) -> Self {
+        match strategy {
+            Strategy::Quick => solver::Strategy::Fast,
+            Strategy::PushOptimal => solver::Strategy::OptimalPush,
+            Strategy::MoveOptimal => solver::Strategy::OptimalMove,
+        }
+    }
+}
+
+#[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
+#[godot(via = i32)]
+pub enum Algorithm {
+    #[default]
+    AStar,
+    IDAStar,
 }
 
 #[derive(GodotClass)]
@@ -51,7 +91,13 @@ struct LevelMap {
     pushable_hint: bool,
 
     #[export]
-    pathfinding_strategy: PathfindingStrategy,
+    pathfinding_strategy: Strategy,
+
+    #[export]
+    solver_strategy: Strategy,
+
+    #[export]
+    solver_algorithm: Algorithm,
 
     #[export]
     floor_item_id: i32,
@@ -82,7 +128,9 @@ impl IGridMap for LevelMap {
             deadlock_hint: true,
             deadlock_tint: Color::from_rgb(0.5, 0.5, 0.5),
             pushable_hint: true,
-            pathfinding_strategy: PathfindingStrategy::default(),
+            pathfinding_strategy: Strategy::default(),
+            solver_strategy: Strategy::default(),
+            solver_algorithm: Algorithm::default(),
             floor_item_id: GridMap::INVALID_CELL_ITEM,
             wall_item_id: GridMap::INVALID_CELL_ITEM,
             goal_item_id: GridMap::INVALID_CELL_ITEM,
@@ -213,8 +261,8 @@ impl LevelMap {
     }
 
     #[func]
-    fn box_move_path(&self, box_position: Vector2i, to: Vector2i) -> Array<i32> {
-        let box_position = box_position.to_na();
+    fn box_move_path(&self, from: Vector2i, to: Vector2i) -> Array<i32> {
+        let box_position = from.to_na();
         let to = to.to_na();
 
         debug_assert!(self.map().box_positions().contains(&box_position));
@@ -243,7 +291,7 @@ impl LevelMap {
 
             for direction in player_path
                 .windows(2)
-                .map(|p| Direction::try_from(p[1] - p[0]).unwrap())
+                .map(|p| direction::Direction::try_from(p[1] - p[0]).unwrap())
             {
                 best_path.push(direction as i32);
             }
@@ -253,14 +301,28 @@ impl LevelMap {
     }
 
     #[func]
-    fn move_by(&mut self, direction: i32) {
-        let direction = match direction {
-            0 => Direction::Up,
-            1 => Direction::Down,
-            2 => Direction::Left,
-            3 => Direction::Right,
-            _ => unreachable!(),
+    fn solve(&self, algorithm: Algorithm, strategy: Strategy) -> Array<i32> {
+        let strategy: solver::Strategy = strategy.into();
+        let solver = Solver::new(self.map().clone(), strategy);
+        let result = match algorithm {
+            Algorithm::AStar => solver.a_star_search(),
+            Algorithm::IDAStar => solver.ida_star_search(),
         };
+        let Ok(actions) = result else {
+            godot_warn!("failed to find solution: {}", result.err().unwrap());
+            return Array::new();
+        };
+
+        let mut directions = Array::new();
+        for action in &*actions {
+            directions.push(action.direction() as i32);
+        }
+        directions
+    }
+
+    #[func]
+    fn move_by(&mut self, direction: Direction) {
+        let direction: direction::Direction = direction.into();
 
         let box_positions = self.map().box_positions().clone();
         let _ = self.level.execute(direction);
@@ -381,10 +443,7 @@ impl LevelMap {
             r#box.get_position().z.round() as i32,
         );
 
-        let strategy = match self.pathfinding_strategy {
-            PathfindingStrategy::PushOptimal => Strategy::OptimalPush,
-            PathfindingStrategy::MoveOptimal => Strategy::OptimalMove,
-        };
+        let strategy: solver::Strategy = self.pathfinding_strategy.into();
 
         let start = std::time::Instant::now();
         let (mut waypoints, costs) =
