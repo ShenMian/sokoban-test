@@ -116,6 +116,9 @@ struct LevelMap {
 
     level: Level,
 
+    box_scene: Gd<PackedScene>,
+    waypoint_scene: Gd<PackedScene>,
+
     base: Base<GridMap>,
 }
 
@@ -141,6 +144,8 @@ impl IGridMap for LevelMap {
             waypoints: HashMap::new(),
             costs: HashMap::new(),
             level,
+            box_scene: load("res://scenes/box.tscn"),
+            waypoint_scene: load("res://scenes/waypoint.tscn"),
             base,
         }
     }
@@ -412,9 +417,8 @@ impl LevelMap {
 
         self.clear_boxes();
         let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
-        let box_scene: Gd<PackedScene> = load("res://scenes/box.tscn");
         for position in self.map().box_positions() {
-            let mut r#box = box_scene.instantiate_as::<Node3D>();
+            let mut r#box = self.box_scene.instantiate_as::<Node3D>();
             r#box.set_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
             let box_node = r#box.to_variant();
             r#box.connect(
@@ -458,9 +462,8 @@ impl LevelMap {
         }
 
         let mut container = self.base_mut().get_node_as::<Node3D>("Waypoints");
-        let waypoint_scene: Gd<PackedScene> = load("res://scenes/waypoint.tscn");
         for position in waypoints.keys().map(|dp| dp.position()) {
-            let mut waypoint = waypoint_scene.instantiate_as::<Node3D>();
+            let mut waypoint = self.waypoint_scene.instantiate_as::<Node3D>();
             waypoint.set_position(Vector3::new(position.x as f32, 0.01, position.y as f32));
             waypoint.connect(
                 "clicked",
