@@ -46,9 +46,6 @@ var _config := ConfigFile.new()
 const SOLUTIONS_PATH = "user://solutions.ini"
 var _solutions := ConfigFile.new()
 
-var current_collection: String
-var current_level_index: int
-
 
 func _ready() -> void:
 	print("Config file path: ", ProjectSettings.globalize_path(CONFIG_PATH))

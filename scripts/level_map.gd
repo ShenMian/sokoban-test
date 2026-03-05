@@ -19,9 +19,9 @@ func _ready() -> void:
 	player_moved.connect(_on_player_moved)
 	solved.connect(_on_solved)
 
-	assert(Settings.current_collection != null and Settings.current_level_index != null)
-	var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + Settings.current_collection + ".xsb")
-	load_from_file(full_path, Settings.current_level_index + 1)
+	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
+	var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + SceneTransition.collection + ".xsb")
+	load_from_file(full_path, SceneTransition.level_index + 1)
 
 	_reset_camera_position()
 
@@ -98,7 +98,7 @@ func _on_player_moved(_to: Vector2, pushed: bool) -> void:
 
 func _on_solved() -> void:
 	print("Level solved!")
-	Settings.set_level_solution(Settings.current_collection, Settings.current_level_index, get_actions())
+	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, get_actions())
 
 
 func _reset_camera_position() -> void:

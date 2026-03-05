@@ -49,10 +49,8 @@ func _on_level_solved() -> void:
 
 
 func _on_request_next_level() -> void:
-	# TODO: Add bounds checking
-	Settings.current_level_index += 1
-	SceneTransition.change_scene_to_file("res://scenes/gameplay.tscn")
+	SceneTransition.load_next_level()
 
 
 func _on_request_menu() -> void:
-	SceneTransition.change_scene_to_file("res://scenes/ui/level_selector.tscn")
+	SceneTransition.load_main_menu()
