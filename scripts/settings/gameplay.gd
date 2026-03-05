@@ -8,6 +8,7 @@ extends ScrollContainer
 @onready var pathfinding_strategy: OptionButton = $Margin/VBox/PathfindingStrategyPanel/Margin/HBox/OptionButton
 @onready var algorithm: OptionButton = $Margin/VBox/AlgorithmPanel/Margin/HBox/OptionButton
 @onready var solver_strategy: OptionButton = $Margin/VBox/StrategyPanel/Margin/HBox/OptionButton
+@onready var heatmap: SwitchFx = $Margin/VBox/HeatmapPanel/Margin/HBox/CheckButton
 
 const SECTION_NAME := "gameplay"
 
@@ -23,6 +24,7 @@ func _ready() -> void:
 	pathfinding_strategy.item_selected.connect(_on_pathfinding_strategy_selected)
 	algorithm.item_selected.connect(_on_algorithm_selected)
 	solver_strategy.item_selected.connect(_on_strategy_selected)
+	heatmap.toggled.connect(_on_heatmap_toggled)
 
 	apply_settings()
 
@@ -51,6 +53,9 @@ func apply_settings() -> void:
 
 	solver_strategy.select(Settings.get_value(SECTION_NAME, "solver_strategy"))
 	solver_strategy.item_selected.emit(solver_strategy.selected)
+
+	heatmap.button_pressed = Settings.get_value(SECTION_NAME, "heatmap")
+	heatmap.toggled.emit(heatmap.button_pressed)
 
 
 func _on_language_selected(index: int) -> void:
@@ -85,3 +90,7 @@ func _on_algorithm_selected(index: int) -> void:
 
 func _on_strategy_selected(index: int) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "solver_strategy", index)
+
+
+func _on_heatmap_toggled(toggled_on: bool) -> void:
+	Settings.set_and_save_value(SECTION_NAME, "heatmap", toggled_on)

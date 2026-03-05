@@ -23,7 +23,7 @@ const DEFAULT_CONFIG = {
 		"deadlock_hint": true,
 		"pushable_hint": true,
 		"pathfinding_strategy": Strategy.PUSH_OPTIMAL,
-		"heatmap": true,
+		"heatmap": false,
 		"algorithm": Algorithm.A_STAR,
 		"solver_strategy": Strategy.QUICK,
 	},

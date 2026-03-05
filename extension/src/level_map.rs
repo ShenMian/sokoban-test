@@ -353,6 +353,16 @@ impl LevelMap {
         }
     }
 
+    #[func]
+    fn get_lower_bounds(&self) -> VarDictionary {
+        let solver = Solver::new(self.map().clone(), self.solver_strategy.into());
+        let mut dict = VarDictionary::new();
+        for (position, value) in solver.lower_bounds() {
+            dict.set(position.to_gd(), value.to_variant());
+        }
+        dict
+    }
+
     fn map(&self) -> &Map {
         self.level.map()
     }

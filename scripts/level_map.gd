@@ -7,11 +7,23 @@ enum Direction {
 	RIGHT = 3
 }
 
+const HEATMAP_CELL_SCENE := preload("res://scenes/heatmap_cell.tscn")
+
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
 @onready var waypoints_container: Node3D = $Waypoints
+@onready var heatmap_container: Node3D = $Heatmap
 @onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox/MovesValue"
 @onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBox/PushesVBox/PushesValue"
+
+@export
+var heatmap: bool:
+	set(value):
+		heatmap = value
+		for child in heatmap_container.get_children():
+			child.queue_free()
+		if heatmap:
+			_build_heatmap()
 
 
 func _ready() -> void:
@@ -52,6 +64,16 @@ func _input(_event: InputEvent) -> void:
 		solve_level()
 
 
+func _build_heatmap() -> void:
+	var lower_bounds: Dictionary = get_lower_bounds()
+	var max_lower_bound: int = lower_bounds.values().max()
+	for pos in lower_bounds:
+		var heatmap_cell: HeatmapCell = HEATMAP_CELL_SCENE.instantiate()
+		heatmap_cell.position = Vector3(pos.x, 0.01, pos.y)
+		heatmap_container.add_child(heatmap_cell)
+		heatmap_cell.setup(lower_bounds[pos], max_lower_bound)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if player.is_moving:
@@ -77,6 +99,8 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 		checkerboard_shading = value
 	if section == "gameplay" and key == "pushable_hint":
 		pushable_hint = value
+	if section == "gameplay" and key == "heatmap":
+		heatmap = value
 	if section == "gameplay" and key == "pathfinding_strategy":
 		pathfinding_strategy = value
 	if section == "gameplay" and key == "algorithm":
@@ -120,7 +144,7 @@ func _on_solved() -> void:
 
 func _reset_camera_position() -> void:
 	var center := dimensions() / 2.0
-	camera._target_position.x = center.x
-	camera._target_position.z = center.y
 	camera.global_position.x = center.x
 	camera.global_position.z = center.y
+	camera._target_position.x = center.x
+	camera._target_position.z = center.y
