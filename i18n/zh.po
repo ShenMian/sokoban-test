@@ -12,6 +12,19 @@ msgstr "移动数"
 msgid "PUSHES"
 msgstr "推动数"
 
+# Victory Menu
+
+msgid "LEVEL_COMPLETE"
+msgstr "关卡完成"
+
+msgid "NEXT_LEVEL"
+msgstr "下一关"
+
+msgid "BACK_TO_MENU"
+msgstr "返回菜单"
+
+# Gameplay
+
 msgid "GAMEPLAY"
 msgstr "玩法"
 

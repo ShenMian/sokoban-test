@@ -88,7 +88,7 @@ offset_bottom = 47.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HudLayer/HUD/ScoreboardPanel" unique_id=1317735746]
+[node name="HBox" type="HBoxContainer" parent="HudLayer/HUD/ScoreboardPanel" unique_id=1317735746]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -104,33 +104,35 @@ grow_vertical = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="MovesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer" unique_id=1462512116]
+[node name="MovesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBox" unique_id=1462512116]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox" unique_id=1264860209]
+[node name="MovesLabel" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox" unique_id=1264860209]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "MOVES"
 
-[node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox" unique_id=834427515]
+[node name="MovesValue" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox" unique_id=834427515]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "0"
 horizontal_alignment = 1
 
-[node name="PushesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer" unique_id=1897535302]
+[node name="PushesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBox" unique_id=1897535302]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox" unique_id=685130270]
+[node name="PushesLabel" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/PushesVBox" unique_id=685130270]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "PUSHES"
 
-[node name="Value" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox" unique_id=1009331402]
+[node name="PushesValue" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/PushesVBox" unique_id=1009331402]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "0"
@@ -193,7 +195,7 @@ visible = false
 [node name="Credits" parent="MenuLayer" unique_id=1627154753 instance=ExtResource("9_101mb")]
 visible = false
 
-[node name="VictoryScreen" parent="MenuLayer" unique_id=222222222 instance=ExtResource("10_victory")]
+[node name="VictoryMenu" parent="MenuLayer" unique_id=222222222 instance=ExtResource("10_victory")]
 visible = false
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1799446341]

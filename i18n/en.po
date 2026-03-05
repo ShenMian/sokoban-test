@@ -12,6 +12,19 @@ msgstr "Moves"
 msgid "PUSHES"
 msgstr "Pushes"
 
+# Victory Menu
+
+msgid "LEVEL_COMPLETE"
+msgstr "Level Completed"
+
+msgid "NEXT_LEVEL"
+msgstr "Next Level"
+
+msgid "BACK_TO_MENU"
+msgstr "Back to Menu"
+
+# Gameplay
+
 msgid "GAMEPLAY"
 msgstr "Gameplay"
 

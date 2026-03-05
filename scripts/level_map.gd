@@ -10,8 +10,8 @@ enum Direction {
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
 @onready var waypoints_container: Node3D = $Waypoints
-@onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/MovesVBox/Value"
-@onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBoxContainer/PushesVBox/Value"
+@onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox/MovesValue"
+@onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBox/PushesVBox/PushesValue"
 
 
 func _ready() -> void:
@@ -19,11 +19,9 @@ func _ready() -> void:
 	player_moved.connect(_on_player_moved)
 	solved.connect(_on_solved)
 
-	if Settings.current_collection != null and Settings.current_level_index != null:
-		var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + Settings.current_collection + ".xsb")
-		load_from_file(full_path, Settings.current_level_index + 1)
-	else:
-		load_from_string("r2R2d2ruUL2u4l2DldR3u4r2d3L3r2u4ld2DurDu5ruLd5l2u4rDrd4L2r2drUr2ulu4ldDldRu3rd2ru4L3r2u4ldD")
+	assert(Settings.current_collection != null and Settings.current_level_index != null)
+	var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + Settings.current_collection + ".xsb")
+	load_from_file(full_path, Settings.current_level_index + 1)
 
 	_reset_camera_position()
 
