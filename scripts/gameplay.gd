@@ -14,6 +14,7 @@ func _ready() -> void:
 	pause_menu.closed.connect(_on_pause_closed)
 	pause_menu.request_settings.connect(_on_pause_request_settings)
 	pause_menu.request_credits.connect(_on_pause_request_credits)
+	pause_menu.request_menu.connect(_on_request_menu)
 	settings_menu.closed.connect(pause_menu.show)
 	credits.closed.connect(pause_menu.show)
 

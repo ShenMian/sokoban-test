@@ -106,6 +106,18 @@ text = "CREDITS"
 script = ExtResource("4_7l7mv")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
+[node name="Spacer" type="Control" parent="MenuBackground/VBox" unique_id=1740558231]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="MenuButton" type="Button" parent="MenuBackground/VBox" unique_id=715112919]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+text = "BACK_TO_MENU"
+script = ExtResource("4_7l7mv")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
 [node name="CloseButton" type="Button" parent="." unique_id=1479965865]
 layout_mode = 1
 anchors_preset = 2
