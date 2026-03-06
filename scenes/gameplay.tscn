@@ -79,66 +79,87 @@ grow_vertical = 2
 mouse_filter = 1
 theme = ExtResource("4_ocj2s")
 
-[node name="ScoreboardPanel" type="Panel" parent="HudLayer/HUD" unique_id=1569907026]
+[node name="StatusPanel" type="Panel" parent="HudLayer/HUD" unique_id=1569907026]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -76.0
-offset_right = 76.0
+offset_left = -110.0
+offset_right = 110.0
 offset_bottom = 47.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_00tan")
 
-[node name="HBox" type="HBoxContainer" parent="HudLayer/HUD/ScoreboardPanel" unique_id=1317735746]
+[node name="HBox" type="HBoxContainer" parent="HudLayer/HUD/StatusPanel" unique_id=1317735746]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -80.5
-offset_top = -25.0
-offset_right = 80.5
-offset_bottom = 25.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="MovesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBox" unique_id=1462512116]
+[node name="LevelVBox" type="VBoxContainer" parent="HudLayer/HUD/StatusPanel/HBox" unique_id=2014785072]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="MovesLabel" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox" unique_id=1264860209]
+[node name="LevelLabel" type="Label" parent="HudLayer/HUD/StatusPanel/HBox/LevelVBox" unique_id=1861477622]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "LEVEL"
+horizontal_alignment = 1
+
+[node name="LevelValue" type="Label" parent="HudLayer/HUD/StatusPanel/HBox/LevelVBox" unique_id=2084067339]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "0"
+horizontal_alignment = 1
+
+[node name="MovesVBox" type="VBoxContainer" parent="HudLayer/HUD/StatusPanel/HBox" unique_id=1462512116]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="MovesLabel" type="Label" parent="HudLayer/HUD/StatusPanel/HBox/MovesVBox" unique_id=1264860209]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "MOVES"
+horizontal_alignment = 1
 
-[node name="MovesValue" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox" unique_id=834427515]
+[node name="MovesValue" type="Label" parent="HudLayer/HUD/StatusPanel/HBox/MovesVBox" unique_id=834427515]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "0"
 horizontal_alignment = 1
 
-[node name="PushesVBox" type="VBoxContainer" parent="HudLayer/HUD/ScoreboardPanel/HBox" unique_id=1897535302]
+[node name="PushesVBox" type="VBoxContainer" parent="HudLayer/HUD/StatusPanel/HBox" unique_id=1897535302]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="PushesLabel" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/PushesVBox" unique_id=685130270]
+[node name="PushesLabel" type="Label" parent="HudLayer/HUD/StatusPanel/HBox/PushesVBox" unique_id=685130270]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "PUSHES"
+horizontal_alignment = 1
 
-[node name="PushesValue" type="Label" parent="HudLayer/HUD/ScoreboardPanel/HBox/PushesVBox" unique_id=1009331402]
+[node name="PushesValue" type="Label" parent="HudLayer/HUD/StatusPanel/HBox/PushesVBox" unique_id=1009331402]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "0"
 horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="HudLayer/HUD/StatusPanel" unique_id=383481352]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="ToolbarPanel" type="Panel" parent="HudLayer/HUD" unique_id=1089101440]
 visible = false

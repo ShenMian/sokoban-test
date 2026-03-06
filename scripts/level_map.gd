@@ -14,8 +14,9 @@ const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 @onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
-@onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox/MovesValue"
-@onready var pushes: Label = $"../HudLayer/HUD/ScoreboardPanel/HBox/PushesVBox/PushesValue"
+@onready var level_label: Label = $"../HudLayer/HUD/StatusPanel/HBox/LevelVBox/LevelValue"
+@onready var moves_label: Label = $"../HudLayer/HUD/StatusPanel/HBox/MovesVBox/MovesValue"
+@onready var pushes_label: Label = $"../HudLayer/HUD/StatusPanel/HBox/PushesVBox/PushesValue"
 
 @export
 var heatmap: bool:
@@ -34,7 +35,9 @@ func _ready() -> void:
 
 	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
 	var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + SceneTransition.collection + ".xsb")
-	load_from_file(full_path, SceneTransition.level_index + 1)
+	var level_id = SceneTransition.level_index + 1
+	load_from_file(full_path, level_id)
+	level_label.text = str(level_id)
 
 	_reset_camera_position()
 
@@ -136,9 +139,9 @@ func _execute_path(directions: Array) -> void:
 
 
 func _on_player_moved(_to: Vector2, pushed: bool) -> void:
-	moves.text = str(int(moves.text) + 1)
+	moves_label.text = str(int(moves_label.text) + 1)
 	if pushed:
-		pushes.text = str(int(pushes.text) + 1)
+		pushes_label.text = str(int(pushes_label.text) + 1)
 
 
 func _on_solved() -> void:

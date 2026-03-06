@@ -6,6 +6,9 @@ msgstr ""
 
 # HUD
 
+msgid "LEVEL"
+msgstr "Level"
+
 msgid "MOVES"
 msgstr "Moves"
 

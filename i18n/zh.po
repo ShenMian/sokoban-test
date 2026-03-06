@@ -6,6 +6,9 @@ msgstr ""
 
 # HUD
 
+msgid "LEVEL"
+msgstr "关卡"
+
 msgid "MOVES"
 msgstr "移动数"
 
