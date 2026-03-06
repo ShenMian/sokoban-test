@@ -1,7 +1,7 @@
 extends MeshInstance3D
 class_name HeatmapCell
 
-const TRANSPARENCY := 0.7
+const TRANSPARENCY = 0.7
 
 @onready var label: Label3D = $Label
 

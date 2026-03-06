@@ -32,6 +32,7 @@ var is_moving: bool = false
 var _is_selected: bool = false
 var _is_hovered: bool = false
 var _indicator_tween: Tween
+var _duration_multiplier: float = 1.0
 
 @onready var level_map: LevelMap = $".."
 @onready var meshes: Node3D = $Meshes
@@ -44,6 +45,8 @@ var _indicator_tween: Tween
 
 
 func _ready() -> void:
+	Settings.setting_changed.connect(_on_setting_changed)
+
 	level_map.player_moved.connect(_on_player_moved)
 	idle_timer.timeout.connect(_on_idle_timer_timeout)
 
@@ -58,6 +61,8 @@ func _ready() -> void:
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_max, indicator_tween_duration / 2.0)
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
+
+	_on_setting_changed("gameplay", "animation_speed", Settings.get_value("gameplay", "animation_speed"))
 
 	if not selectable:
 		_apply_selectable()
@@ -91,7 +96,7 @@ func move(direction: Vector3, push: bool) -> void:
 		await create_tween() \
 			.set_ease(rotate_ease) \
 			.set_trans(rotate_transition) \
-			.tween_property(meshes, "rotation_degrees:y", target_rotation, duration) \
+			.tween_property(meshes, "rotation_degrees:y", target_rotation, duration * _duration_multiplier) \
 			.finished
 
 	if push:
@@ -102,7 +107,7 @@ func move(direction: Vector3, push: bool) -> void:
 	await create_tween() \
 		.set_ease(move_ease) \
 		.set_trans(move_transition) \
-		.tween_property(self , "global_position", global_position + direction, move_duration) \
+		.tween_property(self , "global_position", global_position + direction, move_duration * _duration_multiplier) \
 		.finished
 
 	state_machine.travel("Static")
@@ -117,6 +122,16 @@ func deselect() -> void:
 
 func grid_position() -> Vector2i:
 	return Vector2i(round(global_position.x), round(global_position.z))
+
+
+func _on_setting_changed(section: String, key: String, value: Variant):
+	if section == "gameplay" and key == "animation_speed":
+		assert(value != Settings.AnimationSpeed.INSTANT)
+		match value:
+			Settings.AnimationSpeed.SLOW:
+				_duration_multiplier = 1.0
+			Settings.AnimationSpeed.FAST:
+				_duration_multiplier = 0.25
 
 
 func _on_player_moved(to: Vector2i, pushed: bool) -> void:

@@ -8,9 +8,9 @@ signal unhovered
 signal move_finished
 
 @export_group("Move Animation")
-@export var duration: float = 0.4
-@export var ease_: Tween.EaseType = Tween.EASE_OUT
-@export var transition: Tween.TransitionType = Tween.TRANS_SINE
+@export var move_duration: float = 0.4
+@export var move_ease: Tween.EaseType = Tween.EASE_OUT
+@export var move_transition: Tween.TransitionType = Tween.TRANS_SINE
 
 @export_group("Indicator Animation")
 @export var indicator_tween_duration: float = 1.0
@@ -31,9 +31,12 @@ signal move_finished
 		selectable = not value
 		_apply_disabled()
 
+var is_moving: bool = false
+
 var _is_selected: bool = false
 var _is_hovered: bool = false
 var _indicator_tween: Tween
+var _duration_multiplier: float = 1.0
 
 @onready var level_map: LevelMap = $"../.."
 @onready var player: Node3D = $"../../Player"
@@ -45,6 +48,8 @@ var _indicator_tween: Tween
 
 
 func _ready() -> void:
+	Settings.setting_changed.connect(_on_setting_changed)
+
 	mesh_area.area_entered.connect(_on_area_entered)
 
 	mesh_instance.mesh = mesh_instance.mesh.duplicate(true)
@@ -60,6 +65,8 @@ func _ready() -> void:
 	_indicator_tween.tween_property(select_indicator, "scale", Vector3.ONE * indicator_scale_min, indicator_tween_duration / 2.0)
 	_indicator_tween.pause()
 
+	_on_setting_changed("gameplay", "animation_speed", Settings.get_value("gameplay", "animation_speed"))
+
 	if disabled:
 		_apply_disabled()
 
@@ -68,11 +75,13 @@ func _ready() -> void:
 
 
 func move(direction: Vector3) -> void:
+	is_moving = true
 	await create_tween() \
-		.set_ease(ease_) \
-		.set_trans(transition) \
-		.tween_property(self , "global_position", global_position + direction, duration) \
+		.set_ease(move_ease) \
+		.set_trans(move_transition) \
+		.tween_property(self , "global_position", global_position + direction, move_duration * _duration_multiplier) \
 		.finished
+	is_moving = false
 	move_finished.emit()
 
 
@@ -83,6 +92,16 @@ func deselect() -> void:
 
 func grid_position() -> Vector2i:
 	return Vector2i(round(global_position.x), round(global_position.z))
+
+
+func _on_setting_changed(section: String, key: String, value: Variant):
+	if section == "gameplay" and key == "animation_speed":
+		assert(value != Settings.AnimationSpeed.INSTANT)
+		match value:
+			Settings.AnimationSpeed.SLOW:
+				_duration_multiplier = 1.0
+			Settings.AnimationSpeed.FAST:
+				_duration_multiplier = 0.25
 
 
 func _on_area_entered(area: Area3D) -> void:

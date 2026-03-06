@@ -232,6 +232,7 @@ popup/item_1/text = "ANIM_FAST"
 popup/item_1/id = 1
 popup/item_2/text = "ANIM_INSTANT"
 popup/item_2/id = 2
+popup/item_2/disabled = true
 
 [node name="CheckerboardPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/Margin/VBox" unique_id=1224806806]
 custom_minimum_size = Vector2(0, 40)

@@ -2,7 +2,13 @@ extends Node
 
 signal setting_changed(section: String, key: String, value: Variant)
 
-const INT_MAX := Vector3i.MAX.x
+const INT_MAX = Vector3i.MAX.x
+
+enum AnimationSpeed {
+	SLOW = 0,
+	FAST = 1,
+	INSTANT = 2,
+}
 
 enum Strategy {
 	QUICK = 0,
@@ -18,7 +24,7 @@ enum Algorithm {
 const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
-		"animation_speed": 0,
+		"animation_speed": AnimationSpeed.SLOW,
 		"checkerboard": true,
 		"deadlock_hint": true,
 		"pushable_hint": true,
@@ -48,8 +54,8 @@ const DEFAULT_CONFIG = {
 }
 
 const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
-const BINDINGS_PATH := "user://bindings.tres"
-const LEVEL_PATH := "res://assets/levels/"
+const BINDINGS_PATH = "user://bindings.tres"
+const LEVEL_PATH = "res://assets/levels/"
 
 const CONFIG_PATH = "user://settings.ini"
 var _config := ConfigFile.new()

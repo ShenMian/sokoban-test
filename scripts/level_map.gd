@@ -7,10 +7,11 @@ enum Direction {
 	RIGHT = 3
 }
 
-const HEATMAP_CELL_SCENE := preload("res://scenes/heatmap_cell.tscn")
+const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
+@onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
 @onready var moves: Label = $"../HudLayer/HUD/ScoreboardPanel/HBox/MovesVBox/MovesValue"
@@ -129,6 +130,9 @@ func _execute_path(directions: Array) -> void:
 			break
 		move_by(direction)
 		await player.move_finished
+		for box in boxes_container.get_children():
+			if box.is_moving:
+				await box.move_finished
 
 
 func _on_player_moved(_to: Vector2, pushed: bool) -> void:
