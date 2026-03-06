@@ -34,8 +34,19 @@ func _ready():
 	_load_collections()
 	assert(collection_list.item_count > 0)
 
-	collection_list.select(0)
-	_on_collection_list_clicked(0, Vector2.ZERO, MOUSE_BUTTON_LEFT)
+	if SceneTransition.collection == "":
+		collection_list.select(0)
+		_on_collection_list_clicked(0, Vector2.ZERO, MOUSE_BUTTON_LEFT)
+	else:
+		# Select the previous collection and level
+		var collection_index := 0
+		for idx in collection_list.item_count:
+			if collection_list.get_item_text(idx) == SceneTransition.collection:
+				collection_index = idx
+				break
+		_on_collection_list_clicked(collection_index, Vector2.ZERO, MOUSE_BUTTON_LEFT)
+		level_list.select(SceneTransition.level_index)
+		level_list.ensure_current_is_visible()
 
 
 func _load_collections():
