@@ -414,7 +414,7 @@ impl LevelMap {
                         .set_cell_item(Vector3i::new(x, -1, y), tile_id);
                 }
                 if tiles.intersects(Tiles::Wall | Tiles::Goal) {
-                    let item_id = match tiles & !Tiles::Floor {
+                    let item_id = match tiles & !Tiles::Floor & !Tiles::Box {
                         Tiles::Wall => self.wall_item_id,
                         Tiles::Goal => self.goal_item_id,
                         _ => continue,
