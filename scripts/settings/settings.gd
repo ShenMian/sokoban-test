@@ -24,7 +24,7 @@ enum Algorithm {
 const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
-		"animation_speed": AnimationSpeed.SLOW,
+		"animation_speed": AnimationSpeed.FAST,
 		"checkerboard": true,
 		"deadlock_hint": true,
 		"pushable_hint": true,
