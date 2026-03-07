@@ -154,3 +154,6 @@ func _reset_camera_position() -> void:
 	var max_dimension = max(dimensions().x, dimensions().y)
 	camera._target_position = Vector3(center.x, max_dimension, center.y)
 	camera.global_position = camera._target_position
+
+	if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
+		camera.size = max_dimension

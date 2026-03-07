@@ -50,6 +50,9 @@ func _process(_delta: float):
 		var max_dimension = max(dimensions.x, dimensions.y)
 		_camera.global_position = Vector3(center.x, max_dimension, center.y)
 
+		if _camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
+			_camera.size = max_dimension
+
 		_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 
 		await get_tree().process_frame
