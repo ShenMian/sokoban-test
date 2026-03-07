@@ -74,6 +74,8 @@ pub enum Algorithm {
 #[derive(GodotClass)]
 #[class(base=GridMap)]
 struct LevelMap {
+    level: Level,
+
     #[export]
     #[var(get, set = set_checkerboard_shading)]
     checkerboard_shading: bool,
@@ -113,8 +115,6 @@ struct LevelMap {
     selected_box: Option<Gd<Node3D>>,
     waypoints: HashMap<DirectedPosition, DirectedPosition>,
     costs: HashMap<DirectedPosition, i32>,
-
-    level: Level,
 
     box_scene: Gd<PackedScene>,
     waypoint_scene: Gd<PackedScene>,
@@ -225,17 +225,17 @@ impl LevelMap {
     }
 
     #[func]
-    fn dimensions(&self) -> Vector2i {
+    fn get_dimensions(&self) -> Vector2i {
         self.map().dimensions().to_gd()
     }
 
     #[func]
-    fn player_position(&self) -> Vector2i {
+    fn get_player_position(&self) -> Vector2i {
         self.map().player_position().to_gd()
     }
 
     #[func]
-    fn box_positions(&self) -> Array<Vector2i> {
+    fn get_box_positions(&self) -> Array<Vector2i> {
         self.map()
             .box_positions()
             .iter()
@@ -244,7 +244,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn pushable_box_positions(&self) -> Array<Vector2i> {
+    fn get_pushable_box_positions(&self) -> Array<Vector2i> {
         path_finding::compute_pushable_boxes(self.map())
             .iter()
             .map(ToGodot::to_gd)
@@ -252,7 +252,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn goal_positions(&self) -> Array<Vector2i> {
+    fn get_goal_positions(&self) -> Array<Vector2i> {
         self.map()
             .goal_positions()
             .iter()
@@ -266,7 +266,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn box_move_path(&self, from: Vector2i, to: Vector2i) -> Array<i32> {
+    fn get_box_move_path(&self, from: Vector2i, to: Vector2i) -> Array<i32> {
         let box_position = from.to_na();
         let to = to.to_na();
 
@@ -477,7 +477,7 @@ impl LevelMap {
             waypoint.set_position(Vector3::new(position.x as f32, 0.01, position.y as f32));
             waypoint.connect(
                 "clicked",
-                &self.to_gd().callable("on_waypoint_clicked").bind(&[
+                &self.to_gd().callable("_on_waypoint_clicked").bind(&[
                     box_position.to_gd().to_variant(),
                     position.to_gd().to_variant(),
                 ]),
@@ -537,7 +537,7 @@ impl LevelMap {
         }
         let boxes = self.base().get_node_as::<Node3D>("Boxes");
         for mut r#box in boxes.get_children().iter_shared() {
-            let callable = self.to_gd().callable("update_pushable_hint");
+            let callable = self.to_gd().callable("_update_pushable_hint");
             if enable {
                 if !r#box.is_connected("move_finished", &callable) {
                     r#box.connect("move_finished", &callable);
@@ -548,18 +548,18 @@ impl LevelMap {
                 }
             }
         }
-        self.update_pushable_hint();
+        self._update_pushable_hint();
     }
 
     #[func]
-    fn update_pushable_hint(&mut self) {
+    fn _update_pushable_hint(&mut self) {
         if !self.base().is_inside_tree() {
             return;
         }
 
         if self.pushable_hint {
             // Disable non-pushable boxes
-            let pushable_positions = self.pushable_box_positions();
+            let pushable_positions = self.get_pushable_box_positions();
             let boxes = self.base().get_node_as::<Node3D>("Boxes");
             for mut r#box in boxes.get_children().iter_shared() {
                 let grid_position: Vector2i = r#box.call("grid_position", &[]).to();

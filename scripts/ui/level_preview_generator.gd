@@ -50,7 +50,7 @@ func _process(_delta: float):
 
 		_level_map.load_from_string(levels[index]["map"])
 
-		var dimensions = Vector2(_level_map.dimensions())
+		var dimensions = Vector2(_level_map.get_dimensions())
 		var center = dimensions / 2.0
 		var max_dimension = max(dimensions.x, dimensions.y)
 		_camera.global_position = Vector3(center.x, max_dimension, center.y)

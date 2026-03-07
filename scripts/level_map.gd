@@ -42,7 +42,7 @@ func _ready() -> void:
 	_reset_camera_position()
 
 	await get_tree().process_frame
-	update_pushable_hint()
+	_update_pushable_hint()
 
 
 func _process(_delta: float) -> void:
@@ -60,7 +60,7 @@ func _process(_delta: float) -> void:
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
-		update_pushable_hint()
+		_update_pushable_hint()
 		_reset_camera_position()
 	if Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(get_map())
@@ -113,9 +113,9 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 		solver_strategy = value
 
 
-func on_waypoint_clicked(from: Vector2i, to: Vector2i) -> void:
+func _on_waypoint_clicked(from: Vector2i, to: Vector2i) -> void:
 	deselect_box()
-	await _execute_path(box_move_path(from, to))
+	await _execute_path(get_box_move_path(from, to))
 
 
 func solve_level() -> void:
@@ -150,8 +150,8 @@ func _on_solved() -> void:
 
 
 func _reset_camera_position() -> void:
-	var center := dimensions() / 2.0
-	var max_dimension = max(dimensions().x, dimensions().y)
+	var center := get_dimensions() / 2.0
+	var max_dimension = max(get_dimensions().x, get_dimensions().y)
 	camera._target_position = Vector3(center.x, max_dimension, center.y)
 	camera.global_position = camera._target_position
 
