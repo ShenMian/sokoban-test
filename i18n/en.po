@@ -55,6 +55,9 @@ msgstr "Fast"
 msgid "ANIM_INSTANT"
 msgstr "Instant"
 
+msgid "2D_VIEW"
+msgstr "2D View"
+
 msgid "CHECKERBOARD_SHADING"
 msgstr "Checkerboard Shading"
 

@@ -25,6 +25,7 @@ const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
 		"animation_speed": AnimationSpeed.FAST,
+		"2d_view": false,
 		"checkerboard": true,
 		"deadlock_hint": true,
 		"pushable_hint": true,

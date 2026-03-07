@@ -13,10 +13,17 @@ func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
 	_target_position = global_position
 
+	_on_setting_changed("gameplay", "2d_view", Settings.get_value("gameplay", "2d_view"))
+
 
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "video" and key == "fov":
 		set_fov(value)
+	if section == "gameplay" and key == "2d_view":
+		if value:
+			projection = PROJECTION_ORTHOGONAL
+		else:
+			projection = PROJECTION_PERSPECTIVE
 
 
 func _process(delta: float):
@@ -32,41 +39,33 @@ func _process(delta: float):
 
 
 func _input(event: InputEvent):
-	# FIXME
-	if Input.is_action_just_pressed("switch_view"):
-		if self.is_3d_view():
-			switch_to_2d()
-		else:
-			switch_to_3d()
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			_is_dragging = event.pressed
-		elif self.is_3d_view():
-			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				_target_position.y -= zoom_sensitivity
-				_target_position.y = max(_target_position.y, 2.0)
-			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				_target_position.y += zoom_sensitivity
-		else:
-			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-				_target_size -= 1.0
-				_target_size = max(_target_size, 1.0)
-			elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-				_target_size += 1.0
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			zoom_in()
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			zoom_out()
 	elif event is InputEventMouseMotion and _is_dragging:
 		_target_position.x -= event.relative.x * drag_sensitivity * 0.01
 		_target_position.z -= event.relative.y * drag_sensitivity * 0.01
 
 
+func zoom_in():
+	if self.is_3d_view():
+		_target_position.y -= zoom_sensitivity
+		_target_position.y = max(_target_position.y, 2.0)
+	else:
+		_target_size -= 1.0
+		_target_size = max(_target_size, 1.0)
+
+
+func zoom_out():
+	if self.is_3d_view():
+		_target_position.y += zoom_sensitivity
+	else:
+		_target_size += 1.0
+
+
 func is_3d_view() -> bool:
 	return projection == PROJECTION_PERSPECTIVE
-
-
-func switch_to_3d():
-	projection = PROJECTION_PERSPECTIVE
-
-
-func switch_to_2d():
-	projection = PROJECTION_ORTHOGONAL
-	size = 10.0
-	_target_size = 10.0

@@ -55,6 +55,9 @@ msgstr "快速"
 msgid "ANIM_INSTANT"
 msgstr "瞬间完成"
 
+msgid "2D_VIEW"
+msgstr "2D 视角"
+
 msgid "CHECKERBOARD_SHADING"
 msgstr "棋盘纹"
 

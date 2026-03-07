@@ -22,6 +22,11 @@ func _init():
 	_level_map = _viewport.get_node("LevelMap")
 	_camera = _viewport.get_node("Camera")
 
+	if Settings.get_value("gameplay", "2d_view"):
+		_camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	else:
+		_camera.projection = Camera3D.PROJECTION_PERSPECTIVE
+
 
 func set_levels(new_levels: Array[Dictionary]):
 	_version += 1

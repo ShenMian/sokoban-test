@@ -2,6 +2,7 @@ extends ScrollContainer
 
 @onready var language: OptionButton = $Margin/VBox/LanguagePanel/Margin/HBox/OptionButton
 @onready var animation_speed: OptionButton = $Margin/VBox/AnimationSpeedPanel/Margin/HBox/OptionButton
+@onready var view_2d: SwitchFx = $"Margin/VBox/2dViewPanel/Margin/HBox/CheckButton"
 @onready var checkerboard: SwitchFx = $Margin/VBox/CheckerboardPanel/Margin/HBox/CheckButton
 @onready var deadlock: SwitchFx = $Margin/VBox/DeadlockPanel/Margin/HBox/CheckButton
 @onready var pushable_hint: SwitchFx = $Margin/VBox/PushableHintPanel/Margin/HBox/CheckButton
@@ -18,6 +19,7 @@ const LOCALES: Array[String] = ["en", "zh"]
 func _ready() -> void:
 	language.item_selected.connect(_on_language_selected)
 	animation_speed.item_selected.connect(_on_animation_speed_selected)
+	view_2d.toggled.connect(_on_2d_view_toggled)
 	checkerboard.toggled.connect(_on_checkerboard_toggled)
 	deadlock.toggled.connect(_on_deadlock_toggled)
 	pushable_hint.toggled.connect(_on_pushable_hint_toggled)
@@ -35,6 +37,9 @@ func apply_settings() -> void:
 
 	animation_speed.select(Settings.get_value(SECTION_NAME, "animation_speed"))
 	animation_speed.item_selected.emit(animation_speed.selected)
+
+	view_2d.button_pressed = Settings.get_value(SECTION_NAME, "2d_view")
+	view_2d.toggled.emit(view_2d.button_pressed)
 
 	checkerboard.button_pressed = Settings.get_value(SECTION_NAME, "checkerboard")
 	checkerboard.toggled.emit(checkerboard.button_pressed)
@@ -66,6 +71,10 @@ func _on_language_selected(index: int) -> void:
 
 func _on_animation_speed_selected(index: int) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "animation_speed", index)
+
+
+func _on_2d_view_toggled(toggled_on: bool) -> void:
+	Settings.set_and_save_value(SECTION_NAME, "2d_view", toggled_on)
 
 
 func _on_checkerboard_toggled(toggled_on: bool) -> void:
