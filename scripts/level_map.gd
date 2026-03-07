@@ -151,7 +151,6 @@ func _on_solved() -> void:
 
 func _reset_camera_position() -> void:
 	var center := dimensions() / 2.0
-	camera.global_position.x = center.x
-	camera.global_position.z = center.y
-	camera._target_position.x = center.x
-	camera._target_position.z = center.y
+	var max_dimension = max(dimensions().x, dimensions().y)
+	camera._target_position = Vector3(center.x, max_dimension, center.y)
+	camera.global_position = camera._target_position

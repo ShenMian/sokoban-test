@@ -48,8 +48,7 @@ func _process(_delta: float):
 		var dimensions = Vector2(_level_map.dimensions())
 		var center = dimensions / 2.0
 		var max_dimension = max(dimensions.x, dimensions.y)
-
-		_camera.global_position = Vector3(center.x, max(max_dimension * 1.2, 5.0), center.y)
+		_camera.global_position = Vector3(center.x, max_dimension, center.y)
 
 		_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 
