@@ -2,8 +2,6 @@ extends Node
 
 signal setting_changed(section: String, key: String, value: Variant)
 
-const INT_MAX = Vector3i.MAX.x
-
 enum AnimationSpeed {
 	SLOW = 0,
 	FAST = 1,
@@ -54,26 +52,25 @@ const DEFAULT_CONFIG = {
 	}
 }
 
-const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
+const CONFIG_PATH = "user://settings.ini"
+const SOLUTIONS_PATH = "user://solutions.ini"
 const BINDINGS_PATH = "user://bindings.tres"
+
+const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
 const LEVEL_PATH = "res://assets/levels/"
 
-const CONFIG_PATH = "user://settings.ini"
 var _config := ConfigFile.new()
-
-const SOLUTIONS_PATH = "user://solutions.ini"
 var _solutions := ConfigFile.new()
 
 
 func _ready() -> void:
 	print("Config file path: ", ProjectSettings.globalize_path(CONFIG_PATH))
 
-	var error := _config.load(CONFIG_PATH)
-	if error or not _is_config_valid(_config):
-		if error:
-			printerr("failed to load config file: ", error_string(error))
-		elif not _is_config_valid(_config):
-			printerr("config file structure is invalid or outdated", not _is_config_valid(_config))
+	var config_status := _config.load(CONFIG_PATH)
+	if config_status:
+		printerr("failed to load config file: ", error_string(config_status))
+	elif not _is_config_valid(_config):
+		printerr("config file structure is invalid or outdated", not _is_config_valid(_config))
 
 		# Resets to default settings
 		print("Restore default settings")
@@ -81,9 +78,9 @@ func _ready() -> void:
 		reset_video_settings()
 		reset_audio_settings()
 
-	var solutions_error := _solutions.load(SOLUTIONS_PATH)
-	if solutions_error:
-		printerr("failed to load _solutions file: ", error_string(solutions_error))
+	var solutions_status := _solutions.load(SOLUTIONS_PATH)
+	if solutions_status:
+		printerr("failed to load _solutions file: ", error_string(solutions_status))
 
 	save_input_bindings(DEFAULT_BINDINGS_PATH)
 	load_input_bindings()
