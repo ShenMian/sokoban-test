@@ -46,7 +46,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if not player.is_moving:
+	if not player.is_moving and not _is_box_moving():
 		if Input.is_action_pressed("move_right"):
 			move_by(Direction.RIGHT)
 		elif Input.is_action_pressed("move_left"):
@@ -135,8 +135,16 @@ func _execute_path(directions: Array) -> void:
 		await wait_for_moves_finished()
 
 
+func _is_box_moving() -> bool:
+	for box in boxes_container.get_children():
+		if box.is_moving:
+			return true
+	return false
+
+
 func wait_for_moves_finished() -> void:
-	await player.move_finished
+	if player.is_moving:
+		await player.move_finished
 	for box in boxes_container.get_children():
 		if box.is_moving:
 			await box.move_finished
