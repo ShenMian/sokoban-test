@@ -45,6 +45,7 @@ func _on_pause_request_credits() -> void:
 
 
 func _on_level_solved() -> void:
+	await level_map.wait_for_moves_finished()
 	victory_menu.open(int(moves_label.text), int(pushes_label.text))
 
 

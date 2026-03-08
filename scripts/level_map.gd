@@ -132,10 +132,14 @@ func _execute_path(directions: Array) -> void:
 		if is_solved():
 			break
 		move_by(direction)
-		await player.move_finished
-		for box in boxes_container.get_children():
-			if box.is_moving:
-				await box.move_finished
+		await wait_for_moves_finished()
+
+
+func wait_for_moves_finished() -> void:
+	await player.move_finished
+	for box in boxes_container.get_children():
+		if box.is_moving:
+			await box.move_finished
 
 
 func _on_player_moved(_to: Vector2, pushed: bool) -> void:
