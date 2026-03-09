@@ -354,6 +354,32 @@ impl LevelMap {
     }
 
     #[func]
+    fn undo(&mut self) {
+        let _ = self.level.undo();
+        self.build();
+    }
+
+    #[func]
+    fn redo(&mut self) {
+        let _ = self.level.redo();
+        self.build();
+
+        if self.map().is_solved() {
+            self.signals().solved().emit();
+        }
+    }
+
+    #[func]
+    fn get_move_count(&self) -> i32 {
+        self.level.actions().moves() as i32
+    }
+
+    #[func]
+    fn get_push_count(&self) -> i32 {
+        self.level.actions().pushes() as i32
+    }
+
+    #[func]
     fn get_lower_bounds(&self) -> VarDictionary {
         let solver = Solver::new(self.map().clone(), self.solver_strategy.into());
         let mut dict = VarDictionary::new();

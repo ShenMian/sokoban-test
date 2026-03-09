@@ -42,24 +42,36 @@ func _ready() -> void:
 	_reset_camera_position()
 
 	await get_tree().process_frame
+	_update_labels()
 	_update_pushable_hint()
 
 
 func _process(_delta: float) -> void:
-	if not player.is_moving and not _is_box_moving():
-		if Input.is_action_pressed("move_right"):
-			move_by(Direction.RIGHT)
-		elif Input.is_action_pressed("move_left"):
-			move_by(Direction.LEFT)
-		elif Input.is_action_pressed("move_up"):
-			move_by(Direction.UP)
-		elif Input.is_action_pressed("move_down"):
-			move_by(Direction.DOWN)
+	if player.is_moving or _is_box_moving():
+		return
+
+	if Input.is_action_pressed("move_right"):
+		move_by(Direction.RIGHT)
+	elif Input.is_action_pressed("move_left"):
+		move_by(Direction.LEFT)
+	elif Input.is_action_pressed("move_up"):
+		move_by(Direction.UP)
+	elif Input.is_action_pressed("move_down"):
+		move_by(Direction.DOWN)
+	elif Input.is_action_just_pressed("redo"):
+		redo()
+		_update_labels()
+		_update_pushable_hint()
+	elif Input.is_action_just_pressed("undo"):
+		undo()
+		_update_labels()
+		_update_pushable_hint()
 
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
+		_update_labels()
 		_update_pushable_hint()
 		_reset_camera_position()
 	if Input.is_action_just_pressed("export_to_clipboard"):
@@ -150,10 +162,13 @@ func wait_for_moves_finished() -> void:
 			await box.move_finished
 
 
-func _on_player_moved(_to: Vector2, pushed: bool) -> void:
-	moves_label.text = str(int(moves_label.text) + 1)
-	if pushed:
-		pushes_label.text = str(int(pushes_label.text) + 1)
+func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
+	_update_labels()
+
+
+func _update_labels() -> void:
+	moves_label.text = str(get_move_count())
+	pushes_label.text = str(get_push_count())
 
 
 func _on_solved() -> void:
