@@ -1,8 +1,8 @@
 extends Camera3D
 
-@export var drag_sensitivity = 1
-@export var zoom_sensitivity = 0.5
-@export var smooth_factor = 15.0
+@export var drag_sensitivity: float = 1.5
+@export var zoom_sensitivity: float = 0.5
+@export var smooth_factor: float = 15.0
 
 var _is_dragging = false
 var _target_position: Vector3
@@ -47,8 +47,9 @@ func _input(event: InputEvent):
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			zoom_out()
 	elif event is InputEventMouseMotion and _is_dragging:
-		_target_position.x -= event.relative.x * drag_sensitivity * 0.01
-		_target_position.z -= event.relative.y * drag_sensitivity * 0.01
+		var zoom_factor = _target_position.y if is_3d_view() else _target_size
+		_target_position.x -= event.relative.x * drag_sensitivity * zoom_factor * 0.001
+		_target_position.z -= event.relative.y * drag_sensitivity * zoom_factor * 0.001
 
 
 func zoom_in():
