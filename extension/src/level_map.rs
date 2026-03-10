@@ -411,6 +411,8 @@ impl LevelMap {
             return;
         }
 
+        self.deselect_box();
+
         if self.floor_dark_item_id == GridMap::INVALID_CELL_ITEM {
             let Some(mut mesh_library) = self.base().get_mesh_library() else {
                 return;
@@ -553,6 +555,9 @@ impl LevelMap {
 
     #[func]
     fn clear_waypoints(&self) {
+        if !self.base().has_node("Waypoints") {
+            return;
+        }
         let container = self.base().get_node_as::<Node3D>("Waypoints");
         for mut child in container.get_children().iter_shared() {
             child.queue_free();
