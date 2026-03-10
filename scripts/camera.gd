@@ -1,8 +1,16 @@
 extends Camera3D
 
 @export var drag_sensitivity: float = 1.5
-@export var zoom_sensitivity: float = 0.5
+@export var zoom_sensitivity: float = 1.0
 @export var smooth_factor: float = 15.0
+
+var zoom_factor: float:
+	set(value):
+		zoom_factor = value
+		if self.is_3d_view():
+			_target_position.y = zoom_factor / (2.0 * tan(deg_to_rad(fov) / 2.0))
+		else:
+			_target_size = zoom_factor
 
 var _is_dragging = false
 var _target_position: Vector3
@@ -19,11 +27,15 @@ func _ready():
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "video" and key == "fov":
 		set_fov(value)
-	if section == "gameplay" and key == "2d_view":
+	elif section == "gameplay" and key == "2d_view":
 		if value:
 			projection = PROJECTION_ORTHOGONAL
+			self.zoom_factor = zoom_factor
+			size = _target_size
 		else:
 			projection = PROJECTION_PERSPECTIVE
+			self.zoom_factor = zoom_factor
+			global_position = _target_position
 
 
 func _process(delta: float):
@@ -47,25 +59,17 @@ func _input(event: InputEvent):
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			zoom_out()
 	elif event is InputEventMouseMotion and _is_dragging:
-		var zoom_factor = _target_position.y if is_3d_view() else _target_size
 		_target_position.x -= event.relative.x * drag_sensitivity * zoom_factor * 0.001
 		_target_position.z -= event.relative.y * drag_sensitivity * zoom_factor * 0.001
 
 
 func zoom_in():
-	if self.is_3d_view():
-		_target_position.y -= zoom_sensitivity
-		_target_position.y = max(_target_position.y, 2.0)
-	else:
-		_target_size -= 1.0
-		_target_size = max(_target_size, 1.0)
+	zoom_factor -= zoom_sensitivity
+	zoom_factor = max(zoom_factor, 2.0)
 
 
 func zoom_out():
-	if self.is_3d_view():
-		_target_position.y += zoom_sensitivity
-	else:
-		_target_size += 1.0
+	zoom_factor += zoom_sensitivity
 
 
 func is_3d_view() -> bool:

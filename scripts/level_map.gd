@@ -78,9 +78,9 @@ func _input(_event: InputEvent) -> void:
 		_update_labels()
 		update_pushable_hint()
 		_reset_camera_position()
-	if Input.is_action_just_pressed("export_to_clipboard"):
+	elif Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(get_map())
-	if Input.is_action_just_pressed("solve"):
+	elif Input.is_action_just_pressed("solve"):
 		solve_level()
 
 
@@ -115,17 +115,17 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 	if section == "gameplay" and key == "deadlock_hint":
 		deadlock_hint = value
-	if section == "gameplay" and key == "checkerboard":
+	elif section == "gameplay" and key == "checkerboard":
 		checkerboard_shading = value
-	if section == "gameplay" and key == "pushable_hint":
+	elif section == "gameplay" and key == "pushable_hint":
 		pushable_hint = value
-	if section == "gameplay" and key == "heatmap":
+	elif section == "gameplay" and key == "heatmap":
 		heatmap = value
-	if section == "gameplay" and key == "pathfinding_strategy":
+	elif section == "gameplay" and key == "pathfinding_strategy":
 		pathfinding_strategy = value
-	if section == "gameplay" and key == "algorithm":
+	elif section == "gameplay" and key == "algorithm":
 		solver_algorithm = value
-	if section == "gameplay" and key == "solver_strategy":
+	elif section == "gameplay" and key == "solver_strategy":
 		solver_strategy = value
 
 
@@ -185,6 +185,4 @@ func _reset_camera_position() -> void:
 	var max_dimension = max(get_dimensions().x, get_dimensions().y)
 	camera._target_position = Vector3(center.x, max_dimension, center.y)
 	camera.global_position = camera._target_position
-
-	if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
-		camera.size = max_dimension
+	camera.zoom_factor = max_dimension
