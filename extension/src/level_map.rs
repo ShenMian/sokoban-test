@@ -466,6 +466,7 @@ impl LevelMap {
             r#box.connect("unselected", &self.to_gd().callable("on_box_unselected"));
             boxes.add_child(&r#box);
         }
+        self.set_pushable_hint(self.pushable_hint);
 
         let mut player = self.base().get_node_as::<Node3D>("Player");
         player.set_position(Vector3::new(
@@ -576,11 +577,11 @@ impl LevelMap {
                 }
             }
         }
-        self._update_pushable_hint();
+        self.update_pushable_hint();
     }
 
     #[func]
-    fn _update_pushable_hint(&mut self) {
+    fn update_pushable_hint(&mut self) {
         if !self.base().is_inside_tree() {
             return;
         }
