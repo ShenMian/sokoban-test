@@ -1346,6 +1346,44 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
+[node name="UndoAllPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=314882910]
+custom_minimum_size = Vector2(500, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/title = "REDO"
+metadata/description = ""
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UndoAllPanel" unique_id=1234013103]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UndoAllPanel/Margin" unique_id=965080281]
+layout_mode = 2
+text = "UNDO_ALL"
+
+[node name="UndoAllButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=1058077184]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/UndoAllButton" unique_id=297970631]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit" unique_id=365115458]
 layout_mode = 2
 size_flags_horizontal = 3

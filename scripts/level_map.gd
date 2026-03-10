@@ -66,6 +66,10 @@ func _process(_delta: float) -> void:
 		undo()
 		_update_labels()
 		update_pushable_hint()
+	elif Input.is_action_just_pressed("undo_all"):
+		undo_all()
+		_update_labels()
+		update_pushable_hint()
 
 
 func _input(_event: InputEvent) -> void:

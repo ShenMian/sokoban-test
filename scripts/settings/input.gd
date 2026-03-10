@@ -9,6 +9,7 @@ extends ScrollContainer
 	"move_right": $Margin/VBox/GridContainer/RightButton,
 	"undo": $Margin/VBox/GridContainer/UndoButton,
 	"redo": $Margin/VBox/GridContainer/RedoButton,
+	"undo_all": $Margin/VBox/GridContainer/UndoAllButton,
 }
 
 

@@ -382,6 +382,13 @@ impl LevelMap {
         }
     }
 
+    /// Undoes all actions.
+    #[func]
+    fn undo_all(&mut self) {
+        while self.level.undo().is_ok() {}
+        self.build();
+    }
+
     #[func]
     fn get_move_count(&self) -> i32 {
         self.level.actions().moves() as i32
