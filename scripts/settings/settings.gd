@@ -135,14 +135,14 @@ func reset_input_settings() -> void:
 
 
 func load_input_bindings(path: String = BINDINGS_PATH) -> void:
-		var map: DictionaryResource = ResourceLoader.load(path, "DictionaryResource")
-		if not is_instance_valid(map):
-			printerr("failed to load bindings")
-			return
-		for action in map.dict:
-			InputMap.action_erase_events(action)
-			for event in map.dict[action]:
-				InputMap.action_add_event(action, event)
+	var map: DictionaryResource = ResourceLoader.load(path, "DictionaryResource")
+	if not is_instance_valid(map):
+		printerr("failed to load bindings")
+		return
+	for action in map.dict:
+		InputMap.action_erase_events(action)
+		for event in map.dict[action]:
+			InputMap.action_add_event(action, event)
 
 
 func save_input_bindings(path: String = BINDINGS_PATH) -> void:

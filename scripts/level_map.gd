@@ -43,7 +43,7 @@ func _ready() -> void:
 
 	await get_tree().process_frame
 	_update_labels()
-	_update_pushable_hint()
+	update_pushable_hint()
 
 
 func _process(_delta: float) -> void:
@@ -61,18 +61,18 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_just_pressed("redo"):
 		redo()
 		_update_labels()
-		_update_pushable_hint()
+		update_pushable_hint()
 	elif Input.is_action_just_pressed("undo"):
 		undo()
 		_update_labels()
-		_update_pushable_hint()
+		update_pushable_hint()
 
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
 		_update_labels()
-		_update_pushable_hint()
+		update_pushable_hint()
 		_reset_camera_position()
 	if Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(get_map())

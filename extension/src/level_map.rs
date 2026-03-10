@@ -353,15 +353,28 @@ impl LevelMap {
         }
     }
 
+    /// Undoes actions until crossing the previous box-change boundary.
     #[func]
     fn undo(&mut self) {
-        let _ = self.level.undo();
+        let initial_box_changes = self.level.actions().secondary_values().box_changes;
+        while self.level.undo().is_ok() {
+            if self.level.actions().secondary_values().box_changes < initial_box_changes {
+                break;
+            }
+        }
         self.build();
     }
 
+    /// Redoes actions until crossing the next box-change boundary.
     #[func]
     fn redo(&mut self) {
-        let _ = self.level.redo();
+        let initial_box_changes = self.level.actions().secondary_values().box_changes;
+        while self.level.redo().is_ok() {
+            if self.level.actions().secondary_values().box_changes > initial_box_changes + 1 {
+                let _ = self.level.undo();
+                break;
+            }
+        }
         self.build();
 
         if self.map().is_solved() {
@@ -566,7 +579,7 @@ impl LevelMap {
         }
         let boxes = self.base().get_node_as::<Node3D>("Boxes");
         for mut r#box in boxes.get_children().iter_shared() {
-            let callable = self.to_gd().callable("_update_pushable_hint");
+            let callable = self.to_gd().callable("update_pushable_hint");
             if enable {
                 if !r#box.is_connected("move_finished", &callable) {
                     r#box.connect("move_finished", &callable);
