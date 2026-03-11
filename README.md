@@ -10,6 +10,14 @@ mkdir -p build/windows
 godot --headless --export-release "Windows" build/windows/sokoban.exe
 ```
 
+### Linux
+
+```sh
+cargo build --release --manifest-path extension/Cargo.toml
+mkdir -p build/linux
+godot --headless --export-release "Linux" build/linux/sokoban
+```
+
 ### Android
 
 > [!WARNING]  
