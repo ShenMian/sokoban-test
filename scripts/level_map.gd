@@ -34,9 +34,9 @@ func _ready() -> void:
 	solved.connect(_on_solved)
 
 	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
-	var full_path := ProjectSettings.globalize_path(Settings.LEVEL_PATH + SceneTransition.collection + ".xsb")
+	var path := Settings.LEVEL_PATH + SceneTransition.collection + ".xsb"
 	var level_id = SceneTransition.level_index + 1
-	load_from_file(full_path, level_id)
+	load_from_file(path, level_id)
 	level_label.text = str(level_id)
 
 	_reset_camera_position()

@@ -109,3 +109,7 @@ undo_all={
 [internationalization]
 
 locale/translations=PackedStringArray("res://i18n/en.po", "res://i18n/zh.po")
+
+[rendering]
+
+textures/vram_compression/import_etc2_astc=true
