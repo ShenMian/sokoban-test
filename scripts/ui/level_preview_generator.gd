@@ -54,6 +54,7 @@ func _process(_delta: float):
 		var center = dimensions / 2.0
 		var max_dimension = max(dimensions.x, dimensions.y)
 		_camera.global_position = Vector3(center.x, max_dimension, center.y)
+		_camera.global_position.y = max_dimension / (2.0 * tan(deg_to_rad(_camera.fov) / 2.0))
 
 		if _camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
 			_camera.size = max_dimension

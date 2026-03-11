@@ -185,4 +185,4 @@ func _reset_camera_position() -> void:
 	var max_dimension = max(get_dimensions().x, get_dimensions().y)
 	camera._target_position = Vector3(center.x, max_dimension, center.y)
 	camera.global_position = camera._target_position
-	camera.zoom_factor = max_dimension
+	camera.zoom_factor = max_dimension + 1.0
