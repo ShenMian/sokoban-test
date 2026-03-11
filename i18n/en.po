@@ -322,9 +322,6 @@ msgstr "Undo All"
 msgid "SOLVE"
 msgstr "Solve"
 
-msgid "SOLVE"
-msgstr "Solve"
-
 msgid "IMPORT_FROM_CLIPBOARD"
 msgstr "Import from Clipboard"
 
