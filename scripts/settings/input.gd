@@ -11,6 +11,8 @@ extends ScrollContainer
 	"redo": $Margin/VBox/GridContainer/RedoButton,
 	"undo_all": $Margin/VBox/GridContainer/UndoAllButton,
 	"solve": $Margin/VBox/GridContainer/SolveButton,
+	"import_from_clipboard": $Margin/VBox/GridContainer/ImportFromClipboardButton,
+	"export_to_clipboard": $Margin/VBox/GridContainer/ExportToClipboardButton,
 }
 
 

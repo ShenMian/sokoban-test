@@ -322,6 +322,12 @@ msgstr "全部撤销"
 msgid "SOLVE"
 msgstr "求解"
 
+msgid "IMPORT_FROM_CLIPBOARD"
+msgstr "从剪贴板导入"
+
+msgid "EXPORT_TO_CLIPBOARD"
+msgstr "导出到剪贴板"
+
 # Pause Menu
 
 msgid "SETTINGS"

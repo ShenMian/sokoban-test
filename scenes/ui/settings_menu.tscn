@@ -1422,6 +1422,82 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
+[node name="ImportFromClipboardPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=251748283]
+custom_minimum_size = Vector2(500, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/title = "IMPORT_FROM_CLIPBOARD"
+metadata/description = ""
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ImportFromClipboardPanel" unique_id=324714510]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ImportFromClipboardPanel/Margin" unique_id=1737531235]
+layout_mode = 2
+text = "IMPORT_FROM_CLIPBOARD"
+
+[node name="ImportFromClipboardButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=272598657]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ImportFromClipboardButton" unique_id=727205582]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ExportToClipboardPanel" type="Panel" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=1579257356]
+custom_minimum_size = Vector2(500, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/title = "EXPORT_TO_CLIPBOARD"
+metadata/description = ""
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ExportToClipboardPanel" unique_id=940225953]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ExportToClipboardPanel/Margin" unique_id=1769390265]
+layout_mode = 2
+text = "EXPORT_TO_CLIPBOARD"
+
+[node name="ExportToClipboardButton" type="Button" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer" unique_id=479594295]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ExportToClipboardButton" unique_id=1545876848]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit" unique_id=365115458]
 layout_mode = 2
 size_flags_horizontal = 3

@@ -322,6 +322,15 @@ msgstr "Undo All"
 msgid "SOLVE"
 msgstr "Solve"
 
+msgid "SOLVE"
+msgstr "Solve"
+
+msgid "IMPORT_FROM_CLIPBOARD"
+msgstr "Import from Clipboard"
+
+msgid "EXPORT_TO_CLIPBOARD"
+msgstr "Export to Clipboard"
+
 # Pause Menu
 
 msgid "SETTINGS"
