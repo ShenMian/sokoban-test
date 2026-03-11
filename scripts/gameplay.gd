@@ -26,8 +26,8 @@ func _ready() -> void:
 	victory_menu.request_next_level.connect(_on_request_next_level)
 	victory_menu.request_menu.connect(_on_request_menu)
 
-	undo_button.pressed.connect(level_map.undo)
-	redo_button.pressed.connect(level_map.redo)
+	undo_button.pressed.connect(level_map.do_undo)
+	redo_button.pressed.connect(level_map.do_redo)
 	solve_button.pressed.connect(level_map.solve_level)
 	menu_button.pressed.connect(_open_pause_menu)
 

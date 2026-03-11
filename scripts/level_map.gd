@@ -58,18 +58,22 @@ func _process(_delta: float) -> void:
 		move_by(Direction.UP)
 	elif Input.is_action_pressed("move_down"):
 		move_by(Direction.DOWN)
-	elif Input.is_action_just_pressed("redo"):
-		redo()
-		_update_labels()
-		update_pushable_hint()
-	elif Input.is_action_just_pressed("undo"):
-		undo()
-		_update_labels()
-		update_pushable_hint()
 	elif Input.is_action_just_pressed("undo_all"):
 		undo_all()
 		_update_labels()
 		update_pushable_hint()
+
+
+func do_undo() -> void:
+	undo()
+	_update_labels()
+	update_pushable_hint()
+
+
+func do_redo() -> void:
+	redo()
+	_update_labels()
+	update_pushable_hint()
 
 
 func _input(_event: InputEvent) -> void:
@@ -80,8 +84,6 @@ func _input(_event: InputEvent) -> void:
 		_reset_camera_position()
 	elif Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(get_map())
-	elif Input.is_action_just_pressed("solve"):
-		solve_level()
 
 
 func _build_heatmap() -> void:
