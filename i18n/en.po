@@ -316,6 +316,9 @@ msgstr "Redo"
 msgid "UNDO_ALL"
 msgstr "Undo All"
 
+msgid "SOLVE"
+msgstr "Solve"
+
 # Pause Menu
 
 msgid "SETTINGS"

@@ -316,6 +316,9 @@ msgstr "重做"
 msgid "UNDO_ALL"
 msgstr "全部撤销"
 
+msgid "SOLVE"
+msgstr "求解"
+
 # Pause Menu
 
 msgid "SETTINGS"
