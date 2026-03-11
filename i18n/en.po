@@ -15,6 +15,9 @@ msgstr "Moves"
 msgid "PUSHES"
 msgstr "Pushes"
 
+msgid "PAUSE"
+msgstr "Pause"
+
 # Victory Menu
 
 msgid "LEVEL_COMPLETE"

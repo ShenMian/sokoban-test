@@ -15,6 +15,9 @@ msgstr "移动数"
 msgid "PUSHES"
 msgstr "推动数"
 
+msgid "PAUSE"
+msgstr "暂停"
+
 # Victory Menu
 
 msgid "LEVEL_COMPLETE"
