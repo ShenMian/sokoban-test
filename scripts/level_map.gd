@@ -113,20 +113,21 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_setting_changed(section: String, key: String, value: Variant) -> void:
-	if section == "gameplay" and key == "deadlock_hint":
-		deadlock_hint = value
-	elif section == "gameplay" and key == "checkerboard":
-		checkerboard_shading = value
-	elif section == "gameplay" and key == "pushable_hint":
-		pushable_hint = value
-	elif section == "gameplay" and key == "heatmap":
-		heatmap = value
-	elif section == "gameplay" and key == "pathfinding_strategy":
-		pathfinding_strategy = value
-	elif section == "gameplay" and key == "algorithm":
-		solver_algorithm = value
-	elif section == "gameplay" and key == "solver_strategy":
-		solver_strategy = value
+	if section == "gameplay":
+		if key == "deadlock_hint":
+			deadlock_hint = value
+		elif key == "checkerboard":
+			checkerboard_shading = value
+		elif key == "pushable_hint":
+			pushable_hint = value
+		elif key == "heatmap":
+			heatmap = value
+		elif key == "pathfinding_strategy":
+			pathfinding_strategy = value
+		elif key == "algorithm":
+			solver_algorithm = value
+		elif key == "solver_strategy":
+			solver_strategy = value
 
 
 func _on_waypoint_clicked(from: Vector2i, to: Vector2i) -> void:
