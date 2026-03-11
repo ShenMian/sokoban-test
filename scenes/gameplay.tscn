@@ -8,7 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/ui/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/ui/settings_menu.tscn" id="6_din8e"]
+[ext_resource type="Texture2D" uid="uid://ca2al0cmljxcn" path="res://assets/textures/game_icons/PNG/White/1x/backward.png" id="7_nt65e"]
+[ext_resource type="Texture2D" uid="uid://2rg4bkfmmn0p" path="res://assets/textures/game_icons/PNG/White/1x/forward.png" id="8_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
+[ext_resource type="Texture2D" uid="uid://dpdvvyin3tfkn" path="res://assets/textures/game_icons_expansion/PNG (2)/White/1x/cpu.png" id="9_s5y6v"]
+[ext_resource type="Texture2D" uid="uid://dco5m76t1oaau" path="res://assets/textures/game_icons/PNG/White/1x/menuList.png" id="10_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
 
 [sub_resource type="Environment" id="Environment_00tan"]
@@ -34,6 +38,30 @@ bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_detail = 5
+
+[sub_resource type="InputEventAction" id="InputEventAction_bhmdk"]
+action = &"undo"
+
+[sub_resource type="Shortcut" id="Shortcut_s5y6v"]
+events = [SubResource("InputEventAction_bhmdk")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_s5y6v"]
+action = &"redo"
+
+[sub_resource type="Shortcut" id="Shortcut_407ns"]
+events = [SubResource("InputEventAction_s5y6v")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_407ns"]
+action = &"solve"
+
+[sub_resource type="Shortcut" id="Shortcut_w3w6i"]
+events = [SubResource("InputEventAction_407ns")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_w3w6i"]
+action = &"pause"
+
+[sub_resource type="Shortcut" id="Shortcut_pv71h"]
+events = [SubResource("InputEventAction_w3w6i")]
 
 [node name="Gameplay" type="Node3D" unique_id=918217711]
 script = ExtResource("1_l1v76")
@@ -162,16 +190,15 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="ToolbarPanel" type="Panel" parent="HudLayer/HUD" unique_id=1089101440]
-visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -122.52344
-offset_top = -41.0
-offset_right = 122.52344
+offset_left = -109.345215
+offset_top = -64.0
+offset_right = 109.345215
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
@@ -181,9 +208,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -1.5
-offset_right = -0.375
-offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 5
@@ -193,18 +217,55 @@ theme_override_constants/margin_bottom = 5
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HudLayer/HUD/ToolbarPanel/MarginContainer" unique_id=2084447934]
 layout_mode = 2
+alignment = 1
 
 [node name="UndoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=353608717]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
-text = "UNDO"
+size_flags_horizontal = 4
+size_flags_vertical = 4
+shortcut = SubResource("Shortcut_s5y6v")
+shortcut_in_tooltip = false
+icon = ExtResource("7_nt65e")
+icon_alignment = 1
+expand_icon = true
 
-[node name="ResetButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=758754747]
+[node name="RedoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=758754747]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
-text = "RESET"
+size_flags_horizontal = 4
+size_flags_vertical = 4
+shortcut = SubResource("Shortcut_407ns")
+shortcut_in_tooltip = false
+icon = ExtResource("8_bhmdk")
+icon_alignment = 1
+expand_icon = true
 
 [node name="SolveButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=1566909949]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
-text = "SOLVE"
+size_flags_horizontal = 4
+size_flags_vertical = 4
+shortcut = SubResource("Shortcut_w3w6i")
+shortcut_in_tooltip = false
+icon = ExtResource("9_s5y6v")
+icon_alignment = 1
+expand_icon = true
+
+[node name="MenuButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=1884267649]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+shortcut = SubResource("Shortcut_pv71h")
+shortcut_in_tooltip = false
+icon = ExtResource("10_bhmdk")
+icon_alignment = 1
+expand_icon = true
 
 [node name="MenuLayer" type="CanvasLayer" parent="." unique_id=2061582100]
 layer = 2

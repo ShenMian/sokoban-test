@@ -8,6 +8,10 @@ extends Node3D
 @onready var level_map: LevelMap = $LevelMap
 @onready var moves_label: Label = %MovesValue
 @onready var pushes_label: Label = %PushesValue
+@onready var undo_button: Button = %UndoButton
+@onready var redo_button: Button = %RedoButton
+@onready var solve_button: Button = %SolveButton
+@onready var menu_button: Button = %MenuButton
 
 
 func _ready() -> void:
@@ -22,12 +26,21 @@ func _ready() -> void:
 	victory_menu.request_next_level.connect(_on_request_next_level)
 	victory_menu.request_menu.connect(_on_request_menu)
 
+	undo_button.pressed.connect(level_map.undo)
+	redo_button.pressed.connect(level_map.redo)
+	solve_button.pressed.connect(level_map.solve_level)
+	menu_button.pressed.connect(_open_pause_menu)
+
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("pause"):
 		get_viewport().set_input_as_handled()
-		hud.hide()
-		pause_menu.open()
+		_open_pause_menu()
+
+
+func _open_pause_menu():
+	hud.hide()
+	pause_menu.open()
 
 
 func _on_pause_closed() -> void:
