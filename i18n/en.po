@@ -322,11 +322,20 @@ msgstr "Undo All"
 msgid "SOLVE"
 msgstr "Solve"
 
+msgid "SOLVE_DESC"
+msgstr "Use the solver to automatically complete the current level"
+
 msgid "IMPORT_FROM_CLIPBOARD"
 msgstr "Import from Clipboard"
 
+msgid "IMPORT_FROM_CLIPBOARD_DESC"
+msgstr "Import level from LURD or XSB format string in clipboard"
+
 msgid "EXPORT_TO_CLIPBOARD"
 msgstr "Export to Clipboard"
+
+msgid "EXPORT_TO_CLIPBOARD_DESC"
+msgstr "Export level to clipboard in XSB format"
 
 # Pause Menu
 

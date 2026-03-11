@@ -1390,7 +1390,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/title = "SOLVE"
-metadata/description = ""
+metadata/description = "SOLVE_DESC"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/SolvePanel" unique_id=113591994]
 layout_mode = 1
@@ -1428,7 +1428,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/title = "IMPORT_FROM_CLIPBOARD"
-metadata/description = ""
+metadata/description = "IMPORT_FROM_CLIPBOARD_DESC"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ImportFromClipboardPanel" unique_id=324714510]
 layout_mode = 1
@@ -1466,7 +1466,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 metadata/title = "EXPORT_TO_CLIPBOARD"
-metadata/description = ""
+metadata/description = "EXPORT_TO_CLIPBOARD_DESC"
 
 [node name="Margin" type="MarginContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT/Margin/VBox/GridContainer/ExportToClipboardPanel" unique_id=940225953]
 layout_mode = 1
