@@ -4,6 +4,10 @@
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="2_t"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
 bg_color = Color(0.2, 0.2, 0.2, 0.8)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
@@ -72,69 +76,62 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -120.0
-offset_right = 150.0
-offset_bottom = 120.0
+offset_left = -162.0
+offset_top = -139.0
+offset_right = 162.0
+offset_bottom = 139.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 120)
 theme_override_styles/panel = SubResource("StyleBoxFlat_v")
 
-[node name="Margin" type="MarginContainer" parent="Panel" unique_id=1533586858]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="VBox" type="VBoxContainer" parent="Panel/Margin" unique_id=1976514419]
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=1976514419]
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="Title" type="Label" parent="Panel/Margin/VBox" unique_id=1298792821]
+[node name="Title" type="Label" parent="Panel/VBox" unique_id=1298792821]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "LEVEL_COMPLETE"
 horizontal_alignment = 1
 
-[node name="StatsGrid" type="GridContainer" parent="Panel/Margin/VBox" unique_id=1669850022]
+[node name="StatsGrid" type="GridContainer" parent="Panel/VBox" unique_id=1669850022]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 20
 columns = 2
 
-[node name="MovesLabel" type="Label" parent="Panel/Margin/VBox/StatsGrid" unique_id=1169547205]
+[node name="MovesLabel" type="Label" parent="Panel/VBox/StatsGrid" unique_id=1169547205]
 layout_mode = 2
 text = "MOVES"
 
-[node name="MovesValue" type="Label" parent="Panel/Margin/VBox/StatsGrid" unique_id=1]
+[node name="MovesValue" type="Label" parent="Panel/VBox/StatsGrid" unique_id=1]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 
-[node name="PushesLabel" type="Label" parent="Panel/Margin/VBox/StatsGrid" unique_id=1420494264]
+[node name="PushesLabel" type="Label" parent="Panel/VBox/StatsGrid" unique_id=1420494264]
 layout_mode = 2
 text = "PUSHES"
 
-[node name="PushesValue" type="Label" parent="Panel/Margin/VBox/StatsGrid" unique_id=2]
+[node name="PushesValue" type="Label" parent="Panel/VBox/StatsGrid" unique_id=2]
 unique_name_in_owner = true
 layout_mode = 2
 text = "0"
 
-[node name="HSeparator" type="HSeparator" parent="Panel/Margin/VBox" unique_id=959516945]
+[node name="HSeparator" type="HSeparator" parent="Panel/VBox" unique_id=959516945]
 layout_mode = 2
 
-[node name="VBox" type="VBoxContainer" parent="Panel/Margin/VBox" unique_id=1536599924]
+[node name="VBox" type="VBoxContainer" parent="Panel/VBox" unique_id=1536599924]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="NextButton" type="Button" parent="Panel/Margin/VBox/VBox" unique_id=1897112885]
+[node name="NextButton" type="Button" parent="Panel/VBox/VBox" unique_id=1897112885]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "NEXT_LEVEL"
 
-[node name="MenuButton" type="Button" parent="Panel/Margin/VBox/VBox" unique_id=1531590098]
+[node name="MenuButton" type="Button" parent="Panel/VBox/VBox" unique_id=1531590098]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "BACK_TO_MENU"

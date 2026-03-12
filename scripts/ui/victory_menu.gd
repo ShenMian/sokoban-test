@@ -7,8 +7,8 @@ signal request_menu
 @onready var moves_label: Label = %MovesValue
 @onready var pushes_label: Label = %PushesValue
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var next_button: Button = $Panel/Margin/VBox/VBox/NextButton
-@onready var menu_button: Button = $Panel/Margin/VBox/VBox/MenuButton
+@onready var next_button: Button = $Panel/VBox/VBox/NextButton
+@onready var menu_button: Button = $Panel/VBox/VBox/MenuButton
 
 
 func open(moves: int, pushes: int):
