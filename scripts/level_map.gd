@@ -40,8 +40,7 @@ func _ready() -> void:
 
 	await get_tree().process_frame
 	gameplay.level_label.text = str(level_id)
-	_update_labels()
-	update_pushable_hint()
+	_update_ui()
 
 
 func _process(_delta: float) -> void:
@@ -58,30 +57,23 @@ func _process(_delta: float) -> void:
 		move_by(Direction.DOWN)
 	elif Input.is_action_just_pressed("undo_all"):
 		undo_all()
-		_update_labels()
-		update_pushable_hint()
-
-	gameplay.undo_button.disabled = !can_undo()
-	gameplay.redo_button.disabled = !can_redo()
+		_update_ui()
 
 
 func do_undo() -> void:
 	undo()
-	_update_labels()
-	update_pushable_hint()
+	_update_ui()
 
 
 func do_redo() -> void:
 	redo()
-	_update_labels()
-	update_pushable_hint()
+	_update_ui()
 
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
-		_update_labels()
-		update_pushable_hint()
+		_update_ui()
 		_reset_camera_position()
 	elif Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(get_map())
@@ -171,7 +163,14 @@ func wait_for_moves_finished() -> void:
 
 
 func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
+	_update_ui()
+
+
+func _update_ui() -> void:
 	_update_labels()
+	update_pushable_hint()
+	gameplay.undo_button.disabled = !can_undo()
+	gameplay.redo_button.disabled = !can_redo()
 
 
 func _update_labels() -> void:
