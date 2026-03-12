@@ -14,6 +14,7 @@ extends Node3D
 
 @onready var undo_button: Button = %UndoButton
 @onready var redo_button: Button = %RedoButton
+@onready var undo_all_button: Button = %UndoAllButton
 @onready var solve_button: Button = %SolveButton
 @onready var menu_button: Button = %MenuButton
 
@@ -32,6 +33,7 @@ func _ready() -> void:
 
 	undo_button.pressed.connect(level_map.do_undo)
 	redo_button.pressed.connect(level_map.do_redo)
+	undo_all_button.pressed.connect(level_map.do_undo_all)
 	solve_button.pressed.connect(level_map.solve_level)
 	menu_button.pressed.connect(_open_pause_menu)
 

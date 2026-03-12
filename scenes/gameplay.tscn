@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://ca2al0cmljxcn" path="res://assets/textures/game_icons/PNG/White/1x/backward.png" id="7_nt65e"]
 [ext_resource type="Texture2D" uid="uid://2rg4bkfmmn0p" path="res://assets/textures/game_icons/PNG/White/1x/forward.png" id="8_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
+[ext_resource type="Texture2D" uid="uid://frvpm7lk366d" path="res://assets/textures/game_icons/PNG/White/1x/return.png" id="9_407ns"]
 [ext_resource type="Texture2D" uid="uid://dpdvvyin3tfkn" path="res://assets/textures/game_icons_expansion/PNG (2)/White/1x/cpu.png" id="9_s5y6v"]
 [ext_resource type="Texture2D" uid="uid://dco5m76t1oaau" path="res://assets/textures/game_icons/PNG/White/1x/menuList.png" id="10_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
@@ -199,7 +200,7 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -109.345215
 offset_top = -64.0
-offset_right = 109.345215
+offset_right = 164.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
@@ -243,6 +244,19 @@ tooltip_text = "REDO"
 shortcut = SubResource("Shortcut_407ns")
 shortcut_in_tooltip = false
 icon = ExtResource("8_bhmdk")
+icon_alignment = 1
+expand_icon = true
+
+[node name="UndoAllButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/MarginContainer/HBoxContainer" unique_id=290671197]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "UNDO_ALL"
+shortcut = SubResource("Shortcut_407ns")
+shortcut_in_tooltip = false
+icon = ExtResource("9_407ns")
 icon_alignment = 1
 expand_icon = true
 

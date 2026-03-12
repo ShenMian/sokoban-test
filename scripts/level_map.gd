@@ -56,8 +56,7 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_pressed("move_down"):
 		move_by(Direction.DOWN)
 	elif Input.is_action_just_pressed("undo_all"):
-		undo_all()
-		_update_ui()
+		do_undo_all()
 
 
 func do_undo() -> void:
@@ -67,6 +66,11 @@ func do_undo() -> void:
 
 func do_redo() -> void:
 	redo()
+	_update_ui()
+
+
+func do_undo_all() -> void:
+	undo_all()
 	_update_ui()
 
 
@@ -145,6 +149,7 @@ func _execute_path(directions: Array) -> void:
 			break
 		move_by(direction)
 		await wait_for_moves_finished()
+	_update_ui()
 
 
 func _is_box_moving() -> bool:
@@ -169,8 +174,16 @@ func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
 func _update_ui() -> void:
 	_update_labels()
 	update_pushable_hint()
-	gameplay.undo_button.disabled = !can_undo()
-	gameplay.redo_button.disabled = !can_redo()
+	if player.is_moving or _is_box_moving():
+		gameplay.undo_button.disabled = true
+		gameplay.redo_button.disabled = true
+		gameplay.undo_all_button.disabled = true
+		gameplay.solve_button.disabled = true
+	else:
+		gameplay.undo_button.disabled = !can_undo()
+		gameplay.redo_button.disabled = !can_redo()
+		gameplay.undo_all_button.disabled = !can_undo()
+		gameplay.solve_button.disabled = false
 
 
 func _update_labels() -> void:
