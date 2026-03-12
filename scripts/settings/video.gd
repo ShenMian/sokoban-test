@@ -1,17 +1,17 @@
 extends ScrollContainer
 
-@onready var window_mode: OptionButton = $VBox/WindowModePanel/Margin/HBox/OptionButton
-@onready var vsync: CheckButton = $VBox/VsyncPanel/Margin/HBox/CheckButton
-@onready var frame_rate_limit: SliderBar = $VBox/FrameRateLimitPanel/Margin/HSplit/SliderBar
-@onready var scaling_method: OptionButton = $VBox/ScalingMethodPanel/Margin/HBox/OptionButton
-@onready var upscaled_resolution: SliderBar = $VBox/UpscaledResolutionPanel/Margin/HSplit/SliderBar
-@onready var fsr_sharpness: SliderBar = $VBox/FsrSharpnessPanel/Margin/HSplit/SliderBar
+@onready var window_mode: OptionButton = $VBox/WindowModePanel/HBox/OptionButton
+@onready var vsync: CheckButton = $VBox/VsyncPanel/HBox/CheckButton
+@onready var frame_rate_limit: SliderBar = $VBox/FrameRateLimitPanel/HSplit/SliderBar
+@onready var scaling_method: OptionButton = $VBox/ScalingMethodPanel/HBox/OptionButton
+@onready var upscaled_resolution: SliderBar = $VBox/UpscaledResolutionPanel/HSplit/SliderBar
+@onready var fsr_sharpness: SliderBar = $VBox/FsrSharpnessPanel/HSplit/SliderBar
 
-@onready var fov: SliderBar = $VBox/FieldOfViewPanel/Margin/HSplit/SliderBar
+@onready var fov: SliderBar = $VBox/FieldOfViewPanel/HSplit/SliderBar
 
-@onready var screen_space_aa: OptionButton = $VBox/ScreenSpaceAAPanel/Margin/HBox/OptionButton
-@onready var msaa: OptionButton = $VBox/MsaaPanel/Margin/HBox/OptionButton
-@onready var taa: CheckButton = $VBox/TaaPanel/Margin/HBox/CheckButton
+@onready var screen_space_aa: OptionButton = $VBox/ScreenSpaceAAPanel/HBox/OptionButton
+@onready var msaa: OptionButton = $VBox/MsaaPanel/HBox/OptionButton
+@onready var taa: CheckButton = $VBox/TaaPanel/HBox/CheckButton
 
 const SECTION_NAME := "video"
 

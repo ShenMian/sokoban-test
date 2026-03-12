@@ -1,9 +1,9 @@
 extends ScrollContainer
 
-@onready var master_volume: SliderBar = $VBox/MasterVolumePanel/Margin/HSplit/SliderBar
-@onready var music_volume: SliderBar = $VBox/MusicVolumePanel/Margin/HSplit/SliderBar
-@onready var sfx_volume: SliderBar = $VBox/SfxVolumePanel/Margin/HSplit/SliderBar
-@onready var mute_when_not_focused: CheckButton = $VBox/MuteWhenNotFocusedPanel/Margin/HBox/CheckButton
+@onready var master_volume: SliderBar = $VBox/MasterVolumePanel/HSplit/SliderBar
+@onready var music_volume: SliderBar = $VBox/MusicVolumePanel/HSplit/SliderBar
+@onready var sfx_volume: SliderBar = $VBox/SfxVolumePanel/HSplit/SliderBar
+@onready var mute_when_not_focused: CheckButton = $VBox/MuteWhenNotFocusedPanel/HBox/CheckButton
 
 @onready var master_bus_index := AudioServer.get_bus_index("Master")
 @onready var music_bus_index := AudioServer.get_bus_index("Music")

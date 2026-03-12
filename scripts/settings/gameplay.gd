@@ -1,16 +1,16 @@
 extends ScrollContainer
 
-@onready var language: OptionButton = $VBox/LanguagePanel/Margin/HBox/OptionButton
-@onready var animation_speed: OptionButton = $VBox/AnimationSpeedPanel/Margin/HBox/OptionButton
-@onready var view_2d: SwitchFx = $"VBox/2dViewPanel/Margin/HBox/CheckButton"
-@onready var checkerboard: SwitchFx = $VBox/CheckerboardPanel/Margin/HBox/CheckButton
-@onready var deadlock: SwitchFx = $VBox/DeadlockPanel/Margin/HBox/CheckButton
-@onready var pushable_hint: SwitchFx = $VBox/PushableHintPanel/Margin/HBox/CheckButton
-@onready var pathfinding_strategy: OptionButton = $VBox/PathfindingStrategyPanel/Margin/HBox/OptionButton
+@onready var language: OptionButton = $VBox/LanguagePanel/HBox/OptionButton
+@onready var animation_speed: OptionButton = $VBox/AnimationSpeedPanel/HBox/OptionButton
+@onready var view_2d: SwitchFx = $"VBox/2dViewPanel/HBox/CheckButton"
+@onready var checkerboard: SwitchFx = $VBox/CheckerboardPanel/HBox/CheckButton
+@onready var deadlock: SwitchFx = $VBox/DeadlockPanel/HBox/CheckButton
+@onready var pushable_hint: SwitchFx = $VBox/PushableHintPanel/HBox/CheckButton
+@onready var pathfinding_strategy: OptionButton = $VBox/PathfindingStrategyPanel/HBox/OptionButton
 
-@onready var algorithm: OptionButton = $VBox/AlgorithmPanel/Margin/HBox/OptionButton
-@onready var solver_strategy: OptionButton = $VBox/StrategyPanel/Margin/HBox/OptionButton
-@onready var heatmap: SwitchFx = $VBox/HeatmapPanel/Margin/HBox/CheckButton
+@onready var algorithm: OptionButton = $VBox/AlgorithmPanel/HBox/OptionButton
+@onready var solver_strategy: OptionButton = $VBox/StrategyPanel/HBox/OptionButton
+@onready var heatmap: SwitchFx = $VBox/HeatmapPanel/HBox/CheckButton
 
 const SECTION_NAME := "gameplay"
 
