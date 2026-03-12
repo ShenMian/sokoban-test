@@ -61,6 +61,9 @@ func _process(_delta: float) -> void:
 		_update_labels()
 		update_pushable_hint()
 
+	gameplay.undo_button.disabled = !can_undo()
+	gameplay.redo_button.disabled = !can_redo()
+
 
 func do_undo() -> void:
 	undo()

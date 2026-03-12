@@ -389,6 +389,18 @@ impl LevelMap {
         self.build();
     }
 
+    /// Returns true if there are actions to undo.
+    #[func]
+    pub fn can_undo(&self) -> bool {
+        !self.level.actions().is_empty()
+    }
+
+    /// Returns true if there are undone actions to redo.
+    #[func]
+    pub fn can_redo(&self) -> bool {
+        !self.level.undone_actions().is_empty()
+    }
+
     #[func]
     fn get_move_count(&self) -> i32 {
         self.level.actions().moves() as i32
