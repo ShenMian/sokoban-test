@@ -6,16 +6,22 @@ signal transition_finished
 @onready var overlay: ColorRect = $ColorRect
 
 var collection: String
+var level_count: int
 var level_index: int
 
-func load_level(new_collection: String, new_index: int) -> void:
+func load_level(new_collection: String, new_count: int, new_index: int) -> void:
 	collection = new_collection
+	level_count = new_count
 	level_index = new_index
 	change_scene_to_file("res://scenes/gameplay.tscn")
 
 
+func has_next_level() -> bool:
+	return level_index + 1 < level_count
+
+
 func load_next_level() -> void:
-	# TODO: Add bounds checking
+	assert(has_next_level())
 	level_index += 1
 	change_scene_to_file("res://scenes/gameplay.tscn")
 

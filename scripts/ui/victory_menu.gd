@@ -15,6 +15,7 @@ func open(moves: int, pushes: int):
 	get_tree().paused = true
 	moves_label.text = str(moves)
 	pushes_label.text = str(pushes)
+	next_button.visible = SceneTransition.has_next_level()
 	show()
 	animation_player.play("show")
 

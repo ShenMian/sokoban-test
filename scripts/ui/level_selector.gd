@@ -149,7 +149,7 @@ func _make_tooltip(index: int, data: Dictionary) -> String:
 func _on_level_clicked(index: int, _at_position: Vector2, mouse_button_index: int):
 	if mouse_button_index != MOUSE_BUTTON_LEFT:
 		return
-	SceneTransition.load_level(_selected_collection, index)
+	SceneTransition.load_level(_selected_collection, _levels.size(), index)
 
 
 func _on_level_list_resized():
