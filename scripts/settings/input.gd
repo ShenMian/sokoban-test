@@ -3,16 +3,16 @@ extends ScrollContainer
 @onready var binding_popup: BindingPopup = $"../../../../../BindingPopup"
 
 @onready var action_buttons := {
-	"move_up": $Margin/VBox/GridContainer/UpButton,
-	"move_down": $Margin/VBox/GridContainer/DownButton,
-	"move_left": $Margin/VBox/GridContainer/LeftButton,
-	"move_right": $Margin/VBox/GridContainer/RightButton,
-	"undo": $Margin/VBox/GridContainer/UndoButton,
-	"redo": $Margin/VBox/GridContainer/RedoButton,
-	"undo_all": $Margin/VBox/GridContainer/UndoAllButton,
-	"solve": $Margin/VBox/GridContainer/SolveButton,
-	"import_from_clipboard": $Margin/VBox/GridContainer/ImportFromClipboardButton,
-	"export_to_clipboard": $Margin/VBox/GridContainer/ExportToClipboardButton,
+	"move_up": $VBox/GridContainer/UpButton,
+	"move_down": $VBox/GridContainer/DownButton,
+	"move_left": $VBox/GridContainer/LeftButton,
+	"move_right": $VBox/GridContainer/RightButton,
+	"undo": $VBox/GridContainer/UndoButton,
+	"redo": $VBox/GridContainer/RedoButton,
+	"undo_all": $VBox/GridContainer/UndoAllButton,
+	"solve": $VBox/GridContainer/SolveButton,
+	"import_from_clipboard": $VBox/GridContainer/ImportFromClipboardButton,
+	"export_to_clipboard": $VBox/GridContainer/ExportToClipboardButton,
 }
 
 
