@@ -135,10 +135,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_2ctot")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 3
+current_tab = 0
 
 [node name="GAMEPLAY" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1471899089]
-visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("4_fb6cq")
@@ -1096,6 +1095,7 @@ script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
 [node name="INPUT" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1208102701]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("10_jpbdv")
