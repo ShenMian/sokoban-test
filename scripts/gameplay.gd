@@ -23,13 +23,17 @@ func _ready() -> void:
 	credits.closed.connect(pause_menu.show)
 
 	level_map.solved.connect(_on_level_solved)
+	level_map.player_moved.connect(_on_player_moved)
+	level_map.undo_redo_state_changed.connect(_update_button_states)
 	victory_menu.request_next_level.connect(_on_request_next_level)
 	victory_menu.request_menu.connect(_on_request_menu)
 
-	undo_button.pressed.connect(level_map.do_undo)
-	redo_button.pressed.connect(level_map.do_redo)
+	undo_button.pressed.connect(_on_undo_pressed)
+	redo_button.pressed.connect(_on_redo_pressed)
 	solve_button.pressed.connect(level_map.solve_level)
 	menu_button.pressed.connect(_open_pause_menu)
+
+	_update_button_states()
 
 
 func _input(_event: InputEvent) -> void:
@@ -59,7 +63,8 @@ func _on_pause_request_credits() -> void:
 
 func _on_level_solved() -> void:
 	await level_map.wait_for_moves_finished()
-	victory_menu.open(int(moves_label.text), int(pushes_label.text))
+	var has_next := SceneTransition.level_count == 0 or SceneTransition.level_index + 1 < SceneTransition.level_count
+	victory_menu.open(int(moves_label.text), int(pushes_label.text), has_next)
 
 
 func _on_request_next_level() -> void:
@@ -68,3 +73,22 @@ func _on_request_next_level() -> void:
 
 func _on_request_menu() -> void:
 	SceneTransition.load_main_menu()
+
+
+func _on_undo_pressed() -> void:
+	level_map.do_undo()
+	_update_button_states()
+
+
+func _on_redo_pressed() -> void:
+	level_map.do_redo()
+	_update_button_states()
+
+
+func _on_player_moved(_to: Vector2i, _pushed: bool) -> void:
+	_update_button_states()
+
+
+func _update_button_states() -> void:
+	undo_button.disabled = (level_map.get_move_count() == 0)
+	redo_button.disabled = not level_map.has_redo

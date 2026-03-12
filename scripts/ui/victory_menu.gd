@@ -11,10 +11,11 @@ signal request_menu
 @onready var menu_button: Button = $Panel/Margin/VBox/VBox/MenuButton
 
 
-func open(moves: int, pushes: int):
+func open(moves: int, pushes: int, has_next: bool = true):
 	get_tree().paused = true
 	moves_label.text = str(moves)
 	pushes_label.text = str(pushes)
+	next_button.visible = has_next
 	show()
 	animation_player.play("show")
 

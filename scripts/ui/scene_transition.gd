@@ -7,16 +7,20 @@ signal transition_finished
 
 var collection: String
 var level_index: int
+var level_count: int
 
-func load_level(new_collection: String, new_index: int) -> void:
+func load_level(new_collection: String, new_index: int, new_level_count: int = 0) -> void:
 	collection = new_collection
 	level_index = new_index
+	level_count = new_level_count
 	change_scene_to_file("res://scenes/gameplay.tscn")
 
 
 func load_next_level() -> void:
-	# TODO: Add bounds checking
 	level_index += 1
+	if level_count > 0 and level_index >= level_count:
+		load_main_menu()
+		return
 	change_scene_to_file("res://scenes/gameplay.tscn")
 
 

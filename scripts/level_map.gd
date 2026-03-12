@@ -1,5 +1,7 @@
 extends LevelMap
 
+signal undo_redo_state_changed
+
 enum Direction {
 	UP = 0,
 	DOWN = 1,
@@ -26,6 +28,8 @@ var heatmap: bool:
 			child.queue_free()
 		if heatmap:
 			_build_heatmap()
+
+var has_redo: bool = false
 
 
 func _ready() -> void:
@@ -59,19 +63,29 @@ func _process(_delta: float) -> void:
 	elif Input.is_action_pressed("move_down"):
 		move_by(Direction.DOWN)
 	elif Input.is_action_just_pressed("undo_all"):
+		var had_moves := get_move_count() > 0
 		undo_all()
+		if had_moves:
+			has_redo = true
+			undo_redo_state_changed.emit()
 		_update_labels()
 		update_pushable_hint()
 
 
 func do_undo() -> void:
 	undo()
+	has_redo = true
+	undo_redo_state_changed.emit()
 	_update_labels()
 	update_pushable_hint()
 
 
 func do_redo() -> void:
+	var prev_count := get_move_count()
 	redo()
+	if get_move_count() == prev_count:
+		has_redo = false
+		undo_redo_state_changed.emit()
 	_update_labels()
 	update_pushable_hint()
 
@@ -79,6 +93,8 @@ func do_redo() -> void:
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
+		has_redo = false
+		undo_redo_state_changed.emit()
 		_update_labels()
 		update_pushable_hint()
 		_reset_camera_position()
@@ -170,6 +186,7 @@ func wait_for_moves_finished() -> void:
 
 
 func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
+	has_redo = false
 	_update_labels()
 
 
