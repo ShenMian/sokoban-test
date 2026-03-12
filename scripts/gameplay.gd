@@ -1,13 +1,17 @@
 extends Node3D
 
+@onready var level_map: LevelMap = $LevelMap
+
 @onready var hud: Control = $HudLayer/HUD
 @onready var pause_menu: PauseMenu = $MenuLayer/PauseMenu
 @onready var settings_menu: SettingsMenu = $MenuLayer/SettingsMenu
 @onready var credits: Control = $MenuLayer/Credits
 @onready var victory_menu: VictoryMenu = $MenuLayer/VictoryMenu
-@onready var level_map: LevelMap = $LevelMap
+
+@onready var level_label: Label = %LevelValue
 @onready var moves_label: Label = %MovesValue
 @onready var pushes_label: Label = %PushesValue
+
 @onready var undo_button: Button = %UndoButton
 @onready var redo_button: Button = %RedoButton
 @onready var solve_button: Button = %SolveButton

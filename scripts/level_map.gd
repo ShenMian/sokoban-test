@@ -14,9 +14,7 @@ const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 @onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
-@onready var level_label: Label = $"../HudLayer/HUD/StatusPanel/HBox/LevelVBox/LevelValue"
-@onready var moves_label: Label = $"../HudLayer/HUD/StatusPanel/HBox/MovesVBox/MovesValue"
-@onready var pushes_label: Label = $"../HudLayer/HUD/StatusPanel/HBox/PushesVBox/PushesValue"
+@onready var gameplay: Node3D = $".."
 
 @export
 var heatmap: bool:
@@ -37,11 +35,11 @@ func _ready() -> void:
 	var path := Settings.LEVEL_PATH + SceneTransition.collection + ".xsb"
 	var level_id = SceneTransition.level_index + 1
 	load_from_file(path, level_id)
-	level_label.text = str(level_id)
 
 	_reset_camera_position()
 
 	await get_tree().process_frame
+	gameplay.level_label.text = str(level_id)
 	_update_labels()
 	update_pushable_hint()
 
@@ -174,8 +172,8 @@ func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
 
 
 func _update_labels() -> void:
-	moves_label.text = str(get_move_count())
-	pushes_label.text = str(get_push_count())
+	gameplay.moves_label.text = str(get_move_count())
+	gameplay.pushes_label.text = str(get_push_count())
 
 
 func _on_solved() -> void:
