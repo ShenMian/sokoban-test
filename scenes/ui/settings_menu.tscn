@@ -123,6 +123,7 @@ uppercase = true
 [node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox" unique_id=1279680262]
 layout_mode = 2
 size_flags_vertical = 3
+dragging_enabled = false
 
 [node name="Tabs" type="TabContainer" parent="MarginContainer/VBox/HSplit" unique_id=300937299]
 layout_mode = 2
