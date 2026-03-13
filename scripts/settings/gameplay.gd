@@ -14,8 +14,6 @@ extends ScrollContainer
 
 const SECTION_NAME := "gameplay"
 
-const LOCALES: Array[String] = ["en", "zh"]
-
 
 func _ready() -> void:
 	language.item_selected.connect(_on_language_selected)
@@ -33,7 +31,7 @@ func _ready() -> void:
 
 
 func apply_settings() -> void:
-	language.select(LOCALES.find(Settings.get_value(SECTION_NAME, "language")))
+	language.select(Settings.LOCALES.find(Settings.get_value(SECTION_NAME, "language")))
 	language.item_selected.emit(language.selected)
 
 	animation_speed.select(Settings.get_value(SECTION_NAME, "animation_speed"))
@@ -65,7 +63,7 @@ func apply_settings() -> void:
 
 
 func _on_language_selected(index: int) -> void:
-	var locale := LOCALES[index]
+	var locale := Settings.LOCALES[index]
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value(SECTION_NAME, "language", locale)
 

@@ -147,12 +147,16 @@ msgstr ""
 "Choose window mode\n"
 "[ul]"
 "[b]Windowed[/b]\n"
+"[b]Maximized[/b]\n"
 "[b]Borderless fullscreen[/b]\n"
 "[b]Exclusive fullscreen[/b]"
 "[/ul]"
 
 msgid "WINDOWED"
 msgstr "Windowed"
+
+msgid "MAXIMIZED"
+msgstr "Maximized"
 
 msgid "BORDERLESS_FULLSCREEN"
 msgstr "Borderless Fullscreen"

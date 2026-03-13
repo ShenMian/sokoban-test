@@ -426,13 +426,15 @@ text = "WINDOW_MODE"
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/WindowModePanel/HBox" unique_id=18479277]
 layout_mode = 2
 size_flags_horizontal = 10
-item_count = 3
+item_count = 4
 popup/item_0/text = "WINDOWED"
 popup/item_0/id = 0
-popup/item_1/text = "BORDERLESS_FULLSCREEN"
+popup/item_1/text = "MAXIMIZED"
 popup/item_1/id = 1
-popup/item_2/text = "EXCLUSIVE_FULLSCREEN"
+popup/item_2/text = "BORDERLESS_FULLSCREEN"
 popup/item_2/id = 2
+popup/item_3/text = "EXCLUSIVE_FULLSCREEN"
+popup/item_3/id = 3
 
 [node name="VsyncPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox" unique_id=1165885236]
 custom_minimum_size = Vector2(0, 40)

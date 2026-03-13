@@ -52,6 +52,8 @@ const DEFAULT_CONFIG = {
 	}
 }
 
+const LOCALES: Array[String] = ["en", "zh"]
+
 const CONFIG_PATH = "user://settings.ini"
 const SOLUTIONS_PATH = "user://solutions.ini"
 const BINDINGS_PATH = "user://bindings.tres"
@@ -64,6 +66,8 @@ var _solutions := ConfigFile.new()
 
 
 func _ready() -> void:
+	get_window().size_changed.connect(_on_window_size_changed)
+
 	print("Config file path: ", ProjectSettings.globalize_path(CONFIG_PATH))
 
 	var config_status := _config.load(CONFIG_PATH)
@@ -77,6 +81,8 @@ func _ready() -> void:
 		reset_gameplay_settings()
 		reset_video_settings()
 		reset_audio_settings()
+
+	_apply_basic_settings()
 
 	var solutions_status := _solutions.load(SOLUTIONS_PATH)
 	if solutions_status:
@@ -210,3 +216,12 @@ func _is_config_valid(config: ConfigFile) -> bool:
 			if typeof(current_value) != typeof(default_value):
 				return false
 	return true
+
+
+func _apply_basic_settings() -> void:
+	TranslationServer.set_locale(Settings.get_value("gameplay", "language"))
+	DisplayServer.window_set_mode(Settings.get_value("video", "window_mode"))
+
+
+func _on_window_size_changed() -> void:
+	set_and_save_value("video", "window_mode", DisplayServer.window_get_mode())

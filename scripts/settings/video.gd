@@ -17,6 +17,7 @@ const SECTION_NAME := "video"
 
 const WINDOW_MODES: Array[DisplayServer.WindowMode] = [
 	DisplayServer.WINDOW_MODE_WINDOWED,
+	DisplayServer.WINDOW_MODE_MAXIMIZED,
 	DisplayServer.WINDOW_MODE_FULLSCREEN,
 	DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN
 ]

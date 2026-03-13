@@ -147,12 +147,16 @@ msgstr ""
 "选择窗口模式\n"
 "[ul]"
 "[b]窗口化[/b]\n"
+"[b]最大化[/b]\n"
 "[b]无边框全屏[/b]\n"
 "[b]独占全屏[/b]"
 "[/ul]"
 
 msgid "WINDOWED"
 msgstr "窗口化"
+
+msgid "MAXIMIZED"
+msgstr "最大化"
 
 msgid "BORDERLESS_FULLSCREEN"
 msgstr "无边框全屏"
