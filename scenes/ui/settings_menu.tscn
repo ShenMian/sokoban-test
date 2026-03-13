@@ -461,9 +461,8 @@ size_flags_vertical = 3
 metadata/title = "FRAME_RATE_LIMIT"
 metadata/description = "FRAME_RATE_LIMIT_TIP"
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FrameRateLimitPanel" unique_id=738618482]
+[node name="HSplit" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FrameRateLimitPanel" unique_id=1755324562]
 layout_mode = 2
-dragging_enabled = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FrameRateLimitPanel/HSplit" unique_id=2073223735]
 layout_mode = 2
@@ -494,9 +493,8 @@ size_flags_vertical = 3
 metadata/title = "FIELD_OF_VIEW"
 metadata/description = "FIELD_OF_VIEW_TIP"
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FieldOfViewPanel" unique_id=1089447866]
+[node name="HSplit" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FieldOfViewPanel" unique_id=1065389990]
 layout_mode = 2
-dragging_enabled = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FieldOfViewPanel/HSplit" unique_id=2041097068]
 layout_mode = 2
@@ -552,9 +550,8 @@ size_flags_vertical = 3
 metadata/title = "UPSCALED_RESOLUTION"
 metadata/description = "UPSCALED_RESOLUTION_TIP"
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/UpscaledResolutionPanel" unique_id=2027452863]
+[node name="HSplit" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/UpscaledResolutionPanel" unique_id=1891419348]
 layout_mode = 2
-dragging_enabled = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/UpscaledResolutionPanel/HSplit" unique_id=1404331931]
 layout_mode = 2
@@ -580,9 +577,8 @@ size_flags_vertical = 3
 metadata/title = "FSR_SHARPNESS"
 metadata/description = "FSR_SHARPNESS_TIP"
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FsrSharpnessPanel" unique_id=1214550765]
+[node name="HSplit" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FsrSharpnessPanel" unique_id=883310216]
 layout_mode = 2
-dragging_enabled = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO/VBox/FsrSharpnessPanel/HSplit" unique_id=645358212]
 layout_mode = 2
@@ -702,9 +698,8 @@ size_flags_vertical = 3
 metadata/title = "MASTER_VOLUME"
 metadata/description = "MASTER_VOLUME_TIP"
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MasterVolumePanel" unique_id=1299036010]
+[node name="HSplit" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MasterVolumePanel" unique_id=901307016]
 layout_mode = 2
-dragging_enabled = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MasterVolumePanel/HSplit" unique_id=1736265700]
 layout_mode = 2
@@ -728,9 +723,8 @@ size_flags_vertical = 3
 metadata/title = "MUSIC_VOLUME"
 metadata/description = "MUSIC_VOLUME_TIP"
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MusicVolumePanel" unique_id=819298006]
+[node name="HSplit" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MusicVolumePanel" unique_id=1152008306]
 layout_mode = 2
-dragging_enabled = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MusicVolumePanel/HSplit" unique_id=1394247316]
 layout_mode = 2
@@ -754,9 +748,8 @@ size_flags_vertical = 3
 metadata/title = "SFX_VOLUME"
 metadata/description = "SFX_VOLUME_TIP"
 
-[node name="HSplit" type="HSplitContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/SfxVolumePanel" unique_id=1524555659]
+[node name="HSplit" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/SfxVolumePanel" unique_id=1900990764]
 layout_mode = 2
-dragging_enabled = false
 
 [node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/SfxVolumePanel/HSplit" unique_id=1284391983]
 layout_mode = 2
