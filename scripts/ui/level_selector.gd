@@ -1,7 +1,7 @@
 extends Control
 
-@onready var collection_list: ItemList = $MarginContainer/HSplit/CollectionList
-@onready var level_list: ItemList = $MarginContainer/HSplit/LevelList
+@onready var collection_list: ItemList = $Margin/VBox/HSplit/CollectionList
+@onready var level_list: ItemList = $Margin/VBox/HSplit/LevelList
 
 @export var level_item_min_width: int = 150
 
