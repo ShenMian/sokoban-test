@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dsml4kkswq7vn"
-path="res://.godot/imported/hat-cap.glb-dc9ec420b8331fa76167da020a0327da.scn"
+path="res://.godot/imported/hat_cap.glb-1e3aa109a57dad2d55b97114fe293507.scn"
 
 [deps]
 
-source_file="res://assets/models/prototype_kit/hat-cap.glb"
-dest_files=["res://.godot/imported/hat-cap.glb-dc9ec420b8331fa76167da020a0327da.scn"]
+source_file="res://assets/models/prototype_kit/hat_cap.glb"
+dest_files=["res://.godot/imported/hat_cap.glb-1e3aa109a57dad2d55b97114fe293507.scn"]
 
 [params]
 

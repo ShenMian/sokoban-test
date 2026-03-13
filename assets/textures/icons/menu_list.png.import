@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cr3sp6yujr8st"
-path="res://.godot/imported/menuGrid.png-7c4dcaf195b474f2a4138fbb266e9c81.ctex"
+uid="uid://dk4kar7bm6o4q"
+path="res://.godot/imported/menu_list.png-66c05a0767c1e8b94d06f03f62dc599e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/icons/menuGrid.png"
-dest_files=["res://.godot/imported/menuGrid.png-7c4dcaf195b474f2a4138fbb266e9c81.ctex"]
+source_file="res://assets/textures/icons/menu_list.png"
+dest_files=["res://.godot/imported/menu_list.png-66c05a0767c1e8b94d06f03f62dc599e.ctex"]
 
 [params]
 

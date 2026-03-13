@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://qfpcm2irmvkb"
-path="res://.godot/imported/hat-hard.glb-4ea9d70753b6d4600efa242c640da919.scn"
+uid="uid://cmgcpw3ygff0d"
+path="res://.godot/imported/floor_thick.glb-3f6d72a8e394aa2a5dcc234bf4177ea5.scn"
 
 [deps]
 
-source_file="res://assets/models/prototype_kit/hat-hard.glb"
-dest_files=["res://.godot/imported/hat-hard.glb-4ea9d70753b6d4600efa242c640da919.scn"]
+source_file="res://assets/models/prototype_kit/floor_thick.glb"
+dest_files=["res://.godot/imported/floor_thick.glb-3f6d72a8e394aa2a5dcc234bf4177ea5.scn"]
 
 [params]
 

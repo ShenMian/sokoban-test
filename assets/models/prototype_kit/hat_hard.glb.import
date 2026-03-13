@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cxfu2k25lu4id"
-path="res://.godot/imported/floor-square.glb-d33c810c4e6a128b951a49e763429e20.scn"
+uid="uid://qfpcm2irmvkb"
+path="res://.godot/imported/hat_hard.glb-b8431e59ff013232f56fe70f12389324.scn"
 
 [deps]
 
-source_file="res://assets/models/prototype_kit/floor-square.glb"
-dest_files=["res://.godot/imported/floor-square.glb-d33c810c4e6a128b951a49e763429e20.scn"]
+source_file="res://assets/models/prototype_kit/hat_hard.glb"
+dest_files=["res://.godot/imported/hat_hard.glb-b8431e59ff013232f56fe70f12389324.scn"]
 
 [params]
 

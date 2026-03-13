@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cmgcpw3ygff0d"
-path="res://.godot/imported/floor-thick.glb-2d3524cd23326d301619ceeea2435a8e.scn"
+uid="uid://c3qh3xyr1qaij"
+path="res://.godot/imported/crate_color.glb-f1e97e962b2a6483e1364ff08a1de5b0.scn"
 
 [deps]
 
-source_file="res://assets/models/prototype_kit/floor-thick.glb"
-dest_files=["res://.godot/imported/floor-thick.glb-2d3524cd23326d301619ceeea2435a8e.scn"]
+source_file="res://assets/models/prototype_kit/crate_color.glb"
+dest_files=["res://.godot/imported/crate_color.glb-f1e97e962b2a6483e1364ff08a1de5b0.scn"]
 
 [params]
 

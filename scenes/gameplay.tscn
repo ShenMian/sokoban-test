@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
 [ext_resource type="Texture2D" uid="uid://bxogo6js8fo1a" path="res://assets/textures/icons/cpu.png" id="9_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
-[ext_resource type="Texture2D" uid="uid://dk4kar7bm6o4q" path="res://assets/textures/icons/menuList.png" id="11_s5y6v"]
+[ext_resource type="Texture2D" uid="uid://dk4kar7bm6o4q" path="res://assets/textures/icons/menu_list.png" id="11_s5y6v"]
 
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1
