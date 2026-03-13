@@ -90,12 +90,6 @@ struct LevelMap {
     pathfinding_strategy: Strategy,
 
     #[export]
-    solver_strategy: Strategy,
-
-    #[export]
-    solver_algorithm: Algorithm,
-
-    #[export]
     floor_item_id: i32,
     #[export]
     wall_item_id: i32,
@@ -121,8 +115,6 @@ impl IGridMap for LevelMap {
             deadlock_hint: true,
             deadlock_tint: Color::from_rgb(0.5, 0.5, 0.5),
             pathfinding_strategy: Strategy::default(),
-            solver_strategy: Strategy::default(),
-            solver_algorithm: Algorithm::default(),
             floor_item_id: GridMap::INVALID_CELL_ITEM,
             wall_item_id: GridMap::INVALID_CELL_ITEM,
             goal_item_id: GridMap::INVALID_CELL_ITEM,
@@ -438,8 +430,8 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_lower_bounds(&self) -> VarDictionary {
-        let solver = Solver::new(self.map().clone(), self.solver_strategy.into());
+    fn get_lower_bounds(&self, strategy: Strategy) -> VarDictionary {
+        let solver = Solver::new(self.map().clone(), strategy.into());
         let mut dict = VarDictionary::new();
         for (position, value) in solver.lower_bounds() {
             dict.set(position.to_gd(), value.to_variant());

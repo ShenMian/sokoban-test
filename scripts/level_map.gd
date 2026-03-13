@@ -11,12 +11,15 @@ const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 const BOX_SCENE = preload("res://scenes/box.tscn")
 const WAYPOINT_SCENE = preload("res://scenes/waypoint.tscn")
 
+@onready var gameplay: Node3D = $".."
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
 @onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
-@onready var gameplay: Node3D = $".."
+
+@export var solver_algorithm: Settings.Algorithm
+@export var solver_strategy: Settings.Strategy
 
 @export
 var heatmap: bool:
@@ -107,7 +110,7 @@ func _input(_event: InputEvent) -> void:
 
 
 func _build_heatmap() -> void:
-	var lower_bounds: Dictionary = get_lower_bounds()
+	var lower_bounds: Dictionary = get_lower_bounds(solver_strategy)
 	var max_lower_bound: int = lower_bounds.values().max()
 	for pos in lower_bounds:
 		var heatmap_cell: HeatmapCell = HEATMAP_CELL_SCENE.instantiate()
