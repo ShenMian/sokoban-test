@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c22sxa5lwxp3q" path="res://scripts/ui/victory_menu.gd" id="2_4ntwv"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="2_t"]
+[ext_resource type="AudioStream" uid="uid://cfr1aqlerw1kk" path="res://assets/audio/sfx/level_complete.ogg" id="3_lbwo6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v"]
 content_margin_left = 20.0
@@ -135,6 +136,9 @@ text = "NEXT_LEVEL"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 text = "BACK_TO_MENU"
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=602922347]
+stream = ExtResource("3_lbwo6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=256384662]
 libraries/ = SubResource("AnimationLibrary_v")

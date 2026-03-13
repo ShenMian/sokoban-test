@@ -6,7 +6,10 @@ signal request_menu
 
 @onready var moves_label: Label = %MovesValue
 @onready var pushes_label: Label = %PushesValue
+
+@onready var audio_player: AudioStreamPlayer = $AudioPlayer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+
 @onready var next_button: Button = $Panel/VBox/VBox/NextButton
 @onready var menu_button: Button = $Panel/VBox/VBox/MenuButton
 
@@ -17,6 +20,7 @@ func open(moves: int, pushes: int):
 	pushes_label.text = str(pushes)
 	next_button.visible = SceneTransition.has_next_level()
 	show()
+	audio_player.play()
 	animation_player.play("show")
 
 
