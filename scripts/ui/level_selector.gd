@@ -1,7 +1,10 @@
 extends Control
 
+const LEVEL_PREVIEW_SCENE := preload("res://scenes/ui/level_preview.tscn")
+
 @onready var collection_list: ItemList = $Margin/VBox/HSplit/CollectionList
 @onready var level_list: ItemList = $Margin/VBox/HSplit/LevelList
+@onready var level_preview: LevelPreview = $LevelPreview
 
 @export var level_item_min_width: int = 150
 
@@ -16,8 +19,6 @@ var _end_item_index: int
 var _levels: Array[Dictionary] = []
 var _generated_previews: Array[int] = []
 
-var _preview_generator: LevelPreviewGenerator
-
 var _selected_collection: String
 
 
@@ -26,10 +27,7 @@ func _ready():
 	level_list.item_clicked.connect(_on_level_clicked)
 	level_list.resized.connect(_on_level_list_resized)
 
-	# Setup the level preview generator
-	_preview_generator = LevelPreviewGenerator.new()
-	_preview_generator.preview_generated.connect(_on_preview_generated)
-	add_child(_preview_generator)
+	level_preview.preview_generated.connect(_on_preview_generated)
 
 	_load_collections()
 	assert(collection_list.item_count > 0)
@@ -82,7 +80,7 @@ func _process(_delta: float):
 		if i >= 0 and i < _levels.size():
 			if not _generated_previews.has(i):
 				queue.append(i)
-	_preview_generator.submit_queue(queue)
+	level_preview.submit_queue(queue)
 
 	# Frees distant preview textures
 	for i in range(_generated_previews.size() - 1, -1, -1):
@@ -116,7 +114,7 @@ func _load_levels(path: String):
 	_end_item_index = -1
 
 	_levels = Array(LevelMap.load_collection(path), TYPE_DICTIONARY, "", null)
-	_preview_generator.set_levels(_levels)
+	level_preview.set_levels(_levels)
 
 	for idx in range(_levels.size()):
 		var label = str(idx + 1)

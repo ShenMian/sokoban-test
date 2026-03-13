@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://cn7iy24ba0l5v"]
 
-[ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/meshes/mesh_library.tres" id="2_qpmln"]
-[ext_resource type="PackedScene" uid="uid://d3bx7fp67oyvm" path="res://scenes/player.tscn" id="4_x6c2x"]
+[ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/meshes/mesh_library.tres" id="1_d37df"]
+[ext_resource type="Script" uid="uid://bgp0xwjsm3l4o" path="res://scripts/ui/level_preview.gd" id="1_wdc1a"]
+[ext_resource type="PackedScene" uid="uid://d3bx7fp67oyvm" path="res://scenes/player.tscn" id="2_wdc1a"]
 
-[node name="Preview" type="SubViewport" unique_id=319219157]
+[node name="LevelPreview" type="SubViewport" unique_id=319219157]
 transparent_bg = true
 size = Vector2i(256, 256)
 render_target_update_mode = 0
+script = ExtResource("1_wdc1a")
 
 [node name="LevelMap" type="LevelMap" parent="." unique_id=1068863980]
 checkerboard_shading = false
@@ -15,12 +17,12 @@ pushable_hint = false
 floor_item_id = 0
 wall_item_id = 1
 goal_item_id = 2
-mesh_library = ExtResource("2_qpmln")
+mesh_library = ExtResource("1_d37df")
 cell_size = Vector3(1, 1, 1)
 
 [node name="Boxes" type="Node3D" parent="LevelMap" unique_id=1541519836]
 
-[node name="Player" parent="LevelMap" unique_id=1363809863 instance=ExtResource("4_x6c2x")]
+[node name="Player" parent="LevelMap" unique_id=1363809863 instance=ExtResource("2_wdc1a")]
 
 [node name="Camera" type="Camera3D" parent="." unique_id=414650077]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 9, -3.98)
