@@ -53,8 +53,7 @@ func _process(_delta: float):
 			camera.size = max_dimension
 
 		render_target_update_mode = SubViewport.UPDATE_ONCE
-
-		await get_tree().process_frame
+		await RenderingServer.frame_post_draw
 
 		var image := get_texture().get_image()
 		var texture = ImageTexture.create_from_image(image)
