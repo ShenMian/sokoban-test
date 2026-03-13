@@ -55,7 +55,7 @@ theme_override_constants/separation = 10
 layout_mode = 2
 theme = ExtResource("4_lhagn")
 theme_override_font_sizes/font_size = 35
-text = "LEVEL SELECTOR"
+text = "LEVEL_SELECTOR"
 uppercase = true
 
 [node name="HSplit" type="HSplitContainer" parent="Margin/VBox" unique_id=1080622152]
