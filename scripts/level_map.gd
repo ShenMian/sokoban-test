@@ -125,8 +125,10 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 	if section == "gameplay":
 		if key == "deadlock_hint":
 			deadlock_hint = value
+			build()
 		elif key == "checkerboard":
 			checkerboard_shading = value
+			build()
 		elif key == "pushable_hint":
 			_pushable_hint = value
 			update_pushable_hint()

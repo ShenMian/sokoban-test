@@ -77,11 +77,9 @@ struct LevelMap {
     level: Level,
 
     #[export]
-    #[var(get, set = set_checkerboard_shading)]
     checkerboard_shading: bool,
 
     #[export]
-    #[var(get, set = set_deadlock_hint)]
     deadlock_hint: bool,
 
     #[export]
@@ -450,10 +448,7 @@ impl LevelMap {
         dict
     }
 
-    fn map(&self) -> &Map {
-        self.level.map()
-    }
-
+    #[func]
     fn build(&mut self) {
         if !self.base().is_inside_tree() {
             return;
@@ -519,22 +514,14 @@ impl LevelMap {
     }
 
     #[func]
-    fn set_deadlock_hint(&mut self, enable: bool) {
-        self.deadlock_hint = enable;
-        self.build();
-    }
-
-    #[func]
-    fn set_checkerboard_shading(&mut self, enable: bool) {
-        self.checkerboard_shading = enable;
-        self.build();
-    }
-
-    #[func]
     fn set_deadlock_tint(&mut self, color: Color) {
         self.deadlock_tint = color;
         self.floor_dark_item_id = GridMap::INVALID_CELL_ITEM;
         self.build();
+    }
+
+    fn map(&self) -> &Map {
+        self.level.map()
     }
 
     fn create_floor<F>(&self, mesh_library: &mut Gd<MeshLibrary>, name: &str, f: F) -> i32
