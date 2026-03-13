@@ -71,10 +71,11 @@ func _ready() -> void:
 	print("Config file path: ", ProjectSettings.globalize_path(CONFIG_PATH))
 
 	var config_status := _config.load(CONFIG_PATH)
-	if config_status:
-		printerr("failed to load config file: ", error_string(config_status))
-	elif not _is_config_valid(_config):
-		printerr("config file structure is invalid or outdated", not _is_config_valid(_config))
+	if config_status or not _is_config_valid(_config):
+		if config_status:
+			printerr("failed to load config file: ", error_string(config_status))
+		else:
+			printerr("config file structure is invalid or outdated", not _is_config_valid(_config))
 
 		# Resets to default settings
 		print("Restore default settings")
