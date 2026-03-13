@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cgs0hu63210sd" path="res://scripts/settings/binding_popup.gd" id="1_ogujs"]
 [ext_resource type="Theme" uid="uid://el10yav48fuk" path="res://assets/title_theme.tres" id="2_m7nm2"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="2_sycsx"]
-[ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/Keyboard & Mouse/Vector/keyboard_escape.svg" id="3_sycsx"]
+[ext_resource type="Texture2D" uid="uid://fq45ymva816n" path="res://assets/textures/input_prompts/keyboard_mouse/keyboard_escape.svg" id="3_sycsx"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_jpbdv"]
 action = &"pause"

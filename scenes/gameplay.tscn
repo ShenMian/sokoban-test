@@ -8,13 +8,13 @@
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/ui/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
 [ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/ui/settings_menu.tscn" id="6_din8e"]
-[ext_resource type="Texture2D" uid="uid://ca2al0cmljxcn" path="res://assets/textures/game_icons/PNG/White/1x/backward.png" id="7_nt65e"]
-[ext_resource type="Texture2D" uid="uid://2rg4bkfmmn0p" path="res://assets/textures/game_icons/PNG/White/1x/forward.png" id="8_bhmdk"]
+[ext_resource type="Texture2D" uid="uid://vr8jiem6x8fp" path="res://assets/textures/icons/forward.png" id="7_bhmdk"]
+[ext_resource type="Texture2D" uid="uid://d2taaqgkqbyky" path="res://assets/textures/icons/backward.png" id="7_s5y6v"]
+[ext_resource type="Texture2D" uid="uid://qo1gsvr3g6wc" path="res://assets/textures/icons/return.png" id="8_s5y6v"]
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
-[ext_resource type="Texture2D" uid="uid://frvpm7lk366d" path="res://assets/textures/game_icons/PNG/White/1x/return.png" id="9_407ns"]
-[ext_resource type="Texture2D" uid="uid://dpdvvyin3tfkn" path="res://assets/textures/game_icons_expansion/PNG (2)/White/1x/cpu.png" id="9_s5y6v"]
-[ext_resource type="Texture2D" uid="uid://dco5m76t1oaau" path="res://assets/textures/game_icons/PNG/White/1x/menuList.png" id="10_bhmdk"]
+[ext_resource type="Texture2D" uid="uid://bxogo6js8fo1a" path="res://assets/textures/icons/cpu.png" id="9_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
+[ext_resource type="Texture2D" uid="uid://dk4kar7bm6o4q" path="res://assets/textures/icons/menuList.png" id="11_s5y6v"]
 
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1
@@ -77,7 +77,7 @@ script = ExtResource("3_e124b")
 
 [node name="Boxes" type="Node3D" parent="LevelMap" unique_id=1541519836]
 
-[node name="Player" parent="LevelMap" unique_id=1363809863 instance=ExtResource("3_4bh5q")]
+[node name="Player" parent="LevelMap" unique_id=1252982032 instance=ExtResource("3_4bh5q")]
 selectable = false
 
 [node name="Waypoints" type="Node3D" parent="LevelMap" unique_id=1821682321]
@@ -211,7 +211,7 @@ size_flags_vertical = 4
 tooltip_text = "UNDO"
 shortcut = SubResource("Shortcut_s5y6v")
 shortcut_in_tooltip = false
-icon = ExtResource("7_nt65e")
+icon = ExtResource("7_s5y6v")
 icon_alignment = 1
 expand_icon = true
 
@@ -224,7 +224,7 @@ size_flags_vertical = 4
 tooltip_text = "REDO"
 shortcut = SubResource("Shortcut_407ns")
 shortcut_in_tooltip = false
-icon = ExtResource("8_bhmdk")
+icon = ExtResource("7_bhmdk")
 icon_alignment = 1
 expand_icon = true
 
@@ -237,7 +237,7 @@ size_flags_vertical = 4
 tooltip_text = "UNDO_ALL"
 shortcut = SubResource("Shortcut_407ns")
 shortcut_in_tooltip = false
-icon = ExtResource("9_407ns")
+icon = ExtResource("8_s5y6v")
 icon_alignment = 1
 expand_icon = true
 
@@ -250,7 +250,7 @@ size_flags_vertical = 4
 tooltip_text = "SOLVE"
 shortcut = SubResource("Shortcut_w3w6i")
 shortcut_in_tooltip = false
-icon = ExtResource("9_s5y6v")
+icon = ExtResource("9_bhmdk")
 icon_alignment = 1
 expand_icon = true
 
@@ -263,7 +263,7 @@ size_flags_vertical = 4
 tooltip_text = "PAUSE"
 shortcut = SubResource("Shortcut_pv71h")
 shortcut_in_tooltip = false
-icon = ExtResource("10_bhmdk")
+icon = ExtResource("11_s5y6v")
 icon_alignment = 1
 expand_icon = true
 
