@@ -627,8 +627,12 @@ impl LevelMap {
             // Disable non-pushable boxes
             let pushable_positions = self.get_pushable_box_positions();
             let boxes = self.base().get_node_as::<Node3D>("Boxes");
-            for mut r#box in boxes.get_children().iter_shared() {
-                let grid_position: Vector2i = r#box.call("grid_position", &[]).to();
+            for r#box in boxes.get_children().iter_shared() {
+                let mut r#box = r#box.cast::<Node3D>();
+                let grid_position = Vector2i::new(
+                    r#box.get_position().x.round() as i32,
+                    r#box.get_position().z.round() as i32,
+                );
                 let is_pushable = pushable_positions
                     .iter_shared()
                     .any(|position| position == grid_position);
