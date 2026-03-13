@@ -98,7 +98,7 @@ func _update_icons(icons: Array[Texture2D]) -> void:
 
 
 func _get_icon_by_key_name(key: String) -> Texture2D:
-	const ICON_PATH := "res://assets/textures/input_prompts/Keyboard & Mouse/Vector/"
+	const ICON_PATH := "res://assets/textures/input_prompts/keyboard_mouse/"
 
 	if key.is_empty():
 		return null
