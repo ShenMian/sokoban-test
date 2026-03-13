@@ -3,9 +3,11 @@ class_name LevelPreview
 
 signal preview_generated(index: int, texture: Texture2D)
 
-const PREVIEW_SCENE := preload("res://scenes/ui/level_preview.tscn")
+const BOX_SCENE := preload("res://scenes/box.tscn")
 
 @onready var level_map: LevelMap = $LevelMap
+@onready var boxes_container: Node3D = $LevelMap/Boxes
+@onready var player: Node3D = $LevelMap/Player
 @onready var camera: Camera3D = $Camera
 
 var levels: Array[Dictionary] = []
@@ -42,6 +44,7 @@ func _process(_delta: float):
 		var index: int = _queue.pop_front()
 
 		level_map.load_from_string(levels[index]["map"])
+		_sync_entities_from_state()
 
 		var dimensions = Vector2(level_map.get_dimensions())
 		var center = dimensions / 2.0
@@ -61,3 +64,18 @@ func _process(_delta: float):
 		if version != _version:
 			return
 		preview_generated.emit(index, texture)
+
+
+func _sync_entities_from_state() -> void:
+	for child in boxes_container.get_children():
+		child.queue_free()
+
+	for box_pos in level_map.get_box_positions():
+		var box: Box = BOX_SCENE.instantiate()
+		box.position = Vector3(box_pos.x, 0.0, box_pos.y)
+		box.selectable = false
+		box.disabled = false
+		boxes_container.add_child(box)
+
+	var player_pos: Vector2i = level_map.get_player_position()
+	player.position = Vector3(player_pos.x, 0.0, player_pos.y)

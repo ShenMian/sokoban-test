@@ -8,6 +8,8 @@ enum Direction {
 }
 
 const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
+const BOX_SCENE = preload("res://scenes/box.tscn")
+const WAYPOINT_SCENE = preload("res://scenes/waypoint.tscn")
 
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
@@ -25,6 +27,9 @@ var heatmap: bool:
 		if heatmap:
 			_build_heatmap()
 
+var _pushable_hint: bool
+var _selected_box: Box
+
 
 func _ready() -> void:
 	Settings.setting_changed.connect(_on_setting_changed)
@@ -35,6 +40,7 @@ func _ready() -> void:
 	var path := Settings.LEVEL_PATH + SceneTransition.collection + ".xsb"
 	var level_id = SceneTransition.level_index + 1
 	load_from_file(path, level_id)
+	_sync_entities_from_state()
 
 	_reset_camera_position()
 
@@ -61,22 +67,26 @@ func _process(_delta: float) -> void:
 
 func do_undo() -> void:
 	undo()
+	_sync_entities_from_state()
 	_update_ui()
 
 
 func do_redo() -> void:
 	redo()
+	_sync_entities_from_state()
 	_update_ui()
 
 
 func do_undo_all() -> void:
 	undo_all()
+	_sync_entities_from_state()
 	_update_ui()
 
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
+		_sync_entities_from_state()
 		_update_ui()
 		_reset_camera_position()
 	elif Input.is_action_just_pressed("export_to_clipboard"):
@@ -118,7 +128,8 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 		elif key == "checkerboard":
 			checkerboard_shading = value
 		elif key == "pushable_hint":
-			pushable_hint = value
+			_pushable_hint = value
+			update_pushable_hint()
 		elif key == "heatmap":
 			heatmap = value
 		elif key == "pathfinding_strategy":
@@ -159,6 +170,80 @@ func _is_box_moving() -> bool:
 	return false
 
 
+func _sync_entities_from_state() -> void:
+	var snapshot: Dictionary = get_state_snapshot()
+	var box_positions: Array = snapshot["box_positions"]
+	var player_pos: Vector2i = snapshot["player_position"]
+
+	for child in boxes_container.get_children():
+		child.queue_free()
+
+	for box_pos in box_positions:
+		var box: Box = BOX_SCENE.instantiate()
+		box.position = Vector3(box_pos.x, 0.0, box_pos.y)
+		box.selected.connect(func() -> void:
+			on_box_selected(box)
+		)
+		box.unselected.connect(on_box_unselected)
+		box.move_finished.connect(update_pushable_hint)
+		boxes_container.add_child(box)
+
+	player.position = Vector3(player_pos.x, 0.0, player_pos.y)
+	update_pushable_hint()
+
+
+func update_pushable_hint() -> void:
+	if not _pushable_hint:
+		for box in boxes_container.get_children():
+			box.disabled = false
+		return
+
+	var pushable_positions: Array = get_pushable_box_positions()
+	for box in boxes_container.get_children():
+		var grid_pos: Vector2i = box.grid_position()
+		var is_pushable := pushable_positions.any(func(pos: Vector2i) -> bool:
+			return pos == grid_pos
+		)
+		box.disabled = not is_pushable
+
+
+func on_box_selected(box: Box) -> void:
+	if _selected_box != null and _selected_box != box:
+		_selected_box.deselect()
+
+	_selected_box = box
+	_rebuild_waypoints(box.grid_position())
+
+
+func on_box_unselected() -> void:
+	_selected_box = null
+	_clear_waypoints()
+
+
+func deselect_box() -> void:
+	if _selected_box != null:
+		var selected_box := _selected_box
+		_selected_box = null
+		selected_box.deselect()
+	_clear_waypoints()
+
+
+func _rebuild_waypoints(from: Vector2i) -> void:
+	_clear_waypoints()
+	for to in get_waypoint_positions(from):
+		var waypoint = WAYPOINT_SCENE.instantiate()
+		waypoint.position = Vector3(to.x, 0.01, to.y)
+		waypoint.clicked.connect(func() -> void:
+			_on_waypoint_clicked(from, to)
+		)
+		waypoints_container.add_child(waypoint)
+
+
+func _clear_waypoints() -> void:
+	for child in waypoints_container.get_children():
+		child.queue_free()
+
+
 func wait_for_moves_finished() -> void:
 	if player.is_moving:
 		await player.move_finished
@@ -172,7 +257,8 @@ func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
 
 
 func _update_ui() -> void:
-	_update_labels()
+	var snapshot: Dictionary = get_state_snapshot()
+	_update_labels(snapshot)
 	update_pushable_hint()
 	if player.is_moving or _is_box_moving():
 		gameplay.undo_button.disabled = true
@@ -180,15 +266,15 @@ func _update_ui() -> void:
 		gameplay.undo_all_button.disabled = true
 		gameplay.solve_button.disabled = true
 	else:
-		gameplay.undo_button.disabled = !can_undo()
-		gameplay.redo_button.disabled = !can_redo()
-		gameplay.undo_all_button.disabled = !can_undo()
+		gameplay.undo_button.disabled = !snapshot["can_undo"]
+		gameplay.redo_button.disabled = !snapshot["can_redo"]
+		gameplay.undo_all_button.disabled = !snapshot["can_undo"]
 		gameplay.solve_button.disabled = false
 
 
-func _update_labels() -> void:
-	gameplay.moves_label.text = str(get_move_count())
-	gameplay.pushes_label.text = str(get_push_count())
+func _update_labels(snapshot: Dictionary) -> void:
+	gameplay.moves_label.text = str(snapshot["move_count"])
+	gameplay.pushes_label.text = str(snapshot["push_count"])
 
 
 func _on_solved() -> void:

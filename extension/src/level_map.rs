@@ -89,10 +89,6 @@ struct LevelMap {
     deadlock_tint: Color,
 
     #[export]
-    #[var(get, set = set_pushable_hint)]
-    pushable_hint: bool,
-
-    #[export]
     pathfinding_strategy: Strategy,
 
     #[export]
@@ -112,12 +108,8 @@ struct LevelMap {
     deadlock_item_id: i32,
     deadlock_dark_item_id: i32,
 
-    selected_box: Option<Gd<Node3D>>,
     waypoints: HashMap<DirectedPosition, DirectedPosition>,
     costs: HashMap<DirectedPosition, i32>,
-
-    box_scene: Gd<PackedScene>,
-    waypoint_scene: Gd<PackedScene>,
 
     base: Base<GridMap>,
 }
@@ -130,7 +122,6 @@ impl IGridMap for LevelMap {
             checkerboard_shading: true,
             deadlock_hint: true,
             deadlock_tint: Color::from_rgb(0.5, 0.5, 0.5),
-            pushable_hint: true,
             pathfinding_strategy: Strategy::default(),
             solver_strategy: Strategy::default(),
             solver_algorithm: Algorithm::default(),
@@ -140,12 +131,9 @@ impl IGridMap for LevelMap {
             floor_dark_item_id: GridMap::INVALID_CELL_ITEM,
             deadlock_item_id: GridMap::INVALID_CELL_ITEM,
             deadlock_dark_item_id: GridMap::INVALID_CELL_ITEM,
-            selected_box: None,
             waypoints: HashMap::new(),
             costs: HashMap::new(),
             level,
-            box_scene: load("res://scenes/box.tscn"),
-            waypoint_scene: load("res://scenes/waypoint.tscn"),
             base,
         }
     }
@@ -306,6 +294,34 @@ impl LevelMap {
     }
 
     #[func]
+    fn get_waypoint_positions(&mut self, box_position: Vector2i) -> Array<Vector2i> {
+        let box_position = box_position.to_na();
+        let strategy: solver::Strategy = self.pathfinding_strategy.into();
+
+        let start = std::time::Instant::now();
+        let (mut waypoints, costs) =
+            path_finding::compute_box_waypoints(self.map(), box_position, strategy);
+        let elapsed = start.elapsed();
+
+        godot_print!("found {} waypoints ({:?})", waypoints.len(), elapsed);
+
+        if self.deadlock_hint {
+            let deadlocks = compute_static_deadlocks(self.map());
+            waypoints.retain(|dp, _| !deadlocks.contains(&dp.position()));
+        }
+
+        let mut positions = Array::new();
+        for position in waypoints.keys().map(|dp| dp.position()) {
+            positions.push(position.to_gd());
+        }
+
+        self.waypoints = waypoints;
+        self.costs = costs;
+
+        positions
+    }
+
+    #[func]
     fn solve(&self, algorithm: Algorithm, strategy: Strategy) -> Array<i32> {
         let strategy: solver::Strategy = strategy.into();
         let solver = Solver::new(self.map().clone(), strategy);
@@ -412,6 +428,19 @@ impl LevelMap {
     }
 
     #[func]
+    fn get_state_snapshot(&self) -> VarDictionary {
+        let mut dict = VarDictionary::new();
+        dict.set("player_position", self.get_player_position());
+        dict.set("box_positions", self.get_box_positions());
+        dict.set("move_count", self.get_move_count());
+        dict.set("push_count", self.get_push_count());
+        dict.set("can_undo", self.can_undo());
+        dict.set("can_redo", self.can_redo());
+        dict.set("is_solved", self.is_solved());
+        dict
+    }
+
+    #[func]
     fn get_lower_bounds(&self) -> VarDictionary {
         let solver = Solver::new(self.map().clone(), self.solver_strategy.into());
         let mut dict = VarDictionary::new();
@@ -430,7 +459,8 @@ impl LevelMap {
             return;
         }
 
-        self.deselect_box();
+        self.waypoints.clear();
+        self.costs.clear();
 
         if self.floor_dark_item_id == GridMap::INVALID_CELL_ITEM {
             let Some(mut mesh_library) = self.base().get_mesh_library() else {
@@ -486,101 +516,6 @@ impl LevelMap {
                 }
             }
         }
-
-        self.clear_boxes();
-        let mut boxes = self.base().get_node_as::<Node3D>("Boxes");
-        for position in self.map().box_positions() {
-            let mut r#box = self.box_scene.instantiate_as::<Node3D>();
-            r#box.set_position(Vector3::new(position.x as f32, 0.0, position.y as f32));
-            let box_node = r#box.to_variant();
-            r#box.connect(
-                "selected",
-                &self.to_gd().callable("on_box_selected").bind(&[box_node]),
-            );
-            r#box.connect("unselected", &self.to_gd().callable("on_box_unselected"));
-            boxes.add_child(&r#box);
-        }
-        self.set_pushable_hint(self.pushable_hint);
-
-        let mut player = self.base().get_node_as::<Node3D>("Player");
-        player.set_position(Vector3::new(
-            self.map().player_position().x as f32,
-            0.0,
-            self.map().player_position().y as f32,
-        ));
-    }
-
-    #[func]
-    fn on_box_selected(&mut self, r#box: Gd<Node3D>) {
-        self.deselect_box();
-        self.selected_box = Some(r#box.clone());
-
-        let box_position = Vector2::<i32>::new(
-            r#box.get_position().x.round() as i32,
-            r#box.get_position().z.round() as i32,
-        );
-
-        let strategy: solver::Strategy = self.pathfinding_strategy.into();
-
-        let start = std::time::Instant::now();
-        let (mut waypoints, costs) =
-            path_finding::compute_box_waypoints(self.map(), box_position, strategy);
-        let elapsed = start.elapsed();
-
-        godot_print!("found {} waypoints ({:?})", waypoints.len(), elapsed);
-
-        if self.deadlock_hint {
-            let deadlocks = compute_static_deadlocks(self.map());
-            waypoints.retain(|dp, _| !deadlocks.contains(&dp.position()));
-        }
-
-        let mut container = self.base_mut().get_node_as::<Node3D>("Waypoints");
-        for position in waypoints.keys().map(|dp| dp.position()) {
-            let mut waypoint = self.waypoint_scene.instantiate_as::<Node3D>();
-            waypoint.set_position(Vector3::new(position.x as f32, 0.01, position.y as f32));
-            waypoint.connect(
-                "clicked",
-                &self.to_gd().callable("_on_waypoint_clicked").bind(&[
-                    box_position.to_gd().to_variant(),
-                    position.to_gd().to_variant(),
-                ]),
-            );
-            container.add_child(&waypoint);
-        }
-
-        self.waypoints = waypoints;
-        self.costs = costs;
-    }
-
-    #[func]
-    fn on_box_unselected(&mut self) {
-        self.deselect_box();
-    }
-
-    #[func]
-    fn deselect_box(&mut self) {
-        if let Some(mut selected_box) = self.selected_box.take() {
-            selected_box.call("deselect", &[]);
-        }
-        self.clear_waypoints();
-    }
-
-    fn clear_boxes(&self) {
-        let boxes = self.base().get_node_as::<Node3D>("Boxes");
-        for mut child in boxes.get_children().iter_shared() {
-            child.queue_free();
-        }
-    }
-
-    #[func]
-    fn clear_waypoints(&self) {
-        if !self.base().has_node("Waypoints") {
-            return;
-        }
-        let container = self.base().get_node_as::<Node3D>("Waypoints");
-        for mut child in container.get_children().iter_shared() {
-            child.queue_free();
-        }
     }
 
     #[func]
@@ -593,58 +528,6 @@ impl LevelMap {
     fn set_checkerboard_shading(&mut self, enable: bool) {
         self.checkerboard_shading = enable;
         self.build();
-    }
-
-    #[func]
-    fn set_pushable_hint(&mut self, enable: bool) {
-        self.pushable_hint = enable;
-        if !self.base().is_inside_tree() {
-            return;
-        }
-        let boxes = self.base().get_node_as::<Node3D>("Boxes");
-        for mut r#box in boxes.get_children().iter_shared() {
-            let callable = self.to_gd().callable("update_pushable_hint");
-            if enable {
-                if !r#box.is_connected("move_finished", &callable) {
-                    r#box.connect("move_finished", &callable);
-                }
-            } else {
-                if r#box.is_connected("move_finished", &callable) {
-                    r#box.disconnect("move_finished", &callable);
-                }
-            }
-        }
-        self.update_pushable_hint();
-    }
-
-    #[func]
-    fn update_pushable_hint(&mut self) {
-        if !self.base().is_inside_tree() {
-            return;
-        }
-
-        if self.pushable_hint {
-            // Disable non-pushable boxes
-            let pushable_positions = self.get_pushable_box_positions();
-            let boxes = self.base().get_node_as::<Node3D>("Boxes");
-            for r#box in boxes.get_children().iter_shared() {
-                let mut r#box = r#box.cast::<Node3D>();
-                let grid_position = Vector2i::new(
-                    r#box.get_position().x.round() as i32,
-                    r#box.get_position().z.round() as i32,
-                );
-                let is_pushable = pushable_positions
-                    .iter_shared()
-                    .any(|position| position == grid_position);
-                r#box.set("disabled", &(!is_pushable).to_variant());
-            }
-        } else {
-            // Enables all boxes
-            let boxes = self.base().get_node_as::<Node3D>("Boxes");
-            for mut r#box in boxes.get_children().iter_shared() {
-                r#box.set("disabled", &false.to_variant());
-            }
-        }
     }
 
     #[func]
