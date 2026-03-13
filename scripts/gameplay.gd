@@ -34,7 +34,7 @@ func _ready() -> void:
 	undo_button.pressed.connect(level_map.do_undo)
 	redo_button.pressed.connect(level_map.do_redo)
 	undo_all_button.pressed.connect(level_map.do_undo_all)
-	solve_button.pressed.connect(level_map.solve_level)
+	solve_button.pressed.connect(level_map.do_solve)
 	menu_button.pressed.connect(_open_pause_menu)
 
 

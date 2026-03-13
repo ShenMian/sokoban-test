@@ -321,8 +321,7 @@ impl LevelMap {
 
     #[func]
     fn solve(&self, algorithm: Algorithm, strategy: Strategy) -> Array<i32> {
-        let strategy: solver::Strategy = strategy.into();
-        let solver = Solver::new(self.map().clone(), strategy);
+        let solver = Solver::new(self.map().clone(), strategy.into());
         let result = match algorithm {
             Algorithm::AStar => solver.a_star_search(),
             Algorithm::IDAStar => solver.ida_star_search(),

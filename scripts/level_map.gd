@@ -83,6 +83,19 @@ func do_undo_all() -> void:
 	_update_ui()
 
 
+func do_solve() -> void:
+	deselect_box()
+	await _execute_path(solve(solver_algorithm, solver_strategy))
+
+
+func wait_for_moves_finished() -> void:
+	if player.is_moving:
+		await player.move_finished
+	for box in boxes_container.get_children():
+		if box.is_moving:
+			await box.move_finished
+
+
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
@@ -131,7 +144,7 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 			build()
 		elif key == "pushable_hint":
 			_pushable_hint = value
-			update_pushable_hint()
+			_update_pushable_hint()
 		elif key == "heatmap":
 			heatmap = value
 		elif key == "pathfinding_strategy":
@@ -145,15 +158,6 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 func _on_waypoint_clicked(from: Vector2i, to: Vector2i) -> void:
 	deselect_box()
 	await _execute_path(get_box_move_path(from, to))
-
-
-func solve_level() -> void:
-	deselect_box()
-
-	if player.is_moving:
-		return
-
-	await _execute_path(solve(solver_algorithm, solver_strategy))
 
 
 func _execute_path(directions: Array) -> void:
@@ -187,14 +191,14 @@ func _sync_entities_from_state() -> void:
 			on_box_selected(box)
 		)
 		box.unselected.connect(on_box_unselected)
-		box.move_finished.connect(update_pushable_hint)
+		box.move_finished.connect(_update_pushable_hint)
 		boxes_container.add_child(box)
 
 	player.position = Vector3(player_pos.x, 0.0, player_pos.y)
-	update_pushable_hint()
+	_update_pushable_hint()
 
 
-func update_pushable_hint() -> void:
+func _update_pushable_hint() -> void:
 	if not _pushable_hint:
 		for box in boxes_container.get_children():
 			box.disabled = false
@@ -246,14 +250,6 @@ func _clear_waypoints() -> void:
 		child.queue_free()
 
 
-func wait_for_moves_finished() -> void:
-	if player.is_moving:
-		await player.move_finished
-	for box in boxes_container.get_children():
-		if box.is_moving:
-			await box.move_finished
-
-
 func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
 	_update_ui()
 
@@ -261,7 +257,7 @@ func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
 func _update_ui() -> void:
 	var snapshot: Dictionary = get_state_snapshot()
 	_update_labels(snapshot)
-	update_pushable_hint()
+	_update_pushable_hint()
 	if player.is_moving or _is_box_moving():
 		gameplay.undo_button.disabled = true
 		gameplay.redo_button.disabled = true
