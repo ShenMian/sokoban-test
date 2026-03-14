@@ -138,6 +138,12 @@ impl LevelMap {
     fn box_moved(from: Vector2i, to: Vector2i);
 
     #[signal]
+    fn box_enter_goal(position: Vector2i);
+
+    #[signal]
+    fn box_leave_goal(position: Vector2i);
+
+    #[signal]
     fn solved();
 
     /// Loads levels from an XSB file.
@@ -347,10 +353,17 @@ impl LevelMap {
             .player_moved()
             .emit(player_position.to_gd(), new_box_position.is_some());
 
-        if let (Some(box_position), Some(new_box_position)) = (box_position, new_box_position) {
-            self.signals()
-                .box_moved()
-                .emit(box_position.to_gd(), new_box_position.to_gd());
+        if let (Some(from), Some(to)) = (box_position, new_box_position) {
+            self.signals().box_moved().emit(from.to_gd(), to.to_gd());
+
+            match (
+                self.map()[*from].contains(Tiles::Goal),
+                self.map()[*to].contains(Tiles::Goal),
+            ) {
+                (false, true) => self.signals().box_enter_goal().emit(to.to_gd()),
+                (true, false) => self.signals().box_leave_goal().emit(to.to_gd()),
+                _ => {}
+            }
         }
 
         if self.map().is_solved() {

@@ -14,9 +14,13 @@ const WAYPOINT_SCENE = preload("res://scenes/waypoint.tscn")
 @onready var gameplay: Node3D = $".."
 @onready var camera: Camera3D = $"../Camera"
 @onready var player: Player = $Player
+
 @onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
+
+@onready var enter_goal_player: AudioStreamPlayer3D = $EnterGoalPlayer
+@onready var leave_goal_player: AudioStreamPlayer3D = $LeaveGoalPlayer
 
 @export var solver_algorithm: Settings.Algorithm
 @export var solver_strategy: Settings.Strategy
@@ -38,6 +42,8 @@ func _ready() -> void:
 	Settings.setting_changed.connect(_on_setting_changed)
 	player_moved.connect(_on_player_moved)
 	solved.connect(_on_solved)
+	box_enter_goal.connect(_on_box_enter_goal)
+	box_leave_goal.connect(_on_box_leave_goal)
 
 	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
 	var path := Settings.LEVEL_PATH + SceneTransition.collection + ".xsb"
@@ -277,7 +283,18 @@ func _update_labels(move_count: int, push_count: int) -> void:
 
 
 func _on_solved() -> void:
+	enter_goal_player.stop()
 	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, get_actions())
+
+
+func _on_box_enter_goal(pos: Vector2i) -> void:
+	enter_goal_player.position = Vector3(pos.x, 0.0, pos.y)
+	enter_goal_player.play()
+
+
+func _on_box_leave_goal(pos: Vector2i) -> void:
+	leave_goal_player.position = Vector3(pos.x, 0.0, pos.y)
+	leave_goal_player.play()
 
 
 func _reset_camera_position() -> void:

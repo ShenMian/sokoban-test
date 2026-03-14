@@ -7,7 +7,9 @@
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/ui/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
+[ext_resource type="AudioStream" uid="uid://0cexp28cej4" path="res://assets/audio/sfx/box_enter_goal.ogg" id="5_pv71h"]
 [ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/ui/settings_menu.tscn" id="6_din8e"]
+[ext_resource type="AudioStream" uid="uid://dchc8ar6lkdcr" path="res://assets/audio/sfx/box_leave_goal.ogg" id="6_m6b5a"]
 [ext_resource type="Texture2D" uid="uid://vr8jiem6x8fp" path="res://assets/textures/icons/forward.png" id="7_bhmdk"]
 [ext_resource type="Texture2D" uid="uid://d2taaqgkqbyky" path="res://assets/textures/icons/backward.png" id="7_s5y6v"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="8_407ns"]
@@ -84,6 +86,14 @@ selectable = false
 [node name="Waypoints" type="Node3D" parent="LevelMap" unique_id=1821682321]
 
 [node name="Heatmap" type="Node3D" parent="LevelMap" unique_id=17301854]
+
+[node name="EnterGoalPlayer" type="AudioStreamPlayer3D" parent="LevelMap" unique_id=405378980]
+stream = ExtResource("5_pv71h")
+volume_db = -10.0
+
+[node name="LeaveGoalPlayer" type="AudioStreamPlayer3D" parent="LevelMap" unique_id=1481552280]
+stream = ExtResource("6_m6b5a")
+volume_db = -10.0
 
 [node name="Camera" type="Camera3D" parent="." unique_id=414650077]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 9, -3.98)
