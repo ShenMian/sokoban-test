@@ -417,15 +417,12 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_state_snapshot(&self) -> VarDictionary {
+    fn get_status(&self) -> VarDictionary {
         let mut dict = VarDictionary::new();
-        dict.set("player_position", self.get_player_position());
-        dict.set("box_positions", self.get_box_positions());
         dict.set("move_count", self.get_move_count());
         dict.set("push_count", self.get_push_count());
         dict.set("can_undo", self.can_undo());
         dict.set("can_redo", self.can_redo());
-        dict.set("is_solved", self.is_solved());
         dict
     }
 

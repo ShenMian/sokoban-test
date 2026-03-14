@@ -180,16 +180,12 @@ func _is_box_moving() -> bool:
 
 
 func _sync_entities_from_state() -> void:
-	var snapshot: Dictionary = get_state_snapshot()
-	var box_positions: Array = snapshot["box_positions"]
-	var player_pos: Vector2i = snapshot["player_position"]
-
 	for child in boxes_container.get_children():
 		child.queue_free()
 
-	for box_pos in box_positions:
+	for box_position in get_box_positions():
 		var box: Box = BOX_SCENE.instantiate()
-		box.position = Vector3(box_pos.x, 0.0, box_pos.y)
+		box.position = Vector3(box_position.x, 0.0, box_position.y)
 		box.selected.connect(func() -> void:
 			on_box_selected(box)
 		)
@@ -197,7 +193,9 @@ func _sync_entities_from_state() -> void:
 		box.move_finished.connect(_update_pushable_hint)
 		boxes_container.add_child(box)
 
-	player.position = Vector3(player_pos.x, 0.0, player_pos.y)
+	var player_position := get_player_position()
+	player.position = Vector3(player_position.x, 0.0, player_position.y)
+
 	_update_pushable_hint()
 
 
@@ -221,7 +219,7 @@ func on_box_selected(box: Box) -> void:
 		_selected_box.deselect()
 
 	_selected_box = box
-	_rebuild_waypoints(box.grid_position())
+	_build_waypoints(box.grid_position())
 
 
 func on_box_unselected() -> void:
@@ -237,7 +235,7 @@ func deselect_box() -> void:
 	_clear_waypoints()
 
 
-func _rebuild_waypoints(from: Vector2i) -> void:
+func _build_waypoints(from: Vector2i) -> void:
 	_clear_waypoints()
 	for to in get_waypoint_positions(from):
 		var waypoint = WAYPOINT_SCENE.instantiate()
@@ -258,8 +256,8 @@ func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
 
 
 func _update_ui() -> void:
-	var snapshot: Dictionary = get_state_snapshot()
-	_update_labels(snapshot)
+	var status: Dictionary = get_status()
+	_update_labels(status["move_count"], status["push_count"])
 	_update_pushable_hint()
 	if player.is_moving or _is_box_moving():
 		gameplay.undo_button.disabled = true
@@ -267,19 +265,18 @@ func _update_ui() -> void:
 		gameplay.undo_all_button.disabled = true
 		gameplay.solve_button.disabled = true
 	else:
-		gameplay.undo_button.disabled = !snapshot["can_undo"]
-		gameplay.redo_button.disabled = !snapshot["can_redo"]
-		gameplay.undo_all_button.disabled = !snapshot["can_undo"]
+		gameplay.undo_button.disabled = !status["can_undo"]
+		gameplay.redo_button.disabled = !status["can_redo"]
+		gameplay.undo_all_button.disabled = !status["can_undo"]
 		gameplay.solve_button.disabled = false
 
 
-func _update_labels(snapshot: Dictionary) -> void:
-	gameplay.moves_label.text = str(snapshot["move_count"])
-	gameplay.pushes_label.text = str(snapshot["push_count"])
+func _update_labels(move_count: int, push_count: int) -> void:
+	gameplay.moves_label.text = str(move_count)
+	gameplay.pushes_label.text = str(push_count)
 
 
 func _on_solved() -> void:
-	print("Level solved!")
 	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, get_actions())
 
 

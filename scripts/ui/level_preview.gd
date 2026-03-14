@@ -70,12 +70,10 @@ func _sync_entities_from_state() -> void:
 	for child in boxes_container.get_children():
 		child.queue_free()
 
-	for box_pos in level_map.get_box_positions():
+	for box_position in level_map.get_box_positions():
 		var box: Box = BOX_SCENE.instantiate()
-		box.position = Vector3(box_pos.x, 0.0, box_pos.y)
-		box.selectable = false
-		box.disabled = false
+		box.position = Vector3(box_position.x, 0.0, box_position.y)
 		boxes_container.add_child(box)
 
-	var player_pos: Vector2i = level_map.get_player_position()
-	player.position = Vector3(player_pos.x, 0.0, player_pos.y)
+	var player_position := level_map.get_player_position()
+	player.position = Vector3(player_position.x, 0.0, player_position.y)
