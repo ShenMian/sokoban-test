@@ -155,7 +155,7 @@ func _build_heatmap() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if player.is_moving:
+		if _solving or player.is_moving:
 			get_viewport().set_input_as_handled()
 			return
 
