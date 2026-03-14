@@ -32,13 +32,30 @@ env ANDROID_NDK_HOME=/opt/android-ndk cargo ndk -t arm64-v8a build --release --f
 mkdir -p build/android
 ```
 
-The Debug build package can be exported directly via the following command:
+The **Debug** build package can be exported directly via the following command:
 
 ```sh
 godot --headless --export-debug "Android" build/android/sokoban.apk
 ```
 
 Exporting a Release build requires generating a Keystore for signing. Install and use `archlinux-java` to specify a default JDK, then use the `keytool` command to generate the Keystore.
+
+The following steps are also required to export the **Release** package:
+
+```sh
+keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 10000 -deststoretype pkcs12
+```
+
+Open the **Export** interface and set the **Release** path under **Keystore** (`keystore/release`) to the location of the generated file. Then, configure the following two properties:
+
+- **Release User** (`keystore/release_user`): `androiddebugkey`.
+- **Release Password** (`keystore/release_password`): `android`.
+
+Then, the Release build package can be exported via the following command:
+
+```sh
+godot --headless --export-release "Android" build/android/sokoban.apk
+```
 
 ## Assets
 
