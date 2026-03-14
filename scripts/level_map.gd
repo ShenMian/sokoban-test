@@ -220,9 +220,7 @@ func _sync_entities_from_state() -> void:
 	for box_position in get_box_positions():
 		var box: Box = BOX_SCENE.instantiate()
 		box.position = Vector3(box_position.x, 0.0, box_position.y)
-		box.selected.connect(func() -> void:
-			on_box_selected(box)
-		)
+		box.selected.connect(on_box_selected.bind(box))
 		box.unselected.connect(on_box_unselected)
 		box.move_finished.connect(_update_pushable_hint)
 		boxes_container.add_child(box)
