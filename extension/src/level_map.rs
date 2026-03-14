@@ -111,6 +111,8 @@ struct LevelMap {
     waypoints: HashMap<DirectedPosition, DirectedPosition>,
     costs: HashMap<DirectedPosition, i32>,
 
+    /// Active solver instance.
+    solver: Option<Solver>,
     /// Shared storage for the background solver result.
     solver_result: Arc<Mutex<Option<Result<Actions, SearchError>>>>,
     /// Flag indicating that the solver thread has finished.
@@ -141,6 +143,7 @@ impl IGridMap for LevelMap {
             solver_result: Arc::new(Mutex::new(None)),
             solver_done: Arc::new(AtomicBool::new(false)),
             solver_handle: None,
+            solver: None,
             level,
             base,
         }
@@ -356,11 +359,13 @@ impl LevelMap {
         done_flag.store(false, Ordering::Release);
         *result_slot.lock().unwrap() = None;
 
+        let solver = Solver::new(map, strategy.into());
+        self.solver = Some(solver.clone());
+
         let handle = thread::Builder::new()
             .name("solver".into())
             .stack_size(SOLVER_STACK_SIZE)
             .spawn(move || {
-                let solver = Solver::new(map, strategy.into());
                 let result = match algorithm {
                     Algorithm::AStar => solver.a_star_search(),
                     Algorithm::IDAStar => solver.ida_star_search(),
@@ -386,6 +391,8 @@ impl LevelMap {
         if let Some(handle) = self.solver_handle.take() {
             let _ = handle.join();
         }
+        self.solver = None;
+
         let result = self.solver_result.lock().unwrap().take();
 
         match result {
@@ -397,10 +404,9 @@ impl LevelMap {
                 self.signals().solve_completed().emit(&directions);
             }
             Some(Err(err)) => {
-                let msg: GString = format!("{err}").as_str().into();
                 self.signals()
                     .solve_failed()
-                    .emit(&Into::<GString>::into(&msg.to_string()));
+                    .emit(&Into::<GString>::into(&err.to_string()));
             }
             None => unreachable!(),
         }
@@ -408,13 +414,15 @@ impl LevelMap {
         false
     }
 
-    /// Cancels a running solve (if any) by detaching the thread.
+    /// Cancels a running solve (if any).
     #[func]
     fn cancel_solve(&mut self) {
+        if let Some(solver) = self.solver.take() {
+            solver.request_stop();
+        }
         if let Some(handle) = self.solver_handle.take() {
-            // We cannot forcefully stop the thread, but we detach it so that
-            // we no longer poll its result.
-            drop(handle);
+            // Wait for the solver thread to exit.
+            let _ = handle.join();
             self.solver_done.store(false, Ordering::Release);
             *self.solver_result.lock().unwrap() = None;
         }
