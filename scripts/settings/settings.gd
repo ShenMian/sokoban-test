@@ -28,9 +28,9 @@ const DEFAULT_CONFIG = {
 		"deadlock_hint": true,
 		"pushable_hint": true,
 		"pathfinding_strategy": Strategy.PUSH_OPTIMAL,
-		"heatmap": false,
 		"algorithm": Algorithm.A_STAR,
 		"solver_strategy": Strategy.QUICK,
+		"heatmap": false,
 	},
 	"video": {
 		"window_mode": DisplayServer.WINDOW_MODE_WINDOWED,
@@ -125,6 +125,10 @@ func reset_video_settings() -> void:
 	for key in DEFAULT_CONFIG.video:
 		var value: Variant = DEFAULT_CONFIG.video[key]
 		set_value("video", key, value)
+
+	if OS.get_name() == "Android":
+		_config.set_value("video", "window_mode", DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN)
+
 	_config.save(CONFIG_PATH)
 
 
