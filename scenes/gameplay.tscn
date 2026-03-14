@@ -1,15 +1,11 @@
 [gd_scene format=3 uid="uid://dxgyp85axyufh"]
 
-[ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/meshes/mesh_library.tres" id="1_7biu0"]
 [ext_resource type="Script" uid="uid://d2l2mcb536frf" path="res://scripts/gameplay.gd" id="1_l1v76"]
-[ext_resource type="PackedScene" uid="uid://d3bx7fp67oyvm" path="res://scenes/player.tscn" id="3_4bh5q"]
-[ext_resource type="Script" uid="uid://byfwrccvjxb11" path="res://scripts/level_map.gd" id="3_e124b"]
+[ext_resource type="PackedScene" uid="uid://b5cdeeolugm5e" path="res://scenes/level_map.tscn" id="2_bhmdk"]
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/ui/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
-[ext_resource type="AudioStream" uid="uid://0cexp28cej4" path="res://assets/audio/sfx/box_enter_goal.ogg" id="5_pv71h"]
 [ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/ui/settings_menu.tscn" id="6_din8e"]
-[ext_resource type="AudioStream" uid="uid://dchc8ar6lkdcr" path="res://assets/audio/sfx/box_leave_goal.ogg" id="6_m6b5a"]
 [ext_resource type="Texture2D" uid="uid://vr8jiem6x8fp" path="res://assets/textures/icons/forward.png" id="7_bhmdk"]
 [ext_resource type="Texture2D" uid="uid://d2taaqgkqbyky" path="res://assets/textures/icons/backward.png" id="7_s5y6v"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="8_407ns"]
@@ -70,30 +66,7 @@ events = [SubResource("InputEventAction_w3w6i")]
 [node name="Gameplay" type="Node3D" unique_id=918217711]
 script = ExtResource("1_l1v76")
 
-[node name="LevelMap" type="LevelMap" parent="." unique_id=1068863980]
-floor_item_id = 0
-wall_item_id = 1
-goal_item_id = 2
-mesh_library = ExtResource("1_7biu0")
-cell_size = Vector3(1, 1, 1)
-script = ExtResource("3_e124b")
-
-[node name="Boxes" type="Node3D" parent="LevelMap" unique_id=1541519836]
-
-[node name="Player" parent="LevelMap" unique_id=1252982032 instance=ExtResource("3_4bh5q")]
-selectable = false
-
-[node name="Waypoints" type="Node3D" parent="LevelMap" unique_id=1821682321]
-
-[node name="Heatmap" type="Node3D" parent="LevelMap" unique_id=17301854]
-
-[node name="EnterGoalPlayer" type="AudioStreamPlayer3D" parent="LevelMap" unique_id=405378980]
-stream = ExtResource("5_pv71h")
-volume_db = -10.0
-
-[node name="LeaveGoalPlayer" type="AudioStreamPlayer3D" parent="LevelMap" unique_id=1481552280]
-stream = ExtResource("6_m6b5a")
-volume_db = -10.0
+[node name="LevelMap" parent="." unique_id=873965418 instance=ExtResource("2_bhmdk")]
 
 [node name="Camera" type="Camera3D" parent="." unique_id=414650077]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 9, -3.98)

@@ -7,14 +7,14 @@ enum Direction {
 	RIGHT = 3
 }
 
-const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 const BOX_SCENE = preload("res://scenes/box.tscn")
 const WAYPOINT_SCENE = preload("res://scenes/waypoint.tscn")
+const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 
 @onready var gameplay: Node3D = $".."
 @onready var camera: Camera3D = $"../Camera"
-@onready var player: Player = $Player
 
+@onready var player: Player = $Player
 @onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
