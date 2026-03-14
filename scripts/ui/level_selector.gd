@@ -21,10 +21,16 @@ var _generated_previews: Array[int] = []
 
 var _selected_collection: String
 
+var _touch_start_pos: Vector2
+var _touch_start_scroll: float
+var _is_touch_scrolling: bool
+var _touch_pressed_item: int = -1
+const TOUCH_SCROLL_THRESHOLD := 8.0
+
 
 func _ready():
-	collection_list.item_clicked.connect(_on_collection_list_clicked)
-	level_list.item_clicked.connect(_on_level_clicked)
+	collection_list.gui_input.connect(_on_collection_list_gui_input)
+	level_list.gui_input.connect(_on_level_list_gui_input)
 	level_list.resized.connect(_on_level_list_resized)
 
 	level_preview.preview_generated.connect(_on_preview_generated)
@@ -142,6 +148,33 @@ func _make_tooltip(index: int, data: Dictionary) -> String:
 		lines.append("")
 		lines.append(comment)
 	return "\n".join(lines)
+
+
+func _on_collection_list_gui_input(event: InputEvent):
+	_handle_list_touch_input(collection_list, event, _on_collection_list_clicked)
+
+
+func _on_level_list_gui_input(event: InputEvent):
+	_handle_list_touch_input(level_list, event, _on_level_clicked)
+
+
+func _handle_list_touch_input(list: ItemList, event: InputEvent, click_callback: Callable):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_touch_start_pos = event.position
+			_touch_start_scroll = list.get_v_scroll_bar().value
+			_is_touch_scrolling = false
+			_touch_pressed_item = list.get_item_at_position(event.position, true)
+		else:
+			if not _is_touch_scrolling and _touch_pressed_item >= 0:
+				click_callback.call(_touch_pressed_item, event.position, MOUSE_BUTTON_LEFT)
+			_touch_pressed_item = -1
+	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+		var delta: float = event.position.y - _touch_start_pos.y
+		if not _is_touch_scrolling and abs(delta) > TOUCH_SCROLL_THRESHOLD:
+			_is_touch_scrolling = true
+		if _is_touch_scrolling:
+			list.get_v_scroll_bar().value = _touch_start_scroll - delta
 
 
 func _on_level_clicked(index: int, _at_position: Vector2, mouse_button_index: int):
