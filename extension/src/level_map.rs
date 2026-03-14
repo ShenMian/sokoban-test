@@ -292,11 +292,13 @@ impl LevelMap {
     #[func]
     fn get_waypoint_positions(&mut self, box_position: Vector2i) -> Array<Vector2i> {
         let box_position = box_position.to_na();
-        let strategy: solver::Strategy = self.pathfinding_strategy.into();
 
         let start = std::time::Instant::now();
-        let (mut waypoints, costs) =
-            path_finding::compute_box_waypoints(self.map(), box_position, strategy);
+        let (mut waypoints, costs) = path_finding::compute_box_waypoints(
+            self.map(),
+            box_position,
+            self.pathfinding_strategy.into(),
+        );
         let elapsed = start.elapsed();
 
         godot_print!("found {} waypoints ({:?})", waypoints.len(), elapsed);
@@ -319,6 +321,7 @@ impl LevelMap {
 
     #[func]
     fn solve(&self, algorithm: Algorithm, strategy: Strategy) -> Array<i32> {
+        let start = std::time::Instant::now();
         let solver = Solver::new(self.map().clone(), strategy.into());
         let result = match algorithm {
             Algorithm::AStar => solver.a_star_search(),
@@ -328,6 +331,9 @@ impl LevelMap {
             godot_warn!("failed to find solution: {}", result.err().unwrap());
             return Array::new();
         };
+        let elapsed = start.elapsed();
+
+        godot_print!("found solution in {:?}", elapsed);
 
         let mut directions = Array::new();
         for action in &*actions {
