@@ -36,6 +36,8 @@ var heatmap: bool:
 
 var _pushable_hint: bool
 var _selected_box: Box
+var _solving: bool = false
+var _solve_tween: Tween
 
 
 func _ready() -> void:
@@ -44,6 +46,8 @@ func _ready() -> void:
 	solved.connect(_on_solved)
 	box_enter_goal.connect(_on_box_enter_goal)
 	box_leave_goal.connect(_on_box_leave_goal)
+	solve_completed.connect(_on_solve_completed)
+	solve_failed.connect(_on_solve_failed)
 
 	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
 	var path := Settings.LEVEL_PATH + SceneTransition.collection + ".xsb"
@@ -59,6 +63,10 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if _solving:
+		poll_solve()
+		return
+
 	if player.is_moving or _is_box_moving():
 		return
 
@@ -93,8 +101,28 @@ func do_undo_all() -> void:
 
 
 func do_solve() -> void:
+	if _solving:
+		cancel_solve()
+		_solving = false
+		_update_ui()
+		return
+
 	deselect_box()
-	await _execute_path(solve(solver_algorithm, solver_strategy))
+	_solving = true
+	_update_ui()
+	start_solve(solver_algorithm, solver_strategy)
+
+
+func _on_solve_completed(directions: Array) -> void:
+	_solving = false
+	_update_ui()
+	await _execute_path(directions)
+
+
+func _on_solve_failed(error: String) -> void:
+	_solving = false
+	_update_ui()
+	push_warning("Solver failed: " + error)
 
 
 func wait_for_moves_finished() -> void:
@@ -265,16 +293,33 @@ func _update_ui() -> void:
 	var status: Dictionary = get_status()
 	_update_labels(status["move_count"], status["push_count"])
 	_update_pushable_hint()
-	if player.is_moving or _is_box_moving():
+	
+	if _solving:
 		gameplay.undo_button.disabled = true
 		gameplay.redo_button.disabled = true
 		gameplay.undo_all_button.disabled = true
-		gameplay.solve_button.disabled = true
-	else:
-		gameplay.undo_button.disabled = !status["can_undo"]
-		gameplay.redo_button.disabled = !status["can_redo"]
-		gameplay.undo_all_button.disabled = !status["can_undo"]
 		gameplay.solve_button.disabled = false
+		
+		if _solve_tween == null:
+			_solve_tween = create_tween().set_loops()
+			_solve_tween.tween_property(gameplay.solve_button, "modulate", Color(0.5, 0.8, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
+			_solve_tween.tween_property(gameplay.solve_button, "modulate", Color(0.0, 0.567, 0.823, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
+	else:
+		if _solve_tween:
+			_solve_tween.kill()
+			_solve_tween = null
+		gameplay.solve_button.modulate = Color.WHITE
+
+		if player.is_moving or _is_box_moving():
+			gameplay.undo_button.disabled = true
+			gameplay.redo_button.disabled = true
+			gameplay.undo_all_button.disabled = true
+			gameplay.solve_button.disabled = true
+		else:
+			gameplay.undo_button.disabled = !status["can_undo"]
+			gameplay.redo_button.disabled = !status["can_redo"]
+			gameplay.undo_all_button.disabled = !status["can_undo"]
+			gameplay.solve_button.disabled = false
 
 
 func _update_labels(move_count: int, push_count: int) -> void:

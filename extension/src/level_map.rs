@@ -2,6 +2,11 @@ use std::{
     collections::HashMap,
     io::{BufReader, Cursor},
     str::FromStr,
+    sync::{
+        Arc, Mutex,
+        atomic::{AtomicBool, Ordering},
+    },
+    thread,
 };
 
 use godot::{
@@ -14,7 +19,7 @@ use godot::{
 };
 use nalgebra::Vector2;
 use soukoban::{
-    Actions, Level, Map, Tiles,
+    Actions, Level, Map, SearchError, Tiles,
     deadlock::compute_static_deadlocks,
     direction::{self, DirectedPosition},
     path_finding,
@@ -71,6 +76,9 @@ pub enum Algorithm {
     IDAStar,
 }
 
+/// Stack size for the solver thread (64 MB).
+const SOLVER_STACK_SIZE: usize = 64 * 1024 * 1024;
+
 #[derive(GodotClass)]
 #[class(base=GridMap)]
 struct LevelMap {
@@ -103,6 +111,13 @@ struct LevelMap {
     waypoints: HashMap<DirectedPosition, DirectedPosition>,
     costs: HashMap<DirectedPosition, i32>,
 
+    /// Shared storage for the background solver result.
+    solver_result: Arc<Mutex<Option<Result<Actions, SearchError>>>>,
+    /// Flag indicating that the solver thread has finished.
+    solver_done: Arc<AtomicBool>,
+    /// Handle to the solver thread (if running).
+    solver_handle: Option<thread::JoinHandle<()>>,
+
     base: Base<GridMap>,
 }
 
@@ -123,6 +138,9 @@ impl IGridMap for LevelMap {
             deadlock_dark_item_id: GridMap::INVALID_CELL_ITEM,
             waypoints: HashMap::new(),
             costs: HashMap::new(),
+            solver_result: Arc::new(Mutex::new(None)),
+            solver_done: Arc::new(AtomicBool::new(false)),
+            solver_handle: None,
             level,
             base,
         }
@@ -145,6 +163,12 @@ impl LevelMap {
 
     #[signal]
     fn solved();
+
+    #[signal]
+    fn solve_completed(directions: Array<i32>);
+
+    #[signal]
+    fn solve_failed(error: GString);
 
     /// Loads levels from an XSB file.
     #[func]
@@ -319,27 +343,81 @@ impl LevelMap {
         positions
     }
 
+    /// Starts solving in a background thread with a custom stack size.
     #[func]
-    fn solve(&self, algorithm: Algorithm, strategy: Strategy) -> Array<i32> {
-        let start = std::time::Instant::now();
-        let solver = Solver::new(self.map().clone(), strategy.into());
-        let result = match algorithm {
-            Algorithm::AStar => solver.a_star_search(),
-            Algorithm::IDAStar => solver.ida_star_search(),
-        };
-        let Ok(actions) = result else {
-            godot_warn!("failed to find solution: {}", result.err().unwrap());
-            return Array::new();
-        };
-        let elapsed = start.elapsed();
+    fn start_solve(&mut self, algorithm: Algorithm, strategy: Strategy) {
+        // Cancel any previously running solve.
+        self.cancel_solve();
 
-        godot_print!("found solution in {:?}", elapsed);
+        let map = self.map().clone();
+        let result_slot = Arc::clone(&self.solver_result);
+        let done_flag = Arc::clone(&self.solver_done);
 
-        let mut directions = Array::new();
-        for action in &*actions {
-            directions.push(action.direction() as i32);
+        done_flag.store(false, Ordering::Release);
+        *result_slot.lock().unwrap() = None;
+
+        let handle = thread::Builder::new()
+            .name("solver".into())
+            .stack_size(SOLVER_STACK_SIZE)
+            .spawn(move || {
+                let solver = Solver::new(map, strategy.into());
+                let result = match algorithm {
+                    Algorithm::AStar => solver.a_star_search(),
+                    Algorithm::IDAStar => solver.ida_star_search(),
+                };
+
+                *result_slot.lock().unwrap() = Some(result);
+                done_flag.store(true, Ordering::Release);
+            })
+            .expect("failed to spawn solver thread");
+
+        self.solver_handle = Some(handle);
+    }
+
+    /// Polls for the solver result. Returns `true` while the solver is still
+    /// running. When the solver finishes, emits `solve_completed` or
+    /// `solve_failed` and returns `false`.
+    #[func]
+    fn poll_solve(&mut self) -> bool {
+        if !self.solver_done.load(Ordering::Acquire) {
+            return true;
         }
-        directions
+
+        if let Some(handle) = self.solver_handle.take() {
+            let _ = handle.join();
+        }
+        let result = self.solver_result.lock().unwrap().take();
+
+        match result {
+            Some(Ok(actions)) => {
+                let mut directions = Array::new();
+                for action in &*actions {
+                    directions.push(action.direction() as i32);
+                }
+                self.signals().solve_completed().emit(&directions);
+            }
+            Some(Err(err)) => {
+                let msg: GString = format!("{err}").as_str().into();
+                self.signals()
+                    .solve_failed()
+                    .emit(&Into::<GString>::into(&msg.to_string()));
+            }
+            None => unreachable!(),
+        }
+
+        false
+    }
+
+    /// Cancels a running solve (if any) by detaching the thread.
+    #[func]
+    fn cancel_solve(&mut self) {
+        if let Some(handle) = self.solver_handle.take() {
+            // We cannot forcefully stop the thread, but we detach it so that
+            // we no longer poll its result.
+            drop(handle);
+            self.solver_done.store(false, Ordering::Release);
+            *self.solver_result.lock().unwrap() = None;
+        }
     }
 
     #[func]

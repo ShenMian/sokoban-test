@@ -12,11 +12,11 @@ extends Node3D
 @onready var moves_label: Label = %MovesValue
 @onready var pushes_label: Label = %PushesValue
 
-@onready var undo_button: Button = %UndoButton
-@onready var redo_button: Button = %RedoButton
-@onready var undo_all_button: Button = %UndoAllButton
-@onready var solve_button: Button = %SolveButton
-@onready var menu_button: Button = %MenuButton
+@onready var undo_button: ButtonFx = %UndoButton
+@onready var redo_button: ButtonFx = %RedoButton
+@onready var undo_all_button: ButtonFx = %UndoAllButton
+@onready var solve_button: ButtonFx = %SolveButton
+@onready var menu_button: ButtonFx = %MenuButton
 
 
 func _ready() -> void:
