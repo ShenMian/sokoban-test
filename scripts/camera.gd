@@ -16,6 +16,11 @@ var _is_dragging = false
 var _target_position: Vector3
 var _target_size: float = 10.0
 
+# Touch state
+var _touches: Dictionary = {}  # index -> position
+var _touch_initial_distance: float = 0.0
+var _touch_initial_zoom: float = 0.0
+
 
 func _ready():
 	Settings.setting_changed.connect(_on_setting_changed)
@@ -61,6 +66,45 @@ func _input(event: InputEvent):
 	elif event is InputEventMouseMotion and _is_dragging:
 		_target_position.x -= event.relative.x * drag_sensitivity * zoom_factor * 0.001
 		_target_position.z -= event.relative.y * drag_sensitivity * zoom_factor * 0.001
+	elif event is InputEventScreenTouch:
+		_handle_screen_touch(event)
+	elif event is InputEventScreenDrag:
+		_handle_screen_drag(event)
+
+
+func _handle_screen_touch(event: InputEventScreenTouch):
+	if event.pressed:
+		_touches[event.index] = event.position
+		if _touches.size() == 2:
+			var points: Array = _touches.values()
+			_touch_initial_distance = (points[0] as Vector2).distance_to(points[1] as Vector2)
+			_touch_initial_zoom = zoom_factor
+	else:
+		_touches.erase(event.index)
+		# If one finger remains, reset its position to avoid a jump
+		if _touches.size() == 1:
+			var remaining_index: int = _touches.keys()[0]
+			_touches[remaining_index] = event.position
+
+
+func _handle_screen_drag(event: InputEventScreenDrag):
+	_touches[event.index] = event.position
+
+	if _touches.size() == 1:
+		# Single finger drag: pan
+		_target_position.x -= event.relative.x * drag_sensitivity * zoom_factor * 0.001
+		_target_position.z -= event.relative.y * drag_sensitivity * zoom_factor * 0.001
+	elif _touches.size() == 2:
+		# Two finger pinch: zoom
+		var points: Array = _touches.values()
+		var current_distance: float = (points[0] as Vector2).distance_to(points[1] as Vector2)
+		if _touch_initial_distance > 0.0:
+			var ratio: float = _touch_initial_distance / current_distance
+			zoom_factor = clampf(_touch_initial_zoom * ratio, 2.0, _touch_initial_zoom + 20.0)
+
+		# Two finger drag: pan (use average relative motion)
+		_target_position.x -= event.relative.x * drag_sensitivity * zoom_factor * 0.001 * 0.5
+		_target_position.z -= event.relative.y * drag_sensitivity * zoom_factor * 0.001 * 0.5
 
 
 func zoom_in():
