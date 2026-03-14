@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/ui/settings_menu.tscn" id="6_din8e"]
 [ext_resource type="Texture2D" uid="uid://vr8jiem6x8fp" path="res://assets/textures/icons/forward.png" id="7_bhmdk"]
 [ext_resource type="Texture2D" uid="uid://d2taaqgkqbyky" path="res://assets/textures/icons/backward.png" id="7_s5y6v"]
+[ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="8_407ns"]
 [ext_resource type="Texture2D" uid="uid://qo1gsvr3g6wc" path="res://assets/textures/icons/return.png" id="8_s5y6v"]
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
 [ext_resource type="Texture2D" uid="uid://bxogo6js8fo1a" path="res://assets/textures/icons/cpu.png" id="9_bhmdk"]
@@ -202,7 +203,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
 layout_mode = 2
 alignment = 1
 
-[node name="UndoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=353608717]
+[node name="UndoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=744286810]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -214,8 +215,10 @@ shortcut_in_tooltip = false
 icon = ExtResource("7_s5y6v")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
-[node name="RedoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=758754747]
+[node name="RedoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=713840370]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -227,8 +230,10 @@ shortcut_in_tooltip = false
 icon = ExtResource("7_bhmdk")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
-[node name="UndoAllButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=290671197]
+[node name="UndoAllButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1927154306]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -240,8 +245,10 @@ shortcut_in_tooltip = false
 icon = ExtResource("8_s5y6v")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
-[node name="SolveButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1566909949]
+[node name="SolveButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=2142071452]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -253,8 +260,10 @@ shortcut_in_tooltip = false
 icon = ExtResource("9_bhmdk")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
-[node name="MenuButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1884267649]
+[node name="MenuButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1243846117]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -266,6 +275,8 @@ shortcut_in_tooltip = false
 icon = ExtResource("11_s5y6v")
 icon_alignment = 1
 expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
 [node name="MenuLayer" type="CanvasLayer" parent="." unique_id=2061582100]
 layer = 2
