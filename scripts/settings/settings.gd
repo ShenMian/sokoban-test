@@ -56,12 +56,13 @@ const LOCALES: Array[String] = ["en", "zh"]
 
 const CONFIG_PATH = "user://settings.ini"
 const SOLUTIONS_PATH = "user://solutions.ini"
-const BINDINGS_PATH = "user://bindings.tres"
+const BINDINGS_PATH = "user://bindings.ini"
 
 const LEVEL_PATH = "res://assets/levels/"
 
 var _config := ConfigFile.new()
 var _solutions := ConfigFile.new()
+var _bindings := ConfigFile.new()
 
 
 func _ready() -> void:
@@ -144,23 +145,21 @@ func reset_input_settings() -> void:
 
 
 func load_bindings() -> void:
-	var map: DictionaryResource = ResourceLoader.load(BINDINGS_PATH, "DictionaryResource")
-	if not is_instance_valid(map):
-		printerr("failed to load bindings")
-		return
-	for action in map.dict:
+	var error := _bindings.load(BINDINGS_PATH)
+	if error:
+		printerr("failed to load bindings file: ", error_string(error))
+	for action in _bindings.get_section_keys("bindings"):
 		InputMap.action_erase_events(action)
-		for event in map.dict[action]:
+		for event in _bindings.get_value("bindings", action):
 			InputMap.action_add_event(action, event)
 
 
 func save_bindings() -> void:
-	var map := DictionaryResource.new()
 	for action in InputMap.get_actions():
-		if action.begins_with("editor_") or action.begins_with("ui_"):
+		if action.begins_with("ui_"):
 			continue
-		map.dict[action] = InputMap.action_get_events(action)
-	var error := ResourceSaver.save(map, BINDINGS_PATH)
+		_bindings.set_value("bindings", action, InputMap.action_get_events(action))
+	var error := _bindings.save(BINDINGS_PATH)
 	if error:
 		printerr("failed to save bindings: ", error_string(error))
 
