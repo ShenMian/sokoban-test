@@ -58,7 +58,6 @@ const CONFIG_PATH = "user://settings.ini"
 const SOLUTIONS_PATH = "user://solutions.ini"
 const BINDINGS_PATH = "user://bindings.tres"
 
-const DEFAULT_BINDINGS_PATH = "user://default_bindings.tres"
 const LEVEL_PATH = "res://assets/levels/"
 
 var _config := ConfigFile.new()
@@ -87,10 +86,9 @@ func _ready() -> void:
 
 	var solutions_status := _solutions.load(SOLUTIONS_PATH)
 	if solutions_status:
-		printerr("failed to load _solutions file: ", error_string(solutions_status))
+		printerr("failed to load solutions file: ", error_string(solutions_status))
 
-	save_input_bindings(DEFAULT_BINDINGS_PATH)
-	load_input_bindings()
+	load_bindings()
 
 
 func set_and_save_value(section: String, key: String, value: Variant) -> void:
@@ -141,12 +139,12 @@ func reset_audio_settings() -> void:
 
 
 func reset_input_settings() -> void:
-	load_input_bindings(DEFAULT_BINDINGS_PATH)
-	save_input_bindings()
+	InputMap.load_from_project_settings()
+	save_bindings()
 
 
-func load_input_bindings(path: String = BINDINGS_PATH) -> void:
-	var map: DictionaryResource = ResourceLoader.load(path, "DictionaryResource")
+func load_bindings() -> void:
+	var map: DictionaryResource = ResourceLoader.load(BINDINGS_PATH, "DictionaryResource")
 	if not is_instance_valid(map):
 		printerr("failed to load bindings")
 		return
@@ -156,13 +154,13 @@ func load_input_bindings(path: String = BINDINGS_PATH) -> void:
 			InputMap.action_add_event(action, event)
 
 
-func save_input_bindings(path: String = BINDINGS_PATH) -> void:
+func save_bindings() -> void:
 	var map := DictionaryResource.new()
 	for action in InputMap.get_actions():
 		if action.begins_with("editor_") or action.begins_with("ui_"):
 			continue
 		map.dict[action] = InputMap.action_get_events(action)
-	var error := ResourceSaver.save(map, path)
+	var error := ResourceSaver.save(map, BINDINGS_PATH)
 	if error:
 		printerr("failed to save bindings: ", error_string(error))
 

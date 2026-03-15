@@ -27,7 +27,7 @@ func _ready() -> void:
 
 func _on_binding_popup_closed() -> void:
 	apply_settings()
-	Settings.save_input_bindings()
+	Settings.save_bindings()
 
 
 func apply_settings() -> void:
