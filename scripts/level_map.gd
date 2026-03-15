@@ -44,8 +44,8 @@ func _ready() -> void:
 	Settings.setting_changed.connect(_on_setting_changed)
 	player_moved.connect(_on_player_moved)
 	solved.connect(_on_solved)
-	box_enter_goal.connect(_on_box_enter_goal)
-	box_leave_goal.connect(_on_box_leave_goal)
+	box_enter_goal.connect(enter_goal_player.play)
+	box_leave_goal.connect(leave_goal_player.play)
 	solve_completed.connect(_on_solve_completed)
 	solve_failed.connect(_on_solve_failed)
 
@@ -327,14 +327,6 @@ func _update_ui() -> void:
 func _on_solved() -> void:
 	enter_goal_player.stop()
 	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, get_actions())
-
-
-func _on_box_enter_goal(_pos: Vector2i) -> void:
-	enter_goal_player.play()
-
-
-func _on_box_leave_goal(_pos: Vector2i) -> void:
-	leave_goal_player.play()
 
 
 func _reset_camera_position() -> void:
