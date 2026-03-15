@@ -80,6 +80,9 @@ func _process(_delta: float) -> void:
 		move_by(Direction.DOWN)
 	elif Input.is_action_just_pressed("undo_all"):
 		do_undo_all()
+	
+	await wait_for_moves_finished()
+	_update_ui()
 
 
 func do_undo() -> void:
