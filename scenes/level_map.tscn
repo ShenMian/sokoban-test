@@ -19,14 +19,14 @@ script = ExtResource("2_28enl")
 [node name="Player" parent="." unique_id=1252982032 instance=ExtResource("3_4mfww")]
 selectable = false
 
-[node name="Waypoints" type="Node3D" parent="." unique_id=1829147570]
-
-[node name="Heatmap" type="Node3D" parent="." unique_id=913879998]
-
-[node name="EnterGoalPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1473884946]
+[node name="EnterGoalPlayer" type="AudioStreamPlayer3D" parent="Player" unique_id=1473884946]
 stream = ExtResource("4_ublle")
 volume_db = -10.0
 
-[node name="LeaveGoalPlayer" type="AudioStreamPlayer3D" parent="." unique_id=1023836962]
+[node name="LeaveGoalPlayer" type="AudioStreamPlayer3D" parent="Player" unique_id=1023836962]
 stream = ExtResource("5_8v2yb")
 volume_db = -10.0
+
+[node name="Waypoints" type="Node3D" parent="." unique_id=1829147570]
+
+[node name="Heatmap" type="Node3D" parent="." unique_id=913879998]

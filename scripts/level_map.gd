@@ -19,8 +19,8 @@ const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
 
-@onready var enter_goal_player: AudioStreamPlayer3D = $EnterGoalPlayer
-@onready var leave_goal_player: AudioStreamPlayer3D = $LeaveGoalPlayer
+@onready var enter_goal_player: AudioStreamPlayer3D = $Player/EnterGoalPlayer
+@onready var leave_goal_player: AudioStreamPlayer3D = $Player/LeaveGoalPlayer
 
 @export var solver_algorithm: Settings.Algorithm
 @export var solver_strategy: Settings.Strategy
@@ -329,13 +329,11 @@ func _on_solved() -> void:
 	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, get_actions())
 
 
-func _on_box_enter_goal(pos: Vector2i) -> void:
-	enter_goal_player.position = Vector3(pos.x, 0.0, pos.y)
+func _on_box_enter_goal(_pos: Vector2i) -> void:
 	enter_goal_player.play()
 
 
-func _on_box_leave_goal(pos: Vector2i) -> void:
-	leave_goal_player.position = Vector3(pos.x, 0.0, pos.y)
+func _on_box_leave_goal(_pos: Vector2i) -> void:
 	leave_goal_player.play()
 
 
