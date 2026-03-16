@@ -57,6 +57,28 @@ Then, the Release build package can be exported via the following command:
 godot --headless --export-release "Android" build/android/sokoban.apk
 ```
 
+### WASM
+
+```
+scoop install emscripten python binaryen
+emsdk install latest
+emsdk activate latest
+
+$env:PATH += ";D:\apps\scoop\apps\emscripten\current\upstream\emscripten"
+$env:EMSDK_PYTHON = "D:\apps\scoop\apps\python\current\python.exe"
+$env:BINARYEN_ROOT = "D:\apps\scoop\apps\emscripten\current\upstream"
+emcc -v
+
+$env:GDRUST_GODOT_BIN = "D:\apps\scoop\apps\godot\current\godot.exe"
+$env:LIBCLANG_PATH = "D:\apps\scoop\apps\llvm\current\bin"
+$env:C_INCLUDE_PATH = "D:\apps\scoop\apps\llvm\current\lib\clang\22\include"
+
+cargo +nightly build -Zbuild-std --target wasm32-unknown-emscripten
+
+$env:EM_BINARYEN_ROOT = "D:\apps\scoop\apps\emscripten\current\upstream"
+cargo +nightly build --release -Zbuild-std --target wasm32-unknown-emscripten
+```
+
 ## Assets
 
 | Name                        | Author    | License   |

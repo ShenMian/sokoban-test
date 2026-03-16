@@ -7,6 +7,6 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-godot = "0.4"
+godot = { git = "https://github.com/godot-rust/gdext", branch = "master", features = ["api-custom", "experimental-wasm", "lazy-function-tables"] }
 nalgebra = "0.34"
 soukoban = { path = "../../soukoban" }

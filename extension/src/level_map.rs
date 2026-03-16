@@ -91,7 +91,7 @@ struct LevelMap {
     deadlock_hint: bool,
 
     #[export]
-    #[var(get, set = set_deadlock_tint)]
+    #[var(get = get_deadlock_tint, set = set_deadlock_tint)]
     deadlock_tint: Color,
 
     #[export]
@@ -177,8 +177,9 @@ impl LevelMap {
     #[func]
     fn load_collection(path: GString) -> Array<VarDictionary> {
         let path = path.to_string();
-        let file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let buffer = file.get_buffer(file.get_length() as i64).to_vec();
+        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
+        let length = file.get_length() as i64;
+        let buffer = file.get_buffer(length).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
         let mut levels = Array::new();
         for result in Level::load_from_reader(reader) {
@@ -201,8 +202,9 @@ impl LevelMap {
 
     #[func]
     fn load_from_file(&mut self, path: GString, index: i32) {
-        let file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let buffer = file.get_buffer(file.get_length() as i64).to_vec();
+        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
+        let length = file.get_length() as i64;
+        let buffer = file.get_buffer(length).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
         self.level = Level::load_nth_from_reader(reader, index as usize).unwrap();
         self.build();
@@ -536,7 +538,7 @@ impl LevelMap {
         let solver = Solver::new(self.map().clone(), strategy.into());
         let mut dict = VarDictionary::new();
         for (position, value) in solver.lower_bounds() {
-            dict.set(position.to_gd(), value.to_variant());
+            dict.set(position.to_gd(), &value.to_variant());
         }
         dict
     }
@@ -604,6 +606,11 @@ impl LevelMap {
                 }
             }
         }
+    }
+
+    #[func]
+    fn get_deadlock_tint(&self) -> Color {
+        self.deadlock_tint
     }
 
     #[func]
