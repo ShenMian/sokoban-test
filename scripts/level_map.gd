@@ -34,7 +34,8 @@ var heatmap: bool:
 		if heatmap:
 			_build_heatmap()
 
-var _pushable_hint: bool
+@export var pushable_hint: bool
+
 var _selected_box: Box
 var _solving: bool = false
 var _solve_tween: Tween
@@ -190,7 +191,7 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 			checkerboard_shading = value
 			build()
 		elif key == "pushable_hint":
-			_pushable_hint = value
+			pushable_hint = value
 			_update_pushable_hint()
 		elif key == "heatmap":
 			heatmap = value
@@ -242,7 +243,7 @@ func _sync_entities_from_state() -> void:
 
 
 func _update_pushable_hint() -> void:
-	if not _pushable_hint:
+	if not pushable_hint:
 		for box in boxes_container.get_children():
 			box.disabled = false
 		return
