@@ -87,18 +87,21 @@ func _process(_delta: float) -> void:
 
 func do_undo() -> void:
 	undo()
+	deselect_box()
 	_sync_entities_from_state()
 	_update_ui()
 
 
 func do_redo() -> void:
 	redo()
+	deselect_box()
 	_sync_entities_from_state()
 	_update_ui()
 
 
 func do_undo_all() -> void:
 	undo_all()
+	deselect_box()
 	_sync_entities_from_state()
 	_update_ui()
 
@@ -108,6 +111,7 @@ func do_solve() -> void:
 		cancel_solve()
 		_solving = false
 		_update_ui()
+		gameplay.solve_button.modulate = Color.WHITE
 		return
 
 	deselect_box()
@@ -119,12 +123,15 @@ func do_solve() -> void:
 func _on_solve_completed(directions: Array) -> void:
 	_solving = false
 	_update_ui()
+	gameplay.solve_button.modulate = Color.WHITE
 	await _execute_path(directions)
 
 
 func _on_solve_failed(error: String) -> void:
 	_solving = false
 	_update_ui()
+	gameplay.solve_button.modulate = Color.RED
+	create_tween().tween_property(gameplay.solve_button, "modulate", Color.WHITE, 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	push_warning("Solver failed: " + error)
 
 
@@ -313,7 +320,6 @@ func _update_ui() -> void:
 		if _solve_tween:
 			_solve_tween.kill()
 			_solve_tween = null
-		gameplay.solve_button.modulate = Color.WHITE
 
 		if player.is_moving or _is_box_moving():
 			gameplay.undo_button.disabled = true
