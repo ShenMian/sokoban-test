@@ -89,7 +89,15 @@ func _ready() -> void:
 	if solutions_status:
 		printerr("failed to load solutions file: ", error_string(solutions_status))
 
-	load_bindings()
+	var bindings_error := _bindings.load(BINDINGS_PATH)
+	if bindings_error:
+		printerr("failed to load bindings file: ", error_string(bindings_error))
+		save_bindings()
+
+	for action in _bindings.get_section_keys("bindings"):
+		InputMap.action_erase_events(action)
+		for event in _bindings.get_value("bindings", action):
+			InputMap.action_add_event(action, event)
 
 
 func set_and_save_value(section: String, key: String, value: Variant) -> void:
@@ -142,16 +150,6 @@ func reset_audio_settings() -> void:
 func reset_input_settings() -> void:
 	InputMap.load_from_project_settings()
 	save_bindings()
-
-
-func load_bindings() -> void:
-	var error := _bindings.load(BINDINGS_PATH)
-	if error:
-		printerr("failed to load bindings file: ", error_string(error))
-	for action in _bindings.get_section_keys("bindings"):
-		InputMap.action_erase_events(action)
-		for event in _bindings.get_value("bindings", action):
-			InputMap.action_add_event(action, event)
 
 
 func save_bindings() -> void:
