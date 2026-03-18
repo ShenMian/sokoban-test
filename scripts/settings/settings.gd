@@ -73,9 +73,9 @@ func _ready() -> void:
 	var config_status := _config.load(CONFIG_PATH)
 	if config_status or not _is_config_valid(_config):
 		if config_status:
-			printerr("failed to load config file: ", error_string(config_status))
+			printerr("failed to load config: ", error_string(config_status))
 		else:
-			printerr("config file structure is invalid or outdated", not _is_config_valid(_config))
+			printerr("failed to load config: structure is invalid or outdated.")
 
 		# Resets to default settings
 		print("Restore default settings")
@@ -87,11 +87,11 @@ func _ready() -> void:
 
 	var solutions_status := _solutions.load(SOLUTIONS_PATH)
 	if solutions_status:
-		printerr("failed to load solutions file: ", error_string(solutions_status))
+		printerr("failed to load solutions: ", error_string(solutions_status))
 
 	var bindings_error := _bindings.load(BINDINGS_PATH)
 	if bindings_error:
-		printerr("failed to load bindings file: ", error_string(bindings_error))
+		printerr("failed to load bindings: ", error_string(bindings_error))
 		save_bindings()
 
 	for action in _bindings.get_section_keys("bindings"):
