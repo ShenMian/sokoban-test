@@ -48,24 +48,6 @@ func _get_event_by_action(action: StringName) -> InputEventKey:
 	return null
 
 
-func _get_icons_by_event(event: InputEventKey) -> Array[Texture2D]:
-	var icons: Array[Texture2D] = []
-
-	if event.ctrl_pressed:
-		icons.append(_get_icon_by_key_name("Control"))
-	if event.shift_pressed:
-		icons.append(_get_icon_by_key_name("Shift"))
-	if event.alt_pressed:
-		icons.append(_get_icon_by_key_name("Alt"))
-	if event.meta_pressed:
-		icons.append(_get_icon_by_key_name("Meta"))
-
-	var key_name := OS.get_keycode_string(event.physical_keycode)
-	icons.append(_get_icon_by_key_name(key_name))
-
-	return icons
-
-
 func _update_button_icons(button: Button, icons: Array[Texture2D]) -> void:
 	var icon_container := button.get_node("HBox")
 	for child in icon_container.get_children():
@@ -74,28 +56,48 @@ func _update_button_icons(button: Button, icons: Array[Texture2D]) -> void:
 	for icon in icons:
 		var rect := TextureRect.new()
 		rect.texture = icon
+		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 		icon_container.add_child(rect)
 
 
+func _get_icons_by_event(event: InputEventKey) -> Array[Texture2D]:
+	var icons: Array[Texture2D] = []
+
+	if event.ctrl_pressed:
+		icons.append(_get_icon_by_key_name("control"))
+	if event.shift_pressed:
+		icons.append(_get_icon_by_key_name("shift"))
+	if event.alt_pressed:
+		icons.append(_get_icon_by_key_name("alt"))
+	if event.meta_pressed:
+		icons.append(_get_icon_by_key_name("meta"))
+
+	var key_name := OS.get_keycode_string(event.physical_keycode)
+	icons.append(_get_icon_by_key_name(key_name.to_lower()))
+
+	return icons
+
+
 func _get_icon_by_key_name(key: String) -> Texture2D:
-	const ICON_PATH := "res://assets/textures/input_prompts/keyboard_mouse/"
+	assert(key == key.to_lower())
 
 	if key.is_empty():
 		return null
 
 	match key:
-		"Up":
+		"up":
 			key = "arrow_up"
-		"Down":
+		"down":
 			key = "arrow_down"
-		"Left":
+		"left":
 			key = "arrow_left"
-		"Right":
+		"right":
 			key = "arrow_right"
-		"Control":
+		"control":
 			key = "ctrl"
-		"Meta":
+		"meta":
 			key = "win"
 
-	var path := ICON_PATH + "keyboard_%s.svg" % key.to_lower()
+	const ICON_PATH := "res://assets/textures/input_prompts/keyboard_mouse/"
+	var path := ICON_PATH + "keyboard_%s.svg" % key
 	return load(path) as Texture2D
