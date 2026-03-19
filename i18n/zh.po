@@ -23,13 +23,16 @@ msgstr "推动数"
 msgid "PAUSE"
 msgstr "暂停"
 
+msgid "PREVIOUS_LEVEL"
+msgstr "上一关"
+
+msgid "NEXT_LEVEL"
+msgstr "下一关"
+
 # Victory Menu
 
 msgid "LEVEL_COMPLETE"
 msgstr "关卡完成"
-
-msgid "NEXT_LEVEL"
-msgstr "下一关"
 
 msgid "BACK_TO_MENU"
 msgstr "返回菜单"

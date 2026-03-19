@@ -23,13 +23,16 @@ msgstr "Pushes"
 msgid "PAUSE"
 msgstr "Pause"
 
+msgid "PREVIOUS_LEVEL"
+msgstr "Previous Level"
+
+msgid "NEXT_LEVEL"
+msgstr "Next Level"
+
 # Victory Menu
 
 msgid "LEVEL_COMPLETE"
 msgstr "Level Complete"
-
-msgid "NEXT_LEVEL"
-msgstr "Next Level"
 
 msgid "BACK_TO_MENU"
 msgstr "Back to Menu"

@@ -16,6 +16,16 @@ func load_level(new_collection: String, new_count: int, new_index: int) -> void:
 	change_scene_to_file("res://scenes/gameplay.tscn")
 
 
+func has_previous_level() -> bool:
+	return level_index > 0
+
+
+func load_previous_level() -> void:
+	assert(has_previous_level())
+	level_index -= 1
+	change_scene_to_file("res://scenes/gameplay.tscn")
+
+
 func has_next_level() -> bool:
 	return level_index + 1 < level_count
 

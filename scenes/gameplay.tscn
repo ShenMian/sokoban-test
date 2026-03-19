@@ -13,7 +13,9 @@
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
 [ext_resource type="Texture2D" uid="uid://bxogo6js8fo1a" path="res://assets/textures/icons/cpu.png" id="9_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
+[ext_resource type="Texture2D" uid="uid://etgvtxmljax4" path="res://assets/textures/icons/previous.png" id="11_407ns"]
 [ext_resource type="Texture2D" uid="uid://dk4kar7bm6o4q" path="res://assets/textures/icons/menu_list.png" id="11_s5y6v"]
+[ext_resource type="Texture2D" uid="uid://cndgdj3g4cnif" path="res://assets/textures/icons/next.png" id="12_w3w6i"]
 
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1
@@ -256,6 +258,40 @@ tooltip_text = "PAUSE"
 shortcut = SubResource("Shortcut_pv71h")
 shortcut_in_tooltip = false
 icon = ExtResource("11_s5y6v")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
+[node name="Spacing" type="Control" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1955257935]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="PreviousButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=26568022]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "PREVIOUS_LEVEL"
+shortcut = SubResource("Shortcut_407ns")
+shortcut_in_tooltip = false
+icon = ExtResource("11_407ns")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
+[node name="NextButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=307337932]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "NEXT_LEVEL"
+shortcut = SubResource("Shortcut_s5y6v")
+shortcut_in_tooltip = false
+icon = ExtResource("12_w3w6i")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_407ns")
