@@ -28,7 +28,9 @@ paru -S android-sdk android-ndk android-studio
 
 rustup target add aarch64-linux-android
 cargo install cargo-ndk
+cd extension
 env ANDROID_NDK_HOME=/opt/android-ndk cargo ndk -t arm64-v8a build --release --features godot/experimental-threads
+cd ..
 mkdir -p build/android
 ```
 
