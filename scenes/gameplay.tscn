@@ -5,17 +5,17 @@
 [ext_resource type="Script" uid="uid://4236jrponfo3" path="res://scripts/camera.gd" id="3_l1v76"]
 [ext_resource type="PackedScene" uid="uid://cinlu4a76akc" path="res://scenes/ui/pause_menu.tscn" id="4_ct7aa"]
 [ext_resource type="Theme" uid="uid://dvbbi3vt7rasu" path="res://assets/theme.tres" id="4_ocj2s"]
+[ext_resource type="Texture2D" uid="uid://etgvtxmljax4" path="res://assets/textures/icons/undo_all.png" id="5_407ns"]
 [ext_resource type="PackedScene" uid="uid://cixpuprgvgi1u" path="res://scenes/ui/settings_menu.tscn" id="6_din8e"]
 [ext_resource type="Texture2D" uid="uid://vr8jiem6x8fp" path="res://assets/textures/icons/forward.png" id="7_bhmdk"]
 [ext_resource type="Texture2D" uid="uid://d2taaqgkqbyky" path="res://assets/textures/icons/backward.png" id="7_s5y6v"]
 [ext_resource type="Script" uid="uid://cr5yoytr47auc" path="res://scripts/ui/button_fx.gd" id="8_407ns"]
-[ext_resource type="Texture2D" uid="uid://qo1gsvr3g6wc" path="res://assets/textures/icons/return.png" id="8_s5y6v"]
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
 [ext_resource type="Texture2D" uid="uid://bxogo6js8fo1a" path="res://assets/textures/icons/cpu.png" id="9_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
-[ext_resource type="Texture2D" uid="uid://etgvtxmljax4" path="res://assets/textures/icons/previous.png" id="11_407ns"]
+[ext_resource type="Texture2D" uid="uid://c1265tlwonjpv" path="res://assets/textures/icons/previous.png" id="11_407ns"]
 [ext_resource type="Texture2D" uid="uid://dk4kar7bm6o4q" path="res://assets/textures/icons/menu_list.png" id="11_s5y6v"]
-[ext_resource type="Texture2D" uid="uid://cndgdj3g4cnif" path="res://assets/textures/icons/next.png" id="12_w3w6i"]
+[ext_resource type="Texture2D" uid="uid://bdh3nf8a5fe4m" path="res://assets/textures/icons/next.png" id="12_w3w6i"]
 
 [sub_resource type="Environment" id="Environment_00tan"]
 background_mode = 1
@@ -41,17 +41,17 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_detail = 5
 
-[sub_resource type="InputEventAction" id="InputEventAction_bhmdk"]
-action = &"undo"
-
-[sub_resource type="Shortcut" id="Shortcut_s5y6v"]
-events = [SubResource("InputEventAction_bhmdk")]
-
 [sub_resource type="InputEventAction" id="InputEventAction_s5y6v"]
 action = &"redo"
 
 [sub_resource type="Shortcut" id="Shortcut_407ns"]
 events = [SubResource("InputEventAction_s5y6v")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_bhmdk"]
+action = &"undo"
+
+[sub_resource type="Shortcut" id="Shortcut_s5y6v"]
+events = [SubResource("InputEventAction_bhmdk")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_407ns"]
 action = &"solve"
@@ -188,6 +188,21 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
 layout_mode = 2
 alignment = 1
 
+[node name="UndoAllButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1927154306]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "UNDO_ALL"
+shortcut = SubResource("Shortcut_407ns")
+shortcut_in_tooltip = false
+icon = ExtResource("5_407ns")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
 [node name="UndoButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=744286810]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
@@ -213,21 +228,6 @@ tooltip_text = "REDO"
 shortcut = SubResource("Shortcut_407ns")
 shortcut_in_tooltip = false
 icon = ExtResource("7_bhmdk")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("8_407ns")
-metadata/_custom_type_script = "uid://cr5yoytr47auc"
-
-[node name="UndoAllButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1927154306]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(48, 48)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "UNDO_ALL"
-shortcut = SubResource("Shortcut_407ns")
-shortcut_in_tooltip = false
-icon = ExtResource("8_s5y6v")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_407ns")
