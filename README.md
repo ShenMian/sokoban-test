@@ -23,6 +23,8 @@ godot --headless --export-release "Linux" build/linux/sokoban
 > [!WARNING]  
 > [gdext](https://github.com/godot-rust/gdext) support for Android is currently in its early stages. For more details, please refer to <https://github.com/godot-rust/gdext/issues/470>.
 
+#### Linux
+
 ```sh
 paru -S android-sdk android-ndk android-studio
 
@@ -57,6 +59,24 @@ Then, the Release build package can be exported via the following command:
 
 ```sh
 godot --headless --export-release "Android" build/android/sokoban.apk
+```
+
+#### Windows
+
+On Windows, the SDK and NDK can be installed via Android Studio.
+
+```sh
+scoop install android-studio
+```
+
+In Android Studio, navigate to `SDK Manager | Languages & Frameworks | Android SDK | SDK Tools` to select and install the following components:
+
+- `Android SDK Build-Tools`
+- `NDK (Side by side)`
+
+```ps1
+$env:ANDROID_NDK_HOME="C:\Users\sms\AppData\Local\Android\Sdk\ndk"
+cargo ndk -t arm64-v8a build --release --features godot/experimental-threads
 ```
 
 ## Assets
