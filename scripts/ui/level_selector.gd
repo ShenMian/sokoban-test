@@ -128,7 +128,7 @@ func _load_levels(path: String):
 		level_list.set_item_tooltip(idx, _make_tooltip(idx, _levels[idx]))
 
 		var solution := Settings.get_level_solution(_selected_collection, idx)
-		if solution["pushes_optimal"].is_empty():
+		if solution["optimal_push"].is_empty():
 			level_list.set_item_custom_bg_color(idx, uncompleted_color)
 		else:
 			level_list.set_item_custom_bg_color(idx, completed_color)

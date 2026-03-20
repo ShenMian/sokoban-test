@@ -163,8 +163,8 @@ func save_bindings() -> void:
 
 
 const DEFAULT_SOLUTION := {
-	"pushes_optimal": "",
-	"moves_optimal": "",
+	"optimal_push": "",
+	"optimal_move": "",
 }
 
 
@@ -172,31 +172,21 @@ func get_level_solution(collection: String, level: int) -> Dictionary:
 	return _solutions.get_value(collection, str(level), DEFAULT_SOLUTION)
 
 
-func set_level_solution(collection: String, level: int, actions: String) -> void:
+func set_level_solution(collection: String, level: int, lurd: String) -> void:
 	var solution := get_level_solution(collection, level)
-	var best_pushes := _count_uppercase(solution["pushes_optimal"])
-	var best_moves: int = solution["moves_optimal"].length()
+	var optimal_push_actions := Actions.new(solution["optimal_push"])
+	var optimal_move_actions := Actions.new(solution["optimal_move"])
 
-	var new_pushes := _count_uppercase(actions)
-	var new_moves := actions.length()
+	var actions = Actions.new(lurd)
 	var new_solution := solution.duplicate()
 
-	if solution["pushes_optimal"].is_empty() or new_pushes < best_pushes:
-		new_solution["pushes_optimal"] = actions
-	if solution["moves_optimal"].is_empty() or new_moves < best_moves:
-		new_solution["moves_optimal"] = actions
+	if solution["optimal_push"].is_empty() or actions.pushes() < optimal_push_actions.pushes():
+		new_solution["optimal_push"] = str(actions)
+	if solution["optimal_move"].is_empty() or actions.moves() < optimal_move_actions.moves():
+		new_solution["optimal_move"] = str(actions)
 
 	_solutions.set_value(collection, str(level), new_solution)
 	_solutions.save(SOLUTIONS_PATH)
-
-
-func _count_uppercase(text: String) -> int:
-	var count := 0
-	for i in range(text.length()):
-		var ascii := text.unicode_at(i)
-		if ascii >= 65 and ascii <= 90: # 'A' and 'Z'
-			count += 1
-	return count
 
 
 func _is_config_valid(config: ConfigFile) -> bool:
