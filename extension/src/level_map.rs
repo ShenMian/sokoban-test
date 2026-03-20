@@ -532,6 +532,18 @@ impl LevelMap {
     }
 
     #[func]
+    fn rotate(&mut self) {
+        self.level.rotate();
+        self.build();
+    }
+
+    #[func]
+    fn flip(&mut self) {
+        self.level.flip();
+        self.build();
+    }
+
+    #[func]
     fn get_lower_bounds(&self, strategy: Strategy) -> VarDictionary {
         let solver = Solver::new(self.map().clone(), strategy.into());
         let mut dict = VarDictionary::new();

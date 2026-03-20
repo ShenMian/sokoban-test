@@ -20,6 +20,9 @@ msgstr "移动数"
 msgid "PUSHES"
 msgstr "推动数"
 
+msgid "TRANSFORM"
+msgstr "变换"
+
 msgid "PAUSE"
 msgstr "暂停"
 

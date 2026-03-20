@@ -17,8 +17,11 @@ extends Node3D
 @onready var undo_all_button: ButtonFx = %UndoAllButton
 @onready var solve_button: ButtonFx = %SolveButton
 @onready var menu_button: ButtonFx = %MenuButton
+@onready var transform_button: ButtonFx = %TransformButton
 @onready var previous_button: ButtonFx = %PreviousButton
 @onready var next_button: ButtonFx = %NextButton
+
+var _transform_state: int = 0
 
 
 func _ready() -> void:
@@ -41,6 +44,7 @@ func _ready() -> void:
 	undo_all_button.pressed.connect(level_map.do_undo_all)
 	solve_button.pressed.connect(level_map.do_solve)
 	menu_button.pressed.connect(_open_pause_menu)
+	transform_button.pressed.connect(_transform_level)
 	previous_button.pressed.connect(SceneTransition.load_previous_level)
 	next_button.pressed.connect(SceneTransition.load_next_level)
 
@@ -72,4 +76,21 @@ func _on_pause_request_credits() -> void:
 
 func _on_level_solved() -> void:
 	await level_map.wait_for_moves_finished()
+	while _transform_state != 0:
+		_transform_level()
 	victory_menu.open(Actions.new(level_map.get_lurd()))
+
+
+func _transform_level() -> void:
+	if _transform_state % 4 == 3:
+		level_map.rotate()
+		level_map.flip()
+	else:
+		level_map.rotate()
+
+	_transform_state = (_transform_state + 1) % 8
+
+	level_map.deselect_box()
+	level_map._sync_entities_from_state()
+	level_map._update_ui()
+	level_map._reset_camera_position()

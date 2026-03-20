@@ -20,6 +20,9 @@ msgstr "Moves"
 msgid "PUSHES"
 msgstr "Pushes"
 
+msgid "TRANSFORM"
+msgstr "Transform"
+
 msgid "PAUSE"
 msgstr "Pause"
 
