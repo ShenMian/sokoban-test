@@ -336,7 +336,6 @@ func _update_ui() -> void:
 
 func _on_solved() -> void:
 	enter_goal_player.stop()
-	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, Actions.new(get_lurd()))
 
 
 func _reset_camera_position() -> void:

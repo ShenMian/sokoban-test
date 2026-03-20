@@ -178,15 +178,26 @@ func get_level_solution(collection: String, level: int) -> Dictionary:
 
 func set_level_solution(collection: String, level: int, actions: Actions) -> void:
 	var solution := get_level_solution(collection, level)
-	var new_solution := solution.duplicate()
-
+	var new_solution := DEFAULT_SOLUTION.duplicate()
 	if solution["optimal_push"].is_empty() or actions.pushes() < solution["optimal_push"].pushes():
 		new_solution["optimal_push"] = str(actions)
+	else:
+		new_solution["optimal_push"] = str(solution["optimal_push"])
 	if solution["optimal_move"].is_empty() or actions.moves() < solution["optimal_move"].moves():
 		new_solution["optimal_move"] = str(actions)
+	else:
+		new_solution["optimal_move"] = str(solution["optimal_move"])
 
 	_solutions.set_value(collection, str(level), new_solution)
 	_solutions.save(SOLUTIONS_PATH)
+
+
+func get_active_level_solution() -> Dictionary:
+	return get_level_solution(SceneTransition.collection, SceneTransition.level_index)
+
+
+func set_active_level_solution(actions: Actions) -> void:
+	set_level_solution(SceneTransition.collection, SceneTransition.level_index, actions)
 
 
 func _is_config_valid(config: ConfigFile) -> bool:

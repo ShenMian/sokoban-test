@@ -34,6 +34,9 @@ msgstr "Next Level"
 msgid "LEVEL_COMPLETE"
 msgstr "Level Complete"
 
+msgid "BEST"
+msgstr "Best"
+
 msgid "BACK_TO_MENU"
 msgstr "Back to Menu"
 
