@@ -81,7 +81,7 @@ func _process(_delta: float) -> void:
 		move_by(Direction.DOWN)
 	elif Input.is_action_just_pressed("undo_all"):
 		do_undo_all()
-	
+
 	await wait_for_moves_finished()
 	_update_ui()
 
@@ -306,13 +306,13 @@ func _update_ui() -> void:
 	gameplay.pushes_label.text = str(status["push_count"])
 
 	_update_pushable_hint()
-	
+
 	if _solving:
 		gameplay.undo_button.disabled = true
 		gameplay.redo_button.disabled = true
 		gameplay.undo_all_button.disabled = true
 		gameplay.solve_button.disabled = false
-		
+
 		if _solve_tween == null:
 			_solve_tween = create_tween().set_loops()
 			_solve_tween.tween_property(gameplay.solve_button, "modulate", Color(0.5, 0.8, 1.0), 0.6).set_trans(Tween.TRANS_SINE)
@@ -336,7 +336,7 @@ func _update_ui() -> void:
 
 func _on_solved() -> void:
 	enter_goal_player.stop()
-	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, get_actions())
+	Settings.set_level_solution(SceneTransition.collection, SceneTransition.level_index, Actions.new(get_lurd()))
 
 
 func _reset_camera_position() -> void:

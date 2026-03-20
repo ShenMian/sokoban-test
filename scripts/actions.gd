@@ -7,6 +7,10 @@ func _init(s := ""):
 	lurd = s
 
 
+func is_empty() -> bool:
+	return lurd.is_empty()
+
+
 func moves() -> int:
 	return lurd.length()
 

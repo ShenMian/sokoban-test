@@ -169,20 +169,20 @@ const DEFAULT_SOLUTION := {
 
 
 func get_level_solution(collection: String, level: int) -> Dictionary:
-	return _solutions.get_value(collection, str(level), DEFAULT_SOLUTION)
+	var solution: Dictionary = _solutions.get_value(collection, str(level), DEFAULT_SOLUTION)
+	return {
+		"optimal_push": Actions.new(solution["optimal_push"]),
+		"optimal_move": Actions.new(solution["optimal_move"])
+	}
 
 
-func set_level_solution(collection: String, level: int, lurd: String) -> void:
+func set_level_solution(collection: String, level: int, actions: Actions) -> void:
 	var solution := get_level_solution(collection, level)
-	var optimal_push_actions := Actions.new(solution["optimal_push"])
-	var optimal_move_actions := Actions.new(solution["optimal_move"])
-
-	var actions = Actions.new(lurd)
 	var new_solution := solution.duplicate()
 
-	if solution["optimal_push"].is_empty() or actions.pushes() < optimal_push_actions.pushes():
+	if solution["optimal_push"].is_empty() or actions.pushes() < solution["optimal_push"].pushes():
 		new_solution["optimal_push"] = str(actions)
-	if solution["optimal_move"].is_empty() or actions.moves() < optimal_move_actions.moves():
+	if solution["optimal_move"].is_empty() or actions.moves() < solution["optimal_move"].moves():
 		new_solution["optimal_move"] = str(actions)
 
 	_solutions.set_value(collection, str(level), new_solution)

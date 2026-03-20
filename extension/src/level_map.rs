@@ -231,7 +231,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_actions(&self) -> GString {
+    fn get_lurd(&self) -> GString {
         (&self.level.actions().to_string()).into()
     }
 
