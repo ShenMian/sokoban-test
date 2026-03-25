@@ -30,10 +30,21 @@ func rotate():
 	lurd = new_lurd
 
 
-func flip():
+func flip_horizontal():
 	var map = {
 		"L": "R", "R": "L",
 		"l": "r", "r": "l"
+	}
+	var new_lurd := ""
+	for c in lurd:
+		new_lurd += map.get(c, c)
+	lurd = new_lurd
+
+
+func flip_vertical():
+	var map = {
+		"U": "D", "D": "U",
+		"u": "d", "d": "u"
 	}
 	var new_lurd := ""
 	for c in lurd:

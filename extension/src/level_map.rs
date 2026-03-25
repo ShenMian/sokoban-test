@@ -538,8 +538,8 @@ impl LevelMap {
     }
 
     #[func]
-    fn flip(&mut self) {
-        self.level.flip();
+    fn flip_horizontal(&mut self) {
+        self.level.flip_horizontal();
         self.build();
     }
 

@@ -312,6 +312,7 @@ func _update_ui() -> void:
 		gameplay.redo_button.disabled = true
 		gameplay.undo_all_button.disabled = true
 		gameplay.solve_button.disabled = false
+		gameplay.transform_button.disabled = true
 
 		if _solve_tween == null:
 			_solve_tween = create_tween().set_loops()
@@ -327,11 +328,13 @@ func _update_ui() -> void:
 			gameplay.redo_button.disabled = true
 			gameplay.undo_all_button.disabled = true
 			gameplay.solve_button.disabled = true
+			gameplay.transform_button.disabled = true
 		else:
 			gameplay.undo_button.disabled = !status["can_undo"]
 			gameplay.redo_button.disabled = !status["can_redo"]
 			gameplay.undo_all_button.disabled = !status["can_undo"]
 			gameplay.solve_button.disabled = false
+			gameplay.transform_button.disabled = false
 
 
 func _on_solved() -> void:

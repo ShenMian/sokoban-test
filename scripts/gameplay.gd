@@ -84,7 +84,7 @@ func _on_level_solved() -> void:
 func _transform_level() -> void:
 	if _transform_state % 4 == 3:
 		level_map.rotate()
-		level_map.flip()
+		level_map.flip_horizontal()
 	else:
 		level_map.rotate()
 
