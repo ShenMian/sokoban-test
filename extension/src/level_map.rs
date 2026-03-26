@@ -49,12 +49,18 @@ impl From<Direction> for direction::Direction {
     }
 }
 
+/// Solver and box pathfinding strategies.
 #[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
 #[godot(via = i32)]
 pub enum Strategy {
+    /// Search for any solution as quickly as possible.
+    ///
+    /// Using this strategy, A* search degrades into greedy best-first search.
     #[default]
     Quick,
+    /// Find the push optimal solution.
     PushOptimal,
+    /// Find the move optimal solution.
     MoveOptimal,
 }
 
@@ -68,15 +74,18 @@ impl From<Strategy> for solver::Strategy {
     }
 }
 
+/// Solver search algorithms.
 #[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
 #[godot(via = i32)]
 pub enum Algorithm {
+    /// A* search algorithm.
     #[default]
     AStar,
+    /// IDA* search algorithm.
     IDAStar,
 }
 
-/// Stack size for the solver thread (64 MB).
+/// Solver thread stack size in bytes (64 MB).
 const SOLVER_STACK_SIZE: usize = 64 * 1024 * 1024;
 
 #[derive(GodotClass)]
@@ -152,24 +161,31 @@ impl IGridMap for LevelMap {
 
 #[godot_api]
 impl LevelMap {
+    /// Emitted when the player moves.
     #[signal]
     fn player_moved(to: Vector2i, pushed: bool);
 
+    /// Emitted when a box moves.
     #[signal]
     fn box_moved(from: Vector2i, to: Vector2i);
 
+    /// Emitted when a box enters a goal.
     #[signal]
     fn box_enter_goal(position: Vector2i);
 
+    /// Emitted when a box leaves a goal.
     #[signal]
     fn box_leave_goal(position: Vector2i);
 
+    /// Emitted when the level becomes solved.
     #[signal]
     fn solved();
 
+    /// Emitted when the background solver completes successfully.
     #[signal]
     fn solve_completed(directions: Array<i32>);
 
+    /// Emitted when the background solver fails.
     #[signal]
     fn solve_failed(error: GString);
 
