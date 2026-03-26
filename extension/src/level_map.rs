@@ -23,7 +23,7 @@ use soukoban::{
     deadlock::compute_static_deadlocks,
     direction::{self, DirectedPosition},
     path_finding,
-    solver::{self, Solver},
+    solver::Solver,
 };
 
 use crate::{
@@ -200,12 +200,12 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_map(&self) -> GString {
+    fn get_map_xsb(&self) -> GString {
         (&self.map().to_string()).into()
     }
 
     #[func]
-    fn get_lurd(&self) -> GString {
+    fn get_actions_lurd(&self) -> GString {
         (&self.level.actions().to_string()).into()
     }
 

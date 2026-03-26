@@ -52,14 +52,13 @@ func _ready() -> void:
 
 	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
 	var path := Settings.LEVEL_PATH + SceneTransition.collection + ".xsb"
-	var level_id = SceneTransition.level_index + 1
-	load_from_file(path, level_id)
+	load_from_file(path, SceneTransition.level_index)
 	_sync_entities_from_state()
 
 	_reset_camera_position()
 
 	await get_tree().process_frame
-	gameplay.level_label.text = str(level_id)
+	gameplay.level_label.text = str(SceneTransition.level_index + 1)
 	_update_ui()
 
 
@@ -151,7 +150,7 @@ func _input(_event: InputEvent) -> void:
 		_update_ui()
 		_reset_camera_position()
 	elif Input.is_action_just_pressed("export_to_clipboard"):
-		DisplayServer.clipboard_set(get_map())
+		DisplayServer.clipboard_set(get_map_xsb())
 
 
 func _build_heatmap() -> void:

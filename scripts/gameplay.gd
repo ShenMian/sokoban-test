@@ -78,15 +78,13 @@ func _on_level_solved() -> void:
 	await level_map.wait_for_moves_finished()
 	while _transform_state != 0:
 		_transform_level()
-	victory_menu.open(Actions.new(level_map.get_lurd()))
+	victory_menu.open(Actions.new(level_map.get_actions_lurd()))
 
 
 func _transform_level() -> void:
+	level_map.rotate()
 	if _transform_state % 4 == 3:
-		level_map.rotate()
 		level_map.flip_horizontal()
-	else:
-		level_map.rotate()
 
 	_transform_state = (_transform_state + 1) % 8
 
