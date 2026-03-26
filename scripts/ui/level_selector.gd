@@ -21,11 +21,8 @@ var _generated_previews: Array[int] = []
 
 var _selected_collection: String
 
-var _touch_start_pos: Vector2
-var _touch_start_scroll: float
 var _is_touch_scrolling: bool
-var _touch_pressed_item: int = -1
-const TOUCH_SCROLL_THRESHOLD := 8.0
+var _scroll_touch_index: int = -1
 
 
 func _ready():
@@ -40,7 +37,7 @@ func _ready():
 
 	if SceneTransition.collection == "":
 		collection_list.select(0)
-		_on_collection_list_clicked(0, Vector2.ZERO, MOUSE_BUTTON_LEFT)
+		_on_collection_list_clicked(0)
 	else:
 		# Select the previous collection and level
 		var collection_index := 0
@@ -48,7 +45,7 @@ func _ready():
 			if collection_list.get_item_text(idx) == SceneTransition.collection:
 				collection_index = idx
 				break
-		_on_collection_list_clicked(collection_index, Vector2.ZERO, MOUSE_BUTTON_LEFT)
+		_on_collection_list_clicked(collection_index)
 		level_list.select(SceneTransition.level_index)
 		level_list.ensure_current_is_visible()
 
@@ -102,9 +99,7 @@ func _on_preview_generated(index: int, texture: Texture2D):
 	level_list.set_item_icon(index, texture)
 
 
-func _on_collection_list_clicked(index: int, _at_position: Vector2, mouse_button_index: int):
-	if mouse_button_index != MOUSE_BUTTON_LEFT:
-		return
+func _on_collection_list_clicked(index: int):
 	_selected_collection = collection_list.get_item_text(index)
 	_load_levels(Settings.LEVEL_PATH + _selected_collection + ".xsb")
 
@@ -151,35 +146,41 @@ func _make_tooltip(index: int, data: Dictionary) -> String:
 
 
 func _on_collection_list_gui_input(event: InputEvent):
-	_handle_list_touch_input(collection_list, event, _on_collection_list_clicked)
+	_handle_list_input(collection_list, event, _on_collection_list_clicked)
 
 
 func _on_level_list_gui_input(event: InputEvent):
-	_handle_list_touch_input(level_list, event, _on_level_clicked)
+	_handle_list_input(level_list, event, _on_level_clicked)
 
 
-func _handle_list_touch_input(list: ItemList, event: InputEvent, click_callback: Callable):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+func _handle_list_input(list: ItemList, input_event: InputEvent, item_click_callback: Callable):
+	if input_event is InputEventMouseButton:
+		var event := input_event as InputEventMouseButton
+		if event.button_index != MOUSE_BUTTON_LEFT or event.device == InputEvent.DEVICE_ID_EMULATION:
+			return
+		var item_idx = list.get_item_at_position(event.position, true)
+		item_click_callback.call(item_idx)
+	elif input_event is InputEventScreenTouch:
+		var event := input_event as InputEventScreenTouch
 		if event.pressed:
-			_touch_start_pos = event.position
-			_touch_start_scroll = list.get_v_scroll_bar().value
+			_scroll_touch_index = event.index
 			_is_touch_scrolling = false
-			_touch_pressed_item = list.get_item_at_position(event.position, true)
 		else:
-			if not _is_touch_scrolling and _touch_pressed_item >= 0:
-				click_callback.call(_touch_pressed_item, event.position, MOUSE_BUTTON_LEFT)
-			_touch_pressed_item = -1
-	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
-		var delta: float = event.position.y - _touch_start_pos.y
-		if not _is_touch_scrolling and abs(delta) > TOUCH_SCROLL_THRESHOLD:
-			_is_touch_scrolling = true
-		if _is_touch_scrolling:
-			list.get_v_scroll_bar().value = _touch_start_scroll - delta
+			if event.index != _scroll_touch_index:
+				return
+			var item_idx = list.get_item_at_position(event.position, true)
+			if not _is_touch_scrolling and item_idx != -1:
+				item_click_callback.call(item_idx)
+			_scroll_touch_index = -1
+	elif input_event is InputEventScreenDrag:
+		var event := input_event as InputEventScreenDrag
+		if event.index != _scroll_touch_index:
+			return
+		list.get_v_scroll_bar().value -= event.relative.y
+		_is_touch_scrolling = true
 
 
-func _on_level_clicked(index: int, _at_position: Vector2, mouse_button_index: int):
-	if mouse_button_index != MOUSE_BUTTON_LEFT:
-		return
+func _on_level_clicked(index: int):
 	SceneTransition.load_level(_selected_collection, _levels.size(), index)
 
 
