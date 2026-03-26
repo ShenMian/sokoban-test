@@ -159,6 +159,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "LANGUAGE"
 metadata/description = "LANGUAGE_TIP"
 
@@ -183,6 +184,7 @@ popup/item_1/id = 1
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "ANIMATION_SPEED"
 metadata/description = "ANIMATION_SPEED_TIP"
 
@@ -210,6 +212,7 @@ popup/item_2/disabled = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "CHECKERBOARD_SHADING"
 metadata/description = "CHECKERBOARD_TIP"
 
@@ -231,6 +234,7 @@ metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "CHECKERBOARD_SHADING"
 metadata/description = "CHECKERBOARD_TIP"
 
@@ -252,6 +256,7 @@ metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "DEADLOCK_HINT"
 metadata/description = "DEADLOCK_TIP"
 
@@ -273,6 +278,7 @@ metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "PUSHABLE_HINT"
 metadata/description = "PUSHABLE_TIP"
 
@@ -294,6 +300,7 @@ metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "PATHFINDING_STRATEGY"
 metadata/description = "PATHFINDING_STRATEGY_TIP"
 
@@ -326,6 +333,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "ALGORITHM"
 metadata/description = "ALGORITHM_TIP"
 
@@ -349,6 +357,7 @@ popup/item_1/id = 1
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "STRATEGY"
 metadata/description = "STRATEGY_TIP"
 
@@ -374,6 +383,7 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "HEATMAP"
 metadata/description = "HEATMAP_TIP"
 
@@ -413,6 +423,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "WINDOW_MODE"
 metadata/description = "WINDOW_MODE_TIP"
 
@@ -440,6 +451,7 @@ popup/item_3/id = 3
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "VSYNC"
 metadata/description = "VSYNC_TIP"
 
@@ -460,6 +472,7 @@ metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "FRAME_RATE_LIMIT"
 metadata/description = "FRAME_RATE_LIMIT_TIP"
 
@@ -492,6 +505,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "FIELD_OF_VIEW"
 metadata/description = "FIELD_OF_VIEW_TIP"
 
@@ -523,6 +537,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "SCALING_METHOD"
 metadata/description = "SCALING_METHOD_TIP"
 
@@ -549,6 +564,7 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "UPSCALED_RESOLUTION"
 metadata/description = "UPSCALED_RESOLUTION_TIP"
 
@@ -576,6 +592,7 @@ value = 1.0
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "FSR_SHARPNESS"
 metadata/description = "FSR_SHARPNESS_TIP"
 
@@ -602,6 +619,7 @@ value = 0.2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "SCREEN_SPACE_AA"
 metadata/description = "SCREEN_SPACE_AA_TIP"
 
@@ -629,6 +647,7 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "TAA"
 metadata/description = "TAA_TIP"
 
@@ -650,6 +669,7 @@ metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MSAA"
 metadata/description = "MSAA_TIP"
 
@@ -697,6 +717,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MASTER_VOLUME"
 metadata/description = "MASTER_VOLUME_TIP"
 
@@ -722,6 +743,7 @@ step = 0.01
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MUSIC_VOLUME"
 metadata/description = "MUSIC_VOLUME_TIP"
 
@@ -747,6 +769,7 @@ step = 0.01
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "SFX_VOLUME"
 metadata/description = "SFX_VOLUME_TIP"
 
@@ -778,6 +801,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MUTE_WHEN_NOT_FOCUSED"
 metadata/description = "MUTE_WHEN_NOT_FOCUSED_TIP"
 
@@ -821,6 +845,7 @@ custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MOVE_UP"
 metadata/description = ""
 
@@ -846,6 +871,7 @@ alignment = 1
 custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MOVE_DOWN"
 metadata/description = ""
 
@@ -871,6 +897,7 @@ alignment = 1
 custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MOVE_LEFT"
 metadata/description = ""
 
@@ -896,6 +923,7 @@ alignment = 1
 custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "MOVE_RIGHT"
 metadata/description = ""
 
@@ -922,6 +950,7 @@ custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "UNDO"
 metadata/description = ""
 
@@ -948,6 +977,7 @@ custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "REDO"
 metadata/description = ""
 
@@ -974,6 +1004,7 @@ custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "UNDO_ALL"
 metadata/description = ""
 
@@ -1000,6 +1031,7 @@ custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "SOLVE"
 metadata/description = "SOLVE_DESC"
 
@@ -1026,6 +1058,7 @@ custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "IMPORT_FROM_CLIPBOARD"
 metadata/description = "IMPORT_FROM_CLIPBOARD_DESC"
 
@@ -1052,6 +1085,7 @@ custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 metadata/title = "EXPORT_TO_CLIPBOARD"
 metadata/description = "EXPORT_TO_CLIPBOARD_DESC"
 

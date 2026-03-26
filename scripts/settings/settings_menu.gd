@@ -14,7 +14,9 @@ signal closed
 @onready var audio: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/AUDIO
 @onready var input: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/INPUT
 
-var _hovered_control: Control = null
+var _hovered_panel: Control = null
+var _is_touch_scrolling: bool
+var _scroll_touch_index: int = -1
 
 
 func open() -> void:
@@ -28,6 +30,7 @@ func close() -> void:
 
 func _ready() -> void:
 	tabs.tab_changed.connect(_on_active_tab_changed)
+	tabs.gui_input.connect(_on_tabs_gui_input)
 	close_button.pressed.connect(close)
 	restore_button.pressed.connect(_on_restore_pressed)
 
@@ -62,18 +65,34 @@ func _input(_event: InputEvent) -> void:
 	_update_tooltip()
 
 
+func _on_tabs_gui_input(input_event: InputEvent) -> void:
+	if input_event is InputEventScreenTouch:
+		var event := input_event as InputEventScreenTouch
+		if event.pressed:
+			_scroll_touch_index = event.index
+			_is_touch_scrolling = false
+		else:
+			if event.index != _scroll_touch_index:
+				return
+			_scroll_touch_index = -1
+	elif input_event is InputEventScreenDrag:
+		var event := input_event as InputEventScreenDrag
+		if event.index != _scroll_touch_index:
+			return
+		var scroll_container := tabs.get_current_tab_control()
+		scroll_container.get_v_scroll_bar().value -= event.relative.y
+		_is_touch_scrolling = true
+
+
 func _update_tooltip() -> void:
 	var active_tab := tabs.get_current_tab_control()
-	if not active_tab:
-		return
 
 	var control_under_mouse := _find_control_at_point(active_tab, get_global_mouse_position())
-
-	if control_under_mouse == _hovered_control:
+	if control_under_mouse == _hovered_panel:
 		return
-	_hovered_control = control_under_mouse
+	_hovered_panel = control_under_mouse
 
-	var tooltip_control := _find_tooltip_control(_hovered_control, active_tab)
+	var tooltip_control := _find_tooltip_control(_hovered_panel, active_tab)
 	if tooltip_control:
 		var title: String = tooltip_control.get_meta("title")
 		var description: String = tooltip_control.get_meta("description")
