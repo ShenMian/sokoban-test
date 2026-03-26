@@ -156,7 +156,7 @@ func _on_level_list_gui_input(event: InputEvent):
 func _handle_list_input(list: ItemList, input_event: InputEvent, item_click_callback: Callable):
 	if input_event is InputEventMouseButton:
 		var event := input_event as InputEventMouseButton
-		if event.button_index != MOUSE_BUTTON_LEFT or event.device == InputEvent.DEVICE_ID_EMULATION:
+		if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed or event.device == InputEvent.DEVICE_ID_EMULATION:
 			return
 		var item_idx = list.get_item_at_position(event.position, true)
 		item_click_callback.call(item_idx)
