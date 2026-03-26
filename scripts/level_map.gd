@@ -53,13 +53,13 @@ func _ready() -> void:
 	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
 	var path := Settings.LEVEL_PATH + SceneTransition.collection + ".xsb"
 	load_from_file(path, SceneTransition.level_index)
-	_sync_entities_from_state()
+	sync_entities_from_state()
 
-	_reset_camera_position()
+	reset_camera_position()
 
 	await get_tree().process_frame
 	gameplay.level_label.text = str(SceneTransition.level_index + 1)
-	_update_ui()
+	update_ui()
 
 
 func _process(_delta: float) -> void:
@@ -82,54 +82,54 @@ func _process(_delta: float) -> void:
 		do_undo_all()
 
 	await wait_for_moves_finished()
-	_update_ui()
+	update_ui()
 
 
 func do_undo() -> void:
 	undo()
 	deselect_box()
-	_sync_entities_from_state()
-	_update_ui()
+	sync_entities_from_state()
+	update_ui()
 
 
 func do_redo() -> void:
 	redo()
 	deselect_box()
-	_sync_entities_from_state()
-	_update_ui()
+	sync_entities_from_state()
+	update_ui()
 
 
 func do_undo_all() -> void:
 	undo_all()
 	deselect_box()
-	_sync_entities_from_state()
-	_update_ui()
+	sync_entities_from_state()
+	update_ui()
 
 
 func do_solve() -> void:
 	if _solving:
 		cancel_solve()
 		_solving = false
-		_update_ui()
+		update_ui()
 		gameplay.solve_button.modulate = Color.WHITE
 		return
 
 	deselect_box()
 	_solving = true
-	_update_ui()
+	update_ui()
 	start_solve(solver_algorithm, solver_strategy)
 
 
 func _on_solve_completed(directions: Array) -> void:
 	_solving = false
-	_update_ui()
+	update_ui()
 	gameplay.solve_button.modulate = Color.WHITE
 	await _execute_path(directions)
 
 
 func _on_solve_failed(error: String) -> void:
 	_solving = false
-	_update_ui()
+	update_ui()
 	gameplay.solve_button.modulate = Color.RED
 	create_tween().tween_property(gameplay.solve_button, "modulate", Color.WHITE, 2.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	push_warning("Solver failed: " + error)
@@ -146,9 +146,9 @@ func wait_for_moves_finished() -> void:
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
 		load_from_string(DisplayServer.clipboard_get())
-		_sync_entities_from_state()
-		_update_ui()
-		_reset_camera_position()
+		sync_entities_from_state()
+		update_ui()
+		reset_camera_position()
 	elif Input.is_action_just_pressed("export_to_clipboard"):
 		DisplayServer.clipboard_set(get_map_xsb())
 
@@ -213,7 +213,7 @@ func _execute_path(directions: Array) -> void:
 			break
 		move_by(direction)
 		await wait_for_moves_finished()
-	_update_ui()
+	update_ui()
 
 
 func _is_box_moving() -> bool:
@@ -223,7 +223,7 @@ func _is_box_moving() -> bool:
 	return false
 
 
-func _sync_entities_from_state() -> void:
+func sync_entities_from_state() -> void:
 	for child in boxes_container.get_children():
 		child.queue_free()
 
@@ -294,10 +294,10 @@ func _clear_waypoints() -> void:
 
 
 func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
-	_update_ui()
+	update_ui()
 
 
-func _update_ui() -> void:
+func update_ui() -> void:
 	var status: Dictionary = get_status()
 
 	# Update HUD labels
@@ -340,7 +340,7 @@ func _on_solved() -> void:
 	enter_goal_player.stop()
 
 
-func _reset_camera_position() -> void:
+func reset_camera_position() -> void:
 	var center := get_dimensions() / 2.0
 	var max_dimension = max(get_dimensions().x, get_dimensions().y)
 	camera._target_position = Vector3(center.x, max_dimension, center.y)

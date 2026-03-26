@@ -89,6 +89,6 @@ func _transform_level() -> void:
 	_transform_state = (_transform_state + 1) % 8
 
 	level_map.deselect_box()
-	level_map._sync_entities_from_state()
-	level_map._update_ui()
-	level_map._reset_camera_position()
+	level_map.sync_entities_from_state()
+	level_map.update_ui()
+	level_map.reset_camera_position()
