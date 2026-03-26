@@ -26,53 +26,11 @@ use soukoban::{
     solver::{self, Solver},
 };
 
-use crate::convert::{ToGodot, ToNalgebra};
-
-#[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
-#[godot(via = i32)]
-pub enum Direction {
-    #[default]
-    Up,
-    Down,
-    Left,
-    Right,
-}
-
-impl From<Direction> for direction::Direction {
-    fn from(direction: Direction) -> Self {
-        match direction {
-            Direction::Up => direction::Direction::Up,
-            Direction::Down => direction::Direction::Down,
-            Direction::Left => direction::Direction::Left,
-            Direction::Right => direction::Direction::Right,
-        }
-    }
-}
-
-/// Solver and box pathfinding strategies.
-#[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
-#[godot(via = i32)]
-pub enum Strategy {
-    /// Search for any solution as quickly as possible.
-    ///
-    /// Using this strategy, A* search degrades into greedy best-first search.
-    #[default]
-    Quick,
-    /// Find the push optimal solution.
-    PushOptimal,
-    /// Find the move optimal solution.
-    MoveOptimal,
-}
-
-impl From<Strategy> for solver::Strategy {
-    fn from(strategy: Strategy) -> Self {
-        match strategy {
-            Strategy::Quick => solver::Strategy::Fast,
-            Strategy::PushOptimal => solver::Strategy::OptimalPush,
-            Strategy::MoveOptimal => solver::Strategy::OptimalMove,
-        }
-    }
-}
+use crate::{
+    convert::{ToGodot, ToNalgebra},
+    direction::Direction,
+    strategy::Strategy,
+};
 
 /// Solver search algorithms.
 #[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]

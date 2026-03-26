@@ -1,7 +1,9 @@
 use godot::prelude::*;
 
-mod level_map;
 mod convert;
+mod direction;
+mod level_map;
+mod strategy;
 
 struct Extension;
 
