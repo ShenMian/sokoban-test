@@ -15,8 +15,6 @@ signal closed
 @onready var input: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/INPUT
 
 var _hovered_panel: Control = null
-var _is_touch_scrolling: bool
-var _scroll_touch_index: int = -1
 
 
 func open() -> void:
@@ -30,7 +28,6 @@ func close() -> void:
 
 func _ready() -> void:
 	tabs.tab_changed.connect(_on_active_tab_changed)
-	tabs.gui_input.connect(_on_tabs_gui_input)
 	close_button.pressed.connect(close)
 	restore_button.pressed.connect(_on_restore_pressed)
 
@@ -63,25 +60,6 @@ func _input(_event: InputEvent) -> void:
 	if not visible:
 		return
 	_update_tooltip()
-
-
-func _on_tabs_gui_input(input_event: InputEvent) -> void:
-	if input_event is InputEventScreenTouch:
-		var event := input_event as InputEventScreenTouch
-		if event.pressed:
-			_scroll_touch_index = event.index
-			_is_touch_scrolling = false
-		else:
-			if event.index != _scroll_touch_index:
-				return
-			_scroll_touch_index = -1
-	elif input_event is InputEventScreenDrag:
-		var event := input_event as InputEventScreenDrag
-		if event.index != _scroll_touch_index:
-			return
-		var scroll_container := tabs.get_current_tab_control()
-		scroll_container.get_v_scroll_bar().value -= event.relative.y
-		_is_touch_scrolling = true
 
 
 func _update_tooltip() -> void:
