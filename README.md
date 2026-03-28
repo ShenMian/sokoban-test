@@ -20,8 +20,8 @@ godot --headless --export-release "Linux" build/linux/sokoban
 
 ### Android
 
-> [!WARNING]  
-> [gdext](https://github.com/godot-rust/gdext) support for Android is currently in its early stages. For more details, please refer to <https://github.com/godot-rust/gdext/issues/470>.
+> [!WARNING]
+> gdext support for Android is currently in its early stages. For more details, please refer to <https://github.com/godot-rust/gdext/issues/470>.
 
 #### Linux
 
@@ -31,7 +31,7 @@ paru -S android-sdk android-ndk android-studio
 rustup target add aarch64-linux-android
 cargo install cargo-ndk
 cd extension
-env ANDROID_NDK_HOME=/opt/android-ndk cargo ndk -t arm64-v8a build --release --features godot/experimental-threads
+env ANDROID_NDK_HOME=/opt/android-ndk cargo ndk --target arm64-v8a build --release --features godot/experimental-threads
 cd ..
 mkdir -p build/android
 ```
@@ -76,7 +76,30 @@ In Android Studio, navigate to `SDK Manager | Languages & Frameworks | Android S
 
 ```ps1
 $env:ANDROID_NDK_HOME="C:\Users\sms\AppData\Local\Android\Sdk\ndk"
-cargo ndk -t arm64-v8a build --release --features godot/experimental-threads
+cd extension
+cargo ndk --target arm64-v8a build --release --features godot/experimental-threads
+cd ..
+```
+
+### WASM
+
+> [!WARNING]
+> gdext support for WASM is currently in its early stages. For more details, please refer to <https://godot-rust.github.io/book/toolchain/export-web.html>.
+
+#### Windows
+
+```ps1
+scoop install emscripten
+emsdk install latest
+
+rustup toolchain install nightly
+rustup component add rust-src --toolchain nightly
+rustup target add wasm32-unknown-emscripten --toolchain nightly
+
+emsdk activate latest
+cargo +nightly build -Zbuild-std --target wasm32-unknown-emscripten --release --features godot/experimental-wasm,godot/lazy-function-tables --manifest-path extension/Cargo.toml
+mkdir -p build/wasm
+godot --headless --export-release "Web" build/wasm/index.html
 ```
 
 ## Assets
@@ -102,6 +125,3 @@ cargo ndk -t arm64-v8a build --release --features godot/experimental-threads
 [Belleve]: https://github.com/be5invis
 [CC0]: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 [OFL-1.1]: https://openfontlicense.org/open-font-license-official-text/
-
-<!-- | [Universal Animation Library (Standard)] | [CC0]     |
-[Universal Animation Library (Standard)]: https://quaternius.itch.io/universal-animation-library -->
