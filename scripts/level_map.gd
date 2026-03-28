@@ -72,17 +72,22 @@ func _process(_delta: float) -> void:
 
 	if Input.is_action_pressed("move_right"):
 		move_by(Direction.RIGHT)
+		await wait_for_moves_finished()
+		update_ui()
 	elif Input.is_action_pressed("move_left"):
 		move_by(Direction.LEFT)
+		await wait_for_moves_finished()
+		update_ui()
 	elif Input.is_action_pressed("move_up"):
 		move_by(Direction.UP)
+		await wait_for_moves_finished()
+		update_ui()
 	elif Input.is_action_pressed("move_down"):
 		move_by(Direction.DOWN)
+		await wait_for_moves_finished()
+		update_ui()
 	elif Input.is_action_just_pressed("undo_all"):
 		do_undo_all()
-
-	await wait_for_moves_finished()
-	update_ui()
 
 
 func do_undo() -> void:
