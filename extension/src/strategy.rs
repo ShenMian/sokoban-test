@@ -19,9 +19,9 @@ pub enum Strategy {
 impl From<Strategy> for solver::Strategy {
     fn from(strategy: Strategy) -> Self {
         match strategy {
-            Strategy::Quick => solver::Strategy::Fast,
-            Strategy::PushOptimal => solver::Strategy::OptimalPush,
-            Strategy::MoveOptimal => solver::Strategy::OptimalMove,
+            Strategy::Quick => solver::Strategy::Quick,
+            Strategy::PushOptimal => solver::Strategy::PushOptimal,
+            Strategy::MoveOptimal => solver::Strategy::MoveOptimal,
         }
     }
 }
