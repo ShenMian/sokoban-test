@@ -58,7 +58,7 @@ struct LevelMap {
     deadlock_hint: bool,
 
     #[export]
-    #[var(get, set = set_deadlock_tint)]
+    #[var(pub, set = set_deadlock_tint)]
     deadlock_tint: Color,
 
     #[export]
@@ -151,8 +151,9 @@ impl LevelMap {
     #[func]
     fn load_collection(path: GString) -> Array<VarDictionary> {
         let path = path.to_string();
-        let file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let buffer = file.get_buffer(file.get_length() as i64).to_vec();
+        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
+        let len = file.get_length();
+        let buffer = file.get_buffer(len as i64).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
         let mut levels = Array::new();
         for result in Level::load_from_reader(reader) {
@@ -175,8 +176,9 @@ impl LevelMap {
 
     #[func]
     fn load_from_file(&mut self, path: GString, index: i32) {
-        let file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let buffer = file.get_buffer(file.get_length() as i64).to_vec();
+        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
+        let len = file.get_length();
+        let buffer = file.get_buffer(len as i64).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
         self.level = Level::load_nth_from_reader(reader, index as usize).unwrap();
         self.build();
@@ -522,7 +524,7 @@ impl LevelMap {
         let solver = Solver::new(self.map().clone(), strategy.into());
         let mut dict = VarDictionary::new();
         for (position, value) in solver.lower_bounds() {
-            dict.set(position.to_gd(), value.to_variant());
+            dict.set(position.to_gd(), &value.to_variant());
         }
         dict
     }
@@ -611,19 +613,19 @@ impl LevelMap {
         mesh_library.create_item(next_id);
         mesh_library.set_item_name(next_id, name);
 
-        let mesh = mesh_library.get_item_mesh(self.floor_item_id).unwrap();
+        let mesh = mesh_library
+            .get_item_mesh(self.floor_item_id)
+            .unwrap()
+            .cast::<ArrayMesh>();
 
         let material = mesh.surface_get_material(0).unwrap();
         let standard_material = material.clone().cast::<StandardMaterial3D>();
-        let mut new_standard_material = standard_material
-            .duplicate()
-            .unwrap()
-            .cast::<StandardMaterial3D>();
+        let mut new_standard_material = standard_material.duplicate_resource();
 
         let color = new_standard_material.get_albedo();
         new_standard_material.set_albedo(f(color));
 
-        let mut new_mesh = mesh.duplicate().unwrap().cast::<ArrayMesh>();
+        let mut new_mesh = mesh.duplicate_resource();
         new_mesh.surface_set_material(0, &new_standard_material);
 
         mesh_library.set_item_mesh(next_id, &new_mesh);

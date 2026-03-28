@@ -7,6 +7,6 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-godot = "0.4"
+godot = "0.5"
 nalgebra = "0.34"
 soukoban = { path = "../../soukoban" }
