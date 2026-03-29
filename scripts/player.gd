@@ -47,7 +47,6 @@ var _duration_multiplier: float = 1.0
 func _ready() -> void:
 	Settings.setting_changed.connect(_on_setting_changed)
 
-	level_map.player_moved.connect(_on_player_moved)
 	idle_timer.timeout.connect(_on_idle_timer_timeout)
 
 	mesh_area.input_event.connect(_on_area_input_event)
@@ -68,13 +67,14 @@ func _ready() -> void:
 		_apply_selectable()
 
 
-func move(direction: Vector3, push: bool) -> void:
-	if direction == Vector3.ZERO:
+func move(direction: Vector2, push: bool) -> void:
+	if direction == Vector2.ZERO:
 		state_machine.travel("EmoteNo")
 		return
 
 	var target_rotation: float
-	match direction:
+	var direction3d := Vector3(direction.x, 0.0, direction.y)
+	match direction3d:
 		Vector3.RIGHT:
 			target_rotation = 90.0
 		Vector3.LEFT:
@@ -107,7 +107,7 @@ func move(direction: Vector3, push: bool) -> void:
 	await create_tween() \
 		.set_ease(move_ease) \
 		.set_trans(move_transition) \
-		.tween_property(self , "global_position", global_position + direction, move_duration * _duration_multiplier) \
+		.tween_property(self , "global_position", global_position + direction3d, move_duration * _duration_multiplier) \
 		.finished
 
 	state_machine.travel("Static")
@@ -132,11 +132,6 @@ func _on_setting_changed(section: String, key: String, value: Variant):
 				_duration_multiplier = 1.0
 			Settings.AnimationSpeed.FAST:
 				_duration_multiplier = 0.25
-
-
-func _on_player_moved(to: Vector2i, pushed: bool) -> void:
-	var to_ := Vector3(to.x, 0.0, to.y)
-	move((to_ - global_position).round(), pushed)
 
 
 func _on_idle_timer_timeout() -> void:

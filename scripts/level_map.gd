@@ -298,7 +298,9 @@ func _clear_waypoints() -> void:
 		child.queue_free()
 
 
-func _on_player_moved(_to: Vector2, _pushed: bool) -> void:
+func _on_player_moved(to: Vector2i, pushed: bool) -> void:
+	var from := Vector2i(round(player.global_position.x), round(player.global_position.z))
+	player.move(to - from, pushed)
 	update_ui()
 
 
