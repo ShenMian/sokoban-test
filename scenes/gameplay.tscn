@@ -13,10 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://bm6kt2o4osafx" path="res://scenes/ui/credits.tscn" id="9_101mb"]
 [ext_resource type="Texture2D" uid="uid://bxogo6js8fo1a" path="res://assets/textures/icons/cpu.png" id="9_bhmdk"]
 [ext_resource type="PackedScene" uid="uid://c7v2d1n2m4k7p" path="res://scenes/ui/victory_menu.tscn" id="10_victory"]
+[ext_resource type="Texture2D" uid="uid://shkaudmqv8ra" path="res://assets/textures/icons/transform.svg" id="10_w3w6i"]
 [ext_resource type="Texture2D" uid="uid://c1265tlwonjpv" path="res://assets/textures/icons/previous.png" id="11_407ns"]
 [ext_resource type="Texture2D" uid="uid://dk4kar7bm6o4q" path="res://assets/textures/icons/menu_list.png" id="11_s5y6v"]
 [ext_resource type="Texture2D" uid="uid://bdh3nf8a5fe4m" path="res://assets/textures/icons/next.png" id="12_w3w6i"]
-[ext_resource type="Texture2D" uid="uid://qo1gsvr3g6wc" path="res://assets/textures/icons/transform.png" id="13_trans"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_00tan"]
 content_margin_left = 5.0
@@ -247,7 +247,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "TRANSFORM"
 shortcut_in_tooltip = false
-icon = ExtResource("13_trans")
+icon = ExtResource("10_w3w6i")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_407ns")
