@@ -61,7 +61,11 @@ msgid "ANIMATION_SPEED"
 msgstr "动画速度"
 
 msgid "ANIMATION_SPEED_TIP"
-msgstr "控制角色移动动画速度"
+msgstr ""
+"选择移动动画速度.\n"
+"[ul]"
+"[b]立即[/b]: 跳过动画"
+"[/ul]"
 
 msgid "ANIM_SLOW"
 msgstr "慢速"
@@ -70,7 +74,7 @@ msgid "ANIM_FAST"
 msgstr "快速"
 
 msgid "ANIM_INSTANT"
-msgstr "瞬间完成"
+msgstr "立即"
 
 msgid "2D_VIEW"
 msgstr "2D 视角"

@@ -61,7 +61,11 @@ msgid "ANIMATION_SPEED"
 msgstr "Animation Speed"
 
 msgid "ANIMATION_SPEED_TIP"
-msgstr "Adjust the speed of the character movement animation"
+msgstr ""
+"Select the speed of the movement animations.\n"
+"[ul]"
+"[b]Instant[/b]: Skip animations"
+"[/ul]"
 
 msgid "ANIM_SLOW"
 msgstr "Slow"

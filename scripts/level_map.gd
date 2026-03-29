@@ -29,6 +29,7 @@ var heatmap: bool:
 
 @export var pushable_hint: bool
 
+var _is_instant: bool
 var _selected_box: Box
 var _solving: bool = false
 var _solve_tween: Tween
@@ -60,27 +61,23 @@ func _process(_delta: float) -> void:
 		poll_solve()
 		return
 
+	if Input.is_action_just_pressed("undo_all"):
+		do_undo_all()
+		return
+
 	if player.is_moving or _is_box_moving():
 		return
 
 	if Input.is_action_pressed("move_right"):
-		move_by(E.Direction.RIGHT)
-		await wait_for_moves_finished()
-		update_ui()
+		_execute_path([E.Direction.RIGHT])
 	elif Input.is_action_pressed("move_left"):
-		move_by(E.Direction.LEFT)
-		await wait_for_moves_finished()
-		update_ui()
+		_execute_path([E.Direction.LEFT])
 	elif Input.is_action_pressed("move_up"):
-		move_by(E.Direction.UP)
-		await wait_for_moves_finished()
-		update_ui()
+		_execute_path([E.Direction.UP])
 	elif Input.is_action_pressed("move_down"):
-		move_by(E.Direction.DOWN)
-		await wait_for_moves_finished()
-		update_ui()
-	elif Input.is_action_just_pressed("undo_all"):
-		do_undo_all()
+		_execute_path([E.Direction.DOWN])
+	else:
+		return
 
 
 func do_undo() -> void:
@@ -181,7 +178,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 	if section == "gameplay":
-		if key == "deadlock_hint":
+		if key == "animation_speed":
+			_is_instant = value == E.AnimationSpeed.INSTANT
+		elif key == "deadlock_hint":
 			deadlock_hint = value
 			build()
 		elif key == "checkerboard":
@@ -210,7 +209,11 @@ func _execute_path(directions: Array) -> void:
 		if is_solved():
 			break
 		move_by(direction)
-		await wait_for_moves_finished()
+		# Wait for animations to finish if not instant
+		if not _is_instant:
+			await wait_for_moves_finished()
+	if _is_instant:
+		sync_entities_from_state()
 	update_ui()
 
 
@@ -293,6 +296,10 @@ func _clear_waypoints() -> void:
 
 
 func _on_player_moved(to: Vector2i, pushed: bool) -> void:
+	# Skip animation if instant is enabled
+	if _is_instant:
+		return
+
 	var from := Vector2i(round(player.global_position.x), round(player.global_position.z))
 	player.move(to - from, pushed)
 	update_ui()
