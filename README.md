@@ -88,6 +88,9 @@ cd ..
 
 #### Windows
 
+> [!WARNING]
+> Do not use the `--manifest-path` parameter here, as it will cause `.cargo/config.toml` to be ignored.
+
 ```ps1
 scoop install emscripten
 emsdk install latest
@@ -97,7 +100,9 @@ rustup component add rust-src --toolchain nightly
 rustup target add wasm32-unknown-emscripten --toolchain nightly
 
 emsdk activate latest
-cargo +nightly build -Zbuild-std --target wasm32-unknown-emscripten --release --features godot/experimental-wasm,godot/lazy-function-tables --manifest-path extension/Cargo.toml
+cd extension
+cargo +nightly build -Zbuild-std --target wasm32-unknown-emscripten --release --features godot/experimental-wasm,godot/lazy-function-tables
+cd ..
 mkdir -p build/wasm
 godot --headless --export-release "Web" build/wasm/index.html
 ```
