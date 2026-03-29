@@ -2,34 +2,17 @@ extends Node
 
 signal setting_changed(section: String, key: String, value: Variant)
 
-enum AnimationSpeed {
-	SLOW = 0,
-	FAST = 1,
-	INSTANT = 2,
-}
-
-enum Strategy {
-	QUICK = 0,
-	PUSH_OPTIMAL = 1,
-	MOVE_OPTIMAL = 2
-}
-
-enum Algorithm {
-	A_STAR = 0,
-	IDA_STAR = 1,
-}
-
 const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
-		"animation_speed": AnimationSpeed.FAST,
+		"animation_speed": E.AnimationSpeed.FAST,
 		"2d_view": false,
 		"checkerboard": true,
 		"deadlock_hint": true,
 		"pushable_hint": true,
-		"pathfinding_strategy": Strategy.PUSH_OPTIMAL,
-		"algorithm": Algorithm.A_STAR,
-		"solver_strategy": Strategy.QUICK,
+		"pathfinding_strategy": E.Strategy.PUSH_OPTIMAL,
+		"algorithm": E.Algorithm.A_STAR,
+		"solver_strategy": E.Strategy.QUICK,
 		"heatmap": false,
 	},
 	"video": {

@@ -115,6 +115,18 @@ func move(direction: Vector2, push: bool) -> void:
 	move_finished.emit()
 
 
+func set_facing(direction: E.Direction) -> void:
+	match direction:
+		E.Direction.UP:
+			meshes.rotation_degrees.y = 180.0
+		E.Direction.DOWN:
+			meshes.rotation_degrees.y = 0.0
+		E.Direction.LEFT:
+			meshes.rotation_degrees.y = -90.0
+		E.Direction.RIGHT:
+			meshes.rotation_degrees.y = 90.0
+
+
 func deselect() -> void:
 	_is_selected = false
 	_apply_indicator()
@@ -126,11 +138,11 @@ func grid_position() -> Vector2i:
 
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "gameplay" and key == "animation_speed":
-		assert(value != Settings.AnimationSpeed.INSTANT)
+		assert(value != E.AnimationSpeed.INSTANT)
 		match value:
-			Settings.AnimationSpeed.SLOW:
+			E.AnimationSpeed.SLOW:
 				_duration_multiplier = 1.0
-			Settings.AnimationSpeed.FAST:
+			E.AnimationSpeed.FAST:
 				_duration_multiplier = 0.25
 
 

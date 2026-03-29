@@ -1,12 +1,5 @@
 extends LevelMap
 
-enum Direction {
-	UP = 0,
-	DOWN = 1,
-	LEFT = 2,
-	RIGHT = 3
-}
-
 const BOX_SCENE = preload("res://scenes/box.tscn")
 const WAYPOINT_SCENE = preload("res://scenes/waypoint.tscn")
 const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
@@ -22,8 +15,8 @@ const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 @onready var enter_goal_player: AudioStreamPlayer3D = $Player/EnterGoalPlayer
 @onready var leave_goal_player: AudioStreamPlayer3D = $Player/LeaveGoalPlayer
 
-@export var solver_algorithm: Settings.Algorithm
-@export var solver_strategy: Settings.Strategy
+@export var solver_algorithm: E.Algorithm
+@export var solver_strategy: E.Strategy
 
 @export
 var heatmap: bool:
@@ -71,19 +64,19 @@ func _process(_delta: float) -> void:
 		return
 
 	if Input.is_action_pressed("move_right"):
-		move_by(Direction.RIGHT)
+		move_by(E.Direction.RIGHT)
 		await wait_for_moves_finished()
 		update_ui()
 	elif Input.is_action_pressed("move_left"):
-		move_by(Direction.LEFT)
+		move_by(E.Direction.LEFT)
 		await wait_for_moves_finished()
 		update_ui()
 	elif Input.is_action_pressed("move_up"):
-		move_by(Direction.UP)
+		move_by(E.Direction.UP)
 		await wait_for_moves_finished()
 		update_ui()
 	elif Input.is_action_pressed("move_down"):
-		move_by(Direction.DOWN)
+		move_by(E.Direction.DOWN)
 		await wait_for_moves_finished()
 		update_ui()
 	elif Input.is_action_just_pressed("undo_all"):
@@ -242,6 +235,7 @@ func sync_entities_from_state() -> void:
 
 	var player_position := get_player_position()
 	player.position = Vector3(player_position.x, 0.0, player_position.y)
+	player.set_facing(get_player_direction())
 
 	_update_pushable_hint()
 

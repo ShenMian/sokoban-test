@@ -96,11 +96,11 @@ func grid_position() -> Vector2i:
 
 func _on_setting_changed(section: String, key: String, value: Variant):
 	if section == "gameplay" and key == "animation_speed":
-		assert(value != Settings.AnimationSpeed.INSTANT)
+		assert(value != E.AnimationSpeed.INSTANT)
 		match value:
-			Settings.AnimationSpeed.SLOW:
+			E.AnimationSpeed.SLOW:
 				_duration_multiplier = 1.0
-			Settings.AnimationSpeed.FAST:
+			E.AnimationSpeed.FAST:
 				_duration_multiplier = 0.25
 
 

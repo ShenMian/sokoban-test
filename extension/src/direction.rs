@@ -21,3 +21,14 @@ impl From<Direction> for direction::Direction {
         }
     }
 }
+
+impl From<direction::Direction> for Direction {
+    fn from(direction: direction::Direction) -> Self {
+        match direction {
+            direction::Direction::Up => Direction::Up,
+            direction::Direction::Down => Direction::Down,
+            direction::Direction::Left => Direction::Left,
+            direction::Direction::Right => Direction::Right,
+        }
+    }
+}

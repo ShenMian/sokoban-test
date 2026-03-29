@@ -222,6 +222,14 @@ impl LevelMap {
     }
 
     #[func]
+    fn get_player_direction(&self) -> Direction {
+        self.level
+            .player_direction()
+            .unwrap_or(direction::Direction::Down)
+            .into()
+    }
+
+    #[func]
     fn get_box_positions(&self) -> Array<Vector2i> {
         self.map()
             .box_positions()
