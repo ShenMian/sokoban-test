@@ -51,7 +51,7 @@ var _bindings := ConfigFile.new()
 func _ready() -> void:
 	get_window().size_changed.connect(_on_window_size_changed)
 
-	print("Config file path: ", ProjectSettings.globalize_path(CONFIG_PATH))
+	print("User path: ", ProjectSettings.globalize_path("user://"))
 
 	var config_status := _config.load(CONFIG_PATH)
 	if config_status or not _is_config_valid(_config):
