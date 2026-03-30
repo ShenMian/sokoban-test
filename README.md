@@ -23,3 +23,10 @@
 [Belleve]: https://github.com/be5invis
 [CC0]: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 [OFL-1.1]: https://openfontlicense.org/open-font-license-official-text/
+
+## License
+
+Licensed under [Apache License, Version 2.0](LICENSE).
+
+The level files in the `assets/levels` directory are licensed solely under
+their respective licenses, available in the `LICENSE` file in the directory.
