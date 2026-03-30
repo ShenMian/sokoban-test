@@ -56,7 +56,7 @@ func _update_button_icons(button: Button, icons: Array[Texture2D]) -> void:
 	for icon in icons:
 		var rect := TextureRect.new()
 		rect.texture = icon
-		rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH
 		icon_container.add_child(rect)
 
 
