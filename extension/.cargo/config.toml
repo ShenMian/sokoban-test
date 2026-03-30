@@ -8,3 +8,11 @@ rustflags = [
     "-Z", "link-native-libraries=no",
     "-Z", "emscripten-wasm-eh=false",
 ]
+
+# Pass required C compiler flags for bundled SQLite when targeting WASM.
+# The `cc` crate used by `libsqlite3-sys` reads this env var (note: underscores).
+# -fPIC        : required by wasm-ld in SIDE_MODULE mode
+# -matomics    : required because Godot's WASM uses -pthread / shared memory
+# -mbulk-memory: required alongside -matomics for WASM threading support
+[env]
+CFLAGS_wasm32_unknown_emscripten = "-fPIC -matomics -mbulk-memory"

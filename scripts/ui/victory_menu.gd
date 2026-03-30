@@ -22,20 +22,27 @@ func open(actions: Actions):
 	moves_label.text = str(actions.moves())
 	pushes_label.text = str(actions.pushes())
 
-	var previous_solution := Settings.get_active_level_solution()
-	Settings.set_active_level_solution(actions)
-	var best_solution := Settings.get_active_level_solution()
+	var level_hash: int = SceneTransition.level_hash
+	var prev_solution := Database.get_best_solution(level_hash)
+	Database.save_solution(level_hash, str(actions))
+	var best_solution := Database.get_best_solution(level_hash)
 
-	if actions.moves() < previous_solution["optimal_move"].moves():
+	var prev_move := Actions.new(prev_solution["move_optimal"])
+	var prev_push := Actions.new(prev_solution["push_optimal"])
+	var best_move := Actions.new(best_solution["move_optimal"])
+	var best_push := Actions.new(best_solution["push_optimal"])
+
+	if actions.moves() < prev_move.moves():
 		moves_label.add_theme_color_override("font_color", Color.GREEN)
-		optimal_move_label.text = "(%s %d→%d)" % [tr("BEST"), previous_solution["optimal_move"].moves(), best_solution["optimal_move"].moves()]
+		optimal_move_label.text = "(%s %d→%d)" % [tr("BEST"), prev_move.moves(), best_move.moves()]
 	else:
-		optimal_move_label.text = "(%s %d)" % [tr("BEST"), best_solution["optimal_move"].moves()]
-	if actions.pushes() < previous_solution["optimal_push"].pushes():
+		optimal_move_label.text = "(%s %d)" % [tr("BEST"), best_move.moves()]
+
+	if actions.pushes() < prev_push.pushes():
 		pushes_label.add_theme_color_override("font_color", Color.GREEN)
-		optimal_push_label.text = "(%s %d→%d)" % [tr("BEST"), previous_solution["optimal_push"].pushes(), best_solution["optimal_push"].pushes()]
+		optimal_push_label.text = "(%s %d→%d)" % [tr("BEST"), prev_push.pushes(), best_push.pushes()]
 	else:
-		optimal_push_label.text = "(%s %d)" % [tr("BEST"), best_solution["optimal_push"].pushes()]
+		optimal_push_label.text = "(%s %d)" % [tr("BEST"), best_push.pushes()]
 
 	next_button.visible = SceneTransition.has_next_level()
 	show()

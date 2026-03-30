@@ -32,6 +32,8 @@ func _ready():
 
 	level_preview.preview_generated.connect(_on_preview_generated)
 
+	Database.load_from_file("user://database.db")
+
 	_load_collections()
 	assert(collection_list.item_count > 0)
 
@@ -52,12 +54,8 @@ func _ready():
 
 func _load_collections():
 	collection_list.clear()
-	var files = DirAccess.get_files_at(Settings.LEVEL_PATH)
-	assert(files)
-	for file in files:
-		if file.ends_with(".xsb"):
-			var collection_name = file.trim_suffix(".xsb")
-			collection_list.add_item(collection_name)
+	for collection in Database.get_collections():
+		collection_list.add_item(collection)
 
 
 func _process(_delta: float):
@@ -101,10 +99,10 @@ func _on_preview_generated(index: int, texture: Texture2D):
 
 func _on_collection_list_clicked(index: int):
 	_selected_collection = collection_list.get_item_text(index)
-	_load_levels(Settings.LEVEL_PATH + _selected_collection + ".xsb")
+	_load_levels()
 
 
-func _load_levels(path: String):
+func _load_levels():
 	level_list.get_v_scroll_bar().value = 0
 	level_list.clear()
 
@@ -114,7 +112,7 @@ func _load_levels(path: String):
 	_start_item_index = -1
 	_end_item_index = -1
 
-	_levels = Array(LevelMap.load_collection(path), TYPE_DICTIONARY, "", null)
+	_levels = Database.get_levels_in_collection(_selected_collection)
 	level_preview.set_levels(_levels)
 
 	for idx in range(_levels.size()):
@@ -122,20 +120,18 @@ func _load_levels(path: String):
 		level_list.add_item(label, preview_placeholder, true)
 		level_list.set_item_tooltip(idx, _make_tooltip(idx, _levels[idx]))
 
-		var solution := Settings.get_level_solution(_selected_collection, idx)
-		if solution["optimal_push"].is_empty():
-			level_list.set_item_custom_bg_color(idx, uncompleted_color)
-		else:
+		if _levels[idx].get("completed"):
 			level_list.set_item_custom_bg_color(idx, completed_color)
+		else:
+			level_list.set_item_custom_bg_color(idx, uncompleted_color)
 
 
 func _make_tooltip(index: int, data: Dictionary) -> String:
 	var lines := PackedStringArray()
 	lines.append("#%d" % (index + 1))
 	for key: String in data.keys():
-		if key == "map" or key == "comments":
-			continue
-		lines.append("%s: %s" % [key.capitalize(), data[key]])
+		if key in ["title", "author"]:
+			lines.append("%s: %s" % [key.capitalize(), data[key]])
 	if data.has("comments"):
 		var comment: String = data["comments"]
 		if comment.length() > 100:

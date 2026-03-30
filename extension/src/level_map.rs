@@ -152,9 +152,10 @@ impl LevelMap {
     fn load_collection(path: GString) -> Array<VarDictionary> {
         let path = path.to_string();
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let len = file.get_length();
-        let buffer = file.get_buffer(len as i64).to_vec();
+        let len = file.get_length() as i64;
+        let buffer = file.get_buffer(len).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
+
         let mut levels = Array::new();
         for result in Level::load_from_reader(reader) {
             match result {
@@ -177,9 +178,10 @@ impl LevelMap {
     #[func]
     fn load_from_file(&mut self, path: GString, index: i32) {
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let len = file.get_length();
-        let buffer = file.get_buffer(len as i64).to_vec();
+        let len = file.get_length() as i64;
+        let buffer = file.get_buffer(len).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
+
         self.level = Level::load_nth_from_reader(reader, index as usize).unwrap();
         self.build();
     }
@@ -310,9 +312,11 @@ impl LevelMap {
             box_position,
             self.pathfinding_strategy.into(),
         );
-        let elapsed = start.elapsed();
-
-        godot_print!("found {} waypoints ({:?})", waypoints.len(), elapsed);
+        godot_print!(
+            "found {} waypoints ({:?})",
+            waypoints.len(),
+            start.elapsed()
+        );
 
         if self.deadlock_hint {
             let deadlocks = compute_static_deadlocks(self.map());

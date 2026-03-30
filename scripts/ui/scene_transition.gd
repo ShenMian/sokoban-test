@@ -8,6 +8,7 @@ signal transition_finished
 var collection: String
 var level_count: int
 var level_index: int
+var level_hash: int
 
 func load_level(new_collection: String, new_count: int, new_index: int) -> void:
 	collection = new_collection
