@@ -46,12 +46,8 @@ impl Database {
             .conn()
             .prepare("SELECT DISTINCT collection FROM tb_level ORDER BY collection")
             .unwrap();
-        let rows = stmt.query_map([], |row| row.get::<_, String>(0)).unwrap();
-        let mut result = PackedStringArray::new();
-        for name in rows.map(Result::unwrap) {
-            result.push(&name);
-        }
-        result
+        let rows = stmt.query_map((), |row| row.get::<_, String>(0)).unwrap();
+        PackedStringArray::from_iter(rows.map(|collection| GString::from(&collection.unwrap())))
     }
 
     /// Returns level metadata for every level in the collection, ordered by id.
@@ -70,9 +66,8 @@ impl Database {
             )
             .unwrap();
 
-        let mut levels = Array::new();
         let rows = stmt
-            .query_map([collection.to_string()], |row| {
+            .query_map((collection.to_string(),), |row| {
                 Ok((
                     row.get::<_, String>(0)?,
                     row.get::<_, Option<String>>(1)?,
@@ -82,6 +77,7 @@ impl Database {
                 ))
             })
             .unwrap();
+        let mut levels = Array::new();
         for (map, title, author, comments, completed) in rows.map(Result::unwrap) {
             let mut dict = VarDictionary::new();
             dict.set("map", map);
@@ -127,7 +123,7 @@ impl Database {
             .conn()
             .query_row(
                 "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND move_optimal = 1",
-                [level_id],
+                (level_id,),
                 |row| row.get::<_, String>(0),
             )
             .ok();
@@ -135,7 +131,7 @@ impl Database {
             .conn()
             .query_row(
                 "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND push_optimal = 1",
-                [level_id],
+                (level_id,),
                 |row| row.get::<_, String>(0),
             )
             .ok();
@@ -167,7 +163,7 @@ impl Database {
             .conn()
             .query_row(
                 "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND move_optimal = 1",
-                [level_id],
+                (level_id,),
                 |row| row.get::<_, String>(0),
             )
             .ok()
@@ -176,7 +172,7 @@ impl Database {
             .conn()
             .query_row(
                 "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND push_optimal = 1",
-                [level_id],
+                (level_id,),
                 |row| row.get::<_, String>(0),
             )
             .ok()
@@ -184,12 +180,15 @@ impl Database {
         let is_move_optimal = best_moves.is_none_or(|moves| new_actions.moves() < moves);
         let is_push_optimal = best_pushes.is_none_or(|pushes| new_actions.pushes() < pushes);
 
-        let transaction = self.conn_mut().transaction().unwrap();
+        let transaction = self
+            .conn_mut()
+            .transaction()
+            .expect("failed to start transaction");
         if is_move_optimal {
             transaction
                 .execute(
                     "UPDATE tb_snapshot SET move_optimal = 0 WHERE level_id = ?",
-                    [level_id],
+                    (level_id,),
                 )
                 .unwrap();
         }
@@ -197,7 +196,7 @@ impl Database {
             transaction
                 .execute(
                     "UPDATE tb_snapshot SET push_optimal = 0 WHERE level_id = ?",
-                    [level_id],
+                    (level_id,),
                 )
                 .unwrap();
         }
@@ -207,7 +206,7 @@ impl Database {
                      VALUES (?, ?, ?, ?)",
                     (level_id, lurd.clone(), is_move_optimal, is_push_optimal),
                 ).unwrap();
-        transaction.commit().unwrap();
+        transaction.commit().expect("failed to commit transaction");
     }
 
     fn get_level_id_by_hash(&self, hash: i64) -> i64 {
@@ -247,7 +246,10 @@ impl Database {
         self.conn().execute(CREATE_LEVEL_INDEX, ()).unwrap();
         self.conn().execute(CREATE_SNAPSHOT_TABLE, ()).unwrap();
 
-        let transaction = self.conn_mut().transaction().unwrap();
+        let transaction = self
+            .conn_mut()
+            .transaction()
+            .expect("failed to start transaction");
         let directory = DirAccess::open("res://assets/levels/").unwrap();
         for file_name in directory.get_files().as_slice() {
             if file_name.ends_with(".xsb") {
@@ -255,7 +257,7 @@ impl Database {
                 Self::import_levels_from_file((&path).into(), &transaction);
             }
         }
-        transaction.commit().unwrap();
+        transaction.commit().expect("failed to commit transaction");
     }
 
     fn import_levels_from_file(path: GString, transaction: &Transaction) {
@@ -263,10 +265,7 @@ impl Database {
         let file_name = path_str.rsplit('/').next().unwrap_or(&path_str);
         let collection = file_name.trim_end_matches(".xsb");
 
-        let Some(mut file) = FileAccess::open(&path, ModeFlags::READ) else {
-            godot_warn!("Database: failed to open {}", path_str);
-            return;
-        };
+        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
         let len = file.get_length() as i64;
         let buffer = file.get_buffer(len).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
