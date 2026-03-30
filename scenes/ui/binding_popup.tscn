@@ -125,5 +125,6 @@ shortcut_in_tooltip = false
 text = "CANCEL"
 icon = ExtResource("3_sycsx")
 flat = true
+expand_icon = true
 script = ExtResource("2_sycsx")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
