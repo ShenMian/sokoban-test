@@ -417,6 +417,14 @@ impl LevelMap {
     }
 
     #[func]
+    fn fast_forward(&mut self, lurd: GString) {
+        let actions = Actions::from_str(&lurd.to_string()).expect("failed to parse actions");
+        self.level
+            .execute_batch(actions.0.into_iter().map(|action| action.direction()))
+            .unwrap();
+    }
+
+    #[func]
     fn move_by(&mut self, direction: Direction) {
         let direction: direction::Direction = direction.into();
 

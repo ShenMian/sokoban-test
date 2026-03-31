@@ -129,19 +129,20 @@ impl Database {
     pub fn get_collection_levels(&self, collection_name: String) -> Array<VarDictionary> {
         const QUERY_LEVELS: &str = "
             SELECT l.id, l.map_xsb, l.title, l.author, l.comments, l.hash,
-                   EXISTS(SELECT 1 FROM tb_snapshot s WHERE s.level_id = l.id) as completed
+                   EXISTS(SELECT 1 FROM tb_solution s WHERE s.level_id = l.id) as solved,
+                   EXISTS(SELECT 1 FROM tb_snapshot s WHERE s.level_id = l.id AND s.autosave = 1) as solving
             FROM tb_level l
             JOIN tb_collection_level cl ON cl.level_id = l.id
             JOIN tb_collection c ON c.id = cl.collection_id
             WHERE c.name = ?
             ORDER BY l.id";
-
         self.conn()
             .prepare(QUERY_LEVELS)
             .unwrap()
             .query_map((collection_name,), |row| {
                 let mut dict = Self::map_level_row(row)?;
-                dict.set("completed", row.get::<_, bool>(6)?);
+                dict.set("solved", row.get::<_, bool>(6)?);
+                dict.set("solving", row.get::<_, bool>(7)?);
                 Ok(dict)
             })
             .unwrap()
@@ -191,25 +192,63 @@ impl Database {
 
         if is_move_optimal {
             let _ = tx.execute(
-                "UPDATE tb_snapshot SET move_optimal = 0 WHERE level_id = ?",
+                "UPDATE tb_solution SET move_optimal = 0 WHERE level_id = ?",
                 (level_id,),
             );
         }
         if is_push_optimal {
             let _ = tx.execute(
-                "UPDATE tb_snapshot SET push_optimal = 0 WHERE level_id = ?",
+                "UPDATE tb_solution SET push_optimal = 0 WHERE level_id = ?",
                 (level_id,),
             );
         }
 
-        const UPSERT_SNAPSHOT: &str = "
-            INSERT OR IGNORE INTO tb_snapshot (level_id, actions_lurd, move_optimal, push_optimal) VALUES (?, ?, ?, ?)";
+        const UPSERT_SOLUTION: &str = "
+            INSERT OR IGNORE INTO tb_solution (level_id, actions_lurd, move_optimal, push_optimal) VALUES (?, ?, ?, ?)";
         tx.execute(
-            UPSERT_SNAPSHOT,
+            UPSERT_SOLUTION,
             (level_id, actions_lurd, is_move_optimal, is_push_optimal),
         )
         .unwrap();
         tx.commit().unwrap();
+    }
+
+    #[func]
+    pub fn save_snapshot(&self, level_id: i64, actions_lurd: String, autosave: bool) {
+        if actions_lurd.is_empty() {
+            return;
+        }
+
+        let tx = self.conn().unchecked_transaction().unwrap();
+        if autosave {
+            let _ = tx.execute(
+                "DELETE FROM tb_snapshot WHERE level_id = ? AND autosave = 1",
+                (level_id,),
+            );
+        }
+        let _ = tx.execute(
+            "INSERT INTO tb_snapshot (level_id, actions_lurd, autosave) VALUES (?, ?, ?)",
+            (level_id, actions_lurd, autosave),
+        );
+        tx.commit().unwrap();
+    }
+
+    #[func]
+    pub fn get_snapshot(&self, level_id: i64, autosave: bool) -> String {
+        const QUERY_SNAPSHOT: &str = "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND autosave = ? ORDER BY datetime DESC LIMIT 1";
+        self.conn()
+            .query_row(QUERY_SNAPSHOT, (level_id, autosave), |row| {
+                row.get::<_, String>(0)
+            })
+            .unwrap_or_default()
+    }
+
+    #[func]
+    pub fn clear_snapshot(&self, level_id: i64, autosave: bool) {
+        let _ = self.conn().execute(
+            "DELETE FROM tb_snapshot WHERE level_id = ? AND autosave = ?",
+            (level_id, autosave),
+        );
     }
 
     fn insert_levels_from_str(&self, levels_xsb: &str, collection_name: &str) {
@@ -261,7 +300,7 @@ impl Database {
 
     fn query_move_optimal_lurd(&self, level_id: i64) -> Option<String> {
         const QUERY_MOVE_OPTIMAL: &str =
-            "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND move_optimal = 1";
+            "SELECT actions_lurd FROM tb_solution WHERE level_id = ? AND move_optimal = 1";
         self.conn()
             .query_row(QUERY_MOVE_OPTIMAL, (level_id,), |row| {
                 row.get::<_, String>(0)
@@ -271,7 +310,7 @@ impl Database {
 
     fn query_push_optimal_lurd(&self, level_id: i64) -> Option<String> {
         const QUERY_PUSH_OPTIMAL: &str =
-            "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND push_optimal = 1";
+            "SELECT actions_lurd FROM tb_solution WHERE level_id = ? AND push_optimal = 1";
         self.conn()
             .query_row(QUERY_PUSH_OPTIMAL, (level_id,), |row| {
                 row.get::<_, String>(0)
@@ -283,13 +322,13 @@ impl Database {
         let mut dict = VarDictionary::new();
         dict.set("id", row.get::<_, i64>(0)?);
         dict.set("map_xsb", row.get::<_, String>(1)?);
-        if let Ok(Some(title)) = row.get::<_, Option<String>>(2) {
+        if let Some(title) = row.get::<_, Option<String>>(2)? {
             dict.set("title", title);
         }
-        if let Ok(Some(author)) = row.get::<_, Option<String>>(3) {
+        if let Some(author) = row.get::<_, Option<String>>(3)? {
             dict.set("author", author);
         }
-        if let Ok(Some(comments)) = row.get::<_, Option<String>>(4) {
+        if let Some(comments) = row.get::<_, Option<String>>(4)? {
             dict.set("comments", comments);
         }
         dict.set("hash", row.get::<_, i64>(5)?);
@@ -313,9 +352,9 @@ impl Database {
                 comments TEXT,
                 hash     INTEGER NOT NULL UNIQUE,
                 datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-            )";
+            );";
         const CREATE_LEVEL_INDEX: &str =
-            "CREATE UNIQUE INDEX IF NOT EXISTS ux_level_hash ON tb_level(hash)";
+            "CREATE UNIQUE INDEX IF NOT EXISTS ux_level_hash ON tb_level(hash);";
         const CREATE_COLLECTION_LEVEL_TABLE: &str = "
             CREATE TABLE IF NOT EXISTS tb_collection_level (
                 collection_id INTEGER,
@@ -323,17 +362,26 @@ impl Database {
                 PRIMARY KEY (collection_id, level_id),
                 FOREIGN KEY (collection_id) REFERENCES tb_collection(id) ON DELETE CASCADE,
                 FOREIGN KEY (level_id) REFERENCES tb_level(id) ON DELETE CASCADE
-            )";
-        const CREATE_SNAPSHOT_TABLE: &str = "
-            CREATE TABLE IF NOT EXISTS tb_snapshot (
+            );";
+        const CREATE_SOLUTION_TABLE: &str = "
+            CREATE TABLE IF NOT EXISTS tb_solution (
                 level_id     INTEGER,
                 actions_lurd TEXT,
-                move_optimal BOOLEAN NOT NULL CHECK (move_optimal IN (0, 1)),
-                push_optimal BOOLEAN NOT NULL CHECK (push_optimal IN (0, 1)),
+                move_optimal BOOLEAN NOT NULL,
+                push_optimal BOOLEAN NOT NULL,
                 datetime     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (level_id, actions_lurd),
                 FOREIGN KEY (level_id) REFERENCES tb_level(id) ON DELETE CASCADE
-            )";
+            );";
+        const CREATE_SNAPSHOT_TABLE: &str = "
+            CREATE TABLE IF NOT EXISTS tb_snapshot (
+                id           INTEGER PRIMARY KEY AUTOINCREMENT,
+                level_id     INTEGER,
+                actions_lurd TEXT,
+                autosave     BOOLEAN NOT NULL,
+                datetime     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (level_id) REFERENCES tb_level(id) ON DELETE CASCADE
+            );";
 
         self.conn().execute(CREATE_LEVEL_TABLE, ()).unwrap();
         self.conn().execute(CREATE_LEVEL_INDEX, ()).unwrap();
@@ -341,6 +389,7 @@ impl Database {
         self.conn()
             .execute(CREATE_COLLECTION_LEVEL_TABLE, ())
             .unwrap();
+        self.conn().execute(CREATE_SOLUTION_TABLE, ()).unwrap();
         self.conn().execute(CREATE_SNAPSHOT_TABLE, ()).unwrap();
     }
 
