@@ -101,7 +101,7 @@ func reset_gameplay_settings() -> void:
 		var value: Variant = DEFAULT_CONFIG.gameplay[key]
 		set_value("gameplay", key, value)
 
-	var locale := OS.get_locale()
+	var locale := OS.get_locale_language()
 	if locale in TranslationServer.get_loaded_locales():
 		_config.set_value("gameplay", "language", locale)
 
