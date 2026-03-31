@@ -80,6 +80,7 @@ shortcut_in_tooltip = false
 text = "CLOSE"
 icon = ExtResource("1_2ckv8")
 flat = true
+alignment = 0
 expand_icon = true
 script = ExtResource("2_0ctdu")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
