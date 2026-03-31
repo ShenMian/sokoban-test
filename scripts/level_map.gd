@@ -44,10 +44,9 @@ func _ready() -> void:
 	solve_completed.connect(_on_solve_completed)
 	solve_failed.connect(_on_solve_failed)
 
-	assert(SceneTransition.collection != null and SceneTransition.level_index != null)
-	var level := Database.get_level(SceneTransition.collection, SceneTransition.level_index)
-	load_from_string(level.get("map"))
-	SceneTransition.level_hash = level.get("hash")
+	assert(SceneTransition.level_id != null)
+	var level := Database.get_level_by_id(SceneTransition.level_id)
+	load_from_string(level.get("map_xsb"))
 	sync_entities_from_state()
 
 	reset_camera_position()

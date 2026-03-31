@@ -5,15 +5,19 @@ signal transition_finished
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var overlay: ColorRect = $ColorRect
 
-var collection: String
-var level_count: int
-var level_index: int
-var level_hash: int
+var level_id: int
 
-func load_level(new_collection: String, new_count: int, new_index: int) -> void:
+var collection: String
+var collection_count: int
+var level_index: int
+
+func load_level(new_level_id: int, new_collection: String) -> void:
+	level_id = new_level_id
+
 	collection = new_collection
-	level_count = new_count
-	level_index = new_index
+	collection_count = Database.get_collection_size_by_name(collection)
+	level_index = Database.get_level_index(level_id, collection)
+
 	change_scene_to_file("res://scenes/gameplay.tscn")
 
 
@@ -23,16 +27,18 @@ func has_previous_level() -> bool:
 
 func load_previous_level() -> void:
 	assert(has_previous_level())
+	level_id -= 1
 	level_index -= 1
 	change_scene_to_file("res://scenes/gameplay.tscn")
 
 
 func has_next_level() -> bool:
-	return level_index + 1 < level_count
+	return level_index + 1 < collection_count
 
 
 func load_next_level() -> void:
 	assert(has_next_level())
+	level_id += 1
 	level_index += 1
 	change_scene_to_file("res://scenes/gameplay.tscn")
 

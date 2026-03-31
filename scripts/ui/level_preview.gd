@@ -43,7 +43,7 @@ func _process(_delta: float):
 
 		var index: int = _queue.pop_front()
 
-		level_map.load_from_string(levels[index]["map"])
+		level_map.load_from_string(levels[index]["map_xsb"])
 		_sync_entities_from_state()
 
 		var dimensions = Vector2(level_map.get_dimensions())

@@ -32,7 +32,9 @@ func _ready():
 
 	level_preview.preview_generated.connect(_on_preview_generated)
 
-	Database.load_from_file("user://database.db")
+	Database.open("user://database.db")
+	if Database.is_empty():
+		Database.import_levels_from_dir("res://assets/levels/")
 
 	_load_collections()
 	assert(collection_list.item_count > 0)
@@ -55,7 +57,8 @@ func _ready():
 func _load_collections():
 	collection_list.clear()
 	for collection in Database.get_collections():
-		collection_list.add_item(collection)
+		var idx = collection_list.add_item(collection["name"])
+		collection_list.set_item_tooltip(idx, collection.get("description", ""))
 
 
 func _process(_delta: float):
@@ -112,12 +115,13 @@ func _load_levels():
 	_start_item_index = -1
 	_end_item_index = -1
 
-	_levels = Database.get_levels_in_collection(_selected_collection)
+	_levels = Database.get_levels_by_collection_name(_selected_collection)
 	level_preview.set_levels(_levels)
 
 	for idx in range(_levels.size()):
 		var label = str(idx + 1)
 		level_list.add_item(label, preview_placeholder, true)
+		level_list.set_item_metadata(idx, _levels[idx]["id"])
 		level_list.set_item_tooltip(idx, _make_tooltip(idx, _levels[idx]))
 
 		if _levels[idx].get("completed"):
@@ -177,7 +181,8 @@ func _handle_list_input(list: ItemList, input_event: InputEvent, item_click_call
 
 
 func _on_level_clicked(index: int):
-	SceneTransition.load_level(_selected_collection, _levels.size(), index)
+	var level_id = level_list.get_item_metadata(index)
+	SceneTransition.load_level(level_id, _selected_collection)
 
 
 func _on_level_list_resized():

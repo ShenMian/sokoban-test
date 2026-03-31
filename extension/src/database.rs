@@ -1,312 +1,225 @@
-use std::{
-    hash::{DefaultHasher, Hash, Hasher},
-    io::{BufReader, Cursor},
-    str::FromStr as _,
-};
+use std::str::FromStr as _;
 
 use godot::{
     classes::{DirAccess, FileAccess, ProjectSettings, file_access::ModeFlags},
     prelude::*,
 };
-use rusqlite::{Connection, Transaction};
-use soukoban::{Actions, Level};
+use rusqlite::Connection;
+use soukoban::{Actions, Level, level};
+
+use crate::orm::{self, Snapshot};
 
 #[derive(GodotClass)]
 #[class(init, singleton)]
 pub struct Database {
-    conn: Option<Connection>,
-    base: Base<Object>,
+    connection: Option<Connection>,
 }
 
 #[godot_api]
 impl Database {
-    /// Load a SQLite database from a Godot path.
-    /// If the file does not exist, an empty database is created and initialized from `res://assets/levels/`.
     #[func]
-    pub fn load_from_file(&mut self, path: GString) {
+    pub fn open(&mut self, path: String) {
         let is_new = !FileAccess::file_exists(&path);
 
         let project_settings = ProjectSettings::singleton();
         let full_path = project_settings.globalize_path(&path).to_string();
 
         let conn = Connection::open(&full_path).expect("failed to open database");
-        self.conn = Some(conn);
+        self.connection = Some(conn);
 
         if is_new {
-            let start = std::time::Instant::now();
             self.initialize();
-            godot_print!("Database initialized ({:?})", start.elapsed());
         }
     }
 
-    /// Returns all distinct collection names, sorted alphabetically.
     #[func]
-    pub fn get_collections(&self) -> PackedStringArray {
-        let mut stmt = self
-            .conn()
-            .prepare("SELECT DISTINCT collection FROM tb_level ORDER BY collection")
-            .unwrap();
-        let rows = stmt.query_map((), |row| row.get::<_, String>(0)).unwrap();
-        PackedStringArray::from_iter(rows.map(|collection| GString::from(&collection.unwrap())))
-    }
-
-    /// Returns level metadata for every level in the collection, ordered by id.
-    /// Each dict contains: "map", "title", "author", "comments", "completed" (bool).
-    #[func]
-    pub fn get_levels_in_collection(&self, collection: GString) -> Array<VarDictionary> {
-        let mut stmt = self
-            .conn()
-            .prepare(
-                "SELECT l.map_xsb, l.title, l.author, l.comments,
-                        EXISTS(SELECT 1 FROM tb_snapshot s
-                               WHERE s.level_id = l.id AND s.push_optimal = 1) AS completed
-                 FROM tb_level l
-                 WHERE l.collection = ?
-                 ORDER BY l.id",
-            )
-            .unwrap();
-
-        let rows = stmt
-            .query_map((collection.to_string(),), |row| {
-                Ok((
-                    row.get::<_, String>(0)?,
-                    row.get::<_, Option<String>>(1)?,
-                    row.get::<_, Option<String>>(2)?,
-                    row.get::<_, Option<String>>(3)?,
-                    row.get::<_, bool>(4)?,
-                ))
-            })
-            .unwrap();
-        let mut levels = Array::new();
-        for (map, title, author, comments, completed) in rows.map(Result::unwrap) {
-            let mut dict = VarDictionary::new();
-            dict.set("map", map);
-            if let Some(value) = title {
-                dict.set("title", value);
-            }
-            if let Some(value) = author {
-                dict.set("author", value);
-            }
-            if let Some(value) = comments {
-                dict.set("comments", value);
-            }
-            dict.set("completed", completed);
-            levels.push(&dict);
-        }
-        levels
-    }
-
-    /// Returns level data (map and hash) for the nth level (0-indexed) in a collection.
-    #[func]
-    pub fn get_level(&self, collection: GString, index: i32) -> VarDictionary {
-        let result = self.conn().query_row(
-            "SELECT map_xsb, hash FROM tb_level WHERE collection = ? ORDER BY id LIMIT 1 OFFSET ?",
-            (collection.to_string(), index),
-            |row| Ok((row.get::<_, String>(0)?, row.get::<_, i64>(1)?)),
-        ).ok();
-
-        let mut dict = VarDictionary::new();
-        if let Some((map, hash)) = result {
-            dict.set("map", map);
-            dict.set("hash", hash);
-        }
-        dict
-    }
-
-    /// Returns `{"move_optimal": String, "push_optimal": String}` for the given level hash.
-    /// Values are empty strings if no solution has been recorded yet.
-    #[func]
-    pub fn get_best_solution(&self, level_hash: i64) -> VarDictionary {
-        let level_id = self.get_level_id_by_hash(level_hash);
-
-        let move_optimal_lurd = self
-            .conn()
-            .query_row(
-                "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND move_optimal = 1",
-                (level_id,),
-                |row| row.get::<_, String>(0),
-            )
-            .ok();
-        let push_optimal_lurd = self
-            .conn()
-            .query_row(
-                "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND push_optimal = 1",
-                (level_id,),
-                |row| row.get::<_, String>(0),
-            )
-            .ok();
-
-        let mut dict = VarDictionary::new();
-        match (move_optimal_lurd, push_optimal_lurd) {
-            (Some(move_lurd), Some(push_lurd)) => {
-                dict.set("move_optimal", move_lurd);
-                dict.set("push_optimal", push_lurd);
-            }
-            (None, None) => {
-                dict.set("move_optimal", "");
-                dict.set("push_optimal", "");
-            }
-            _ => unreachable!(),
-        }
-
-        dict
-    }
-
-    /// Saves a completed solution.
-    #[func]
-    pub fn save_solution(&mut self, level_hash: i64, actions_lurd: GString) {
-        let level_id = self.get_level_id_by_hash(level_hash);
-        let lurd = actions_lurd.to_string();
-        let new_actions = Actions::from_str(&lurd).unwrap();
-
-        let best_moves = self
-            .conn()
-            .query_row(
-                "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND move_optimal = 1",
-                (level_id,),
-                |row| row.get::<_, String>(0),
-            )
-            .ok()
-            .map(|lurd| Actions::from_str(&lurd).unwrap().moves());
-        let best_pushes = self
-            .conn()
-            .query_row(
-                "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND push_optimal = 1",
-                (level_id,),
-                |row| row.get::<_, String>(0),
-            )
-            .ok()
-            .map(|lurd| Actions::from_str(&lurd).unwrap().pushes());
-        let is_move_optimal = best_moves.is_none_or(|moves| new_actions.moves() < moves);
-        let is_push_optimal = best_pushes.is_none_or(|pushes| new_actions.pushes() < pushes);
-
-        let transaction = self
-            .conn_mut()
-            .transaction()
-            .expect("failed to start transaction");
-        if is_move_optimal {
-            transaction
-                .execute(
-                    "UPDATE tb_snapshot SET move_optimal = 0 WHERE level_id = ?",
-                    (level_id,),
-                )
-                .unwrap();
-        }
-        if is_push_optimal {
-            transaction
-                .execute(
-                    "UPDATE tb_snapshot SET push_optimal = 0 WHERE level_id = ?",
-                    (level_id,),
-                )
-                .unwrap();
-        }
-        transaction
-                .execute(
-                    "INSERT OR REPLACE INTO tb_snapshot(level_id, actions_lurd, move_optimal, push_optimal)
-                     VALUES (?, ?, ?, ?)",
-                    (level_id, lurd.clone(), is_move_optimal, is_push_optimal),
-                ).unwrap();
-        transaction.commit().expect("failed to commit transaction");
-    }
-
-    fn get_level_id_by_hash(&self, hash: i64) -> i64 {
+    pub fn is_empty(&self) -> bool {
+        const QUERY_IS_EMPTY: &str = "SELECT NOT EXISTS (SELECT 1 FROM tb_level)";
         self.conn()
-            .query_row("SELECT id FROM tb_level WHERE hash = ?", (hash,), |row| {
-                row.get::<_, i64>(0)
-            })
+            .query_one(QUERY_IS_EMPTY, (), |row| row.get::<_, bool>(0))
             .unwrap()
     }
 
+    /// Imports all level files from a directory.
+    #[func]
+    fn import_levels_from_dir(&self, path: String) {
+        let path = path.trim_end_matches('/').to_string();
+
+        let start = std::time::Instant::now();
+        let directory = DirAccess::open(&path).expect("failed to open directory");
+        for file_name in directory.get_files().as_slice() {
+            if file_name.ends_with(".xsb") {
+                self.import_levels_from_file(format!("{path}/{file_name}"));
+            }
+        }
+        godot_print!("Levels imported from directory ({:?})", start.elapsed());
+    }
+
+    /// Imports levels from a file.
+    #[func]
+    fn import_levels_from_file(&self, path: String) {
+        // Create a new Collection using the file stem as its name.
+        let collection_name = std::path::Path::new(&path.to_string())
+            .file_stem()
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+
+        let mut collection = orm::Collection {
+            id: -1,
+            name: collection_name.clone(),
+            description: None,
+        };
+        collection.upsert();
+
+        let file = FileAccess::open(&path, ModeFlags::READ).expect("failed to open file");
+        self.insert_levels_from_str(&file.get_as_text().to_string(), &collection_name);
+    }
+
+    /// Imports levels from an XSB format string.
+    #[func]
+    fn import_levels_from_string(&self, xsb: String, collection_name: String) {
+        self.insert_levels_from_str(&xsb, &collection_name);
+    }
+
+    #[func]
+    pub fn get_collections(&self) -> Array<VarDictionary> {
+        orm::Collection::query_all()
+            .into_iter()
+            .map(|collection| collection.into())
+            .collect()
+    }
+
+    #[func]
+    pub fn get_collection_size_by_name(&self, collection: GString) -> i64 {
+        orm::Collection::query_by_name(&collection.to_string())
+            .unwrap()
+            .count()
+    }
+
+    #[func]
+    pub fn get_level_index(&self, level_id: i64, collection_name: GString) -> i64 {
+        let level = orm::Level::query_by_id(level_id).unwrap();
+        let collection = orm::Collection::query_by_name(&collection_name.to_string()).unwrap();
+        level.index_in_collection(&collection)
+    }
+
+    #[func]
+    pub fn get_levels_by_collection_name(&self, collection: GString) -> Array<VarDictionary> {
+        let collection = orm::Collection::query_by_name(&collection.to_string()).unwrap();
+        let levels = collection.query_levels();
+        levels.into_iter().map(|level| level.into()).collect()
+    }
+
+    #[func]
+    pub fn get_level_by_id(&self, level_id: i64) -> VarDictionary {
+        orm::Level::query_by_id(level_id).unwrap().into()
+    }
+
+    #[func]
+    pub fn get_best_solution_by_level_id(&self, level_id: i64) -> VarDictionary {
+        let level = orm::Level::query_by_id(level_id).unwrap();
+        let mut dict = VarDictionary::new();
+        dict.set(
+            "move_optimal",
+            level.move_optimal_lurd().unwrap_or_default(),
+        );
+        dict.set(
+            "push_optimal",
+            level.push_optimal_lurd().unwrap_or_default(),
+        );
+        dict
+    }
+
+    #[func]
+    pub fn add_solution(&self, level_id: i64, actions_lurd: String) {
+        let action = Actions::from_str(&actions_lurd).unwrap();
+
+        let level = orm::Level::query_by_id(level_id).unwrap();
+        let best_moves = level
+            .move_optimal_lurd()
+            .map(|lurd| Actions::from_str(&lurd).unwrap().moves());
+        let best_pushes = level
+            .push_optimal_lurd()
+            .map(|lurd| Actions::from_str(&lurd).unwrap().pushes());
+        let is_move_optimal = best_moves.is_none_or(|moves| action.moves() < moves);
+        let is_push_optimal = best_pushes.is_none_or(|pushes| action.pushes() < pushes);
+
+        Snapshot {
+            level_id: level.id,
+            actions_lurd,
+            move_optimal: is_move_optimal,
+            push_optimal: is_push_optimal,
+        }
+        .upsert();
+    }
+
+    fn insert_levels_from_str(&self, xsb: &str, collection_name: &str) {
+        let collection = orm::Collection::query_by_name(collection_name).unwrap();
+
+        self.conn().execute("BEGIN TRANSACTION", ()).unwrap();
+        let levels = Level::load_from_str(xsb);
+        for level in levels.map(Result::unwrap) {
+            let mut orm_level = orm::Level::from(level);
+            orm_level.upsert();
+            collection.add_level(&orm_level);
+        }
+        self.conn().execute("COMMIT", ()).unwrap();
+    }
+
     fn initialize(&mut self) {
+        const CREATE_COLLECTION_TABLE: &str = "
+            CREATE TABLE IF NOT EXISTS tb_collection (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                name        TEXT NOT NULL UNIQUE,
+                description TEXT,
+                datetime    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );";
         const CREATE_LEVEL_TABLE: &str = "
             CREATE TABLE IF NOT EXISTS tb_level (
-                id         INTEGER PRIMARY KEY AUTOINCREMENT,
-                collection TEXT NOT NULL,
-                map_xsb    TEXT NOT NULL,
-                title      TEXT,
-                author     TEXT,
-                comments   TEXT,
-                hash       INTEGER NOT NULL UNIQUE,
-                datetime   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                id       INTEGER PRIMARY KEY AUTOINCREMENT,
+                map_xsb  TEXT NOT NULL,
+                title    TEXT,
+                author   TEXT,
+                comments TEXT,
+                hash     INTEGER NOT NULL UNIQUE,
+                datetime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
             )";
         const CREATE_LEVEL_INDEX: &str =
             "CREATE UNIQUE INDEX IF NOT EXISTS ux_level_hash ON tb_level(hash)";
+        const CREATE_COLLECTION_LEVEL_TABLE: &str = "
+            CREATE TABLE IF NOT EXISTS tb_collection_level (
+                collection_id INTEGER,
+                level_id      INTEGER,
+                PRIMARY KEY (collection_id, level_id),
+                FOREIGN KEY (collection_id) REFERENCES tb_collection(id) ON DELETE CASCADE,
+                FOREIGN KEY (level_id) REFERENCES tb_level(id) ON DELETE CASCADE
+            )";
         const CREATE_SNAPSHOT_TABLE: &str = "
             CREATE TABLE IF NOT EXISTS tb_snapshot (
                 level_id     INTEGER,
                 actions_lurd TEXT,
-                move_optimal BOOLEAN NOT NULL DEFAULT 0 CHECK (move_optimal IN (0, 1)),
-                push_optimal BOOLEAN NOT NULL DEFAULT 0 CHECK (push_optimal IN (0, 1)),
+                move_optimal BOOLEAN NOT NULL CHECK (move_optimal IN (0, 1)),
+                push_optimal BOOLEAN NOT NULL CHECK (push_optimal IN (0, 1)),
                 datetime     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (level_id, move_optimal, push_optimal),
+                PRIMARY KEY (level_id, actions_lurd),
                 FOREIGN KEY (level_id) REFERENCES tb_level(id) ON DELETE CASCADE
             )";
 
         self.conn().execute(CREATE_LEVEL_TABLE, ()).unwrap();
         self.conn().execute(CREATE_LEVEL_INDEX, ()).unwrap();
+        self.conn().execute(CREATE_COLLECTION_TABLE, ()).unwrap();
+        self.conn()
+            .execute(CREATE_COLLECTION_LEVEL_TABLE, ())
+            .unwrap();
         self.conn().execute(CREATE_SNAPSHOT_TABLE, ()).unwrap();
-
-        let transaction = self
-            .conn_mut()
-            .transaction()
-            .expect("failed to start transaction");
-        let directory = DirAccess::open("res://assets/levels/").unwrap();
-        for file_name in directory.get_files().as_slice() {
-            if file_name.ends_with(".xsb") {
-                let path = format!("res://assets/levels/{file_name}");
-                Self::import_levels_from_file((&path).into(), &transaction);
-            }
-        }
-        transaction.commit().expect("failed to commit transaction");
     }
 
-    fn import_levels_from_file(path: GString, transaction: &Transaction) {
-        let path_str = path.to_string();
-        let file_name = path_str.rsplit('/').next().unwrap_or(&path_str);
-        let collection = file_name.trim_end_matches(".xsb");
-
-        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let len = file.get_length() as i64;
-        let buffer = file.get_buffer(len).to_vec();
-        let reader = BufReader::new(Cursor::new(buffer));
-
-        for level in Level::load_from_reader(reader).map(Result::unwrap) {
-            Self::import_level(&level, collection, transaction);
-        }
+    pub fn conn(&self) -> &Connection {
+        self.connection.as_ref().expect("database not connected")
     }
 
-    fn import_level(level: &Level, collection: &str, transaction: &Transaction) {
-        let title = level.metadata().get("title");
-        let author = level.metadata().get("author");
-        let comments = level.metadata().get("comments");
-
-        let mut map = level.map().clone();
-        map.canonicalize();
-        let mut hasher = DefaultHasher::new();
-        map.hash(&mut hasher);
-        let hash = hasher.finish() as i64;
-
-        transaction
-            .execute(
-                "INSERT OR IGNORE INTO tb_level(collection, map_xsb, title, author, comments, hash)
-                 VALUES (?, ?, ?, ?, ?, ?)",
-                (
-                    collection,
-                    level.map().to_string(),
-                    title,
-                    author,
-                    comments,
-                    hash,
-                ),
-            )
-            .expect("failed to insert level");
-    }
-
-    fn conn(&self) -> &Connection {
-        self.conn.as_ref().expect("database not connected")
-    }
-
-    fn conn_mut(&mut self) -> &mut Connection {
-        self.conn.as_mut().expect("database not connected")
+    pub fn conn_mut(&mut self) -> &mut Connection {
+        self.connection.as_mut().expect("database not connected")
     }
 }
