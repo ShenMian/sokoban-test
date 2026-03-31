@@ -19,7 +19,7 @@ use godot::{
 };
 use nalgebra::Vector2;
 use soukoban::{
-    Actions, Level, Map, SearchError, Tiles,
+    Action, Actions, Level, Map, SearchError, Tiles,
     deadlock::compute_static_deadlocks,
     direction::{self, DirectedPosition},
     path_finding,
@@ -414,6 +414,14 @@ impl LevelMap {
             self.solver_done.store(false, Ordering::Release);
             *self.solver_result.lock().unwrap() = None;
         }
+    }
+
+    #[func]
+    fn fast_forward(&mut self, lurd: GString) {
+        let actions = Actions::from_str(&lurd.to_string()).expect("failed to parse actions");
+        self.level
+            .execute_batch(actions.0.into_iter().map(|action| action.direction()))
+            .unwrap();
     }
 
     #[func]

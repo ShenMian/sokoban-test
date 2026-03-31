@@ -33,22 +33,22 @@ func _ready() -> void:
 	pause_menu.closed.connect(_on_pause_closed)
 	pause_menu.request_settings.connect(_on_pause_request_settings)
 	pause_menu.request_credits.connect(_on_pause_request_credits)
-	pause_menu.request_menu.connect(SceneTransition.load_main_menu)
+	pause_menu.request_menu.connect(_on_request_menu)
 	settings_menu.closed.connect(pause_menu.show)
 	credits.closed.connect(pause_menu.show)
 
 	level_map.solved.connect(_on_level_solved)
-	victory_menu.request_next_level.connect(SceneTransition.load_next_level)
-	victory_menu.request_menu.connect(SceneTransition.load_main_menu)
+	victory_menu.request_next_level.connect(_on_request_next_level)
+	victory_menu.request_menu.connect(_on_request_menu)
 
 	undo_button.pressed.connect(level_map.do_undo)
 	redo_button.pressed.connect(level_map.do_redo)
-	undo_all_button.pressed.connect(level_map.do_undo_all)
+	undo_all_button.pressed.connect(_on_restart)
 	solve_button.pressed.connect(level_map.do_solve)
 	menu_button.pressed.connect(_open_pause_menu)
 	transform_button.pressed.connect(_transform_level)
-	previous_button.pressed.connect(SceneTransition.load_previous_level)
-	next_button.pressed.connect(SceneTransition.load_next_level)
+	previous_button.pressed.connect(_on_request_previous_level)
+	next_button.pressed.connect(_on_request_next_level)
 
 
 func _exit_tree() -> void:
@@ -57,7 +57,36 @@ func _exit_tree() -> void:
 
 func _notification(what):
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
-		SceneTransition.load_main_menu()
+		_on_request_menu()
+	elif what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_auto_save()
+
+
+func _on_request_next_level() -> void:
+	_auto_save()
+	SceneTransition.load_next_level()
+
+
+func _on_request_previous_level() -> void:
+	_auto_save()
+	SceneTransition.load_previous_level()
+
+
+func _on_restart() -> void:
+	Database.clear_snapshot(SceneTransition.level_id, true)
+	level_map.do_undo_all()
+
+
+func _on_request_menu() -> void:
+	_auto_save()
+	SceneTransition.load_main_menu()
+
+
+func _auto_save():
+	if level_map.is_solved():
+		Database.clear_snapshot(SceneTransition.level_id, true)
+	else:
+		Database.save_snapshot(SceneTransition.level_id, level_map.get_actions_lurd(), true)
 
 
 func _input(_event: InputEvent) -> void:

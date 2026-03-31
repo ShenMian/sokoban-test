@@ -47,6 +47,10 @@ func _ready() -> void:
 	assert(SceneTransition.level_id != null)
 	var level := Database.get_level(SceneTransition.level_id)
 	load_from_string(level.get("map_xsb"))
+
+	var snapshot := Database.get_snapshot(SceneTransition.level_id, true)
+	fast_forward(snapshot)
+
 	sync_entities_from_state()
 
 	reset_camera_position()

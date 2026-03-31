@@ -8,8 +8,9 @@ const LEVEL_PREVIEW_SCENE := preload("res://scenes/ui/level_preview.tscn")
 
 @export var level_item_min_width: int = 150
 
-@export var uncompleted_color: Color = Color(0.0, 0.0, 0.0, 0.0)
-@export var completed_color: Color = Color(0.18, 0.44, 0.18, 0.5)
+@export var unsolved_color: Color = Color(0.0, 0.0, 0.0, 0.0)
+@export var solved_color: Color = Color(0.18, 0.44, 0.18, 0.5)
+@export var solving_color: Color = Color(0.44, 0.35, 0.10, 0.5)
 
 @export var preview_placeholder: GradientTexture2D
 
@@ -124,10 +125,12 @@ func _load_levels():
 		level_list.set_item_metadata(idx, _levels[idx]["id"])
 		level_list.set_item_tooltip(idx, _make_tooltip(idx, _levels[idx]))
 
-		if _levels[idx].get("completed"):
-			level_list.set_item_custom_bg_color(idx, completed_color)
+		if _levels[idx].get("solved"):
+			level_list.set_item_custom_bg_color(idx, solved_color)
+		elif _levels[idx].get("solving"):
+			level_list.set_item_custom_bg_color(idx, solving_color)
 		else:
-			level_list.set_item_custom_bg_color(idx, uncompleted_color)
+			level_list.set_item_custom_bg_color(idx, unsolved_color)
 
 
 func _make_tooltip(index: int, data: Dictionary) -> String:
