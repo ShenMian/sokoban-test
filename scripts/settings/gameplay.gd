@@ -13,6 +13,7 @@ extends ScrollContainer
 @onready var heatmap: SwitchFx = $VBox/HeatmapPanel/HBox/CheckButton
 
 const SECTION_NAME := "gameplay"
+const LOCALES: Array[String] = ["en", "zh"]
 
 
 func _ready() -> void:
@@ -31,7 +32,7 @@ func _ready() -> void:
 
 
 func apply_settings() -> void:
-	language.select(Settings.LOCALES.find(Settings.get_value(SECTION_NAME, "language")))
+	language.select(LOCALES.find(Settings.get_value(SECTION_NAME, "language")))
 	language.item_selected.emit(language.selected)
 
 	animation_speed.select(Settings.get_value(SECTION_NAME, "animation_speed"))
@@ -63,7 +64,7 @@ func apply_settings() -> void:
 
 
 func _on_language_selected(index: int) -> void:
-	var locale := Settings.LOCALES[index]
+	var locale := LOCALES[index]
 	TranslationServer.set_locale(locale)
 	Settings.set_and_save_value(SECTION_NAME, "language", locale)
 

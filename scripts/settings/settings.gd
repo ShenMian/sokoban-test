@@ -35,8 +35,6 @@ const DEFAULT_CONFIG = {
 	}
 }
 
-const LOCALES: Array[String] = ["en", "zh"]
-
 const CONFIG_PATH = "user://settings.ini"
 const SOLUTIONS_PATH = "user://solutions.ini"
 const BINDINGS_PATH = "user://bindings.ini"
