@@ -7,16 +7,16 @@ signal transition_finished
 
 var level_id: int
 
-var collection: String
+var collection_name: String
 var collection_count: int
 var level_index: int
 
-func load_level(new_level_id: int, new_collection: String) -> void:
+func load_level(new_level_id: int, new_collection_name: String) -> void:
 	level_id = new_level_id
 
-	collection = new_collection
-	collection_count = Database.get_collection_size_by_name(collection)
-	level_index = Database.get_level_index(level_id, collection)
+	collection_name = new_collection_name
+	collection_count = Database.get_collection_size(collection_name)
+	level_index = Database.get_level_index(level_id, collection_name)
 
 	change_scene_to_file("res://scenes/gameplay.tscn")
 

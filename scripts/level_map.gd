@@ -45,7 +45,7 @@ func _ready() -> void:
 	solve_failed.connect(_on_solve_failed)
 
 	assert(SceneTransition.level_id != null)
-	var level := Database.get_level_by_id(SceneTransition.level_id)
+	var level := Database.get_level(SceneTransition.level_id)
 	load_from_string(level.get("map_xsb"))
 	sync_entities_from_state()
 

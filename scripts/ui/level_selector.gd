@@ -39,14 +39,14 @@ func _ready():
 	_load_collections()
 	assert(collection_list.item_count > 0)
 
-	if SceneTransition.collection == "":
+	if SceneTransition.collection_name == "":
 		collection_list.select(0)
 		_on_collection_list_clicked(0)
 	else:
 		# Select the previous collection and level
 		var collection_index := 0
 		for idx in collection_list.item_count:
-			if collection_list.get_item_text(idx) == SceneTransition.collection:
+			if collection_list.get_item_text(idx) == SceneTransition.collection_name:
 				collection_index = idx
 				break
 		_on_collection_list_clicked(collection_index)
@@ -115,7 +115,7 @@ func _load_levels():
 	_start_item_index = -1
 	_end_item_index = -1
 
-	_levels = Database.get_levels_by_collection_name(_selected_collection)
+	_levels = Database.get_collection_levels(_selected_collection)
 	level_preview.set_levels(_levels)
 
 	for idx in range(_levels.size()):

@@ -1,3 +1,4 @@
+use std::hash::{DefaultHasher, Hash as _, Hasher as _};
 use std::str::FromStr as _;
 
 use godot::{
@@ -5,9 +6,7 @@ use godot::{
     prelude::*,
 };
 use rusqlite::Connection;
-use soukoban::{Actions, Level, level};
-
-use crate::orm::{self, Snapshot};
+use soukoban::{Actions, Level};
 
 #[derive(GodotClass)]
 #[class(init, singleton)]
@@ -17,6 +16,8 @@ pub struct Database {
 
 #[godot_api]
 impl Database {
+    /// Opens a connection to the SQLite database.
+    /// Creates the database and its schema if it does not exist.
     #[func]
     pub fn open(&mut self, path: String) {
         let is_new = !FileAccess::file_exists(&path);
@@ -32,6 +33,7 @@ impl Database {
         }
     }
 
+    /// Checks whether the level table is currently empty.
     #[func]
     pub fn is_empty(&self) -> bool {
         const QUERY_IS_EMPTY: &str = "SELECT NOT EXISTS (SELECT 1 FROM tb_level)";
@@ -58,19 +60,11 @@ impl Database {
     /// Imports levels from a file.
     #[func]
     fn import_levels_from_file(&self, path: String) {
-        // Create a new Collection using the file stem as its name.
-        let collection_name = std::path::Path::new(&path.to_string())
+        let collection_name = std::path::Path::new(&path)
             .file_stem()
             .unwrap()
             .to_string_lossy()
             .to_string();
-
-        let mut collection = orm::Collection {
-            id: -1,
-            name: collection_name.clone(),
-            description: None,
-        };
-        collection.upsert();
 
         let file = FileAccess::open(&path, ModeFlags::READ).expect("failed to open file");
         self.insert_levels_from_str(&file.get_as_text().to_string(), &collection_name);
@@ -78,93 +72,228 @@ impl Database {
 
     /// Imports levels from an XSB format string.
     #[func]
-    fn import_levels_from_string(&self, xsb: String, collection_name: String) {
-        self.insert_levels_from_str(&xsb, &collection_name);
+    fn import_levels_from_string(&self, levels_xsb: String, collection_name: String) {
+        self.insert_levels_from_str(&levels_xsb, &collection_name);
     }
 
+    /// Retrieves an array of all imported level collections.
     #[func]
     pub fn get_collections(&self) -> Array<VarDictionary> {
-        orm::Collection::query_all()
-            .into_iter()
-            .map(|collection| collection.into())
+        const QUERY_COLLECTIONS: &str =
+            "SELECT id, name, description FROM tb_collection ORDER BY name";
+        self.conn()
+            .prepare(QUERY_COLLECTIONS)
+            .unwrap()
+            .query_map((), |row| {
+                let mut dict = VarDictionary::new();
+                dict.set("id", row.get::<_, i64>(0)?);
+                dict.set("name", row.get::<_, String>(1)?);
+                if let Ok(Some(desc)) = row.get::<_, Option<String>>(2) {
+                    dict.set("description", desc);
+                }
+                Ok(dict)
+            })
+            .unwrap()
+            .map(Result::unwrap)
             .collect()
     }
 
+    /// Returns the total number of levels within a specified collection.
     #[func]
-    pub fn get_collection_size_by_name(&self, collection: GString) -> i64 {
-        orm::Collection::query_by_name(&collection.to_string())
+    pub fn get_collection_size(&self, collection_name: String) -> i64 {
+        const COUNT_LEVELS: &str = "
+            SELECT COUNT(*) FROM tb_collection_level cl
+            JOIN tb_collection c ON c.id = cl.collection_id
+            WHERE c.name = ?";
+        self.conn()
+            .query_row(COUNT_LEVELS, (collection_name,), |row| row.get(0))
             .unwrap()
-            .count()
     }
 
+    /// Determines the 0-based sequence index of a specific level within its collection.
     #[func]
-    pub fn get_level_index(&self, level_id: i64, collection_name: GString) -> i64 {
-        let level = orm::Level::query_by_id(level_id).unwrap();
-        let collection = orm::Collection::query_by_name(&collection_name.to_string()).unwrap();
-        level.index_in_collection(&collection)
+    pub fn get_level_index(&self, level_id: i64, collection_name: String) -> i64 {
+        const QUERY_LEVEL_INDEX: &str = "
+            SELECT COUNT(*) - 1 FROM tb_collection_level cl
+            JOIN tb_collection c ON c.id = cl.collection_id
+            WHERE c.name = ? AND cl.level_id <= ?";
+        self.conn()
+            .query_row(QUERY_LEVEL_INDEX, (collection_name, level_id), |row| {
+                row.get(0)
+            })
+            .unwrap()
     }
 
+    /// Extracts all level details belonging to a given collection natively.
     #[func]
-    pub fn get_levels_by_collection_name(&self, collection: GString) -> Array<VarDictionary> {
-        let collection = orm::Collection::query_by_name(&collection.to_string()).unwrap();
-        let levels = collection.query_levels();
-        levels.into_iter().map(|level| level.into()).collect()
+    pub fn get_collection_levels(&self, collection_name: String) -> Array<VarDictionary> {
+        const QUERY_LEVELS: &str = "
+            SELECT l.id, l.map_xsb, l.title, l.author, l.comments, l.hash,
+                   EXISTS(SELECT 1 FROM tb_snapshot s WHERE s.level_id = l.id) as completed
+            FROM tb_level l
+            JOIN tb_collection_level cl ON cl.level_id = l.id
+            JOIN tb_collection c ON c.id = cl.collection_id
+            WHERE c.name = ?
+            ORDER BY l.id";
+
+        self.conn()
+            .prepare(QUERY_LEVELS)
+            .unwrap()
+            .query_map((collection_name,), |row| {
+                let mut dict = Self::map_level_row(row)?;
+                dict.set("completed", row.get::<_, bool>(6)?);
+                Ok(dict)
+            })
+            .unwrap()
+            .map(Result::unwrap)
+            .collect()
     }
 
+    /// Queries exactly one level from the database and maps it into a Godot dictionary.
     #[func]
-    pub fn get_level_by_id(&self, level_id: i64) -> VarDictionary {
-        orm::Level::query_by_id(level_id).unwrap().into()
+    pub fn get_level(&self, level_id: i64) -> VarDictionary {
+        const QUERY_BY_ID: &str =
+            "SELECT id, map_xsb, title, author, comments, hash FROM tb_level WHERE id = ?";
+        self.conn()
+            .query_row(QUERY_BY_ID, (level_id,), Self::map_level_row)
+            .unwrap()
     }
 
+    /// Returns the currently discovered minimum moves or pushes strategy to beat the level.
     #[func]
-    pub fn get_best_solution_by_level_id(&self, level_id: i64) -> VarDictionary {
-        let level = orm::Level::query_by_id(level_id).unwrap();
+    pub fn get_best_solution(&self, level_id: i64) -> VarDictionary {
+        let optimal_move_lurd = self.query_move_optimal_lurd(level_id).unwrap_or_default();
+        let optimal_push_lurd = self.query_push_optimal_lurd(level_id).unwrap_or_default();
+
         let mut dict = VarDictionary::new();
-        dict.set(
-            "move_optimal",
-            level.move_optimal_lurd().unwrap_or_default(),
-        );
-        dict.set(
-            "push_optimal",
-            level.push_optimal_lurd().unwrap_or_default(),
-        );
+        dict.set("push_optimal", optimal_push_lurd);
+        dict.set("move_optimal", optimal_move_lurd);
         dict
     }
 
+    /// Submits a new solution to the database.
     #[func]
     pub fn add_solution(&self, level_id: i64, actions_lurd: String) {
         let action = Actions::from_str(&actions_lurd).unwrap();
 
-        let level = orm::Level::query_by_id(level_id).unwrap();
-        let best_moves = level
-            .move_optimal_lurd()
-            .map(|lurd| Actions::from_str(&lurd).unwrap().moves());
-        let best_pushes = level
-            .push_optimal_lurd()
-            .map(|lurd| Actions::from_str(&lurd).unwrap().pushes());
-        let is_move_optimal = best_moves.is_none_or(|moves| action.moves() < moves);
-        let is_push_optimal = best_pushes.is_none_or(|pushes| action.pushes() < pushes);
+        let best_move_count = self
+            .query_move_optimal_lurd(level_id)
+            .map(|l| Actions::from_str(&l).unwrap().moves());
 
-        Snapshot {
-            level_id: level.id,
-            actions_lurd,
-            move_optimal: is_move_optimal,
-            push_optimal: is_push_optimal,
+        let best_push_count = self
+            .query_push_optimal_lurd(level_id)
+            .map(|l| Actions::from_str(&l).unwrap().pushes());
+
+        let is_move_optimal = best_move_count.is_none_or(|moves| action.moves() < moves);
+        let is_push_optimal = best_push_count.is_none_or(|pushes| action.pushes() < pushes);
+
+        let tx = self.conn().unchecked_transaction().unwrap();
+
+        if is_move_optimal {
+            let _ = tx.execute(
+                "UPDATE tb_snapshot SET move_optimal = 0 WHERE level_id = ?",
+                (level_id,),
+            );
         }
-        .upsert();
+        if is_push_optimal {
+            let _ = tx.execute(
+                "UPDATE tb_snapshot SET push_optimal = 0 WHERE level_id = ?",
+                (level_id,),
+            );
+        }
+
+        const UPSERT_SNAPSHOT: &str = "
+            INSERT OR IGNORE INTO tb_snapshot (level_id, actions_lurd, move_optimal, push_optimal) VALUES (?, ?, ?, ?)";
+        tx.execute(
+            UPSERT_SNAPSHOT,
+            (level_id, actions_lurd, is_move_optimal, is_push_optimal),
+        )
+        .unwrap();
+        tx.commit().unwrap();
     }
 
-    fn insert_levels_from_str(&self, xsb: &str, collection_name: &str) {
-        let collection = orm::Collection::query_by_name(collection_name).unwrap();
+    fn insert_levels_from_str(&self, levels_xsb: &str, collection_name: &str) {
+        let tx = self.conn().unchecked_transaction().unwrap();
 
-        self.conn().execute("BEGIN TRANSACTION", ()).unwrap();
-        let levels = Level::load_from_str(xsb);
+        const UPSERT_COLLECTION: &str = "
+            INSERT INTO tb_collection (name) VALUES (?1)
+            ON CONFLICT(name) DO UPDATE SET name = excluded.name
+            RETURNING id";
+        let collection_id: i64 = tx
+            .query_row(UPSERT_COLLECTION, (collection_name,), |row| row.get(0))
+            .unwrap();
+
+        let levels = Level::load_from_str(levels_xsb);
         for level in levels.map(Result::unwrap) {
-            let mut orm_level = orm::Level::from(level);
-            orm_level.upsert();
-            collection.add_level(&orm_level);
+            let title = level.metadata().get("title").cloned();
+            let author = level.metadata().get("author").cloned();
+            let comments = level.metadata().get("comments").cloned();
+
+            let mut map = level.map().clone();
+            map.canonicalize();
+            let mut hasher = DefaultHasher::new();
+            map.hash(&mut hasher);
+            let hash = hasher.finish() as i64;
+
+            let map_xsb = level.map().to_string();
+
+            const UPSERT_LEVEL: &str = "
+                INSERT INTO tb_level (map_xsb, title, author, comments, hash) VALUES (?1, ?2, ?3, ?4, ?5)
+                ON CONFLICT(hash) DO UPDATE SET
+                    title = COALESCE(title, excluded.title),
+                    author = COALESCE(author, excluded.author),
+                    comments = COALESCE(comments, excluded.comments)
+                RETURNING id";
+            let level_id: i64 = tx
+                .query_row(
+                    UPSERT_LEVEL,
+                    (map_xsb, title, author, comments, hash),
+                    |row| row.get(0),
+                )
+                .unwrap();
+
+            const ADD_LEVEL_TO_COLLECTION: &str = "INSERT OR IGNORE INTO tb_collection_level (collection_id, level_id) VALUES (?1, ?2)";
+            tx.execute(ADD_LEVEL_TO_COLLECTION, (collection_id, level_id))
+                .unwrap();
         }
-        self.conn().execute("COMMIT", ()).unwrap();
+        tx.commit().unwrap();
+    }
+
+    fn query_move_optimal_lurd(&self, level_id: i64) -> Option<String> {
+        const QUERY_MOVE_OPTIMAL: &str =
+            "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND move_optimal = 1";
+        self.conn()
+            .query_row(QUERY_MOVE_OPTIMAL, (level_id,), |row| {
+                row.get::<_, String>(0)
+            })
+            .ok()
+    }
+
+    fn query_push_optimal_lurd(&self, level_id: i64) -> Option<String> {
+        const QUERY_PUSH_OPTIMAL: &str =
+            "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND push_optimal = 1";
+        self.conn()
+            .query_row(QUERY_PUSH_OPTIMAL, (level_id,), |row| {
+                row.get::<_, String>(0)
+            })
+            .ok()
+    }
+
+    fn map_level_row(row: &rusqlite::Row) -> rusqlite::Result<VarDictionary> {
+        let mut dict = VarDictionary::new();
+        dict.set("id", row.get::<_, i64>(0)?);
+        dict.set("map_xsb", row.get::<_, String>(1)?);
+        if let Ok(Some(title)) = row.get::<_, Option<String>>(2) {
+            dict.set("title", title);
+        }
+        if let Ok(Some(author)) = row.get::<_, Option<String>>(3) {
+            dict.set("author", author);
+        }
+        if let Ok(Some(comments)) = row.get::<_, Option<String>>(4) {
+            dict.set("comments", comments);
+        }
+        dict.set("hash", row.get::<_, i64>(5)?);
+        Ok(dict)
     }
 
     fn initialize(&mut self) {
@@ -217,9 +346,5 @@ impl Database {
 
     pub fn conn(&self) -> &Connection {
         self.connection.as_ref().expect("database not connected")
-    }
-
-    pub fn conn_mut(&mut self) -> &mut Connection {
-        self.connection.as_mut().expect("database not connected")
     }
 }

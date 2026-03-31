@@ -23,9 +23,9 @@ func open(actions: Actions):
 	pushes_label.text = str(actions.pushes())
 
 	var level_id: int = SceneTransition.level_id
-	var prev_solution := Database.get_best_solution_by_level_id(level_id)
+	var prev_solution := Database.get_best_solution(level_id)
 	Database.add_solution(level_id, str(actions))
-	var best_solution := Database.get_best_solution_by_level_id(level_id)
+	var best_solution := Database.get_best_solution(level_id)
 
 	var prev_move := Actions.new(prev_solution["move_optimal"])
 	var prev_push := Actions.new(prev_solution["push_optimal"])

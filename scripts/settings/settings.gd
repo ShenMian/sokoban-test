@@ -149,16 +149,16 @@ const DEFAULT_SOLUTION := {
 }
 
 
-func get_level_solution(collection: String, level: int) -> Dictionary:
-	var solution: Dictionary = _solutions.get_value(collection, str(level), DEFAULT_SOLUTION)
+func get_level_solution(collection_name: String, level: int) -> Dictionary:
+	var solution: Dictionary = _solutions.get_value(collection_name, str(level), DEFAULT_SOLUTION)
 	return {
 		"optimal_push": Actions.new(solution["optimal_push"]),
 		"optimal_move": Actions.new(solution["optimal_move"])
 	}
 
 
-func set_level_solution(collection: String, level: int, actions: Actions) -> void:
-	var solution := get_level_solution(collection, level)
+func set_level_solution(collection_name: String, level: int, actions: Actions) -> void:
+	var solution := get_level_solution(collection_name, level)
 	var new_solution := DEFAULT_SOLUTION.duplicate()
 	if solution["optimal_push"].is_empty() or actions.pushes() < solution["optimal_push"].pushes():
 		new_solution["optimal_push"] = str(actions)
@@ -169,16 +169,16 @@ func set_level_solution(collection: String, level: int, actions: Actions) -> voi
 	else:
 		new_solution["optimal_move"] = str(solution["optimal_move"])
 
-	_solutions.set_value(collection, str(level), new_solution)
+	_solutions.set_value(collection_name, str(level), new_solution)
 	_solutions.save(SOLUTIONS_PATH)
 
 
 func get_active_level_solution() -> Dictionary:
-	return get_level_solution(SceneTransition.collection, SceneTransition.level_index)
+	return get_level_solution(SceneTransition.collection_name, SceneTransition.level_index)
 
 
 func set_active_level_solution(actions: Actions) -> void:
-	set_level_solution(SceneTransition.collection, SceneTransition.level_index, actions)
+	set_level_solution(SceneTransition.collection_name, SceneTransition.level_index, actions)
 
 
 func _is_config_valid(config: ConfigFile) -> bool:
