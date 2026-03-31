@@ -25,6 +25,8 @@ var _transform_state: int = 0
 
 
 func _ready() -> void:
+	get_tree().set_quit_on_go_back(false)
+
 	previous_button.disabled = not SceneTransition.has_previous_level()
 	next_button.disabled = not SceneTransition.has_next_level()
 
@@ -47,6 +49,15 @@ func _ready() -> void:
 	transform_button.pressed.connect(_transform_level)
 	previous_button.pressed.connect(SceneTransition.load_previous_level)
 	next_button.pressed.connect(SceneTransition.load_next_level)
+
+
+func _exit_tree() -> void:
+	get_tree().set_quit_on_go_back(true)
+
+
+func _notification(what):
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		SceneTransition.load_main_menu()
 
 
 func _input(_event: InputEvent) -> void:
