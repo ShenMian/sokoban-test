@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://bslwjbitr74ja"]
 
-[ext_resource type="ArrayMesh" uid="uid://c5rmp0hffhq40" path="res://assets/meshes/box.res" id="2_c2ln5"]
+[ext_resource type="ArrayMesh" uid="uid://hc0acof11624" path="res://assets/meshes/crate.res" id="2_brpd5"]
 [ext_resource type="Script" uid="uid://cbi4yqk5h6hmq" path="res://scripts/box.gd" id="2_ks2v0"]
 [ext_resource type="ArrayMesh" uid="uid://cnr4b8oogdane" path="res://assets/meshes/indiactor_c.res" id="3_c2ln5"]
+[ext_resource type="Material" uid="uid://crbpf7ke4epv4" path="res://assets/materials/box_outer_frame_material.tres" id="3_faous"]
 [ext_resource type="Material" uid="uid://cc0ey1qnfltcy" path="res://assets/materials/indicator_material.tres" id="4_brpd5"]
 [ext_resource type="ArrayMesh" uid="uid://bca7jsquyhgs" path="res://assets/meshes/indicator_e.res" id="4_telwu"]
+[ext_resource type="Material" uid="uid://mjw5woc87m5n" path="res://assets/materials/box_diagonal_bar_material.tres" id="4_wavyb"]
+[ext_resource type="Material" uid="uid://l88nflf2x70h" path="res://assets/materials/box_inner_fill_material.tres" id="5_igdtg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ks2v0"]
 
@@ -16,9 +19,12 @@ script = ExtResource("2_ks2v0")
 indicator_scale_min = 0.9
 indicator_scale_max = 1.1
 
-[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1859660646]
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=582511708]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
-mesh = ExtResource("2_c2ln5")
+mesh = ExtResource("2_brpd5")
+surface_material_override/0 = ExtResource("3_faous")
+surface_material_override/1 = ExtResource("4_wavyb")
+surface_material_override/2 = ExtResource("5_igdtg")
 
 [node name="Area" type="Area3D" parent="." unique_id=807127825]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)

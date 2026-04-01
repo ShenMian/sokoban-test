@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://ct5jks4wjysmx"]
+
+[ext_resource type="Script" uid="uid://bweyq0vy4gek1" path="res://scripts/map_theme.gd" id="1_q3ysb"]
+[ext_resource type="Material" uid="uid://cc0ey1qnfltcy" path="res://assets/materials/indicator_material.tres" id="2_ijae1"]
+[ext_resource type="Material" uid="uid://crbpf7ke4epv4" path="res://assets/materials/box_outer_frame_material.tres" id="2_nrvmm"]
+[ext_resource type="Material" uid="uid://mjw5woc87m5n" path="res://assets/materials/box_diagonal_bar_material.tres" id="3_xeb01"]
+[ext_resource type="Material" uid="uid://l88nflf2x70h" path="res://assets/materials/box_inner_fill_material.tres" id="4_gnt38"]
+[ext_resource type="Material" uid="uid://dkg1ghr5roer6" path="res://assets/materials/player_body_material.tres" id="5_gnt38"]
+[ext_resource type="Material" uid="uid://calojrmsvbmkb" path="res://assets/materials/player_hat_material.tres" id="6_oskek"]
+
+[node name="Theme" type="Node" unique_id=769340137]
+script = ExtResource("1_q3ysb")
+background_color = Color(0.24313726, 0.16862746, 0.11372549, 1)
+floor_color = Color(0.9529412, 0.9137255, 0.8235294, 1)
+wall_color = Color(0.8784314, 0.6627451, 0.42745098, 1)
+goal_color = Color(0.39003432, 0.67584544, 0.47748065, 1)
+box_outer_frame_material = ExtResource("2_nrvmm")
+box_diagonal_bar_material = ExtResource("3_xeb01")
+box_inner_fill_material = ExtResource("4_gnt38")
+box_body_material = ExtResource("5_gnt38")
+box_hat_material = ExtResource("6_oskek")
+indicator_material = ExtResource("2_ijae1")

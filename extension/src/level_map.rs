@@ -11,7 +11,7 @@ use std::{
 
 use godot::{
     classes::{
-        ArrayMesh, FileAccess, GridMap, IGridMap, MeshLibrary, StandardMaterial3D,
+        ArrayMesh, Engine, FileAccess, GridMap, IGridMap, MeshLibrary, StandardMaterial3D,
         file_access::ModeFlags,
     },
     meta::ToGodot as _,
@@ -58,7 +58,7 @@ struct LevelMap {
     deadlock_hint: bool,
 
     #[export]
-    #[var(pub, set = set_deadlock_tint)]
+    #[var(set = set_deadlock_tint)]
     deadlock_tint: Color,
 
     #[export]
@@ -74,6 +74,10 @@ struct LevelMap {
     floor_dark_item_id: i32,
     deadlock_item_id: i32,
     deadlock_dark_item_id: i32,
+
+    theme_floor_item_id: i32,
+    theme_wall_item_id: i32,
+    theme_goal_item_id: i32,
 
     waypoints: HashMap<DirectedPosition, DirectedPosition>,
     costs: HashMap<DirectedPosition, i32>,
@@ -105,6 +109,9 @@ impl IGridMap for LevelMap {
             floor_dark_item_id: GridMap::INVALID_CELL_ITEM,
             deadlock_item_id: GridMap::INVALID_CELL_ITEM,
             deadlock_dark_item_id: GridMap::INVALID_CELL_ITEM,
+            theme_floor_item_id: GridMap::INVALID_CELL_ITEM,
+            theme_wall_item_id: GridMap::INVALID_CELL_ITEM,
+            theme_goal_item_id: GridMap::INVALID_CELL_ITEM,
             waypoints: HashMap::new(),
             costs: HashMap::new(),
             solver_result: Arc::new(Mutex::new(None)),
@@ -562,19 +569,51 @@ impl LevelMap {
             let Some(mut mesh_library) = self.base().get_mesh_library() else {
                 return;
             };
-            self.floor_dark_item_id = self.create_floor(&mut mesh_library, "floor_dark", |color| {
-                color.darkened(0.15)
-            });
+
+            let map_theme = self.base().get_node_as::<Node>("/root/MapTheme");
+            let floor_color: Color = map_theme.get("floor_color").to();
+            let wall_color: Color = map_theme.get("wall_color").to();
+            let goal_color: Color = map_theme.get("goal_color").to();
+
+            self.theme_floor_item_id = self.create_colored_variant(
+                &mut mesh_library,
+                self.floor_item_id,
+                "theme_floor",
+                |_| floor_color,
+            );
+            self.theme_wall_item_id = self.create_colored_variant(
+                &mut mesh_library,
+                self.wall_item_id,
+                "theme_wall",
+                |_| wall_color,
+            );
+            self.theme_goal_item_id = self.create_colored_variant(
+                &mut mesh_library,
+                self.goal_item_id,
+                "theme_goal",
+                |_| goal_color,
+            );
+
+            self.floor_dark_item_id = self.create_colored_variant(
+                &mut mesh_library,
+                self.theme_floor_item_id,
+                "floor_dark",
+                |color| color.darkened(0.15),
+            );
 
             let deadlock_tint = self.deadlock_tint;
-            self.deadlock_item_id =
-                self.create_floor(&mut mesh_library, "floor_deadlock", |color| {
-                    color * deadlock_tint
-                });
-            self.deadlock_dark_item_id =
-                self.create_floor(&mut mesh_library, "floor_deadlock_dark", |color| {
-                    color.darkened(0.15) * deadlock_tint
-                });
+            self.deadlock_item_id = self.create_colored_variant(
+                &mut mesh_library,
+                self.theme_floor_item_id,
+                "floor_deadlock",
+                |color| color * deadlock_tint,
+            );
+            self.deadlock_dark_item_id = self.create_colored_variant(
+                &mut mesh_library,
+                self.theme_floor_item_id,
+                "floor_deadlock_dark",
+                |color| color.darkened(0.15) * deadlock_tint,
+            );
         }
 
         let deadlocks = compute_static_deadlocks(self.map());
@@ -594,16 +633,16 @@ impl LevelMap {
                     } else if self.checkerboard_shading && (x + y) % 2 == 1 {
                         self.floor_dark_item_id
                     } else {
-                        self.floor_item_id
+                        self.theme_floor_item_id
                     };
                     self.base_mut()
                         .set_cell_item(Vector3i::new(x, -1, y), tile_id);
                 }
                 if tiles.intersects(Tiles::Wall | Tiles::Goal) {
                     let item_id = if tiles.contains(Tiles::Wall) {
-                        self.wall_item_id
+                        self.theme_wall_item_id
                     } else if tiles.contains(Tiles::Goal) {
-                        self.goal_item_id
+                        self.theme_goal_item_id
                     } else {
                         continue;
                     };
@@ -625,16 +664,37 @@ impl LevelMap {
         self.level.map()
     }
 
-    fn create_floor<F>(&self, mesh_library: &mut Gd<MeshLibrary>, name: &str, f: F) -> i32
+    fn create_colored_variant<F>(
+        &self,
+        mesh_library: &mut Gd<MeshLibrary>,
+        source_id: i32,
+        name: &str,
+        f: F,
+    ) -> i32
     where
         F: Fn(Color) -> Color,
     {
-        let next_id = mesh_library.get_last_unused_item_id();
-        mesh_library.create_item(next_id);
-        mesh_library.set_item_name(next_id, name);
+        if source_id == GridMap::INVALID_CELL_ITEM {
+            return GridMap::INVALID_CELL_ITEM;
+        }
+
+        let mut next_id = -1;
+        let items = mesh_library.get_item_list();
+        for id in items.as_slice() {
+            if mesh_library.get_item_name(*id) == name {
+                next_id = *id;
+                break;
+            }
+        }
+
+        if next_id == -1 {
+            next_id = mesh_library.get_last_unused_item_id();
+            mesh_library.create_item(next_id);
+            mesh_library.set_item_name(next_id, name);
+        }
 
         let mesh = mesh_library
-            .get_item_mesh(self.floor_item_id)
+            .get_item_mesh(source_id)
             .unwrap()
             .cast::<ArrayMesh>();
 
@@ -644,13 +704,15 @@ impl LevelMap {
 
         let color = new_standard_material.get_albedo();
         new_standard_material.set_albedo(f(color));
+        new_standard_material.set("albedo_texture", &Variant::nil());
+        new_standard_material.set("vertex_color_use_as_albedo", &false.to_variant());
 
         let mut new_mesh = mesh.duplicate_resource();
         new_mesh.surface_set_material(0, &new_standard_material);
 
         mesh_library.set_item_mesh(next_id, &new_mesh);
 
-        let transform = mesh_library.get_item_mesh_transform(self.floor_item_id);
+        let transform = mesh_library.get_item_mesh_transform(source_id);
         mesh_library.set_item_mesh_transform(next_id, transform);
 
         next_id
