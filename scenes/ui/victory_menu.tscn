@@ -149,7 +149,7 @@ text = "NEXT_LEVEL"
 [node name="MenuButton" type="Button" parent="Panel/VBox/VBox" unique_id=1531590098]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-text = "BACK_TO_MENU"
+text = "BACK_TO_LEVEL_LIST"
 
 [node name="AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=602922347]
 stream = ExtResource("3_lbwo6")

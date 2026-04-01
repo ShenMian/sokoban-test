@@ -44,7 +44,7 @@ func load_next_level() -> void:
 
 
 func load_main_menu() -> void:
-	change_scene_to_file("res://scenes/ui/level_selector.tscn")
+	change_scene_to_file("res://scenes/ui/level_list.tscn")
 
 
 func change_scene_to_file(path: String) -> void:

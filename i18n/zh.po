@@ -4,10 +4,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Level Selector
+# Level List
 
-msgid "LEVEL_SELECTOR"
-msgstr "关卡选择"
+msgid "LEVEL_LIST"
+msgstr "关卡列表"
 
 # HUD
 
@@ -40,8 +40,8 @@ msgstr "关卡完成"
 msgid "BEST"
 msgstr "最佳"
 
-msgid "BACK_TO_MENU"
-msgstr "返回菜单"
+msgid "BACK_TO_LEVEL_LIST"
+msgstr "返回关卡列表"
 
 # Gameplay
 

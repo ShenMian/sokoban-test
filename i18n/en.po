@@ -4,10 +4,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-# Level Selector
+# Level List
 
-msgid "LEVEL_SELECTOR"
-msgstr "Level Selector"
+msgid "LEVEL_LIST"
+msgstr "Level List"
 
 # HUD
 
@@ -40,8 +40,8 @@ msgstr "Level Complete"
 msgid "BEST"
 msgstr "Best"
 
-msgid "BACK_TO_MENU"
-msgstr "Back to Menu"
+msgid "BACK_TO_LEVEL_LIST"
+msgstr "Back to Level List"
 
 # Gameplay
 
