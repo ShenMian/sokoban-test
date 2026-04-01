@@ -1,1 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="124" height="124" x="2" y="2" fill="#363d52" stroke="#212532" stroke-width="4" rx="14"/><g fill="#fff" transform="translate(12.322 12.322)scale(.101)"><path d="M105 673v33q407 354 814 0v-33z"/><path fill="#478cbf" d="m105 673 152 14q12 1 15 14l4 67 132 10 8-61q2-11 15-15h162q13 4 15 15l8 61 132-10 4-67q3-13 15-14l152-14V427q30-39 56-81-35-59-83-108-43 20-82 47-40-37-88-64 7-51 8-102-59-28-123-42-26 43-46 89-49-7-98 0-20-46-46-89-64 14-123 42 1 51 8 102-48 27-88 64-39-27-82-47-48 49-83 108 26 42 56 81zm0 33v39c0 276 813 276 814 0v-39l-134 12-5 69q-2 10-14 13l-162 11q-12 0-16-11l-10-65H446l-10 65q-4 11-16 11l-162-11q-12-3-14-13l-5-69z"/><path d="M483 600c0 34 58 34 58 0v-86c0-34-58-34-58 0z"/><circle cx="725" cy="526" r="90"/><circle cx="299" cy="526" r="90"/></g><g fill="#414042" transform="translate(12.322 12.322)scale(.101)"><circle cx="307" cy="532" r="60"/><circle cx="717" cy="532" r="60"/></g></svg>
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Background Gradient: Deep Slate -->
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1E293B" />
+            <stop offset="100%" stop-color="#0F172A" />
+        </linearGradient>
+
+        <!-- Crate Surface Gradient: Warm Amber -->
+        <linearGradient id="crateGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FBBF24" />
+            <stop offset="100%" stop-color="#D97706" />
+        </linearGradient>
+
+        <!-- Subtle Dotted Grid Pattern for Background Texture -->
+        <pattern id="dotGrid" width="64" height="64" patternUnits="userSpaceOnUse">
+            <circle cx="32" cy="32" r="3" fill="#334155" />
+        </pattern>
+    </defs>
+
+    <!-- App Icon Base Background -->
+    <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+    <!-- Floor Texture Grid -->
+    <rect width="512" height="512" rx="112" fill="url(#dotGrid)" />
+
+    <!-- Inner Highlight / Bevel for premium App Icon feel -->
+    <rect x="2" y="2" width="508" height="508" rx="110" fill="none" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="4" />
+
+    <!-- ========================================== -->
+    <!-- 1. TARGET MARKER (The Goal Position)       -->
+    <!-- ========================================== -->
+    <g id="target">
+        <!-- Dashed Outer Outline -->
+        <rect x="186" y="186" width="220" height="220" rx="32" fill="#047857" fill-opacity="0.15" stroke="#22C55E" stroke-width="16" stroke-dasharray="24 24" stroke-linecap="round" />
+
+        <!-- Center Dot Indicator -->
+        <circle cx="296" cy="296" r="28" fill="#22C55E" />
+    </g>
+
+    <!-- ========================================== -->
+    <!-- 2. MOTION LINES (Indicates sliding action) -->
+    <!-- ========================================== -->
+    <g id="motion-lines" stroke="#F8FAFC" stroke-opacity="0.5" stroke-width="12" stroke-linecap="round">
+        <line x1="70" y1="70" x2="100" y2="100" />
+        <line x1="120" y1="60" x2="140" y2="80" />
+        <line x1="60" y1="120" x2="80" y2="140" />
+    </g>
+
+    <!-- ========================================== -->
+    <!-- 3. WOODEN CRATE                            -->
+    <!-- ========================================== -->
+
+    <!-- Drop Shadow (Offset to bottom-right) -->
+    <rect x="122" y="122" width="220" height="220" rx="32" fill="#020617" opacity="0.4" />
+
+    <g id="crate">
+        <!-- Main Box Base -->
+        <rect x="106" y="106" width="220" height="220" rx="32" fill="url(#crateGrad)" />
+
+        <!-- Inner Wooden Frame -->
+        <rect x="130" y="130" width="172" height="172" rx="16" fill="none" stroke="#92400E" stroke-width="16" />
+
+        <!-- Diagonal Cross Planks -->
+        <line x1="130" y1="130" x2="302" y2="302" stroke="#92400E" stroke-width="16" stroke-linecap="round" />
+        <line x1="302" y1="130" x2="130" y2="302" stroke="#92400E" stroke-width="16" stroke-linecap="round" />
+
+        <!-- Corner Details (Nails) -->
+        <circle cx="150" cy="150" r="6" fill="#78350F" />
+        <circle cx="282" cy="150" r="6" fill="#78350F" />
+        <circle cx="150" cy="282" r="6" fill="#78350F" />
+        <circle cx="282" cy="282" r="6" fill="#78350F" />
+    </g>
+
+</svg>
