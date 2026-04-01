@@ -32,6 +32,10 @@ func _ready():
 	menu_button.pressed.connect(_on_menu_pressed)
 
 
+func _exit_tree():
+	close()
+
+
 func _on_settings_pressed():
 	request_settings.emit()
 
