@@ -84,6 +84,34 @@ func _process(_delta: float) -> void:
 		return
 
 
+func _input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("import_from_clipboard"):
+		load_from_string(DisplayServer.clipboard_get())
+		sync_entities_from_state()
+		update_ui()
+		reset_camera_position()
+	elif Input.is_action_just_pressed("export_to_clipboard"):
+		DisplayServer.clipboard_set(get_map_xsb())
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _solving or player.is_moving:
+			get_viewport().set_input_as_handled()
+			return
+
+		var space_state := get_world_3d().direct_space_state
+		var ray_origin := camera.project_ray_origin(event.position)
+		var ray_end := ray_origin + camera.project_ray_normal(event.position) * 1000.0
+		var query := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
+		query.collide_with_areas = true
+		query.collide_with_bodies = false
+
+		# Checks if the click was on an empty space (without Area3D)
+		if space_state.intersect_ray(query).is_empty():
+			deselect_box()
+
+
 func do_undo() -> void:
 	undo()
 	deselect_box()
@@ -142,16 +170,6 @@ func wait_for_moves_finished() -> void:
 			await box.move_finished
 
 
-func _input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("import_from_clipboard"):
-		load_from_string(DisplayServer.clipboard_get())
-		sync_entities_from_state()
-		update_ui()
-		reset_camera_position()
-	elif Input.is_action_just_pressed("export_to_clipboard"):
-		DisplayServer.clipboard_set(get_map_xsb())
-
-
 func _build_heatmap() -> void:
 	var lower_bounds: Dictionary = get_lower_bounds(solver_strategy)
 	var max_lower_bound: int = lower_bounds.values().max()
@@ -160,24 +178,6 @@ func _build_heatmap() -> void:
 		heatmap_cell.position = Vector3(pos.x, 0.01, pos.y)
 		heatmap_container.add_child(heatmap_cell)
 		heatmap_cell.setup(lower_bounds[pos], max_lower_bound)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if _solving or player.is_moving:
-			get_viewport().set_input_as_handled()
-			return
-
-		var space_state := get_world_3d().direct_space_state
-		var ray_origin := camera.project_ray_origin(event.position)
-		var ray_end := ray_origin + camera.project_ray_normal(event.position) * 1000.0
-		var query := PhysicsRayQueryParameters3D.create(ray_origin, ray_end)
-		query.collide_with_areas = true
-		query.collide_with_bodies = false
-
-		# Checks if the click was on an empty space (without Area3D)
-		if space_state.intersect_ray(query).is_empty():
-			deselect_box()
 
 
 func _on_setting_changed(section: String, key: String, value: Variant) -> void:

@@ -25,15 +25,15 @@ func has_previous_level() -> bool:
 	return level_index > 0
 
 
+func has_next_level() -> bool:
+	return level_index + 1 < collection_count
+
+
 func load_previous_level() -> void:
 	assert(has_previous_level())
 	level_id -= 1
 	level_index -= 1
 	change_scene_to_file("res://scenes/gameplay.tscn")
-
-
-func has_next_level() -> bool:
-	return level_index + 1 < collection_count
 
 
 func load_next_level() -> void:
