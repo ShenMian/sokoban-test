@@ -29,12 +29,6 @@ var heatmap: bool:
 
 @export var pushable_hint: bool
 
-@export var indicator_color: Color:
-	set(value):
-		indicator_color = value
-		if player:
-			player.get_node("Indicator/HoverIndicator").material_override.albedo_color = value
-
 var _is_instant: bool
 var _selected_box: Box
 var _solving: bool = false
@@ -49,9 +43,6 @@ func _ready() -> void:
 	box_leave_goal.connect(leave_goal_player.play)
 	solve_completed.connect(_on_solve_completed)
 	solve_failed.connect(_on_solve_failed)
-
-	var indicator_material: StandardMaterial3D = player.get_node("Indicator/HoverIndicator").get_surface_override_material(0)
-	indicator_material.albedo_color = indicator_color
 
 	assert(SceneTransition.level_id != null)
 	var level := Database.get_level(SceneTransition.level_id)

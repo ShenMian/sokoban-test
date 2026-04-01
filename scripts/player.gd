@@ -18,8 +18,8 @@ signal move_finished
 
 @export_group("Indicator Animation")
 @export var indicator_tween_duration: float = 1.0
-@export var indicator_scale_min: float = 0.8
-@export var indicator_scale_max: float = 1.2
+@export var indicator_scale_min: float = 0.9
+@export var indicator_scale_max: float = 1.1
 
 @export_group("", "")
 @export var selectable: bool = true:

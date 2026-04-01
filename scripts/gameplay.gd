@@ -27,8 +27,6 @@ var _transform_state: int = 0
 func _ready() -> void:
 	get_tree().set_quit_on_go_back(false)
 
-	RenderingServer.set_default_clear_color(MapTheme.background_color)
-
 	previous_button.disabled = not SceneTransition.has_previous_level()
 	next_button.disabled = not SceneTransition.has_next_level()
 

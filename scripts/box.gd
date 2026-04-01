@@ -14,8 +14,8 @@ signal move_finished
 
 @export_group("Indicator Animation")
 @export var indicator_tween_duration: float = 1.0
-@export var indicator_scale_min: float = 0.8
-@export var indicator_scale_max: float = 1.2
+@export var indicator_scale_min: float = 0.9
+@export var indicator_scale_max: float = 1.1
 
 @export_group("", "")
 @export var selectable: bool = true:
@@ -40,7 +40,7 @@ var _duration_multiplier: float = 1.0
 
 @onready var level_map: LevelMap = $"../.."
 @onready var player: Node3D = $"../../Player"
-@onready var mesh_instance: MeshInstance3D = $Mesh
+@onready var mesh: MeshInstance3D = $Mesh
 @onready var mesh_area: Area3D = $Area
 @onready var indicator_area: Area3D = $Indicator/Area
 @onready var hover_indicator: MeshInstance3D = $Indicator/HoverIndicator
@@ -48,11 +48,14 @@ var _duration_multiplier: float = 1.0
 
 
 func _ready() -> void:
+	mesh.mesh = mesh.mesh.duplicate(true)
+	for i in range(mesh.mesh.get_surface_count()):
+		mesh.mesh.surface_set_material(i, mesh.mesh.surface_get_material(i).duplicate())
+
 	Settings.setting_changed.connect(_on_setting_changed)
 
 	mesh_area.area_entered.connect(_on_area_entered)
 
-	mesh_instance.mesh = mesh_instance.mesh.duplicate(true)
 	mesh_area.input_event.connect(_on_area_input_event)
 	mesh_area.mouse_entered.connect(_on_area_mouse_entered)
 	mesh_area.mouse_exited.connect(_on_area_mouse_exited)
@@ -156,7 +159,9 @@ func _stop_indicator_tween() -> void:
 
 func _apply_disabled() -> void:
 	var target_albedo := Color.WHITE.darkened(0.5) if disabled else Color.WHITE
-	create_tween().tween_property(mesh_instance, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
+	create_tween().tween_property(mesh, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
+	create_tween().tween_property(mesh, "mesh:surface_1/material:albedo_color", target_albedo, 0.2)
+	create_tween().tween_property(mesh, "mesh:surface_2/material:albedo_color", target_albedo, 0.2)
 
 
 func _apply_selectable() -> void:
