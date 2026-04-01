@@ -51,13 +51,10 @@ func change_scene_to_file(path: String) -> void:
 	while ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 		await get_tree().process_frame
 
-	if animation_player.is_playing():
-		await animation_player.animation_finished
+	var scene = ResourceLoader.load_threaded_get(path)
+	get_tree().change_scene_to_packed(scene)
 
-	var new_scene = ResourceLoader.load_threaded_get(path)
-	get_tree().change_scene_to_packed(new_scene)
-
-	animation_player.play("fade_out")
+	animation_player.play_backwards("fade_in")
 	await animation_player.animation_finished
 	overlay.visible = false
 	transition_finished.emit()
