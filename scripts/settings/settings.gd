@@ -36,13 +36,11 @@ const DEFAULT_CONFIG = {
 }
 
 const CONFIG_PATH = "user://settings.ini"
-const SOLUTIONS_PATH = "user://solutions.ini"
 const BINDINGS_PATH = "user://bindings.ini"
 
 const LEVEL_PATH = "res://assets/levels/"
 
 var _config := ConfigFile.new()
-var _solutions := ConfigFile.new()
 var _bindings := ConfigFile.new()
 
 
@@ -65,10 +63,6 @@ func _ready() -> void:
 		reset_audio_settings()
 
 	_apply_basic_settings()
-
-	var solutions_status := _solutions.load(SOLUTIONS_PATH)
-	if solutions_status:
-		printerr("failed to load solutions: ", error_string(solutions_status))
 
 	var bindings_error := _bindings.load(BINDINGS_PATH)
 	if bindings_error:
@@ -141,44 +135,6 @@ func save_bindings() -> void:
 	var error := _bindings.save(BINDINGS_PATH)
 	if error:
 		printerr("failed to save bindings: ", error_string(error))
-
-
-const DEFAULT_SOLUTION := {
-	"optimal_push": "",
-	"optimal_move": "",
-}
-
-
-func get_level_solution(collection_name: String, level: int) -> Dictionary:
-	var solution: Dictionary = _solutions.get_value(collection_name, str(level), DEFAULT_SOLUTION)
-	return {
-		"optimal_push": Actions.new(solution["optimal_push"]),
-		"optimal_move": Actions.new(solution["optimal_move"])
-	}
-
-
-func set_level_solution(collection_name: String, level: int, actions: Actions) -> void:
-	var solution := get_level_solution(collection_name, level)
-	var new_solution := DEFAULT_SOLUTION.duplicate()
-	if solution["optimal_push"].is_empty() or actions.pushes() < solution["optimal_push"].pushes():
-		new_solution["optimal_push"] = str(actions)
-	else:
-		new_solution["optimal_push"] = str(solution["optimal_push"])
-	if solution["optimal_move"].is_empty() or actions.moves() < solution["optimal_move"].moves():
-		new_solution["optimal_move"] = str(actions)
-	else:
-		new_solution["optimal_move"] = str(solution["optimal_move"])
-
-	_solutions.set_value(collection_name, str(level), new_solution)
-	_solutions.save(SOLUTIONS_PATH)
-
-
-func get_active_level_solution() -> Dictionary:
-	return get_level_solution(SceneTransition.collection_name, SceneTransition.level_index)
-
-
-func set_active_level_solution(actions: Actions) -> void:
-	set_level_solution(SceneTransition.collection_name, SceneTransition.level_index, actions)
 
 
 func _is_config_valid(config: ConfigFile) -> bool:

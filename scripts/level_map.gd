@@ -56,7 +56,7 @@ func _ready() -> void:
 	reset_camera_position()
 
 	await get_tree().process_frame
-	gameplay.level_label.text = str(SceneTransition.level_index + 1)
+	gameplay.level_label.text = str(SceneTransition.level_index)
 	update_ui()
 
 

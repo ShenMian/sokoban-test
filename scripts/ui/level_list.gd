@@ -51,7 +51,7 @@ func _ready():
 				collection_index = idx
 				break
 		_on_collection_list_clicked(collection_index)
-		level_list.select(SceneTransition.level_index)
+		level_list.select(SceneTransition.level_index - 1)
 		level_list.ensure_current_is_visible()
 
 
@@ -122,7 +122,6 @@ func _load_levels():
 	for idx in range(_levels.size()):
 		var label = str(idx + 1)
 		level_list.add_item(label, preview_placeholder, true)
-		level_list.set_item_metadata(idx, _levels[idx]["id"])
 		level_list.set_item_tooltip(idx, _make_tooltip(idx, _levels[idx]))
 
 		if _levels[idx].get("solved"):
@@ -184,8 +183,7 @@ func _handle_list_input(list: ItemList, input_event: InputEvent, item_click_call
 
 
 func _on_level_clicked(index: int):
-	var level_id = level_list.get_item_metadata(index)
-	SceneTransition.load_level(level_id, _selected_collection)
+	SceneTransition.load_level(_selected_collection, index + 1)
 
 
 func _on_level_list_resized():

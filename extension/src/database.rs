@@ -110,15 +110,29 @@ impl Database {
             .unwrap()
     }
 
-    /// Determines the 0-based sequence index of a specific level within its collection.
+    /// Determines the 1-based sequence index of a specific level within its collection.
     #[func]
     pub fn get_level_index(&self, level_id: i64, collection_name: String) -> i64 {
         const QUERY_LEVEL_INDEX: &str = "
-            SELECT COUNT(*) - 1 FROM tb_collection_level cl
+            SELECT cl.idx FROM tb_collection_level cl
             JOIN tb_collection c ON c.id = cl.collection_id
-            WHERE c.name = ? AND cl.level_id <= ?";
+            WHERE c.name = ? AND cl.level_id = ?";
         self.conn()
             .query_row(QUERY_LEVEL_INDEX, (collection_name, level_id), |row| {
+                row.get(0)
+            })
+            .unwrap()
+    }
+
+    /// Finds the `level_id` given its 1-based index in the collection.
+    #[func]
+    pub fn get_level_id_by_index(&self, collection_name: String, level_index: i64) -> i64 {
+        const QUERY_LEVEL_ID: &str = "
+            SELECT cl.level_id FROM tb_collection_level cl
+            JOIN tb_collection c ON c.id = cl.collection_id
+            WHERE c.name = ? AND cl.idx = ?";
+        self.conn()
+            .query_row(QUERY_LEVEL_ID, (collection_name, level_index), |row| {
                 row.get(0)
             })
             .unwrap()
@@ -135,7 +149,7 @@ impl Database {
             JOIN tb_collection_level cl ON cl.level_id = l.id
             JOIN tb_collection c ON c.id = cl.collection_id
             WHERE c.name = ?
-            ORDER BY l.id";
+            ORDER BY cl.idx";
         self.conn()
             .prepare(QUERY_LEVELS)
             .unwrap()
@@ -263,7 +277,7 @@ impl Database {
             .unwrap();
 
         let levels = Level::load_from_str(levels_xsb);
-        for level in levels.map(Result::unwrap) {
+        for (idx, level) in levels.map(Result::unwrap).enumerate() {
             let title = level.metadata().get("title").cloned();
             let author = level.metadata().get("author").cloned();
             let comments = level.metadata().get("comments").cloned();
@@ -291,9 +305,12 @@ impl Database {
                 )
                 .unwrap();
 
-            const ADD_LEVEL_TO_COLLECTION: &str = "INSERT OR IGNORE INTO tb_collection_level (collection_id, level_id) VALUES (?1, ?2)";
-            tx.execute(ADD_LEVEL_TO_COLLECTION, (collection_id, level_id))
-                .unwrap();
+            const ADD_LEVEL_TO_COLLECTION: &str = "INSERT OR IGNORE INTO tb_collection_level (collection_id, level_id, idx) VALUES (?1, ?2, ?3)";
+            tx.execute(
+                ADD_LEVEL_TO_COLLECTION,
+                (collection_id, level_id, (idx + 1) as i64),
+            )
+            .unwrap();
         }
         tx.commit().unwrap();
     }
@@ -359,6 +376,7 @@ impl Database {
             CREATE TABLE IF NOT EXISTS tb_collection_level (
                 collection_id INTEGER,
                 level_id      INTEGER,
+                idx           INTEGER,
                 PRIMARY KEY (collection_id, level_id),
                 FOREIGN KEY (collection_id) REFERENCES tb_collection(id) ON DELETE CASCADE,
                 FOREIGN KEY (level_id) REFERENCES tb_level(id) ON DELETE CASCADE
