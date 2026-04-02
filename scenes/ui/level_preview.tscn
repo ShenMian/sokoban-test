@@ -13,7 +13,6 @@ script = ExtResource("1_wdc1a")
 [node name="LevelMap" type="LevelMap" parent="." unique_id=1068863980]
 checkerboard_shading = false
 deadlock_hint = false
-pushable_hint = false
 floor_item_id = 0
 wall_item_id = 1
 goal_item_id = 2

@@ -11,69 +11,86 @@ const BOX_SCENE := preload("res://scenes/box.tscn")
 @onready var camera: Camera3D = $Camera
 
 var levels: Array[Dictionary] = []
-
 var _queue: Array[int] = []
 var _version: int = 0
 
+var _box_pool: Array[Node3D] = []
+var _is_processing: bool = false
 
-func _ready():
+
+func _ready() -> void:
 	if Settings.get_value("gameplay", "2d_view"):
 		camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	else:
 		camera.projection = Camera3D.PROJECTION_PERSPECTIVE
 
 
-func set_levels(new_levels: Array[Dictionary]):
+func set_levels(new_levels: Array[Dictionary]) -> void:
 	_version += 1
 	levels = new_levels
 	_queue.clear()
 
 
-func submit_queue(new_queue: Array[int]):
+func submit_queue(new_queue: Array[int]) -> void:
 	_queue = new_queue
 
 
-func set_preview_size(new_size: Vector2):
+func set_preview_size(new_size: Vector2) -> void:
 	size = new_size
 
 
-func _process(_delta: float):
-	if _queue.size() > 0:
-		var version := _version
+func _process(_delta: float) -> void:
+	if _queue.is_empty() or _is_processing:
+		return
 
-		var index: int = _queue.pop_front()
+	_is_processing = true
+	var version := _version
+	var index: int = _queue.pop_front()
 
-		level_map.load_from_string(levels[index]["map_xsb"])
-		_sync_entities_from_state()
+	level_map.load_from_string(levels[index]["map_xsb"])
+	_sync_entities_from_state()
 
-		var dimensions = Vector2(level_map.get_dimensions())
-		var center = dimensions / 2.0
-		var max_dimension = max(dimensions.x, dimensions.y)
-		camera.global_position = Vector3(center.x, max_dimension, center.y)
-		camera.global_position.y = max_dimension / (2.0 * tan(deg_to_rad(camera.fov) / 2.0))
+	var dimensions = Vector2(level_map.get_dimensions())
+	var center = dimensions / 2.0
+	var max_dimension = max(dimensions.x, dimensions.y)
 
-		if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
-			camera.size = max_dimension
+	camera.global_position = Vector3(center.x, max_dimension, center.y)
+	camera.global_position.y = max_dimension / (2.0 * tan(deg_to_rad(camera.fov) / 2.0))
 
-		render_target_update_mode = SubViewport.UPDATE_ONCE
-		await RenderingServer.frame_post_draw
+	if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
+		camera.size = max_dimension
 
-		var image := get_texture().get_image()
-		var texture = ImageTexture.create_from_image(image)
+	render_target_update_mode = SubViewport.UPDATE_ONCE
+	await RenderingServer.frame_post_draw
 
-		if version != _version:
-			return
-		preview_generated.emit(index, texture)
+	if version != _version:
+		_is_processing = false
+		return
+
+	var image := get_texture().get_image()
+	var texture = ImageTexture.create_from_image(image)
+
+	preview_generated.emit(index, texture)
+	_is_processing = false
 
 
 func _sync_entities_from_state() -> void:
-	for child in boxes_container.get_children():
-		child.queue_free()
+	var box_positions = level_map.get_box_positions()
+	var required_box_count = box_positions.size()
 
-	for box_position in level_map.get_box_positions():
+	while _box_pool.size() < required_box_count:
 		var box: Box = BOX_SCENE.instantiate()
-		box.position = Vector3(box_position.x, 0.0, box_position.y)
 		boxes_container.add_child(box)
+		_box_pool.append(box)
+
+	for i in range(_box_pool.size()):
+		var box = _box_pool[i]
+		if i < required_box_count:
+			var pos = box_positions[i]
+			box.position = Vector3(pos.x, 0.0, pos.y)
+			box.visible = true
+		else:
+			box.visible = false
 
 	var player_position := level_map.get_player_position()
 	player.position = Vector3(player_position.x, 0.0, player_position.y)
