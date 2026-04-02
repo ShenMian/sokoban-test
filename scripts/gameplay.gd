@@ -73,8 +73,8 @@ func _on_request_previous_level() -> void:
 
 
 func _on_restart() -> void:
-	Database.clear_snapshot(SceneTransition.level_id, true)
 	level_map.do_undo_all()
+	_auto_save()
 
 
 func _on_request_menu() -> void:
@@ -84,6 +84,8 @@ func _on_request_menu() -> void:
 
 func _auto_save():
 	if level_map.is_solved():
+		Database.clear_snapshot(SceneTransition.level_id, true)
+	elif level_map.get_actions_lurd().is_empty():
 		Database.clear_snapshot(SceneTransition.level_id, true)
 	else:
 		Database.save_snapshot(SceneTransition.level_id, level_map.get_actions_lurd(), true)
