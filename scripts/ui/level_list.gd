@@ -6,7 +6,7 @@ const LEVEL_PREVIEW_SCENE := preload("res://scenes/ui/level_preview.tscn")
 @onready var level_list: ItemList = $Margin/VBox/HSplit/LevelList
 @onready var level_preview: LevelPreview = $LevelPreview
 
-@export var level_item_min_width: int = 150
+@export var level_item_min_width: int = 120
 
 @export var unsolved_color: Color = Color(0.0, 0.0, 0.0, 0.0)
 @export var solved_color: Color = Color(0.18, 0.44, 0.18, 0.5)
