@@ -44,7 +44,7 @@ impl Database {
 
     /// Imports all level files from a directory.
     #[func]
-    fn import_levels_from_dir(&self, path: String) {
+    pub fn import_levels_from_dir(&self, path: String) {
         let path = path.trim_end_matches('/').to_string();
 
         let start = std::time::Instant::now();
@@ -59,7 +59,7 @@ impl Database {
 
     /// Imports levels from a file.
     #[func]
-    fn import_levels_from_file(&self, path: String) {
+    pub fn import_levels_from_file(&self, path: String) {
         let collection_name = std::path::Path::new(&path)
             .file_stem()
             .unwrap()
@@ -72,7 +72,7 @@ impl Database {
 
     /// Imports levels from an XSB format string.
     #[func]
-    fn import_levels_from_string(&self, levels_xsb: String, collection_name: String) {
+    pub fn import_levels_from_string(&self, levels_xsb: String, collection_name: String) {
         self.insert_levels_from_str(&levels_xsb, &collection_name);
     }
 

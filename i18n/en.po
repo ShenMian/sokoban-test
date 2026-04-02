@@ -76,15 +76,6 @@ msgstr "Fast"
 msgid "ANIM_INSTANT"
 msgstr "Instant"
 
-msgid "2D_VIEW"
-msgstr "2D View"
-
-msgid "CHECKERBOARD_SHADING"
-msgstr "Checkerboard Shading"
-
-msgid "CHECKERBOARD_TIP"
-msgstr "Toggle to color floor tiles in a checkerboard pattern"
-
 msgid "DEADLOCK_HINT"
 msgstr "Deadlock Hint"
 
@@ -102,6 +93,39 @@ msgstr "Pathfinding Strategy"
 
 msgid "PATHFINDING_STRATEGY_TIP"
 msgstr "Box pathfinding prioritizes paths with the minimum number of pushes or moves"
+
+msgid "APPEARANCE"
+msgstr "Appearance"
+
+msgid "THEME"
+msgstr "Theme"
+
+msgid "THEME_TIP"
+msgstr "Select the level's color theme"
+
+msgid "DESERT_OASIS"
+msgstr "Desert Oasis"
+
+msgid "ARCTIC_LAB"
+msgstr "Arctic Lab"
+
+msgid "OCEAN_DEPTHS"
+msgstr "Ocean Depths"
+
+msgid "CYBERPUNK_NEON"
+msgstr "Cyberpunk Neon"
+
+msgid "UNDERGROUND_CAVERN"
+msgstr "Underground Cavern"
+
+msgid "2D_VIEW"
+msgstr "2D View"
+
+msgid "CHECKERBOARD_SHADING"
+msgstr "Checkerboard Shading"
+
+msgid "CHECKERBOARD_TIP"
+msgstr "Toggle to color floor tiles in a checkerboard pattern"
 
 msgid "SOLVER"
 msgstr "Solver"

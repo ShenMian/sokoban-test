@@ -11,7 +11,7 @@ use std::{
 
 use godot::{
     classes::{
-        ArrayMesh, Engine, FileAccess, GridMap, IGridMap, MeshLibrary, StandardMaterial3D,
+        ArrayMesh, FileAccess, GridMap, IGridMap, MeshLibrary, StandardMaterial3D,
         file_access::ModeFlags,
     },
     meta::ToGodot as _,
@@ -156,7 +156,7 @@ impl LevelMap {
 
     /// Loads levels from an XSB file.
     #[func]
-    fn load_collection(path: GString) -> Array<VarDictionary> {
+    pub fn load_collection(path: GString) -> Array<VarDictionary> {
         let path = path.to_string();
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
         let len = file.get_length() as i64;
@@ -183,7 +183,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn load_from_file(&mut self, path: GString, index: i32) {
+    pub fn load_from_file(&mut self, path: GString, index: i32) {
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
         let len = file.get_length() as i64;
         let buffer = file.get_buffer(len).to_vec();
@@ -194,7 +194,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn load_from_string(&mut self, string: GString) {
+    pub fn load_from_string(&mut self, string: GString) {
         if let Ok(level) = Level::from_str(&string.to_string()) {
             self.level = level;
             self.build();
@@ -211,27 +211,27 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_map_xsb(&self) -> GString {
+    pub fn get_map_xsb(&self) -> GString {
         (&self.map().to_string()).into()
     }
 
     #[func]
-    fn get_actions_lurd(&self) -> GString {
+    pub fn get_actions_lurd(&self) -> GString {
         (&self.level.actions().to_string()).into()
     }
 
     #[func]
-    fn get_dimensions(&self) -> Vector2i {
+    pub fn get_dimensions(&self) -> Vector2i {
         self.map().dimensions().to_gd()
     }
 
     #[func]
-    fn get_player_position(&self) -> Vector2i {
+    pub fn get_player_position(&self) -> Vector2i {
         self.map().player_position().to_gd()
     }
 
     #[func]
-    fn get_player_direction(&self) -> Direction {
+    pub fn get_player_direction(&self) -> Direction {
         self.level
             .player_direction()
             .unwrap_or(direction::Direction::Down)
@@ -239,7 +239,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_box_positions(&self) -> Array<Vector2i> {
+    pub fn get_box_positions(&self) -> Array<Vector2i> {
         self.map()
             .box_positions()
             .iter()
@@ -248,7 +248,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_pushable_box_positions(&self) -> Array<Vector2i> {
+    pub fn get_pushable_box_positions(&self) -> Array<Vector2i> {
         path_finding::compute_pushable_boxes(self.map())
             .iter()
             .map(ToGodot::to_gd)
@@ -256,7 +256,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_goal_positions(&self) -> Array<Vector2i> {
+    pub fn get_goal_positions(&self) -> Array<Vector2i> {
         self.map()
             .goal_positions()
             .iter()
@@ -265,12 +265,12 @@ impl LevelMap {
     }
 
     #[func]
-    fn is_solved(&self) -> bool {
+    pub fn is_solved(&self) -> bool {
         self.map().is_solved()
     }
 
     #[func]
-    fn get_box_move_path(&self, from: Vector2i, to: Vector2i) -> Array<i32> {
+    pub fn get_box_move_path(&self, from: Vector2i, to: Vector2i) -> Array<i32> {
         let box_position = from.to_na();
         let to = to.to_na();
 
@@ -310,7 +310,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_waypoint_positions(&mut self, box_position: Vector2i) -> Array<Vector2i> {
+    pub fn get_waypoint_positions(&mut self, box_position: Vector2i) -> Array<Vector2i> {
         let box_position = box_position.to_na();
 
         let start = std::time::Instant::now();
@@ -343,7 +343,7 @@ impl LevelMap {
 
     /// Starts solving in a background thread with a custom stack size.
     #[func]
-    fn start_solve(&mut self, algorithm: Algorithm, strategy: Strategy) {
+    pub fn start_solve(&mut self, algorithm: Algorithm, strategy: Strategy) {
         // Cancel any previously running solve.
         self.cancel_solve();
 
@@ -378,7 +378,7 @@ impl LevelMap {
     /// running. When the solver finishes, emits `solve_completed` or
     /// `solve_failed` and returns `false`.
     #[func]
-    fn poll_solve(&mut self) -> bool {
+    pub fn poll_solve(&mut self) -> bool {
         if !self.solver_done.load(Ordering::Acquire) {
             return true;
         }
@@ -411,7 +411,7 @@ impl LevelMap {
 
     /// Cancels a running solve (if any).
     #[func]
-    fn cancel_solve(&mut self) {
+    pub fn cancel_solve(&mut self) {
         if let Some(solver) = self.solver.take() {
             solver.request_stop();
         }
@@ -424,7 +424,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn fast_forward(&mut self, lurd: GString) {
+    pub fn fast_forward(&mut self, lurd: GString) {
         let actions = Actions::from_str(&lurd.to_string()).expect("failed to parse actions");
         self.level
             .execute_batch(actions.0.into_iter().map(|action| action.direction()))
@@ -432,7 +432,7 @@ impl LevelMap {
     }
 
     #[func]
-    fn move_by(&mut self, direction: Direction) {
+    pub fn move_by(&mut self, direction: Direction) {
         let direction: direction::Direction = direction.into();
 
         let box_positions = self.map().box_positions().clone();
@@ -468,7 +468,7 @@ impl LevelMap {
 
     /// Undoes actions until crossing the previous box-change boundary.
     #[func]
-    fn undo(&mut self) {
+    pub fn undo(&mut self) {
         let initial_box_changes = self.level.actions().secondary_values().box_changes;
         while self.level.undo().is_ok() {
             if self.level.actions().secondary_values().box_changes < initial_box_changes {
@@ -480,7 +480,7 @@ impl LevelMap {
 
     /// Redoes actions until crossing the next box-change boundary.
     #[func]
-    fn redo(&mut self) {
+    pub fn redo(&mut self) {
         let initial_box_changes = self.level.actions().secondary_values().box_changes;
         while self.level.redo().is_ok() {
             if self.level.actions().secondary_values().box_changes > initial_box_changes + 1 {
@@ -497,7 +497,7 @@ impl LevelMap {
 
     /// Undoes all actions.
     #[func]
-    fn undo_all(&mut self) {
+    pub fn undo_all(&mut self) {
         while self.level.undo().is_ok() {}
         self.build();
     }
@@ -515,17 +515,17 @@ impl LevelMap {
     }
 
     #[func]
-    fn get_move_count(&self) -> i32 {
+    pub fn get_move_count(&self) -> i32 {
         self.level.actions().moves() as i32
     }
 
     #[func]
-    fn get_push_count(&self) -> i32 {
+    pub fn get_push_count(&self) -> i32 {
         self.level.actions().pushes() as i32
     }
 
     #[func]
-    fn get_status(&self) -> VarDictionary {
+    pub fn get_status(&self) -> VarDictionary {
         let mut dict = VarDictionary::new();
         dict.set("move_count", self.get_move_count());
         dict.set("push_count", self.get_push_count());
@@ -535,19 +535,19 @@ impl LevelMap {
     }
 
     #[func]
-    fn rotate(&mut self) {
+    pub fn rotate(&mut self) {
         self.level.rotate();
         self.build();
     }
 
     #[func]
-    fn flip_horizontal(&mut self) {
+    pub fn flip_horizontal(&mut self) {
         self.level.flip_horizontal();
         self.build();
     }
 
     #[func]
-    fn get_lower_bounds(&self, strategy: Strategy) -> VarDictionary {
+    pub fn get_lower_bounds(&self, strategy: Strategy) -> VarDictionary {
         let solver = Solver::new(self.map().clone(), strategy.into());
         let mut dict = VarDictionary::new();
         for (position, value) in solver.lower_bounds() {
@@ -557,64 +557,16 @@ impl LevelMap {
     }
 
     #[func]
-    fn build(&mut self) {
+    pub fn build(&mut self) {
         if !self.base().is_inside_tree() {
             return;
+        }
+        if self.floor_dark_item_id == GridMap::INVALID_CELL_ITEM {
+            self.create_theme_variants();
         }
 
         self.waypoints.clear();
         self.costs.clear();
-
-        if self.floor_dark_item_id == GridMap::INVALID_CELL_ITEM {
-            let Some(mut mesh_library) = self.base().get_mesh_library() else {
-                return;
-            };
-
-            let map_theme = self.base().get_node_as::<Node>("/root/MapTheme");
-            let floor_color: Color = map_theme.get("floor_color").to();
-            let wall_color: Color = map_theme.get("wall_color").to();
-            let goal_color: Color = map_theme.get("goal_color").to();
-
-            self.theme_floor_item_id = self.create_colored_variant(
-                &mut mesh_library,
-                self.floor_item_id,
-                "theme_floor",
-                |_| floor_color,
-            );
-            self.theme_wall_item_id = self.create_colored_variant(
-                &mut mesh_library,
-                self.wall_item_id,
-                "theme_wall",
-                |_| wall_color,
-            );
-            self.theme_goal_item_id = self.create_colored_variant(
-                &mut mesh_library,
-                self.goal_item_id,
-                "theme_goal",
-                |_| goal_color,
-            );
-
-            self.floor_dark_item_id = self.create_colored_variant(
-                &mut mesh_library,
-                self.theme_floor_item_id,
-                "floor_dark",
-                |color| color.darkened(0.15),
-            );
-
-            let deadlock_tint = self.deadlock_tint;
-            self.deadlock_item_id = self.create_colored_variant(
-                &mut mesh_library,
-                self.theme_floor_item_id,
-                "floor_deadlock",
-                |color| color * deadlock_tint,
-            );
-            self.deadlock_dark_item_id = self.create_colored_variant(
-                &mut mesh_library,
-                self.theme_floor_item_id,
-                "floor_deadlock_dark",
-                |color| color.darkened(0.15) * deadlock_tint,
-            );
-        }
 
         let deadlocks = compute_static_deadlocks(self.map());
         self.base_mut().clear();
@@ -654,10 +606,58 @@ impl LevelMap {
     }
 
     #[func]
-    fn set_deadlock_tint(&mut self, color: Color) {
+    pub fn set_deadlock_tint(&mut self, color: Color) {
         self.deadlock_tint = color;
         self.floor_dark_item_id = GridMap::INVALID_CELL_ITEM;
         self.build();
+    }
+
+    #[func]
+    pub fn create_theme_variants(&mut self) {
+        let Some(mut mesh_library) = self.base().get_mesh_library() else {
+            return;
+        };
+
+        let map_theme = self.base().get_node_as::<Node>("/root/MapTheme");
+        let floor_color: Color = map_theme.get("floor_color").to();
+        let wall_color: Color = map_theme.get("wall_color").to();
+        let goal_color: Color = map_theme.get("goal_color").to();
+
+        self.theme_floor_item_id = self.create_colored_variant(
+            &mut mesh_library,
+            self.floor_item_id,
+            "theme_floor",
+            |_| floor_color,
+        );
+        self.theme_wall_item_id =
+            self.create_colored_variant(&mut mesh_library, self.wall_item_id, "theme_wall", |_| {
+                wall_color
+            });
+        self.theme_goal_item_id =
+            self.create_colored_variant(&mut mesh_library, self.goal_item_id, "theme_goal", |_| {
+                goal_color
+            });
+
+        self.floor_dark_item_id = self.create_colored_variant(
+            &mut mesh_library,
+            self.theme_floor_item_id,
+            "floor_dark",
+            |color| color.darkened(0.15),
+        );
+
+        let deadlock_tint = self.deadlock_tint;
+        self.deadlock_item_id = self.create_colored_variant(
+            &mut mesh_library,
+            self.theme_floor_item_id,
+            "floor_deadlock",
+            |color| color * deadlock_tint,
+        );
+        self.deadlock_dark_item_id = self.create_colored_variant(
+            &mut mesh_library,
+            self.theme_floor_item_id,
+            "floor_deadlock_dark",
+            |color| color.darkened(0.15) * deadlock_tint,
+        );
     }
 
     fn map(&self) -> &Map {
@@ -674,9 +674,7 @@ impl LevelMap {
     where
         F: Fn(Color) -> Color,
     {
-        if source_id == GridMap::INVALID_CELL_ITEM {
-            return GridMap::INVALID_CELL_ITEM;
-        }
+        debug_assert_ne!(source_id, GridMap::INVALID_CELL_ITEM);
 
         let mut next_id = -1;
         let items = mesh_library.get_item_list();

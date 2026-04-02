@@ -21,8 +21,8 @@ buses/default_bus_layout="res://assets/audio/default_bus_layout.tres"
 
 [autoload]
 
-Sounds="*res://scenes/sounds.tscn"
 Settings="*res://scripts/settings/settings.gd"
+Sounds="*res://scenes/sounds.tscn"
 SceneTransition="*res://scenes/scene_transition.tscn"
 MapTheme="*uid://ct5jks4wjysmx"
 DebugMenu="*uid://cggqb75a8w8r"

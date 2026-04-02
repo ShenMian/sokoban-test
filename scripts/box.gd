@@ -48,11 +48,11 @@ var _duration_multiplier: float = 1.0
 
 
 func _ready() -> void:
+	Settings.setting_changed.connect(_on_setting_changed)
+
 	mesh.mesh = mesh.mesh.duplicate(true)
 	for i in range(mesh.mesh.get_surface_count()):
 		mesh.mesh.surface_set_material(i, mesh.mesh.surface_get_material(i).duplicate())
-
-	Settings.setting_changed.connect(_on_setting_changed)
 
 	mesh_area.area_entered.connect(_on_area_entered)
 

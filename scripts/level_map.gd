@@ -187,9 +187,6 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 		elif key == "deadlock_hint":
 			deadlock_hint = value
 			build()
-		elif key == "checkerboard":
-			checkerboard_shading = value
-			build()
 		elif key == "pushable_hint":
 			pushable_hint = value
 			_update_pushable_hint()
@@ -197,6 +194,13 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 			heatmap = value
 		elif key == "pathfinding_strategy":
 			pathfinding_strategy = value
+		elif key == "theme":
+			create_theme_variants()
+			build()
+			sync_entities_from_state()
+		elif key == "checkerboard":
+			checkerboard_shading = value
+			build()
 		elif key == "algorithm":
 			solver_algorithm = value
 		elif key == "solver_strategy":

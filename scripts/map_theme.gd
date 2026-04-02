@@ -77,9 +77,18 @@ var UNDERGROUND_CAVERN := {
 	"indicator_color": Color("#7D6551")
 }
 
+var THEMES := [
+	DESERT_OASIS,
+	ARCTIC_LAB,
+	OCEAN_DEPTHS,
+	CYBERPUNK_NEON,
+	UNDERGROUND_CAVERN
+]
+
 
 func _ready() -> void:
-	apply(DESERT_OASIS)
+	Settings.setting_changed.connect(_on_setting_changed)
+	_on_setting_changed("gameplay", "theme", Settings.get_value("gameplay", "theme"))
 
 
 func apply(theme: Dictionary) -> void:
@@ -99,3 +108,8 @@ func _create_texture_from_color(color: Color) -> Texture2D:
 	var image := Image.create(1, 1, false, Image.FORMAT_RGBA8)
 	image.fill(color)
 	return ImageTexture.create_from_image(image)
+
+
+func _on_setting_changed(section: String, key: String, value: Variant):
+	if section == "gameplay" and key == "theme":
+		apply(THEMES[value])
