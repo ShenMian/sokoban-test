@@ -6,7 +6,7 @@ signal preview_generated(index: int, texture: Texture2D)
 const BOX_SCENE := preload("res://scenes/box.tscn")
 
 @onready var level_map: LevelMap = $LevelMap
-@onready var boxes_container: Node3D = $LevelMap/Boxes
+@onready var boxes: MultiMeshInstance3D = $LevelMap/Boxes
 @onready var player: Node3D = $LevelMap/Player
 @onready var camera: Camera3D = $Camera
 
@@ -14,7 +14,6 @@ var levels: Array[Dictionary] = []
 var _queue: Array[int] = []
 var _version: int = 0
 
-var _box_pool: Array[Node3D] = []
 var _is_processing: bool = false
 
 
@@ -75,22 +74,13 @@ func _process(_delta: float) -> void:
 
 
 func _sync_entities_from_state() -> void:
-	var box_positions = level_map.get_box_positions()
-	var required_box_count = box_positions.size()
+	var box_positions := level_map.get_box_positions()
 
-	while _box_pool.size() < required_box_count:
-		var box: Box = BOX_SCENE.instantiate()
-		boxes_container.add_child(box)
-		_box_pool.append(box)
-
-	for i in range(_box_pool.size()):
-		var box = _box_pool[i]
-		if i < required_box_count:
-			var pos = box_positions[i]
-			box.position = Vector3(pos.x, 0.0, pos.y)
-			box.visible = true
-		else:
-			box.visible = false
+	var multi_mesh := boxes.multimesh
+	multi_mesh.instance_count = box_positions.size()
+	for i in range(box_positions.size()):
+		var pos = box_positions[i]
+		multi_mesh.set_instance_transform(i, Transform3D().translated(Vector3(pos.x + 0.5, 0.0, pos.y + 0.5)))
 
 	var player_position := level_map.get_player_position()
 	player.position = Vector3(player_position.x, 0.0, player_position.y)
