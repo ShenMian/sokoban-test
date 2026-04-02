@@ -159,9 +159,10 @@ func _stop_indicator_tween() -> void:
 
 func _apply_disabled() -> void:
 	var target_albedo := Color.WHITE.darkened(0.5) if disabled else Color.WHITE
-	create_tween().tween_property(mesh, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
-	create_tween().tween_property(mesh, "mesh:surface_1/material:albedo_color", target_albedo, 0.2)
-	create_tween().tween_property(mesh, "mesh:surface_2/material:albedo_color", target_albedo, 0.2)
+	var tween := create_tween().set_parallel(true)
+	tween.tween_property(mesh, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
+	tween.tween_property(mesh, "mesh:surface_1/material:albedo_color", target_albedo, 0.2)
+	tween.tween_property(mesh, "mesh:surface_2/material:albedo_color", target_albedo, 0.2)
 
 
 func _apply_selectable() -> void:
