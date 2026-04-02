@@ -122,6 +122,10 @@ impl IGridMap for LevelMap {
             base,
         }
     }
+
+    fn ready(&mut self) {
+        self.create_theme_variants();
+    }
 }
 
 #[godot_api]
@@ -561,9 +565,6 @@ impl LevelMap {
         if !self.base().is_inside_tree() {
             return;
         }
-        if self.floor_dark_item_id == GridMap::INVALID_CELL_ITEM {
-            self.create_theme_variants();
-        }
 
         self.waypoints.clear();
         self.costs.clear();
@@ -608,7 +609,7 @@ impl LevelMap {
     #[func]
     pub fn set_deadlock_tint(&mut self, color: Color) {
         self.deadlock_tint = color;
-        self.floor_dark_item_id = GridMap::INVALID_CELL_ITEM;
+        self.create_theme_variants();
         self.build();
     }
 
