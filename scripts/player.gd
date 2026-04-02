@@ -13,6 +13,7 @@ signal move_finished
 @export var move_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
 @export_group("Rotate Animation")
+@export var rotate_90_duration: float = 0.1
 @export var rotate_ease: Tween.EaseType = Tween.EASE_IN_OUT
 @export var rotate_transition: Tween.TransitionType = Tween.TRANS_LINEAR
 
@@ -91,24 +92,24 @@ func move(direction: Vector2, push: bool) -> void:
 	target_rotation = meshes.rotation_degrees.y + delta
 
 	is_moving = true
+	var tween := create_tween().set_parallel(true)
+
 	if meshes.rotation_degrees.y != target_rotation:
-		var duration: float = abs(meshes.rotation_degrees.y - target_rotation) / 90.0 * 0.1
-		await create_tween() \
+		var rotate_duration: float = abs(meshes.rotation_degrees.y - target_rotation) / 90.0 * rotate_90_duration
+		tween.tween_property(meshes, "rotation_degrees:y", target_rotation, rotate_duration * _duration_multiplier) \
 			.set_ease(rotate_ease) \
-			.set_trans(rotate_transition) \
-			.tween_property(meshes, "rotation_degrees:y", target_rotation, duration * _duration_multiplier) \
-			.finished
+			.set_trans(rotate_transition)
 
 	if push:
 		state_machine.travel("Pushing")
 	else:
 		state_machine.travel("Walking")
 
-	await create_tween() \
+	tween.tween_property(self , "global_position", global_position + direction3d, move_duration * _duration_multiplier) \
 		.set_ease(move_ease) \
-		.set_trans(move_transition) \
-		.tween_property(self , "global_position", global_position + direction3d, move_duration * _duration_multiplier) \
-		.finished
+		.set_trans(move_transition)
+
+	await tween.finished
 
 	state_machine.travel("Static")
 	is_moving = false
