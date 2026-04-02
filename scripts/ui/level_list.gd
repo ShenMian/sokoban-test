@@ -102,7 +102,10 @@ func _on_preview_generated(index: int, texture: Texture2D):
 
 
 func _on_collection_list_clicked(index: int):
-	_selected_collection = collection_list.get_item_text(index)
+	var collection_name := collection_list.get_item_text(index)
+	if collection_name == _selected_collection:
+		return
+	_selected_collection = collection_name
 	_load_levels()
 
 
