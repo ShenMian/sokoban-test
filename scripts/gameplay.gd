@@ -8,6 +8,9 @@ extends Node3D
 @onready var credits: Control = $MenuLayer/Credits
 @onready var victory_menu: VictoryMenu = $MenuLayer/VictoryMenu
 
+@onready var status_panel: PanelContainer = $HudLayer/HUD/StatusPanel
+@onready var toolbar_panel: PanelContainer = $HudLayer/HUD/ToolbarPanel
+
 @onready var level_label: Label = %LevelValue
 @onready var moves_label: Label = %MovesValue
 @onready var pushes_label: Label = %PushesValue
@@ -16,16 +19,26 @@ extends Node3D
 @onready var redo_button: ButtonFx = %RedoButton
 @onready var undo_all_button: ButtonFx = %UndoAllButton
 @onready var solve_button: ButtonFx = %SolveButton
-@onready var menu_button: ButtonFx = %MenuButton
 @onready var transform_button: ButtonFx = %TransformButton
 @onready var previous_button: ButtonFx = %PreviousButton
 @onready var next_button: ButtonFx = %NextButton
+@onready var pause_button: ButtonFx = %PauseButton
+
+## The scaling factor applied to HUD panels on touchscreen devices.
+@export var touch_ui_scale: float = 1.25
 
 var _transform_state: int = 0
 
 
 func _ready() -> void:
 	get_tree().set_quit_on_go_back(false)
+
+	if DisplayServer.is_touchscreen_available():
+		status_panel.pivot_offset = Vector2(status_panel.size.x / 2.0, 0.0)
+		status_panel.scale = Vector2(touch_ui_scale, touch_ui_scale)
+		toolbar_panel.pivot_offset = Vector2(toolbar_panel.size.x / 2.0, toolbar_panel.size.y)
+		toolbar_panel.scale = Vector2(touch_ui_scale, touch_ui_scale)
+		pause_button.visible = true
 
 	previous_button.disabled = not SceneTransition.has_previous_level()
 	next_button.disabled = not SceneTransition.has_next_level()
@@ -45,7 +58,7 @@ func _ready() -> void:
 	redo_button.pressed.connect(level_map.do_redo)
 	undo_all_button.pressed.connect(_on_restart)
 	solve_button.pressed.connect(level_map.do_solve)
-	menu_button.pressed.connect(_open_pause_menu)
+	pause_button.pressed.connect(_open_pause_menu)
 	transform_button.pressed.connect(_transform_level)
 	previous_button.pressed.connect(_on_request_previous_level)
 	next_button.pressed.connect(_on_request_next_level)

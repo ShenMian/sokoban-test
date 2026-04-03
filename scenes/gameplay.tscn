@@ -66,7 +66,6 @@ events = [SubResource("InputEventAction_w3w6i")]
 script = ExtResource("1_l1v76")
 
 [node name="LevelMap" parent="." unique_id=873965418 instance=ExtResource("2_bhmdk")]
-indicator_color = Color(0.83137256, 0.6392157, 0.4509804, 1)
 
 [node name="Camera" type="Camera3D" parent="." unique_id=414650077]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 3.94, 9, -3.98)
@@ -169,9 +168,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -192.0
+offset_left = -190.0
 offset_top = -58.0
-offset_right = 192.0
+offset_right = 190.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
@@ -254,23 +253,8 @@ expand_icon = true
 script = ExtResource("8_407ns")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
 
-[node name="MenuButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1243846117]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(48, 48)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "PAUSE"
-shortcut = SubResource("Shortcut_pv71h")
-shortcut_in_tooltip = false
-icon = ExtResource("11_s5y6v")
-icon_alignment = 1
-expand_icon = true
-script = ExtResource("8_407ns")
-metadata/_custom_type_script = "uid://cr5yoytr47auc"
-
 [node name="Spacing" type="Control" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1955257935]
-custom_minimum_size = Vector2(10, 0)
+custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
 
 [node name="PreviousButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=26568022]
@@ -296,6 +280,22 @@ size_flags_vertical = 4
 tooltip_text = "NEXT_LEVEL"
 shortcut_in_tooltip = false
 icon = ExtResource("12_w3w6i")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("8_407ns")
+metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
+[node name="PauseButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1243846117]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "PAUSE"
+shortcut = SubResource("Shortcut_pv71h")
+shortcut_in_tooltip = false
+icon = ExtResource("11_s5y6v")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_407ns")
