@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://c5tskalfqb860" path="res://scripts/ui/level_list.gd" id="2_o24fg"]
 [ext_resource type="Texture2D" uid="uid://dorsn38k1lpvp" path="res://assets/textures/backgrounds/empty.png" id="3_tix12"]
 [ext_resource type="Theme" uid="uid://el10yav48fuk" path="res://assets/title_theme.tres" id="4_er3qt"]
-[ext_resource type="PackedScene" uid="uid://cn7iy24ba0l5v" path="res://scenes/ui/level_preview.tscn" id="5_lt178"]
+[ext_resource type="PackedScene" uid="uid://cn7iy24ba0l5v" path="res://scenes/ui/level_thumbnail.tscn" id="5_lt178"]
 
 [sub_resource type="Gradient" id="Gradient_gkmvm"]
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 0)
@@ -83,4 +83,4 @@ size_flags_stretch_ratio = 0.8
 theme = ExtResource("1_3cspp")
 icon_mode = 0
 
-[node name="LevelPreview" parent="." unique_id=319219157 instance=ExtResource("5_lt178")]
+[node name="LevelThumbnail" parent="." unique_id=319219157 instance=ExtResource("5_lt178")]

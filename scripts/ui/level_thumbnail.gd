@@ -1,9 +1,7 @@
 extends SubViewport
-class_name LevelPreview
+class_name LevelThumbnail
 
-signal preview_generated(index: int, texture: Texture2D)
-
-const BOX_SCENE := preload("res://scenes/box.tscn")
+signal thumbnail_generated(index: int, texture: Texture2D)
 
 @onready var level_map: LevelMap = $LevelMap
 @onready var boxes: MultiMeshInstance3D = $LevelMap/Boxes
@@ -69,7 +67,7 @@ func _process(_delta: float) -> void:
 	var image := get_texture().get_image()
 	var texture = ImageTexture.create_from_image(image)
 
-	preview_generated.emit(index, texture)
+	thumbnail_generated.emit(index, texture)
 	_is_processing = false
 
 
