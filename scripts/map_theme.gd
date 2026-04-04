@@ -22,7 +22,7 @@ var DESERT_OASIS := {
 	"box_inner_fill_color": Color("#E8D8C4"),
 	"player_body_color": Color("#1A508B"),
 	"player_hat_color": Color("#C4884B"),
-	"indicator_color": Color("#D4A373")
+	"indicator_color": Color("#00AFB9")
 }
 
 var ARCTIC_LAB := {
@@ -51,38 +51,10 @@ var OCEAN_DEPTHS := {
 	"indicator_color": Color("#FDD017")
 }
 
-var CYBERPUNK_NEON := {
-	"background_color": Color("#030A1A"),
-	"floor_color": Color("#1E1E24"),
-	"wall_color": Color("#0B1D51"),
-	"goal_color": Color("#A35A71"),
-	"box_outer_frame_color": Color("#01A3B0"),
-	"box_diagonal_bar_color": Color("#C28F58"),
-	"box_inner_fill_color": Color("#3A414A"),
-	"player_body_color": Color("#D4A264"),
-	"player_hat_color": Color("#39FF14"),
-	"indicator_color": Color("#9E6AC7")
-}
-
-var UNDERGROUND_CAVERN := {
-	"background_color": Color("#0F0F0F"),
-	"floor_color": Color("#2B2B2B"),
-	"wall_color": Color("#45271F"),
-	"goal_color": Color("#B87A47"),
-	"box_outer_frame_color": Color("#A1694F"),
-	"box_diagonal_bar_color": Color("#A18968"),
-	"box_inner_fill_color": Color("#3A414A"),
-	"player_body_color": Color("#4B533F"),
-	"player_hat_color": Color("#2F343A"),
-	"indicator_color": Color("#7D6551")
-}
-
 var THEMES := [
 	DESERT_OASIS,
 	ARCTIC_LAB,
-	OCEAN_DEPTHS,
-	CYBERPUNK_NEON,
-	UNDERGROUND_CAVERN
+	OCEAN_DEPTHS
 ]
 
 
