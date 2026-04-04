@@ -207,6 +207,8 @@ impl LevelMap {
                 return;
             };
             self.level = Level::from_map(map);
+            self.fast_forward(string);
+            self.undo_all();
             self.build();
         } else {
             godot_warn!("failed to parse level or actions from string: '{string}'");
