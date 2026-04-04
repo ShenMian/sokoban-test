@@ -81,4 +81,4 @@ func _sync_entities_from_state() -> void:
 		multi_mesh.set_instance_transform(i, Transform3D().translated(Vector3(pos.x + 0.5, 0.0, pos.y + 0.5)))
 
 	var player_position := level_map.get_player_position()
-	player.position = Vector3(player_position.x, 0.0, player_position.y)
+	player.position = Vector3(player_position.x + 0.5, 0.0, player_position.y + 0.5)
