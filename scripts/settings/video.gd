@@ -43,6 +43,8 @@ const SCALING_3D_MODES: Array[Viewport.Scaling3DMode] = [
 
 
 func _ready() -> void:
+	_disable_unavailable_features()
+
 	window_mode.item_selected.connect(_on_window_mode_selected)
 	vsync.toggled.connect(_on_vsync_toggled)
 	frame_rate_limit.value_changed.connect(_on_frame_rate_limit_changed)
@@ -86,6 +88,25 @@ func apply_settings() -> void:
 
 	scaling_method.select(SCALING_3D_MODES.find(Settings.get_value(SECTION_NAME, "scaling_3d_mode")))
 	scaling_method.item_selected.emit(scaling_method.selected)
+
+
+func _disable_unavailable_features() -> void:
+	# Disable unavailable features based on the rendering method
+	# https://docs.godotengine.org/en/4.6/tutorials/3d/3d_antialiasing.html#antialiasing-comparison
+	var rendering_method := RenderingServer.get_current_rendering_method()
+	var is_forward_plus := rendering_method == "forward_plus"
+	var is_mobile := rendering_method == "mobile"
+
+	var support_fsr := is_forward_plus
+	var support_taa := is_forward_plus
+	var support_fxaa := is_forward_plus or is_mobile
+	var support_smaa := is_forward_plus or is_mobile
+
+	scaling_method.set_item_disabled(SCALING_3D_MODES.find(Viewport.SCALING_3D_MODE_FSR), not support_fsr)
+	scaling_method.set_item_disabled(SCALING_3D_MODES.find(Viewport.SCALING_3D_MODE_FSR2), not support_fsr)
+	taa.disabled = not support_taa
+	screen_space_aa.set_item_disabled(SCREEN_SPACE_AA_MODES.find(Viewport.SCREEN_SPACE_AA_FXAA), not support_fxaa)
+	screen_space_aa.set_item_disabled(SCREEN_SPACE_AA_MODES.find(Viewport.SCREEN_SPACE_AA_SMAA), not support_smaa)
 
 
 func _on_window_mode_selected(index: int) -> void:
