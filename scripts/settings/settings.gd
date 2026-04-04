@@ -24,7 +24,7 @@ const DEFAULT_CONFIG = {
 		"scaling_3d_scale": 1.0,
 		"fsr_sharpness": 0.2,
 		"fov": 60.0,
-		"screen_space_aa": Viewport.SCREEN_SPACE_AA_SMAA,
+		"screen_space_aa": Viewport.SCREEN_SPACE_AA_DISABLED,
 		"msaa": Viewport.MSAA_DISABLED,
 		"taa": false
 	},
