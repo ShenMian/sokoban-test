@@ -54,6 +54,22 @@ func _ready() -> void:
 	msaa.item_selected.connect(_on_msaa_selected)
 	taa.toggled.connect(_on_taa_toggled)
 
+	# Disable unavailable features based on the rendering method
+	# https://docs.godotengine.org/en/4.6/tutorials/3d/3d_antialiasing.html#antialiasing-comparison
+	var rendering_method := RenderingServer.get_current_rendering_method()
+	var is_forward_plus := rendering_method == "forward_plus"
+	var is_mobile := rendering_method == "mobile"
+
+	var support_fsr2 := is_forward_plus
+	var support_taa := is_forward_plus
+	var support_fxaa := is_forward_plus or is_mobile
+	var support_smaa := is_forward_plus or is_mobile
+
+	scaling_method.set_item_disabled(SCALING_3D_MODES.find(Viewport.SCALING_3D_MODE_FSR2), not support_fsr2)
+	taa.disabled = not support_taa
+	screen_space_aa.set_item_disabled(SCREEN_SPACE_AA_MODES.find(Viewport.SCREEN_SPACE_AA_FXAA), not support_fxaa)
+	screen_space_aa.set_item_disabled(SCREEN_SPACE_AA_MODES.find(Viewport.SCREEN_SPACE_AA_SMAA), not support_smaa)
+
 	apply_settings()
 
 
