@@ -56,7 +56,7 @@ func _ready() -> void:
 
 	undo_button.pressed.connect(level_map.do_undo)
 	redo_button.pressed.connect(level_map.do_redo)
-	undo_all_button.pressed.connect(_on_restart)
+	undo_all_button.pressed.connect(_on_undo_all)
 	solve_button.pressed.connect(level_map.do_solve)
 	pause_button.pressed.connect(_open_pause_menu)
 	transform_button.pressed.connect(_transform_level)
@@ -85,7 +85,7 @@ func _on_request_previous_level() -> void:
 	SceneTransition.load_previous_level()
 
 
-func _on_restart() -> void:
+func _on_undo_all() -> void:
 	level_map.do_undo_all()
 	_auto_save()
 
@@ -101,7 +101,7 @@ func _auto_save():
 	elif level_map.get_actions_lurd().is_empty():
 		Database.clear_snapshot(SceneTransition.level_id, true)
 	else:
-		Database.save_snapshot(SceneTransition.level_id, level_map.get_actions_lurd(), true)
+		Database.add_snapshot(SceneTransition.level_id, level_map.get_actions_lurd(), true)
 
 
 func _input(_event: InputEvent) -> void:

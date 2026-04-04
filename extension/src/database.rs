@@ -228,7 +228,7 @@ impl Database {
     }
 
     #[func]
-    pub fn save_snapshot(&self, level_id: i64, actions_lurd: String, autosave: bool) {
+    pub fn add_snapshot(&self, level_id: i64, actions_lurd: String, autosave: bool) {
         if actions_lurd.is_empty() {
             return;
         }
