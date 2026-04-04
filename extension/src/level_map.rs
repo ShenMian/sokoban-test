@@ -160,8 +160,7 @@ impl LevelMap {
 
     /// Loads levels from an XSB file.
     #[func]
-    pub fn load_collection(path: GString) -> Array<VarDictionary> {
-        let path = path.to_string();
+    pub fn load_collection(path: String) -> Array<VarDictionary> {
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
         let len = file.get_length() as i64;
         let buffer = file.get_buffer(len).to_vec();
@@ -187,7 +186,7 @@ impl LevelMap {
     }
 
     #[func]
-    pub fn load_from_file(&mut self, path: GString, index: i32) {
+    pub fn load_from_file(&mut self, path: String, index: i32) {
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
         let len = file.get_length() as i64;
         let buffer = file.get_buffer(len).to_vec();
@@ -198,11 +197,11 @@ impl LevelMap {
     }
 
     #[func]
-    pub fn load_from_string(&mut self, string: GString) {
-        if let Ok(level) = Level::from_str(&string.to_string()) {
+    pub fn load_from_string(&mut self, string: String) {
+        if let Ok(level) = Level::from_str(&string) {
             self.level = level;
             self.build();
-        } else if let Ok(actions) = Actions::from_str(&string.to_string()) {
+        } else if let Ok(actions) = Actions::from_str(&string) {
             let Ok(map) = Map::from_actions(actions) else {
                 godot_warn!("failed to create map from actions");
                 return;
@@ -215,13 +214,13 @@ impl LevelMap {
     }
 
     #[func]
-    pub fn get_map_xsb(&self) -> GString {
-        (&self.map().to_string()).into()
+    pub fn get_map_xsb(&self) -> String {
+        self.map().to_string()
     }
 
     #[func]
-    pub fn get_actions_lurd(&self) -> GString {
-        (&self.level.actions().to_string()).into()
+    pub fn get_actions_lurd(&self) -> String {
+        self.level.actions().to_string()
     }
 
     #[func]
@@ -428,8 +427,8 @@ impl LevelMap {
     }
 
     #[func]
-    pub fn fast_forward(&mut self, lurd: GString) {
-        let actions = Actions::from_str(&lurd.to_string()).expect("failed to parse actions");
+    pub fn fast_forward(&mut self, lurd: String) {
+        let actions = Actions::from_str(&lurd).expect("failed to parse actions");
         self.level
             .execute_batch(actions.0.into_iter().map(|action| action.direction()))
             .unwrap();
