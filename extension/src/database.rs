@@ -40,11 +40,11 @@ impl Database {
     pub fn is_empty(&self) -> bool {
         const QUERY_IS_EMPTY: &str = "SELECT NOT EXISTS (SELECT 1 FROM tb_level)";
         self.conn()
-            .query_one(QUERY_IS_EMPTY, (), |row| row.get::<_, bool>(0))
+            .query_one(QUERY_IS_EMPTY, (), |row| row.get(0))
             .unwrap()
     }
 
-    /// Imports all level files from a directory.
+    /// Imports all level files (.xsb) from a specified directory.
     #[func]
     pub fn import_levels_from_dir(&self, path: String) {
         let path = path.trim_end_matches('/').to_string();
@@ -59,7 +59,7 @@ impl Database {
         godot_print!("Levels imported from directory ({:?})", start.elapsed());
     }
 
-    /// Imports levels from a file.
+    /// Imports levels from a specific file.
     #[func]
     pub fn import_levels_from_file(&self, path: String) {
         let collection_name = std::path::Path::new(&path)
@@ -72,13 +72,13 @@ impl Database {
         self.upsert_levels_from_str(&file.get_as_text().to_string(), &collection_name);
     }
 
-    /// Imports levels from an XSB format string.
+    /// Imports multiple levels from an XSB format string into a collection.
     #[func]
     pub fn import_levels_from_string(&self, levels_xsb: String, collection_name: String) {
         self.upsert_levels_from_str(&levels_xsb, &collection_name);
     }
 
-    /// Imports a level or a level with solution from a XSB or LURD format string.
+    /// Imports a level or a level with solution from an XSB or LURD format string.
     #[func]
     pub fn import_level_from_string(&self, string: String, collection_name: String) {
         let collection_id = self.upsert_collection(&collection_name);
@@ -97,7 +97,7 @@ impl Database {
         }
     }
 
-    /// Retrieves an array of all imported level collections.
+    /// Retrieves an array of all level collections.
     #[func]
     pub fn get_collections(&self) -> Array<VarDictionary> {
         const QUERY_COLLECTIONS: &str =
@@ -119,7 +119,7 @@ impl Database {
             .collect()
     }
 
-    /// Returns the total number of levels within a specified collection.
+    /// Returns the total number of levels in the specified collection.
     #[func]
     pub fn get_collection_size(&self, collection_name: String) -> i64 {
         const COUNT_LEVELS: &str = "
@@ -127,11 +127,11 @@ impl Database {
             JOIN tb_collection c ON c.id = cl.collection_id
             WHERE c.name = ?";
         self.conn()
-            .query_row(COUNT_LEVELS, (collection_name,), |row| row.get(0))
+            .query_one(COUNT_LEVELS, (collection_name,), |row| row.get(0))
             .unwrap()
     }
 
-    /// Determines the 1-based sequence index of a specific level within its collection.
+    /// Gets the 1-based index of a specific level within a collection.
     #[func]
     pub fn get_level_index(&self, level_id: i64, collection_name: String) -> i64 {
         const QUERY_LEVEL_INDEX: &str = "
@@ -145,7 +145,7 @@ impl Database {
             .unwrap()
     }
 
-    /// Finds the `level_id` given its 1-based index in the collection.
+    /// Retrieves the level ID for a given 1-based index in a collection.
     #[func]
     pub fn get_level_id_by_index(&self, collection_name: String, level_index: i64) -> i64 {
         const QUERY_LEVEL_ID: &str = "
@@ -159,7 +159,7 @@ impl Database {
             .unwrap()
     }
 
-    /// Extracts all level details belonging to a given collection natively.
+    /// Retrieves all levels within a collection, including solve status.
     #[func]
     pub fn get_collection_levels(&self, collection_name: String) -> Array<VarDictionary> {
         const QUERY_LEVELS: &str = "
@@ -185,7 +185,7 @@ impl Database {
             .collect()
     }
 
-    /// Queries exactly one level from the database and maps it into a Godot dictionary.
+    /// Retrieves detailed information for a specific level by its ID.
     #[func]
     pub fn get_level(&self, level_id: i64) -> VarDictionary {
         const QUERY_BY_ID: &str =
@@ -195,19 +195,19 @@ impl Database {
             .unwrap()
     }
 
-    /// Returns the currently discovered minimum moves or pushes strategy to beat the level.
+    /// Gets the best known solution for a level.
     #[func]
     pub fn get_best_solution(&self, level_id: i64) -> VarDictionary {
         let optimal_move_lurd = self.query_move_optimal_lurd(level_id).unwrap_or_default();
         let optimal_push_lurd = self.query_push_optimal_lurd(level_id).unwrap_or_default();
 
         let mut dict = VarDictionary::new();
-        dict.set("push_optimal", optimal_push_lurd);
         dict.set("move_optimal", optimal_move_lurd);
+        dict.set("push_optimal", optimal_push_lurd);
         dict
     }
 
-    /// Submits a new solution to the database.
+    /// Saves a solution and updates move/push optimality flags.
     #[func]
     pub fn add_solution(&self, level_id: i64, actions_lurd: String) {
         let action = Actions::from_str(&actions_lurd).unwrap();
@@ -248,6 +248,7 @@ impl Database {
         tx.commit().unwrap();
     }
 
+    /// Saves a snapshot for a level.
     #[func]
     pub fn add_snapshot(&self, level_id: i64, actions_lurd: String, autosave: bool) {
         if actions_lurd.is_empty() {
@@ -268,16 +269,16 @@ impl Database {
         tx.commit().unwrap();
     }
 
+    /// Retrieves the most recent snapshot for a level.
     #[func]
     pub fn get_snapshot(&self, level_id: i64, autosave: bool) -> String {
         const QUERY_SNAPSHOT: &str = "SELECT actions_lurd FROM tb_snapshot WHERE level_id = ? AND autosave = ? ORDER BY datetime DESC LIMIT 1";
         self.conn()
-            .query_row(QUERY_SNAPSHOT, (level_id, autosave), |row| {
-                row.get::<_, String>(0)
-            })
+            .query_row(QUERY_SNAPSHOT, (level_id, autosave), |row| row.get(0))
             .unwrap_or_default()
     }
 
+    /// Deletes snapshots for a specific level.
     #[func]
     pub fn clear_snapshot(&self, level_id: i64, autosave: bool) {
         let _ = self.conn().execute(
@@ -292,9 +293,10 @@ impl Database {
         let collection_id: i64 = self.upsert_collection(collection_name);
 
         let levels = Level::load_from_str(levels_xsb);
-        for (idx, level) in levels.map(Result::unwrap).enumerate() {
+        for (i, level) in levels.map(Result::unwrap).enumerate() {
             let level_id = self.upsert_level(level);
-            self.add_level_to_collection(collection_id, level_id, Some((idx + 1) as i64));
+            let idx = i as i64 + 1;
+            self.add_level_to_collection(collection_id, level_id, Some(idx));
         }
 
         self.conn().execute("COMMIT TRANSACTION", ()).unwrap();
@@ -358,9 +360,7 @@ impl Database {
         const QUERY_MOVE_OPTIMAL: &str =
             "SELECT actions_lurd FROM tb_solution WHERE level_id = ? AND move_optimal = 1";
         self.conn()
-            .query_row(QUERY_MOVE_OPTIMAL, (level_id,), |row| {
-                row.get::<_, String>(0)
-            })
+            .query_row(QUERY_MOVE_OPTIMAL, (level_id,), |row| row.get(0))
             .ok()
     }
 
@@ -368,9 +368,7 @@ impl Database {
         const QUERY_PUSH_OPTIMAL: &str =
             "SELECT actions_lurd FROM tb_solution WHERE level_id = ? AND push_optimal = 1";
         self.conn()
-            .query_row(QUERY_PUSH_OPTIMAL, (level_id,), |row| {
-                row.get::<_, String>(0)
-            })
+            .query_row(QUERY_PUSH_OPTIMAL, (level_id,), |row| row.get(0))
             .ok()
     }
 
