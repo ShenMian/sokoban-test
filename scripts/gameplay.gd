@@ -22,6 +22,8 @@ extends Node3D
 @onready var transform_button: ButtonFx = %TransformButton
 @onready var previous_button: ButtonFx = %PreviousButton
 @onready var next_button: ButtonFx = %NextButton
+@onready var menu_button: MenuButton = %MenuButton
+
 @onready var pause_button: ButtonFx = %PauseButton
 
 ## The scaling factor applied to HUD panels on touchscreen devices.
@@ -56,12 +58,14 @@ func _ready() -> void:
 
 	undo_button.pressed.connect(level_map.do_undo)
 	redo_button.pressed.connect(level_map.do_redo)
-	undo_all_button.pressed.connect(_on_restart)
+	# undo_all_button.pressed.connect(_on_restart)
 	solve_button.pressed.connect(level_map.do_solve)
 	pause_button.pressed.connect(_open_pause_menu)
 	transform_button.pressed.connect(_transform_level)
 	previous_button.pressed.connect(_on_request_previous_level)
 	next_button.pressed.connect(_on_request_next_level)
+
+	menu_button.undo_all.connect(_on_restart)
 
 
 func _exit_tree() -> void:

@@ -17,6 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://c1265tlwonjpv" path="res://assets/textures/icons/previous.png" id="11_407ns"]
 [ext_resource type="Texture2D" uid="uid://dk4kar7bm6o4q" path="res://assets/textures/icons/menu_list.png" id="11_s5y6v"]
 [ext_resource type="Texture2D" uid="uid://bdh3nf8a5fe4m" path="res://assets/textures/icons/next.png" id="12_w3w6i"]
+[ext_resource type="Texture2D" uid="uid://cr3sp6yujr8st" path="res://assets/textures/icons/menu_grid.png" id="14_pv71h"]
+[ext_resource type="Texture2D" uid="uid://cndgdj3g4cnif" path="res://assets/textures/icons/redo_all.png" id="15_m6b5a"]
+[ext_resource type="Script" uid="uid://bpwjw2ouvxav6" path="res://scripts/ui/menu_button.gd" id="16_mesn4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_00tan"]
 content_margin_left = 5.0
@@ -55,6 +58,18 @@ action = &"solve"
 
 [sub_resource type="Shortcut" id="Shortcut_w3w6i"]
 events = [SubResource("InputEventAction_407ns")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_mesn4"]
+action = &"undo_all"
+
+[sub_resource type="Shortcut" id="Shortcut_mesn4"]
+events = [SubResource("InputEventAction_mesn4")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_525vb"]
+action = &"redo_all"
+
+[sub_resource type="Shortcut" id="Shortcut_25e7j"]
+events = [SubResource("InputEventAction_525vb")]
 
 [sub_resource type="InputEventAction" id="InputEventAction_w3w6i"]
 action = &"pause"
@@ -168,9 +183,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -190.0
+offset_left = -215.5
 offset_top = -58.0
-offset_right = 190.0
+offset_right = 215.5
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_l1v76")
@@ -284,6 +299,24 @@ icon_alignment = 1
 expand_icon = true
 script = ExtResource("8_407ns")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"
+
+[node name="MenuButton" type="MenuButton" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1646095703]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+icon = ExtResource("14_pv71h")
+flat = false
+icon_alignment = 1
+expand_icon = true
+item_count = 2
+popup/item_0/text = "UNDO_ALL"
+popup/item_0/icon = ExtResource("5_407ns")
+popup/item_0/id = 0
+popup/item_1/text = "REDO_ALL"
+popup/item_1/icon = ExtResource("15_m6b5a")
+popup/item_1/id = 1
+script = ExtResource("16_mesn4")
+shortcuts = Array[Shortcut]([SubResource("Shortcut_mesn4"), SubResource("Shortcut_25e7j")])
 
 [node name="PauseButton" type="Button" parent="HudLayer/HUD/ToolbarPanel/HBoxContainer" unique_id=1243846117]
 unique_name_in_owner = true

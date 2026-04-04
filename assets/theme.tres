@@ -1,38 +1,15 @@
 [gd_resource type="Theme" format=3 uid="uid://dvbbi3vt7rasu"]
 
 [ext_resource type="FontFile" uid="uid://cblhkb0qyu5vk" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Regular.woff2" id="1_5x3i2"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lu33j"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.225, 0.225, 0.225, 0.6)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5x3i2"]
-content_margin_left = 10.0
-content_margin_top = 5.0
-content_margin_right = 10.0
-content_margin_bottom = 5.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
+[ext_resource type="StyleBox" uid="uid://c2n4ncfdvwj0j" path="res://assets/button_hover_style_box_flat.tres" id="1_lu33j"]
+[ext_resource type="StyleBox" uid="uid://dltqetkhf504i" path="res://assets/panel_style_box_flat.tres" id="1_wl1kw"]
 
 [resource]
 default_font = ExtResource("1_5x3i2")
 default_font_size = 22
-Button/styles/hover = SubResource("StyleBoxFlat_lu33j")
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_5x3i2")
+Button/styles/hover = ExtResource("1_lu33j")
+PanelContainer/styles/panel = ExtResource("1_wl1kw")
+PopupMenu/constants/icon_max_width = 40
+PopupMenu/styles/hover = ExtResource("1_lu33j")
+PopupMenu/styles/panel = ExtResource("1_wl1kw")
 ScrollContainer/constants/scrollbar_h_separation = 5
