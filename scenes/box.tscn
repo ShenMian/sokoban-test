@@ -18,10 +18,9 @@ script = ExtResource("2_ks2v0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
 mesh = ExtResource("2_brpd5")
 
-[node name="Area" type="Area3D" parent="." unique_id=807127825]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
+[node name="Area" type="Area3D" parent="Mesh" unique_id=807127825]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area" unique_id=1873933720]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mesh/Area" unique_id=1873933720]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.25, 0)
 shape = SubResource("BoxShape3D_ks2v0")
 
