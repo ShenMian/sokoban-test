@@ -183,18 +183,21 @@ func _handle_list_input(list: ItemList, input_event: InputEvent, item_click_call
 		if event.button_index != MOUSE_BUTTON_LEFT or not event.pressed or event.device == InputEvent.DEVICE_ID_EMULATION:
 			return
 		var item_idx = list.get_item_at_position(event.position, true)
+		if item_idx == -1:
+			return
 		item_click_callback.call(item_idx)
 	elif input_event is InputEventScreenTouch:
 		var event := input_event as InputEventScreenTouch
 		if event.pressed:
 			_scroll_touch_index = event.index
 			_is_touch_scrolling = false
-		else:
+		elif not _is_touch_scrolling:
 			if event.index != _scroll_touch_index:
 				return
 			var item_idx = list.get_item_at_position(event.position, true)
-			if not _is_touch_scrolling and item_idx != -1:
-				item_click_callback.call(item_idx)
+			if item_idx == -1:
+				return
+			item_click_callback.call(item_idx)
 			_scroll_touch_index = -1
 	elif input_event is InputEventScreenDrag:
 		var event := input_event as InputEventScreenDrag
