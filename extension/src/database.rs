@@ -1,12 +1,14 @@
-use std::hash::{DefaultHasher, Hash as _, Hasher as _};
-use std::str::FromStr as _;
+use std::{
+    hash::{DefaultHasher, Hash as _, Hasher as _},
+    str::FromStr as _,
+};
 
 use godot::{
     classes::{DirAccess, FileAccess, ProjectSettings, file_access::ModeFlags},
     prelude::*,
 };
 use rusqlite::Connection;
-use soukoban::{Actions, Level};
+use soukoban::{Actions, Level, Map};
 
 #[derive(GodotClass)]
 #[class(init, singleton)]
@@ -67,13 +69,32 @@ impl Database {
             .to_string();
 
         let file = FileAccess::open(&path, ModeFlags::READ).expect("failed to open file");
-        self.insert_levels_from_str(&file.get_as_text().to_string(), &collection_name);
+        self.upsert_levels_from_str(&file.get_as_text().to_string(), &collection_name);
     }
 
     /// Imports levels from an XSB format string.
     #[func]
     pub fn import_levels_from_string(&self, levels_xsb: String, collection_name: String) {
-        self.insert_levels_from_str(&levels_xsb, &collection_name);
+        self.upsert_levels_from_str(&levels_xsb, &collection_name);
+    }
+
+    /// Imports a level or a level with solution from a XSB or LURD format string.
+    #[func]
+    pub fn import_level_from_string(&self, string: String, collection_name: String) {
+        let collection_id = self.upsert_collection(&collection_name);
+        if let Ok(level) = Level::from_str(&string) {
+            let level_id = self.upsert_level(level);
+            self.add_level_to_collection(collection_id, level_id, None);
+        } else if let Ok(actions) = Actions::from_str(&string) {
+            let Ok(map) = Map::from_actions(actions.clone()) else {
+                godot_warn!("failed to parse map from actions");
+                return;
+            };
+            let level = Level::from_map(map);
+            let level_id = self.upsert_level(level);
+            self.add_level_to_collection(collection_id, level_id, None);
+            self.add_solution(level_id, string);
+        }
     }
 
     /// Retrieves an array of all imported level collections.
@@ -265,54 +286,72 @@ impl Database {
         );
     }
 
-    fn insert_levels_from_str(&self, levels_xsb: &str, collection_name: &str) {
-        let tx = self.conn().unchecked_transaction().unwrap();
+    fn upsert_levels_from_str(&self, levels_xsb: &str, collection_name: &str) {
+        self.conn().execute("BEGIN TRANSACTION", ()).unwrap();
 
+        let collection_id: i64 = self.upsert_collection(collection_name);
+
+        let levels = Level::load_from_str(levels_xsb);
+        for (idx, level) in levels.map(Result::unwrap).enumerate() {
+            let level_id = self.upsert_level(level);
+            self.add_level_to_collection(collection_id, level_id, Some((idx + 1) as i64));
+        }
+
+        self.conn().execute("COMMIT TRANSACTION", ()).unwrap();
+    }
+
+    fn upsert_collection(&self, name: &str) -> i64 {
         const UPSERT_COLLECTION: &str = "
             INSERT INTO tb_collection (name) VALUES (?1)
             ON CONFLICT(name) DO UPDATE SET name = excluded.name
             RETURNING id";
-        let collection_id: i64 = tx
-            .query_row(UPSERT_COLLECTION, (collection_name,), |row| row.get(0))
-            .unwrap();
+        self.conn()
+            .query_row(UPSERT_COLLECTION, (name,), |row| row.get(0))
+            .unwrap()
+    }
 
-        let levels = Level::load_from_str(levels_xsb);
-        for (idx, level) in levels.map(Result::unwrap).enumerate() {
-            let title = level.metadata().get("title").cloned();
-            let author = level.metadata().get("author").cloned();
-            let comments = level.metadata().get("comments").cloned();
+    fn upsert_level(&self, level: Level) -> i64 {
+        let map_xsb = level.map().to_string();
+        let title = level.metadata().get("title").cloned();
+        let author = level.metadata().get("author").cloned();
+        let comments = level.metadata().get("comments").cloned();
 
-            let mut map = level.map().clone();
-            map.canonicalize();
-            let mut hasher = DefaultHasher::new();
-            map.hash(&mut hasher);
-            let hash = hasher.finish() as i64;
+        let mut map = level.map().clone();
+        map.canonicalize();
+        let mut hasher = DefaultHasher::new();
+        map.hash(&mut hasher);
+        let hash = hasher.finish() as i64;
 
-            let map_xsb = level.map().to_string();
-
-            const UPSERT_LEVEL: &str = "
+        const UPSERT_LEVEL: &str = "
                 INSERT INTO tb_level (map_xsb, title, author, comments, hash) VALUES (?1, ?2, ?3, ?4, ?5)
                 ON CONFLICT(hash) DO UPDATE SET
                     title = COALESCE(title, excluded.title),
                     author = COALESCE(author, excluded.author),
                     comments = COALESCE(comments, excluded.comments)
                 RETURNING id";
-            let level_id: i64 = tx
-                .query_row(
-                    UPSERT_LEVEL,
-                    (map_xsb, title, author, comments, hash),
-                    |row| row.get(0),
-                )
-                .unwrap();
-
-            const ADD_LEVEL_TO_COLLECTION: &str = "INSERT OR IGNORE INTO tb_collection_level (collection_id, level_id, idx) VALUES (?1, ?2, ?3)";
-            tx.execute(
-                ADD_LEVEL_TO_COLLECTION,
-                (collection_id, level_id, (idx + 1) as i64),
+        let level_id: i64 = self
+            .conn()
+            .query_row(
+                UPSERT_LEVEL,
+                (map_xsb, title, author, comments, hash),
+                |row| row.get(0),
             )
             .unwrap();
-        }
-        tx.commit().unwrap();
+        level_id
+    }
+
+    fn add_level_to_collection(&self, collection_id: i64, level_id: i64, idx: Option<i64>) {
+        let idx = idx.unwrap_or_else(|| {
+            const QUERY_NEXT_IDX: &str =
+                "SELECT COALESCE(MAX(idx), 0) + 1 FROM tb_collection_level WHERE collection_id = ?";
+            self.conn()
+                .query_one(QUERY_NEXT_IDX, (collection_id,), |row| row.get(0))
+                .unwrap()
+        });
+        const ADD_LEVEL_TO_COLLECTION: &str = "INSERT OR IGNORE INTO tb_collection_level (collection_id, level_id, idx) VALUES (?1, ?2, ?3)";
+        self.conn()
+            .execute(ADD_LEVEL_TO_COLLECTION, (collection_id, level_id, idx))
+            .unwrap();
     }
 
     fn query_move_optimal_lurd(&self, level_id: i64) -> Option<String> {

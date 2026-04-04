@@ -86,7 +86,9 @@ func _process(_delta: float) -> void:
 
 func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("import_from_clipboard"):
-		load_from_string(DisplayServer.clipboard_get())
+		var content := DisplayServer.clipboard_get()
+		Database.import_level_from_string(content, "Imported")
+		load_from_string(content)
 		sync_entities_from_state()
 		update_ui()
 		reset_camera_position()

@@ -27,6 +27,8 @@ var _scroll_touch_index: int = -1
 
 
 func _ready():
+	get_window().files_dropped.connect(_on_files_dropped)
+
 	collection_list.gui_input.connect(_on_collection_list_gui_input)
 	level_list.gui_input.connect(_on_level_list_gui_input)
 	level_list.resized.connect(_on_level_list_resized)
@@ -53,6 +55,23 @@ func _ready():
 		_on_collection_list_clicked(collection_index)
 		level_list.select(SceneTransition.level_index - 1)
 		level_list.ensure_current_is_visible()
+
+
+func _input(_event: InputEvent) -> void:
+	if Input.is_action_just_pressed("import_from_clipboard"):
+		var content := DisplayServer.clipboard_get()
+		Database.import_level_from_string(content, "Imported")
+		Database.import_levels_from_string(content, "Imported")
+		_load_collections()
+
+
+func _on_files_dropped(files: PackedStringArray):
+	for path in files:
+		if DirAccess.dir_exists_absolute(path):
+			Database.import_levels_from_dir(path)
+		elif FileAccess.file_exists(path):
+			Database.import_levels_from_file(path)
+	_load_collections()
 
 
 func _load_collections():
