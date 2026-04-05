@@ -14,6 +14,7 @@ use soukoban::{Actions, Level, Map};
 #[class(init, singleton)]
 pub struct Database {
     connection: Option<Connection>,
+    _base: Base<Object>,
 }
 
 #[godot_api]
@@ -176,8 +177,10 @@ impl Database {
             .unwrap()
             .query_map((collection_name,), |row| {
                 let mut dict = Self::map_level_row(row)?;
-                dict.set("solved", row.get::<_, bool>(6)?);
-                dict.set("solving", row.get::<_, bool>(7)?);
+                dict.extend(&dict! {
+                    "solved" => row.get::<_, bool>(6)?,
+                    "solving" => row.get::<_, bool>(7)?,
+                });
                 Ok(dict)
             })
             .unwrap()
@@ -201,10 +204,10 @@ impl Database {
         let optimal_move_lurd = self.query_move_optimal_lurd(level_id).unwrap_or_default();
         let optimal_push_lurd = self.query_push_optimal_lurd(level_id).unwrap_or_default();
 
-        let mut dict = VarDictionary::new();
-        dict.set("move_optimal", optimal_move_lurd);
-        dict.set("push_optimal", optimal_push_lurd);
-        dict
+        dict! {
+            "move_optimal" => optimal_move_lurd,
+            "push_optimal" => optimal_push_lurd,
+        }
     }
 
     /// Saves a solution and updates move/push optimality flags.

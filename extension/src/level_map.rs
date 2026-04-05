@@ -158,33 +158,6 @@ impl LevelMap {
     #[signal]
     fn solve_failed(error: GString);
 
-    /// Loads levels from an XSB file.
-    #[func]
-    pub fn load_collection(path: String) -> Array<VarDictionary> {
-        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
-        let len = file.get_length() as i64;
-        let buffer = file.get_buffer(len).to_vec();
-        let reader = BufReader::new(Cursor::new(buffer));
-
-        let mut levels = Array::new();
-        for result in Level::load_from_reader(reader) {
-            match result {
-                Ok(level) => {
-                    let mut dict = VarDictionary::new();
-                    dict.set("map", level.map().to_string());
-                    for (key, value) in level.metadata() {
-                        dict.set(key.as_str(), value.as_str());
-                    }
-                    levels.push(&dict);
-                }
-                Err(e) => {
-                    godot_warn!("load_collection: failed to parse level: {}", e);
-                }
-            }
-        }
-        levels
-    }
-
     #[func]
     pub fn load_from_file(&mut self, path: String, index: i32) {
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
@@ -554,12 +527,12 @@ impl LevelMap {
 
     #[func]
     pub fn get_status(&self) -> VarDictionary {
-        let mut dict = VarDictionary::new();
-        dict.set("move_count", self.get_move_count());
-        dict.set("push_count", self.get_push_count());
-        dict.set("can_undo", self.can_undo());
-        dict.set("can_redo", self.can_redo());
-        dict
+        dict! {
+            "move_count" => self.get_move_count(),
+            "push_count" => self.get_push_count(),
+            "can_undo" => self.can_undo(),
+            "can_redo" => self.can_redo(),
+        }
     }
 
     #[func]
