@@ -1,5 +1,5 @@
 use std::{
-    collections::HashMap,
+    collections::{HashMap, HashSet},
     io::{BufReader, Cursor},
     str::FromStr,
     sync::{
@@ -559,6 +559,20 @@ impl LevelMap {
             dict.set(position.to_gd(), &value.to_variant());
         }
         dict
+    }
+
+    #[func]
+    pub fn get_tunnels(&self) -> Array<Vector2i> {
+        let solver = Solver::new(self.map().clone(), Strategy::Quick.into());
+        let mut positions = Array::new();
+        let mut set = HashSet::new();
+        for tunnel in solver.tunnels() {
+            let box_position = tunnel.position();
+            if set.insert(box_position) {
+                positions.push(box_position.to_gd());
+            }
+        }
+        positions
     }
 
     #[func]

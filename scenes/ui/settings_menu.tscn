@@ -433,6 +433,28 @@ size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
+[node name="TunnelsPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1598998362]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+metadata/title = "TUNNELS"
+metadata/description = "TUNNELS_TIP"
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/TunnelsPanel" unique_id=795991133]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/TunnelsPanel/HBox" unique_id=341875208]
+layout_mode = 2
+mouse_filter = 1
+text = "TUNNELS"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/TunnelsPanel/HBox" unique_id=381670692]
+layout_mode = 2
+size_flags_horizontal = 10
+script = ExtResource("6_jrqig")
+metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
+
 [node name="VIDEO" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=2064409461]
 visible = false
 layout_mode = 2

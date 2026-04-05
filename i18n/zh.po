@@ -168,6 +168,12 @@ msgstr "热力图"
 msgid "HEATMAP_TIP"
 msgstr "将下界以热力图的形式可视化"
 
+msgid "TUNNELS"
+msgstr "隧道"
+
+msgid "TUNNELS_TIP"
+msgstr "可视化隧道"
+
 # Video
 
 msgid "VIDEO"

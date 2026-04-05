@@ -12,6 +12,7 @@ extends ScrollContainer
 @onready var algorithm: OptionButton = $VBox/AlgorithmPanel/HBox/OptionButton
 @onready var solver_strategy: OptionButton = $VBox/StrategyPanel/HBox/OptionButton
 @onready var heatmap: SwitchFx = $VBox/HeatmapPanel/HBox/CheckButton
+@onready var tunnels: SwitchFx = $VBox/TunnelsPanel/HBox/CheckButton
 
 const SECTION_NAME := "gameplay"
 const LOCALES: Array[String] = ["en", "zh"]
@@ -29,6 +30,7 @@ func _ready() -> void:
 	algorithm.item_selected.connect(_on_algorithm_selected)
 	solver_strategy.item_selected.connect(_on_strategy_selected)
 	heatmap.toggled.connect(_on_heatmap_toggled)
+	tunnels.toggled.connect(_on_tunnels_toggled)
 
 	apply_settings()
 
@@ -66,6 +68,9 @@ func apply_settings() -> void:
 
 	heatmap.button_pressed = Settings.get_value(SECTION_NAME, "heatmap")
 	heatmap.toggled.emit(heatmap.button_pressed)
+
+	tunnels.button_pressed = Settings.get_value(SECTION_NAME, "tunnels")
+	tunnels.toggled.emit(tunnels.button_pressed)
 
 
 func _on_language_selected(index: int) -> void:
@@ -112,3 +117,7 @@ func _on_strategy_selected(index: int) -> void:
 
 func _on_heatmap_toggled(toggled_on: bool) -> void:
 	Settings.set_and_save_value(SECTION_NAME, "heatmap", toggled_on)
+
+
+func _on_tunnels_toggled(toggled_on: bool) -> void:
+	Settings.set_and_save_value(SECTION_NAME, "tunnels", toggled_on)

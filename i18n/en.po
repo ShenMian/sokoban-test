@@ -168,6 +168,12 @@ msgstr "Heatmap"
 msgid "HEATMAP_TIP"
 msgstr "Visualize lower bounds as a heatmap"
 
+msgid "TUNNELS"
+msgstr "Tunnels"
+
+msgid "TUNNELS_TIP"
+msgstr "Visualize tunnels"
+
 # Video
 
 msgid "VIDEO"

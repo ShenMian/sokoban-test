@@ -3,6 +3,7 @@ extends LevelMap
 const BOX_SCENE = preload("res://scenes/box.tscn")
 const WAYPOINT_SCENE = preload("res://scenes/waypoint.tscn")
 const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
+const TUNNEL_CELL_SCENE = preload("res://scenes/tunnel_cell.tscn")
 
 @onready var gameplay: Node3D = $".."
 @onready var camera: Camera3D = $"../Camera"
@@ -11,6 +12,7 @@ const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 @onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var heatmap_container: Node3D = $Heatmap
+@onready var tunnels_container: Node3D = $Tunnels
 
 @onready var enter_goal_player: AudioStreamPlayer3D = $Player/EnterGoalPlayer
 @onready var leave_goal_player: AudioStreamPlayer3D = $Player/LeaveGoalPlayer
@@ -22,10 +24,13 @@ const HEATMAP_CELL_SCENE = preload("res://scenes/heatmap_cell.tscn")
 var heatmap: bool:
 	set(value):
 		heatmap = value
-		for child in heatmap_container.get_children():
-			child.queue_free()
-		if heatmap:
-			_build_heatmap()
+		_build_heatmap()
+
+@export
+var tunnels: bool:
+	set(value):
+		tunnels = value
+		_build_tunnels()
 
 @export var pushable_hint: bool
 
@@ -173,13 +178,35 @@ func wait_for_moves_finished() -> void:
 
 
 func _build_heatmap() -> void:
+	for child in heatmap_container.get_children():
+		child.queue_free()
+
+	if not heatmap:
+		return
+
 	var lower_bounds: Dictionary = get_lower_bounds(solver_strategy)
+	if lower_bounds.is_empty():
+		return
 	var max_lower_bound: int = lower_bounds.values().max()
 	for pos in lower_bounds:
 		var heatmap_cell: HeatmapCell = HEATMAP_CELL_SCENE.instantiate()
 		heatmap_cell.position = Vector3(pos.x, 0.01, pos.y)
 		heatmap_container.add_child(heatmap_cell)
 		heatmap_cell.setup(lower_bounds[pos], max_lower_bound)
+
+
+func _build_tunnels() -> void:
+	for child in tunnels_container.get_children():
+		child.queue_free()
+
+	if not tunnels:
+		return
+
+	var positions: Array = get_tunnels()
+	for pos in positions:
+		var tunnel_cell = TUNNEL_CELL_SCENE.instantiate()
+		tunnel_cell.position = Vector3(pos.x, 0.015, pos.y)
+		tunnels_container.add_child(tunnel_cell)
 
 
 func _on_setting_changed(section: String, key: String, value: Variant) -> void:
@@ -194,6 +221,8 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 			_update_pushable_hint()
 		elif key == "heatmap":
 			heatmap = value
+		elif key == "tunnels":
+			tunnels = value
 		elif key == "pathfinding_strategy":
 			pathfinding_strategy = value
 		elif key == "theme":

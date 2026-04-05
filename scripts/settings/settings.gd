@@ -15,6 +15,7 @@ const DEFAULT_CONFIG = {
 		"algorithm": E.Algorithm.A_STAR,
 		"solver_strategy": E.Strategy.QUICK,
 		"heatmap": false,
+		"tunnels": false,
 	},
 	"video": {
 		"window_mode": DisplayServer.WINDOW_MODE_WINDOWED,
