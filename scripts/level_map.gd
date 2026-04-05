@@ -95,6 +95,8 @@ func _input(_event: InputEvent) -> void:
 		Database.import_level_from_string(content, "Imported")
 		load_from_string(content)
 		sync_entities_from_state()
+		_build_lower_bounds()
+		_build_tunnels()
 		update_ui()
 		reset_camera_position()
 	elif Input.is_action_just_pressed("export_to_clipboard"):
