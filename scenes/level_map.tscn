@@ -6,6 +6,10 @@
 [ext_resource type="AudioStream" uid="uid://0cexp28cej4" path="res://assets/audio/sfx/box_enter_goal.ogg" id="4_ublle"]
 [ext_resource type="AudioStream" uid="uid://dchc8ar6lkdcr" path="res://assets/audio/sfx/box_leave_goal.ogg" id="5_8v2yb"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12kai"]
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.6)
+
 [node name="LevelMap" type="LevelMap" unique_id=873965418]
 floor_item_id = 0
 wall_item_id = 1
@@ -13,6 +17,7 @@ goal_item_id = 2
 mesh_library = ExtResource("1_12kai")
 cell_size = Vector3(1, 1, 1)
 script = ExtResource("2_28enl")
+path_preview_material = SubResource("StandardMaterial3D_12kai")
 
 [node name="Boxes" type="Node3D" parent="." unique_id=1610368111]
 
@@ -28,6 +33,9 @@ stream = ExtResource("5_8v2yb")
 volume_db = -10.0
 
 [node name="Waypoints" type="Node3D" parent="." unique_id=1829147570]
+
+[node name="PathPreview" type="MeshInstance3D" parent="." unique_id=1707999523]
+cast_shadow = 0
 
 [node name="LowerBounds" type="Node3D" parent="." unique_id=913879998]
 

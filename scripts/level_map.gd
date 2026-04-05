@@ -13,6 +13,7 @@ const TUNNEL_CELL_SCENE = preload("res://scenes/tunnel_cell.tscn")
 @onready var waypoints_container: Node3D = $Waypoints
 @onready var lower_bounds_container: Node3D = $LowerBounds
 @onready var tunnels_container: Node3D = $Tunnels
+@onready var path_preview_container: Node3D = $PathPreview
 
 @onready var enter_goal_player: AudioStreamPlayer3D = $Player/EnterGoalPlayer
 @onready var leave_goal_player: AudioStreamPlayer3D = $Player/LeaveGoalPlayer
@@ -22,17 +23,28 @@ const TUNNEL_CELL_SCENE = preload("res://scenes/tunnel_cell.tscn")
 
 @export var pushable_hint: bool
 
+@export_group("Path Preview")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var enable_path_preview: bool = true
+@export var path_preview_material: StandardMaterial3D
+@export var path_preview_width: float = 0.1
+@export var path_preview_height: float = 0.02
+
+@export_group("", "")
 @export
 var show_lower_bounds: bool:
 	set(value):
 		show_lower_bounds = value
 		_build_lower_bounds()
 
+@export var lower_bounds_height := 0.01
+
 @export
 var show_tunnels: bool:
 	set(value):
 		show_tunnels = value
 		_build_tunnels()
+
+@export var tunnels_height := 0.015
 
 var _is_instant: bool
 var _selected_box: Box
@@ -179,38 +191,6 @@ func wait_for_moves_finished() -> void:
 			await box.move_finished
 
 
-func _build_lower_bounds() -> void:
-	for child in lower_bounds_container.get_children():
-		child.queue_free()
-
-	if not show_lower_bounds:
-		return
-
-	var lower_bounds: Dictionary = get_lower_bounds(solver_strategy)
-	if lower_bounds.is_empty():
-		return
-	var max_lower_bound: int = lower_bounds.values().max()
-	for pos in lower_bounds:
-		var heatmap_cell: HeatmapCell = HEATMAP_CELL_SCENE.instantiate()
-		heatmap_cell.position = Vector3(pos.x, 0.01, pos.y)
-		lower_bounds_container.add_child(heatmap_cell)
-		heatmap_cell.setup(lower_bounds[pos], max_lower_bound)
-
-
-func _build_tunnels() -> void:
-	for child in tunnels_container.get_children():
-		child.queue_free()
-
-	if not show_tunnels:
-		return
-
-	var positions: Array = get_tunnels()
-	for pos in positions:
-		var tunnel_cell = TUNNEL_CELL_SCENE.instantiate()
-		tunnel_cell.position = Vector3(pos.x, 0.015, pos.y)
-		tunnels_container.add_child(tunnel_cell)
-
-
 func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 	if section == "gameplay":
 		if key == "animation_speed":
@@ -240,9 +220,9 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 			solver_strategy = value
 
 
-func _on_waypoint_clicked(from: Vector2i, to: Vector2i) -> void:
+func _on_waypoint_clicked(to: Vector2i) -> void:
 	deselect_box()
-	await _execute_path(get_box_move_path(from, to))
+	await _execute_path(get_box_move_path(to))
 
 
 func _execute_path(directions: Array) -> void:
@@ -326,14 +306,102 @@ func _build_waypoints(from: Vector2i) -> void:
 		var waypoint = WAYPOINT_SCENE.instantiate()
 		waypoint.position = Vector3(to.x, 0.01, to.y)
 		waypoint.clicked.connect(func() -> void:
-			_on_waypoint_clicked(from, to)
+			_on_waypoint_clicked(to)
 		)
+		waypoint.hovered.connect(func() -> void:
+			_show_path_preview(to)
+		)
+		waypoint.unhovered.connect(_clear_path_preview)
 		waypoints_container.add_child(waypoint)
 
 
 func _clear_waypoints() -> void:
 	for child in waypoints_container.get_children():
 		child.queue_free()
+	_clear_path_preview()
+
+
+func _build_lower_bounds() -> void:
+	for child in lower_bounds_container.get_children():
+		child.queue_free()
+
+	if not show_lower_bounds:
+		return
+
+	var lower_bounds: Dictionary = get_lower_bounds(solver_strategy)
+	if lower_bounds.is_empty():
+		return
+	var max_lower_bound: int = lower_bounds.values().max()
+	for pos in lower_bounds:
+		var heatmap_cell: HeatmapCell = HEATMAP_CELL_SCENE.instantiate()
+		heatmap_cell.position = Vector3(pos.x, lower_bounds_height, pos.y)
+		lower_bounds_container.add_child(heatmap_cell)
+		heatmap_cell.setup(lower_bounds[pos], max_lower_bound)
+
+
+func _build_tunnels() -> void:
+	for child in tunnels_container.get_children():
+		child.queue_free()
+
+	if not show_tunnels:
+		return
+
+	var positions: Array = get_tunnels()
+	for pos in positions:
+		var tunnel_cell = TUNNEL_CELL_SCENE.instantiate()
+		tunnel_cell.position = Vector3(pos.x, tunnels_height, pos.y)
+		tunnels_container.add_child(tunnel_cell)
+
+
+func _show_path_preview(to: Vector2i) -> void:
+	if not enable_path_preview:
+		return
+
+	var path := get_box_path(to)
+	if path.size() < 2:
+		return
+	
+	path_preview_container.mesh = _create_path_mesh(path, path_preview_width, path_preview_height)
+	path_preview_container.material_override = path_preview_material
+
+
+func _create_path_mesh(path: Array[Vector2i], width: float, height: float) -> ImmediateMesh:
+	var mesh := ImmediateMesh.new()
+	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
+	for i in range(path.size()):
+		var curr := Vector3(path[i].x + 0.5, height, path[i].y + 0.5)
+		var dir_prev := Vector3.ZERO
+		var dir_next := Vector3.ZERO
+
+		if i > 0:
+			dir_prev = (curr - Vector3(path[i - 1].x + 0.5, height, path[i - 1].y + 0.5)).normalized()
+		if i < path.size() - 1:
+			dir_next = (Vector3(path[i + 1].x + 0.5, height, path[i + 1].y + 0.5) - curr).normalized()
+
+		var side: Vector3
+		if dir_prev == Vector3.ZERO:
+			# Start point: perpendicular to next segment
+			side = dir_next.cross(Vector3.UP).normalized() * width
+		elif dir_next == Vector3.ZERO:
+			# End point: perpendicular to previous segment
+			side = dir_prev.cross(Vector3.UP).normalized() * width
+		else:
+			# Corner: calculate miter vector
+			var tangent := (dir_prev + dir_next).normalized()
+			var miter := tangent.cross(Vector3.UP).normalized()
+			var normal_prev := dir_prev.cross(Vector3.UP).normalized()
+			# Length compensation: miter_len = width / cos(theta)
+			# where theta is the angle between miter and segment normal
+			var miter_len := width / miter.dot(normal_prev)
+			side = miter * miter_len
+
+		mesh.surface_add_vertex(curr + side)
+		mesh.surface_add_vertex(curr - side)
+	mesh.surface_end()
+	return mesh
+
+func _clear_path_preview() -> void:
+	path_preview_container.mesh = null
 
 
 func _on_player_moved(to: Vector2i, pushed: bool) -> void:

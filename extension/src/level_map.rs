@@ -275,15 +275,11 @@ impl LevelMap {
     }
 
     #[func]
-    pub fn get_box_move_path(&self, from: Vector2i, to: Vector2i) -> Array<i32> {
-        let box_position = from.to_na();
+    pub fn get_box_move_path(&self, to: Vector2i) -> Array<i32> {
         let to = to.to_na();
-
-        debug_assert!(self.map().box_positions().contains(&box_position));
 
         let mut best_dp = None;
         let mut min_cost = i32::MAX;
-
         for &dp in self.waypoints.keys() {
             if dp.position() == to
                 && let Some(&cost) = self.costs.get(&dp)
@@ -294,7 +290,7 @@ impl LevelMap {
             }
         }
 
-        let mut best_path = Array::new();
+        let mut directions = Array::new();
         if let Some(dp) = best_dp {
             let box_path = path_finding::construct_box_path(dp, &self.waypoints);
             let player_path = path_finding::construct_player_path(
@@ -307,11 +303,38 @@ impl LevelMap {
                 .windows(2)
                 .map(|p| direction::Direction::try_from(p[1] - p[0]).unwrap())
             {
-                best_path.push(direction as i32);
+                directions.push(direction as i32);
             }
         }
 
-        best_path
+        directions
+    }
+
+    #[func]
+    pub fn get_box_path(&self, to: Vector2i) -> Array<Vector2i> {
+        let to = to.to_na();
+
+        let mut best_dp = None;
+        let mut min_cost = i32::MAX;
+        for &dp in self.waypoints.keys() {
+            if dp.position() == to
+                && let Some(&cost) = self.costs.get(&dp)
+                && cost < min_cost
+            {
+                min_cost = cost;
+                best_dp = Some(dp);
+            }
+        }
+
+        let mut positions = Array::new();
+        if let Some(dp) = best_dp {
+            let box_path = path_finding::construct_box_path(dp, &self.waypoints);
+            for position in box_path {
+                positions.push(position.to_gd());
+            }
+        }
+
+        positions
     }
 
     #[func]
