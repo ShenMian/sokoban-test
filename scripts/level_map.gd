@@ -11,7 +11,7 @@ const TUNNEL_CELL_SCENE = preload("res://scenes/tunnel_cell.tscn")
 @onready var player: Player = $Player
 @onready var boxes_container: Node3D = $Boxes
 @onready var waypoints_container: Node3D = $Waypoints
-@onready var heatmap_container: Node3D = $Heatmap
+@onready var lower_bounds_container: Node3D = $LowerBounds
 @onready var tunnels_container: Node3D = $Tunnels
 
 @onready var enter_goal_player: AudioStreamPlayer3D = $Player/EnterGoalPlayer
@@ -20,19 +20,19 @@ const TUNNEL_CELL_SCENE = preload("res://scenes/tunnel_cell.tscn")
 @export var solver_algorithm: E.Algorithm
 @export var solver_strategy: E.Strategy
 
-@export
-var heatmap: bool:
-	set(value):
-		heatmap = value
-		_build_heatmap()
-
-@export
-var tunnels: bool:
-	set(value):
-		tunnels = value
-		_build_tunnels()
-
 @export var pushable_hint: bool
+
+@export
+var show_lower_bounds: bool:
+	set(value):
+		show_lower_bounds = value
+		_build_lower_bounds()
+
+@export
+var show_tunnels: bool:
+	set(value):
+		show_tunnels = value
+		_build_tunnels()
 
 var _is_instant: bool
 var _selected_box: Box
@@ -177,11 +177,11 @@ func wait_for_moves_finished() -> void:
 			await box.move_finished
 
 
-func _build_heatmap() -> void:
-	for child in heatmap_container.get_children():
+func _build_lower_bounds() -> void:
+	for child in lower_bounds_container.get_children():
 		child.queue_free()
 
-	if not heatmap:
+	if not show_lower_bounds:
 		return
 
 	var lower_bounds: Dictionary = get_lower_bounds(solver_strategy)
@@ -191,7 +191,7 @@ func _build_heatmap() -> void:
 	for pos in lower_bounds:
 		var heatmap_cell: HeatmapCell = HEATMAP_CELL_SCENE.instantiate()
 		heatmap_cell.position = Vector3(pos.x, 0.01, pos.y)
-		heatmap_container.add_child(heatmap_cell)
+		lower_bounds_container.add_child(heatmap_cell)
 		heatmap_cell.setup(lower_bounds[pos], max_lower_bound)
 
 
@@ -199,7 +199,7 @@ func _build_tunnels() -> void:
 	for child in tunnels_container.get_children():
 		child.queue_free()
 
-	if not tunnels:
+	if not show_tunnels:
 		return
 
 	var positions: Array = get_tunnels()
@@ -219,10 +219,10 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 		elif key == "pushable_hint":
 			pushable_hint = value
 			_update_pushable_hint()
-		elif key == "heatmap":
-			heatmap = value
+		elif key == "lower_bounds":
+			show_lower_bounds = value
 		elif key == "tunnels":
-			tunnels = value
+			show_tunnels = value
 		elif key == "pathfinding_strategy":
 			pathfinding_strategy = value
 		elif key == "theme":

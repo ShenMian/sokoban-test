@@ -29,6 +29,6 @@ volume_db = -10.0
 
 [node name="Waypoints" type="Node3D" parent="." unique_id=1829147570]
 
-[node name="Heatmap" type="Node3D" parent="." unique_id=913879998]
+[node name="LowerBounds" type="Node3D" parent="." unique_id=913879998]
 
 [node name="Tunnels" type="Node3D" parent="." unique_id=1198208942]

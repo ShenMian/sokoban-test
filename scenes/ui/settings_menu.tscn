@@ -411,23 +411,23 @@ popup/item_1/id = 1
 popup/item_2/text = "MOVE_OPTIMAL"
 popup/item_2/id = 2
 
-[node name="HeatmapPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1598998361]
+[node name="LowerBoundsPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1598998361]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
-metadata/title = "HEATMAP"
+metadata/title = "LOWER_BOUNDS"
 metadata/description = "HEATMAP_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/HeatmapPanel" unique_id=795991132]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LowerBoundsPanel" unique_id=795991132]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/HeatmapPanel/HBox" unique_id=341875207]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LowerBoundsPanel/HBox" unique_id=341875207]
 layout_mode = 2
 mouse_filter = 1
-text = "HEATMAP"
+text = "LOWER_BOUNDS"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/HeatmapPanel/HBox" unique_id=381670691]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LowerBoundsPanel/HBox" unique_id=381670691]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")

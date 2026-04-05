@@ -14,7 +14,7 @@ const DEFAULT_CONFIG = {
 		"checkerboard": true,
 		"algorithm": E.Algorithm.A_STAR,
 		"solver_strategy": E.Strategy.QUICK,
-		"heatmap": false,
+		"lower_bounds": false,
 		"tunnels": false,
 	},
 	"video": {

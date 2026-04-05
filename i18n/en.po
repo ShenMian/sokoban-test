@@ -162,8 +162,8 @@ msgstr "Push-Optimal"
 msgid "MOVE_OPTIMAL"
 msgstr "Move-Optimal"
 
-msgid "HEATMAP"
-msgstr "Heatmap"
+msgid "LOWER_BOUNDS"
+msgstr "Lower Bounds"
 
 msgid "HEATMAP_TIP"
 msgstr "Visualize lower bounds as a heatmap"

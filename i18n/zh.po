@@ -162,8 +162,8 @@ msgstr "推动最优"
 msgid "MOVE_OPTIMAL"
 msgstr "移动最优"
 
-msgid "HEATMAP"
-msgstr "热力图"
+msgid "LOWER_BOUNDS"
+msgstr "下界"
 
 msgid "HEATMAP_TIP"
 msgstr "将下界以热力图的形式可视化"

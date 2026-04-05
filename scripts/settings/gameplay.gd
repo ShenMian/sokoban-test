@@ -11,7 +11,7 @@ extends ScrollContainer
 
 @onready var algorithm: OptionButton = $VBox/AlgorithmPanel/HBox/OptionButton
 @onready var solver_strategy: OptionButton = $VBox/StrategyPanel/HBox/OptionButton
-@onready var heatmap: SwitchFx = $VBox/HeatmapPanel/HBox/CheckButton
+@onready var lower_bounds: SwitchFx = $VBox/LowerBoundsPanel/HBox/CheckButton
 @onready var tunnels: SwitchFx = $VBox/TunnelsPanel/HBox/CheckButton
 
 const SECTION_NAME := "gameplay"
@@ -29,7 +29,7 @@ func _ready() -> void:
 	map_theme.item_selected.connect(_on_theme_selected)
 	algorithm.item_selected.connect(_on_algorithm_selected)
 	solver_strategy.item_selected.connect(_on_strategy_selected)
-	heatmap.toggled.connect(_on_heatmap_toggled)
+	lower_bounds.toggled.connect(_on_heatmap_toggled)
 	tunnels.toggled.connect(_on_tunnels_toggled)
 
 	apply_settings()
@@ -66,8 +66,8 @@ func apply_settings() -> void:
 	solver_strategy.select(Settings.get_value(SECTION_NAME, "solver_strategy"))
 	solver_strategy.item_selected.emit(solver_strategy.selected)
 
-	heatmap.button_pressed = Settings.get_value(SECTION_NAME, "heatmap")
-	heatmap.toggled.emit(heatmap.button_pressed)
+	lower_bounds.button_pressed = Settings.get_value(SECTION_NAME, "lower_bounds")
+	lower_bounds.toggled.emit(lower_bounds.button_pressed)
 
 	tunnels.button_pressed = Settings.get_value(SECTION_NAME, "tunnels")
 	tunnels.toggled.emit(tunnels.button_pressed)
@@ -116,7 +116,7 @@ func _on_strategy_selected(index: int) -> void:
 
 
 func _on_heatmap_toggled(toggled_on: bool) -> void:
-	Settings.set_and_save_value(SECTION_NAME, "heatmap", toggled_on)
+	Settings.set_and_save_value(SECTION_NAME, "lower_bounds", toggled_on)
 
 
 func _on_tunnels_toggled(toggled_on: bool) -> void:
