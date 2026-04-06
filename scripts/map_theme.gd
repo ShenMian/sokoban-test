@@ -13,6 +13,7 @@ extends Node
 
 @export_group("", "")
 @export var waypoint_alpha := 0.5
+@export var waypoint_hover_lighten := 0.7
 
 var floor_color: Color
 var wall_color: Color
@@ -88,7 +89,7 @@ func apply(theme: Dictionary) -> void:
 	indicator_material.albedo_texture = _create_texture_from_color(theme.get("indicator_color"))
 	var waypoint_color := Color(theme.get("waypoint_color"), waypoint_alpha)
 	waypoint_normal_material.albedo_color = waypoint_color
-	waypoint_hover_material.albedo_color = waypoint_color.lightened(0.2)
+	waypoint_hover_material.albedo_color = waypoint_color.lightened(waypoint_hover_lighten)
 	path_preview_material.albedo_color = theme.get("path_preview_color")
 
 
