@@ -263,21 +263,23 @@ impl LevelMap {
             }
         }
 
-        let mut directions = Array::new();
-        if let Some(dp) = best_dp {
-            let box_path = path_finding::construct_box_path(dp, &self.waypoints);
-            let player_path = path_finding::construct_player_path(
-                self.map(),
-                self.map().player_position(),
-                &box_path,
-            );
+        let Some(dp) = best_dp else {
+            return Array::new();
+        };
 
-            for direction in player_path
-                .windows(2)
-                .map(|p| direction::Direction::try_from(p[1] - p[0]).unwrap())
-            {
-                directions.push(direction as i32);
-            }
+        let mut directions = Array::new();
+        let box_path = path_finding::construct_box_path(dp, &self.waypoints);
+        let player_path = path_finding::construct_player_path(
+            self.map(),
+            self.map().player_position(),
+            &box_path,
+        );
+
+        for direction in player_path
+            .windows(2)
+            .map(|p| direction::Direction::try_from(p[1] - p[0]).unwrap())
+        {
+            directions.push(direction as i32);
         }
 
         directions
@@ -299,31 +301,24 @@ impl LevelMap {
             }
         }
 
-        let mut positions = Array::new();
-        if let Some(dp) = best_dp {
-            let box_path = path_finding::construct_box_path(dp, &self.waypoints);
-            for position in box_path {
-                positions.push(position.to_gd());
-            }
-        }
+        let Some(dp) = best_dp else {
+            return Array::new();
+        };
 
-        positions
+        let positions = path_finding::construct_box_path(dp, &self.waypoints)
+            .into_iter()
+            .map(|position| position.to_gd());
+        Array::from_iter(positions)
     }
 
     #[func]
     pub fn get_waypoint_positions(&mut self, box_position: Vector2i) -> Array<Vector2i> {
         let box_position = box_position.to_na();
 
-        let start = std::time::Instant::now();
         let (mut waypoints, costs) = path_finding::compute_box_waypoints(
             self.map(),
             box_position,
             self.pathfinding_strategy.into(),
-        );
-        godot_print!(
-            "found {} waypoints ({:?})",
-            waypoints.len(),
-            start.elapsed()
         );
 
         if self.deadlock_hint {
@@ -331,15 +326,12 @@ impl LevelMap {
             waypoints.retain(|dp, _| !deadlocks.contains(&dp.position()));
         }
 
-        let mut positions = Array::new();
-        for position in waypoints.keys().map(|dp| dp.position()) {
-            positions.push(position.to_gd());
-        }
-
+        let positions: HashSet<Vector2i> =
+            waypoints.keys().map(|dp| dp.position().to_gd()).collect();
         self.waypoints = waypoints;
         self.costs = costs;
 
-        positions
+        Array::from_iter(positions.into_iter())
     }
 
     /// Starts solving in a background thread with a custom stack size.

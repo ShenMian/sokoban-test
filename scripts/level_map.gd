@@ -23,6 +23,8 @@ const TUNNEL_CELL_SCENE = preload("res://scenes/tunnel_cell.tscn")
 
 @export var pushable_hint: bool
 
+@export var waypoint_height: float = 0.01
+
 @export_group("Path Preview")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var enable_path_preview: bool = true
 @export var path_preview_material: StandardMaterial3D
@@ -304,7 +306,7 @@ func _build_waypoints(from: Vector2i) -> void:
 	_clear_waypoints()
 	for to in get_waypoint_positions(from):
 		var waypoint = WAYPOINT_SCENE.instantiate()
-		waypoint.position = Vector3(to.x, 0.01, to.y)
+		waypoint.position = Vector3(to.x, waypoint_height, to.y)
 		waypoint.clicked.connect(func() -> void:
 			_on_waypoint_clicked(to)
 		)
