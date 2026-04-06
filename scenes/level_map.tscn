@@ -3,12 +3,9 @@
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/meshes/mesh_library.tres" id="1_12kai"]
 [ext_resource type="Script" uid="uid://byfwrccvjxb11" path="res://scripts/level_map.gd" id="2_28enl"]
 [ext_resource type="PackedScene" uid="uid://d3bx7fp67oyvm" path="res://scenes/player.tscn" id="3_4mfww"]
+[ext_resource type="Material" uid="uid://nh33k8bm3jcq" path="res://assets/materials/path_preview_material.tres" id="3_28enl"]
 [ext_resource type="AudioStream" uid="uid://0cexp28cej4" path="res://assets/audio/sfx/box_enter_goal.ogg" id="4_ublle"]
 [ext_resource type="AudioStream" uid="uid://dchc8ar6lkdcr" path="res://assets/audio/sfx/box_leave_goal.ogg" id="5_8v2yb"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12kai"]
-shading_mode = 0
-albedo_color = Color(1, 1, 1, 0.6)
 
 [node name="LevelMap" type="LevelMap" unique_id=873965418]
 floor_item_id = 0
@@ -17,7 +14,7 @@ goal_item_id = 2
 mesh_library = ExtResource("1_12kai")
 cell_size = Vector3(1, 1, 1)
 script = ExtResource("2_28enl")
-path_preview_material = SubResource("StandardMaterial3D_12kai")
+path_preview_material = ExtResource("3_28enl")
 
 [node name="Boxes" type="Node3D" parent="." unique_id=1610368111]
 

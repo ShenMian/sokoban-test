@@ -7,6 +7,12 @@ extends Node
 @export var box_body_material: StandardMaterial3D
 @export var box_hat_material: StandardMaterial3D
 @export var indicator_material: StandardMaterial3D
+@export var waypoint_normal_material: StandardMaterial3D
+@export var waypoint_hover_material: StandardMaterial3D
+@export var path_preview_material: StandardMaterial3D
+
+@export_group("", "")
+@export var waypoint_alpha := 0.5
 
 var floor_color: Color
 var wall_color: Color
@@ -22,7 +28,9 @@ var DESERT_OASIS := {
 	"box_inner_fill_color": Color("#E8D8C4"),
 	"player_body_color": Color("#1A508B"),
 	"player_hat_color": Color("#C4884B"),
-	"indicator_color": Color("#00AFB9")
+	"indicator_color": Color("#00AFB9"),
+	"waypoint_color": Color("#247BA0"),
+	"path_preview_color": Color("#00E5F2")
 }
 
 var ARCTIC_LAB := {
@@ -35,7 +43,9 @@ var ARCTIC_LAB := {
 	"box_inner_fill_color": Color("#C2B4B6"),
 	"player_body_color": Color("#E5BE5E"),
 	"player_hat_color": Color("#2A3546"),
-	"indicator_color": Color("#1D8EC4")
+	"indicator_color": Color("#1D8EC4"),
+	"waypoint_color": Color("#D97A28"),
+	"path_preview_color": Color("#FF4D4D")
 }
 
 var OCEAN_DEPTHS := {
@@ -48,7 +58,9 @@ var OCEAN_DEPTHS := {
 	"box_inner_fill_color": Color("#001A33"),
 	"player_body_color": Color("#01B7A3"),
 	"player_hat_color": Color("#001A33"),
-	"indicator_color": Color("#FDD017")
+	"indicator_color": Color("#FDD017"),
+	"waypoint_color": Color("#00979a"),
+	"path_preview_color": Color("#00F5D4")
 }
 
 var THEMES := [
@@ -74,6 +86,10 @@ func apply(theme: Dictionary) -> void:
 	box_body_material.albedo_texture = _create_texture_from_color(theme.get("player_body_color"))
 	box_hat_material.albedo_texture = _create_texture_from_color(theme.get("player_hat_color"))
 	indicator_material.albedo_texture = _create_texture_from_color(theme.get("indicator_color"))
+	var waypoint_color := Color(theme.get("waypoint_color"), waypoint_alpha)
+	waypoint_normal_material.albedo_color = waypoint_color
+	waypoint_hover_material.albedo_color = waypoint_color.lightened(0.2)
+	path_preview_material.albedo_color = theme.get("path_preview_color")
 
 
 func _create_texture_from_color(color: Color) -> Texture2D:

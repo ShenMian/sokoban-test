@@ -7,22 +7,18 @@
 [ext_resource type="Material" uid="uid://l88nflf2x70h" path="res://assets/materials/box_inner_fill_material.tres" id="4_gnt38"]
 [ext_resource type="Material" uid="uid://dkg1ghr5roer6" path="res://assets/materials/player_body_material.tres" id="5_gnt38"]
 [ext_resource type="Material" uid="uid://calojrmsvbmkb" path="res://assets/materials/player_hat_material.tres" id="6_oskek"]
+[ext_resource type="Material" uid="uid://nh33k8bm3jcq" path="res://assets/materials/path_preview_material.tres" id="8_oskek"]
+[ext_resource type="Material" uid="uid://dolx0vl1hcm6b" path="res://assets/materials/waypoint_normal_material.tres" id="8_pb7jy"]
+[ext_resource type="Material" uid="uid://bjmab2ru3iajr" path="res://assets/materials/waypoint_hover_material.tres" id="9_iy2s8"]
 
 [node name="Theme" type="Node" unique_id=769340137]
 script = ExtResource("1_q3ysb")
-background_color = Color(0.24313726, 0.16862746, 0.11372549, 1)
-floor_color = Color(0.9529412, 0.9137255, 0.8235294, 1)
-wall_color = Color(0.8784314, 0.6627451, 0.42745098, 1)
-goal_color = Color(0.39003432, 0.67584544, 0.47748065, 1)
-box_outer_frame_color = Color(0.77254903, 0.48235294, 0.34117648, 1)
-box_diagonal_bar_color = Color(0.54901963, 0.32156864, 0.1882353, 1)
-box_inner_fill_color = Color(0.9098039, 0.84705883, 0.76862746, 1)
-player_body_color = Color(0.101960786, 0.3137255, 0.54509807, 1)
-player_hat_color = Color(0.8784314, 0.6627451, 0.42745098, 1)
-indicator_color = Color(0.83137256, 0.6392157, 0.4509804, 1)
 box_outer_frame_material = ExtResource("2_nrvmm")
 box_diagonal_bar_material = ExtResource("3_xeb01")
 box_inner_fill_material = ExtResource("4_gnt38")
 box_body_material = ExtResource("5_gnt38")
 box_hat_material = ExtResource("6_oskek")
 indicator_material = ExtResource("2_ijae1")
+waypoint_normal_material = ExtResource("8_pb7jy")
+waypoint_hover_material = ExtResource("9_iy2s8")
+path_preview_material = ExtResource("8_oskek")

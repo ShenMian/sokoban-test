@@ -1,19 +1,8 @@
 [gd_scene format=3 uid="uid://dqj5i3bsiexf1"]
 
 [ext_resource type="Script" uid="uid://842svm4qp7es" path="res://scripts/waypoint.gd" id="1_omn23"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_omn23"]
-transparency = 1
-albedo_color = Color(0.1, 0.5, 1, 0.3)
-emission_enabled = true
-emission = Color(0.1, 0.5, 1, 1)
-emission_energy_multiplier = 0.5
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kvbum"]
-transparency = 1
-albedo_color = Color(0.2, 0.8, 1, 0.5)
-emission_enabled = true
-emission = Color(0.2, 0.8, 1, 1)
+[ext_resource type="Material" uid="uid://dolx0vl1hcm6b" path="res://assets/materials/waypoint_normal_material.tres" id="2_hy65e"]
+[ext_resource type="Material" uid="uid://bjmab2ru3iajr" path="res://assets/materials/waypoint_hover_material.tres" id="3_hk825"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_8hlp4"]
 size = Vector2(1, 1)
@@ -24,8 +13,8 @@ size = Vector3(1, 0.05, 1)
 
 [node name="Waypoint" type="Node3D" unique_id=2064119935]
 script = ExtResource("1_omn23")
-normal_material = SubResource("StandardMaterial3D_omn23")
-hover_material = SubResource("StandardMaterial3D_kvbum")
+normal_material = ExtResource("2_hy65e")
+hover_material = ExtResource("3_hk825")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1777699219]
 mesh = SubResource("PlaneMesh_8hlp4")
