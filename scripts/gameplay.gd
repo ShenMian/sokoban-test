@@ -111,6 +111,7 @@ func _input(_event: InputEvent) -> void:
 
 
 func _open_pause_menu():
+	level_map.deselect_box()
 	hud.hide()
 	pause_menu.open()
 
