@@ -272,7 +272,7 @@ func _update_pushable_hint() -> void:
 			box.disabled = false
 		return
 
-	var pushable_positions: Array = get_pushable_box_positions()
+	var pushable_positions := get_pushable_box_positions()
 	for box in boxes_container.get_children():
 		var grid_pos: Vector2i = box.grid_position()
 		var is_pushable := pushable_positions.any(func(pos: Vector2i) -> bool:
@@ -348,7 +348,7 @@ func _build_tunnels() -> void:
 	if not show_tunnels:
 		return
 
-	var positions: Array = get_tunnels()
+	var positions := get_tunnels()
 	for pos in positions:
 		var tunnel_cell = TUNNEL_CELL_SCENE.instantiate()
 		tunnel_cell.position = Vector3(pos.x, tunnels_height, pos.y)
