@@ -331,7 +331,7 @@ impl LevelMap {
         self.waypoints = waypoints;
         self.costs = costs;
 
-        Array::from_iter(positions.into_iter())
+        Array::from_iter(positions)
     }
 
     /// Starts solving in a background thread with a custom stack size.
