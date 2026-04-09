@@ -8,7 +8,7 @@ size = Vector2(1, 1)
 center_offset = Vector3(0.5, 0, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2lnuf"]
-transparency = 1
+transparency = 4
 shading_mode = 0
 
 [node name="HeatmapCell" type="MeshInstance3D" unique_id=576839689]
