@@ -41,6 +41,8 @@ pub enum Algorithm {
     AStar,
     /// IDA* search algorithm.
     IDAStar,
+    /// BFS search algorithm.
+    Bfs,
 }
 
 /// Solver thread stack size in bytes (64 MB).
@@ -254,7 +256,7 @@ impl LevelMap {
         let mut best_dp = None;
         let mut min_cost = i32::MAX;
         for &dp in self.waypoints.keys() {
-            if dp.position() == to
+            if dp.position == to
                 && let Some(&cost) = self.costs.get(&dp)
                 && cost < min_cost
             {
@@ -292,7 +294,7 @@ impl LevelMap {
         let mut best_dp = None;
         let mut min_cost = i32::MAX;
         for &dp in self.waypoints.keys() {
-            if dp.position() == to
+            if dp.position == to
                 && let Some(&cost) = self.costs.get(&dp)
                 && cost < min_cost
             {
@@ -323,11 +325,10 @@ impl LevelMap {
 
         if self.deadlock_hint {
             let deadlocks = compute_static_deadlocks(self.map());
-            waypoints.retain(|dp, _| !deadlocks.contains(&dp.position()));
+            waypoints.retain(|dp, _| !deadlocks.contains(&dp.position));
         }
 
-        let positions: HashSet<Vector2i> =
-            waypoints.keys().map(|dp| dp.position().to_gd()).collect();
+        let positions: HashSet<Vector2i> = waypoints.keys().map(|dp| dp.position.to_gd()).collect();
         self.waypoints = waypoints;
         self.costs = costs;
 
@@ -357,6 +358,7 @@ impl LevelMap {
                 let result = match algorithm {
                     Algorithm::AStar => solver.a_star_search(),
                     Algorithm::IDAStar => solver.ida_star_search(),
+                    Algorithm::Bfs => solver.bfs_search(),
                 };
 
                 *result_slot.lock().unwrap() = Some(result);
@@ -514,7 +516,7 @@ impl LevelMap {
 
     #[func]
     pub fn get_push_count(&self) -> i32 {
-        self.level.actions().pushes() as i32
+        self.level.actions().shifts() as i32
     }
 
     #[func]
@@ -543,7 +545,7 @@ impl LevelMap {
     pub fn get_lower_bounds(&self, strategy: Strategy) -> VarDictionary {
         let solver = Solver::new(self.map().clone(), strategy.into());
         let mut dict = VarDictionary::new();
-        for (position, value) in solver.lower_bounds() {
+        for (position, value) in solver.context().lower_bounds() {
             dict.set(position.to_gd(), &value.to_variant());
         }
         dict
@@ -554,8 +556,8 @@ impl LevelMap {
         let solver = Solver::new(self.map().clone(), Strategy::Quick.into());
         let mut positions = Array::new();
         let mut set = HashSet::new();
-        for tunnel in solver.tunnels() {
-            let box_position = tunnel.position();
+        for tunnel in solver.context().tunnels() {
+            let box_position = tunnel.position;
             if set.insert(box_position) {
                 positions.push(box_position.to_gd());
             }

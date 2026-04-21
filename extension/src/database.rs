@@ -221,10 +221,10 @@ impl Database {
 
         let best_push_count = self
             .query_push_optimal_lurd(level_id)
-            .map(|l| Actions::from_str(&l).unwrap().pushes());
+            .map(|l| Actions::from_str(&l).unwrap().shifts());
 
         let is_move_optimal = best_move_count.is_none_or(|moves| action.moves() < moves);
-        let is_push_optimal = best_push_count.is_none_or(|pushes| action.pushes() < pushes);
+        let is_push_optimal = best_push_count.is_none_or(|pushes| action.shifts() < pushes);
 
         let tx = self.conn().unchecked_transaction().unwrap();
 

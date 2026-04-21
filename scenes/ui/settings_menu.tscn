@@ -379,11 +379,13 @@ text = "ALGORITHM"
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/AlgorithmPanel/HBox" unique_id=1155594425]
 layout_mode = 2
 size_flags_horizontal = 10
-item_count = 2
+item_count = 3
 popup/item_0/text = "A*"
 popup/item_0/id = 0
 popup/item_1/text = "IDA*"
 popup/item_1/id = 1
+popup/item_2/text = "BFS"
+popup/item_2/id = 2
 
 [node name="StrategyPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=767301948]
 custom_minimum_size = Vector2(0, 40)
