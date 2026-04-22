@@ -23,7 +23,7 @@ use soukoban::{
     deadlock::compute_static_deadlocks,
     direction::{self, DirectedPosition},
     path_finding,
-    solver::Solver,
+    solver::{self, Solver},
 };
 
 use crate::{
@@ -43,6 +43,16 @@ pub enum Algorithm {
     IDAStar,
     /// BFS search algorithm.
     Bfs,
+}
+
+impl From<Algorithm> for solver::Algorithm {
+    fn from(algorithm: Algorithm) -> Self {
+        match algorithm {
+            Algorithm::AStar => solver::Algorithm::AStar,
+            Algorithm::IDAStar => solver::Algorithm::IDAStar,
+            Algorithm::Bfs => solver::Algorithm::Bfs,
+        }
+    }
 }
 
 /// Solver thread stack size in bytes (64 MB).
@@ -355,12 +365,7 @@ impl LevelMap {
             .name("solver".into())
             .stack_size(SOLVER_STACK_SIZE)
             .spawn(move || {
-                let result = match algorithm {
-                    Algorithm::AStar => solver.a_star_search(),
-                    Algorithm::IDAStar => solver.ida_star_search(),
-                    Algorithm::Bfs => solver.bfs_search(),
-                };
-
+                let result = solver.search(algorithm.into());
                 *result_slot.lock().unwrap() = Some(result);
                 done_flag.store(true, Ordering::Release);
             })
@@ -531,7 +536,7 @@ impl LevelMap {
 
     #[func]
     pub fn rotate(&mut self) {
-        self.level.rotate();
+        self.level.rotate_cw();
         self.build();
     }
 
