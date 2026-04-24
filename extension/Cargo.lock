@@ -28,9 +28,9 @@ checksum = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
 
 [[package]]
 name = "bitflags"
-version = "2.11.0"
+version = "2.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "843867be96c8daad0d758b57df9392b6d8d271134fce549de6ce169ff98a92af"
+checksum = "c4512299f36f043ab09a583e57bceb5a5aab7a73db1805848e8fef3c9e8c78b3"
 
 [[package]]
 name = "bumpalo"
@@ -46,9 +46,9 @@ checksum = "c8efb64bd706a16a1bdde310ae86b351e4d21550d98d056f22f8a7f7a2183fec"
 
 [[package]]
 name = "cc"
-version = "1.2.58"
+version = "1.2.61"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e1e928d4b69e3077709075a938a05ffbedfa53a84c8f766efbf8220bb1ff60e1"
+checksum = "d16d90359e986641506914ba71350897565610e87ce0ad9e6f28569db3dd5c6d"
 dependencies = [
  "find-msvc-tools",
  "shlex",
@@ -204,15 +204,21 @@ checksum = "19fc433e8437a212d1b6f1e68c7824af3aed907da60afa994e7f542d18d12aa9"
 
 [[package]]
 name = "glam"
+version = "0.31.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "556f6b2ea90b8d15a74e0e7bb41671c9bdf38cd9f78c284d750b9ce58a2b5be7"
+
+[[package]]
+name = "glam"
 version = "0.32.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f70749695b063ecbf6b62949ccccde2e733ec3ecbbd71d467dca4e5c6c97cca0"
 
 [[package]]
 name = "godot"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8908958eb739fbef2bac361032abacd92d7f8509aa874a4e1202d5003ac99591"
+checksum = "0fe8c60e432145c0ba2c97049395ca6a1eba9f7a9e8c14cbb3320df83e81b4c4"
 dependencies = [
  "godot-core",
  "godot-macros",
@@ -220,24 +226,24 @@ dependencies = [
 
 [[package]]
 name = "godot-bindings"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eca73b7685c6e12a50ef7770611f32f5eaa026f367b277fb181c1bbb911d6456"
+checksum = "7da4d182c09f38a8d7cd2349831de78e6d686a52dd509c143d2f090c8f4ded4d"
 dependencies = [
  "gdextension-api",
 ]
 
 [[package]]
 name = "godot-cell"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebf31e3be55b2fc80566f095d15f0dd2c096c9130f4bb005767b7beeb6ca7f08"
+checksum = "74f291ddd851570971d8ccb1370edd1b41e8682850deaee30f15acc40ed36433"
 
 [[package]]
 name = "godot-codegen"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7db70e51cb6f24599c27af83608d136ee5e6bbfefafddcf68165d69813f27938"
+checksum = "3bf302bd0d4dcfd759ba1fb2aa3c1b818589536044e8bbd55e62351a6bd6107a"
 dependencies = [
  "godot-bindings",
  "heck",
@@ -249,9 +255,9 @@ dependencies = [
 
 [[package]]
 name = "godot-core"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "146df09dbac1d0e9bf9144497f85453d8cb5ab2694cb0a60e0fda52fdc6cd696"
+checksum = "d39d1a8e8b7be0b36b77b6208e478dc69e20bf971e669aca65589ba929467f6f"
 dependencies = [
  "glam 0.32.1",
  "godot-bindings",
@@ -262,9 +268,9 @@ dependencies = [
 
 [[package]]
 name = "godot-ffi"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32b6b1f65a0bf7da76543954a0c27087257883dba1524c0390732c7ed09f6ba7"
+checksum = "fe7578ce3941d7663dde750d5bcb5fd3e325c43fa01c69b75d5794f64ea9f998"
 dependencies = [
  "godot-bindings",
  "godot-codegen",
@@ -273,9 +279,9 @@ dependencies = [
 
 [[package]]
 name = "godot-macros"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "24e4c4320ee46c25bd2470c752c793d195dc91d087685e57f8ac7ff6152e5fa2"
+checksum = "72b9809d5fbc6846c811aa643dee26a34e62463a98d551817722b92153be868a"
 dependencies = [
  "godot-bindings",
  "proc-macro2",
@@ -318,9 +324,9 @@ dependencies = [
 
 [[package]]
 name = "js-sys"
-version = "0.3.92"
+version = "0.3.95"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc4c90f45aa2e6eacbe8645f77fdea542ac97a494bcd117a67df9ff4d611f995"
+checksum = "2964e92d1d9dc3364cae4d718d93f227e3abb088e747d92e0395bfdedf1c12ca"
 dependencies = [
  "once_cell",
  "wasm-bindgen",
@@ -328,9 +334,9 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.183"
+version = "0.2.186"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5b646652bf6661599e1da8901b3b9522896f01e736bad5f723fe7a3a27f899d"
+checksum = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66"
 
 [[package]]
 name = "libsqlite3-sys"
@@ -361,9 +367,9 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 
 [[package]]
 name = "nalgebra"
-version = "0.34.1"
+version = "0.34.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c4d5b3eff5cd580f93da45e64715e8c20a3996342f1e466599cf7a267a0c2f5f"
+checksum = "df76ea0ff5c7e6b88689085804d6132ded0ddb9de5ca5b8aeb9eeadc0508a70a"
 dependencies = [
  "approx",
  "glam 0.14.0",
@@ -382,6 +388,8 @@ dependencies = [
  "glam 0.28.0",
  "glam 0.29.3",
  "glam 0.30.10",
+ "glam 0.31.1",
+ "glam 0.32.1",
  "matrixmultiply",
  "nalgebra-macros",
  "num-complex",
@@ -479,9 +487,9 @@ checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
 name = "pkg-config"
-version = "0.3.32"
+version = "0.3.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7edddbd0b52d732b21ad9a5fab5c704c14cd949e5e9a1ec5929a24fded1b904c"
+checksum = "19f132c84eca552bf34cab8ec81f1c1dcc229b811638f9d283dceabe58c5569e"
 
 [[package]]
 name = "proc-macro2"
@@ -613,9 +621,9 @@ dependencies = [
 
 [[package]]
 name = "sqlite-wasm-rs"
-version = "0.5.2"
+version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f4206ed3a67690b9c29b77d728f6acc3ce78f16bf846d83c94f76400320181b"
+checksum = "1b2c760607300407ddeaee518acf28c795661b7108c75421303dbefb237d3a36"
 dependencies = [
  "cc",
  "js-sys",
@@ -656,9 +664,9 @@ dependencies = [
 
 [[package]]
 name = "typenum"
-version = "1.19.0"
+version = "1.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "562d481066bde0658276a35467c4af00bdc6ee726305698a55b86e61d7ad82bb"
+checksum = "40ce102ab67701b8526c123c1bab5cbe42d7040ccfd0f64af1a385808d2f43de"
 
 [[package]]
 name = "unicode-ident"
@@ -684,9 +692,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen"
-version = "0.2.115"
+version = "0.2.118"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6523d69017b7633e396a89c5efab138161ed5aafcbc8d3e5c5a42ae38f50495a"
+checksum = "0bf938a0bacb0469e83c1e148908bd7d5a6010354cf4fb73279b7447422e3a89"
 dependencies = [
  "cfg-if",
  "once_cell",
@@ -697,9 +705,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro"
-version = "0.2.115"
+version = "0.2.118"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4e3a6c758eb2f701ed3d052ff5737f5bfe6614326ea7f3bbac7156192dc32e67"
+checksum = "eeff24f84126c0ec2db7a449f0c2ec963c6a49efe0698c4242929da037ca28ed"
 dependencies = [
  "quote",
  "wasm-bindgen-macro-support",
@@ -707,9 +715,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-macro-support"
-version = "0.2.115"
+version = "0.2.118"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "921de2737904886b52bcbb237301552d05969a6f9c40d261eb0533c8b055fedf"
+checksum = "9d08065faf983b2b80a79fd87d8254c409281cf7de75fc4b773019824196c904"
 dependencies = [
  "bumpalo",
  "proc-macro2",
@@ -720,9 +728,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-shared"
-version = "0.2.115"
+version = "0.2.118"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a93e946af942b58934c604527337bad9ae33ba1d5c6900bbb41c2c07c2364a93"
+checksum = "5fd04d9e306f1907bd13c6361b5c6bfc7b3b3c095ed3f8a9246390f8dbdee129"
 dependencies = [
  "unicode-ident",
 ]
