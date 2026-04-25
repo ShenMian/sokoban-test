@@ -330,15 +330,15 @@ func _build_lower_bounds() -> void:
 	if not show_lower_bounds:
 		return
 
-	var lower_bounds: Dictionary = get_lower_bounds(solver_strategy)
-	if lower_bounds.is_empty():
+	var min_costs: Dictionary = get_min_costs(solver_strategy)
+	if min_costs.is_empty():
 		return
-	var max_lower_bound: int = lower_bounds.values().max()
-	for pos in lower_bounds:
+	var max_lower_bound: int = min_costs.values().max()
+	for pos in min_costs:
 		var heatmap_cell: HeatmapCell = HEATMAP_CELL_SCENE.instantiate()
 		heatmap_cell.position = Vector3(pos.x, lower_bounds_height, pos.y)
 		lower_bounds_container.add_child(heatmap_cell)
-		heatmap_cell.setup(lower_bounds[pos], max_lower_bound)
+		heatmap_cell.setup(min_costs[pos], max_lower_bound)
 
 
 func _build_tunnels() -> void:

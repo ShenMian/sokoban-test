@@ -1,5 +1,5 @@
 use std::{
-    collections::{HashMap, HashSet},
+    collections::HashSet,
     io::{BufReader, Cursor},
     str::FromStr,
     sync::{
@@ -19,7 +19,7 @@ use godot::{
 };
 use nalgebra::Vector2;
 use soukoban::{
-    Actions, Level, Map, SearchError, Tiles,
+    Actions, FxHashMap, Level, Map, SearchError, Tiles,
     deadlock::compute_static_deadlocks,
     direction::{self, DirectedPosition},
     path_finding,
@@ -91,8 +91,8 @@ struct LevelMap {
     theme_wall_item_id: i32,
     theme_goal_item_id: i32,
 
-    waypoints: HashMap<DirectedPosition, DirectedPosition>,
-    costs: HashMap<DirectedPosition, i32>,
+    waypoints: FxHashMap<DirectedPosition, DirectedPosition>,
+    costs: FxHashMap<DirectedPosition, i32>,
 
     /// Active solver instance.
     solver: Option<Solver>,
@@ -124,8 +124,8 @@ impl IGridMap for LevelMap {
             theme_floor_item_id: GridMap::INVALID_CELL_ITEM,
             theme_wall_item_id: GridMap::INVALID_CELL_ITEM,
             theme_goal_item_id: GridMap::INVALID_CELL_ITEM,
-            waypoints: HashMap::new(),
-            costs: HashMap::new(),
+            waypoints: FxHashMap::default(),
+            costs: FxHashMap::default(),
             solver_result: Arc::new(Mutex::new(None)),
             solver_done: Arc::new(AtomicBool::new(false)),
             solver_handle: None,
@@ -547,10 +547,10 @@ impl LevelMap {
     }
 
     #[func]
-    pub fn get_lower_bounds(&self, strategy: Strategy) -> VarDictionary {
+    pub fn get_min_costs(&self, strategy: Strategy) -> VarDictionary {
         let solver = Solver::new(self.map().clone(), strategy.into());
         let mut dict = VarDictionary::new();
-        for (position, value) in solver.context().lower_bounds() {
+        for (position, value) in solver.context().min_costs() {
             dict.set(position.to_gd(), &value.to_variant());
         }
         dict
