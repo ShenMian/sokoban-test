@@ -19,10 +19,9 @@ use godot::{
 };
 use nalgebra::Vector2;
 use soukoban::{
-    Actions, FxHashMap, Level, Map, SearchError, Tiles,
     deadlock::compute_static_deadlocks,
-    direction::{self, DirectedPosition},
-    path_finding,
+    direction, path_finding,
+    prelude::*,
     solver::{self, Solver},
 };
 

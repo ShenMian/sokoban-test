@@ -8,7 +8,7 @@ use godot::{
     prelude::*,
 };
 use rusqlite::Connection;
-use soukoban::{Actions, Level, Map};
+use soukoban::prelude::*;
 
 #[derive(GodotClass)]
 #[class(init, singleton)]
