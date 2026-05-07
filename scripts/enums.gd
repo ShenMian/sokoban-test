@@ -22,4 +22,5 @@ enum Strategy {
 enum Algorithm {
 	A_STAR = 0,
 	IDA_STAR = 1,
+	BFS = 2,
 }
