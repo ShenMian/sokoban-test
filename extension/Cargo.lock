@@ -617,11 +617,10 @@ checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
 
 [[package]]
 name = "soukoban"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "bitflags",
  "itertools",
- "nalgebra",
  "rustc-hash",
  "thiserror",
 ]
