@@ -1,26 +1,26 @@
 use godot::prelude::*;
-use nalgebra::Vector2;
+use soukoban::prelude::*;
 
 pub trait ToGodot {
     type Out;
     fn to_gd(&self) -> Self::Out;
 }
 
-impl ToGodot for Vector2<i32> {
+impl ToGodot for Point {
     type Out = Vector2i;
     fn to_gd(&self) -> Self::Out {
         Vector2i::new(self.x, self.y)
     }
 }
 
-pub trait ToNalgebra {
+pub trait ToSoukoban {
     type Out;
     fn to_na(&self) -> Self::Out;
 }
 
-impl ToNalgebra for Vector2i {
-    type Out = Vector2<i32>;
+impl ToSoukoban for Vector2i {
+    type Out = Point;
     fn to_na(&self) -> Self::Out {
-        Vector2::new(self.x, self.y)
+        Point::new(self.x, self.y)
     }
 }

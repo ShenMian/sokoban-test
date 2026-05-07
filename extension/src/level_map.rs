@@ -17,7 +17,6 @@ use godot::{
     meta::ToGodot as _,
     prelude::*,
 };
-use nalgebra::Vector2;
 use soukoban::{
     deadlock::compute_static_deadlocks,
     direction, path_finding,
@@ -26,7 +25,7 @@ use soukoban::{
 };
 
 use crate::{
-    convert::{ToGodot, ToNalgebra},
+    convert::{ToGodot, ToSoukoban},
     direction::Direction,
     strategy::Strategy,
 };
@@ -582,7 +581,7 @@ impl LevelMap {
         self.base_mut().clear();
         for x in 0..self.map().dimensions().x {
             for y in 0..self.map().dimensions().y {
-                let position = Vector2::new(x, y);
+                let position = Point::new(x, y);
                 let tiles = self.map()[position];
 
                 if tiles.contains(Tiles::Floor) {

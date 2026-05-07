@@ -8,6 +8,5 @@ crate-type = ["cdylib"]
 
 [dependencies]
 godot = "0.5"
-nalgebra = "0.34"
 soukoban = { path = "../../soukoban" }
 rusqlite = { version = "0.39", features = ["bundled", "serialize"] }
