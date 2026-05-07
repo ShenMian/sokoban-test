@@ -4,7 +4,7 @@ This document describes how to compile GDExtension on Linux and Windows and expo
 
 ## Windows
 
-```sh
+```ps1
 cargo build --release --manifest-path extension/Cargo.toml
 mkdir -p build/windows
 godot --headless --export-release "Windows" build/windows/sokoban.exe
@@ -25,7 +25,7 @@ godot --headless --export-release "Linux" build/linux/sokoban.x86_64
 
 On Windows, cross-compilation can be performed using `cross`. However, it relies on Podman, which in turn requires WSL2 (Windows Subsystem for Linux 2).
 
-Install WSL2 using the following command and restart** the operating system:
+Install WSL2 using the following command and restart the operating system:
 
 ```ps1
 wsl --install
