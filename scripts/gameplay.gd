@@ -28,7 +28,7 @@ extends Node3D
 ## The scaling factor applied to HUD panels on touchscreen devices.
 @export var touch_ui_scale: float = 1.25
 
-const _TRANSFORM_LABELS := ["", "90°", "180°", "270°", "↔", "↔ 90°", "↔ 180°", "↔ 270°"]
+const _TRANSFORM_LABELS := ["", "90°", "180°", "270°", "↔", "↔\n90°", "↔\n180°", "↔\n270°"]
 
 var _transform_state: int = 0
 
