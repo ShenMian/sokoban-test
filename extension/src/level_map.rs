@@ -107,7 +107,7 @@ struct LevelMap {
 #[godot_api]
 impl IGridMap for LevelMap {
     fn init(base: Base<GridMap>) -> Self {
-        let level = Level::from_map(Map::from_actions(Actions::from_str("R").unwrap()).unwrap());
+        let level = Level::from_map(Map::with_actions(&Actions::from_str("R").unwrap()).unwrap());
         Self {
             checkerboard_shading: true,
             deadlock_hint: true,
@@ -185,7 +185,7 @@ impl LevelMap {
             self.level = level;
             self.build();
         } else if let Ok(actions) = Actions::from_str(&string) {
-            let Ok(map) = Map::from_actions(actions) else {
+            let Ok(map) = Map::with_actions(&actions) else {
                 godot_warn!("failed to create map from actions");
                 return;
             };

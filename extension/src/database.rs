@@ -87,7 +87,7 @@ impl Database {
             let level_id = self.upsert_level(level);
             self.add_level_to_collection(collection_id, level_id, None);
         } else if let Ok(actions) = Actions::from_str(&string) {
-            let Ok(map) = Map::from_actions(actions.clone()) else {
+            let Ok(map) = Map::with_actions(&actions) else {
                 godot_warn!("failed to parse map from actions");
                 return;
             };
