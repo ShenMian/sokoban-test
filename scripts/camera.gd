@@ -12,12 +12,15 @@ var zoom_factor: float:
 		else:
 			_target_size = zoom_factor
 
+var min_zoom_factor: float = 2.0
+var max_zoom_factor: float = INF
+
 var _is_dragging = false
 var _target_position: Vector3
 var _target_size: float = 10.0
 
 # Touch state
-var _touches: Dictionary = {}  # index -> position
+var _touches: Dictionary = {} # index -> position
 var _touch_initial_distance: float = 0.0
 var _touch_initial_zoom: float = 0.0
 
@@ -100,7 +103,7 @@ func _handle_screen_drag(event: InputEventScreenDrag):
 		var current_distance: float = (points[0] as Vector2).distance_to(points[1] as Vector2)
 		if _touch_initial_distance > 0.0:
 			var ratio: float = _touch_initial_distance / current_distance
-			zoom_factor = clampf(_touch_initial_zoom * ratio, 2.0, _touch_initial_zoom + 20.0)
+			zoom_factor = clampf(_touch_initial_zoom * ratio, 2.0, max_zoom_factor)
 
 		# Two finger drag: pan (use average relative motion)
 		_target_position.x -= event.relative.x * drag_sensitivity * zoom_factor * 0.001 * 0.5
@@ -108,12 +111,11 @@ func _handle_screen_drag(event: InputEventScreenDrag):
 
 
 func zoom_in():
-	zoom_factor -= zoom_sensitivity
-	zoom_factor = max(zoom_factor, 2.0)
+	zoom_factor = max(zoom_factor - zoom_sensitivity, min_zoom_factor)
 
 
 func zoom_out():
-	zoom_factor += zoom_sensitivity
+	zoom_factor = min(zoom_factor + zoom_sensitivity, max_zoom_factor)
 
 
 func is_3d_view() -> bool:
