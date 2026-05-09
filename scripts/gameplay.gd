@@ -20,12 +20,15 @@ extends Node3D
 @onready var undo_all_button: ButtonFx = %UndoAllButton
 @onready var solve_button: ButtonFx = %SolveButton
 @onready var transform_button: ButtonFx = %TransformButton
+@onready var transform_label: Label = %TransformLabel
 @onready var previous_button: ButtonFx = %PreviousButton
 @onready var next_button: ButtonFx = %NextButton
 @onready var pause_button: ButtonFx = %PauseButton
 
 ## The scaling factor applied to HUD panels on touchscreen devices.
 @export var touch_ui_scale: float = 1.25
+
+const _TRANSFORM_LABELS := ["", "90°", "180°", "270°", "↔", "↔ 90°", "↔ 180°", "↔ 270°"]
 
 var _transform_state: int = 0
 
@@ -143,6 +146,7 @@ func _transform_level() -> void:
 		level_map.flip_horizontal()
 
 	_transform_state = (_transform_state + 1) % 8
+	transform_label.text = _TRANSFORM_LABELS[_transform_state]
 
 	level_map.deselect_box()
 	level_map.sync_entities_from_state()
