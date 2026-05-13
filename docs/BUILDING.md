@@ -31,17 +31,18 @@ Install WSL2 using the following command and restart the operating system:
 wsl --install
 ```
 
-Install Podman, then initialize and start the virtual machine with the following commands:
+Install the necessary dependencies with the following command:
 
 ```ps1
 scoop install podman
 podman machine init
-podman machine start
+cargo install cross
 ```
 
 The cross-compilation can then be executed with the following command:
 
 ```ps1
+podman machine start
 cross build --target x86_64-unknown-linux-gnu --release --manifest-path extension/Cargo.toml
 ```
 
@@ -55,12 +56,12 @@ cross build --target x86_64-unknown-linux-gnu --release --manifest-path extensio
 Install the necessary dependencies with the following command:
 
 ```sh
-paru -S android-sdk android-ndk android-studio
+paru -S android-sdk android-ndk android-studio # Arch Linux
+rustup target add aarch64-linux-android
+cargo install cargo-ndk
 ```
 
 ```sh
-rustup target add aarch64-linux-android
-cargo install cargo-ndk
 cd extension
 env ANDROID_NDK_HOME=/opt/android-ndk cargo ndk --target arm64-v8a build --release --features godot/experimental-threads
 cd ..
