@@ -107,7 +107,7 @@ In Android Studio, navigate to `SDK Manager | Languages & Frameworks | Android S
 - `NDK (Side by side)`
 
 ```ps1
-$Env:ANDROID_NDK_HOME="<PATH/TO/NDK>"
+$Env:ANDROID_NDK_HOME="<PATH/TO/NDK>" # The default NDK path is: `%LOCALAPPDATA%\Android\Sdk\ndk`
 cd extension
 cargo ndk --target arm64-v8a build --release --features godot/experimental-threads
 cd ..
