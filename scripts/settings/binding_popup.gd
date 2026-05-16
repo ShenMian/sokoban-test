@@ -5,6 +5,7 @@ signal closed
 
 @onready var title_label: Label = $VBox/TitleLabel
 @onready var icon_container: HBoxContainer = $VBox/HBox
+@onready var hint_label: Label = $VBox/HintLabel
 
 @onready var cancel_button: ButtonFx = $VBox/ColorRect/HBox/CancelButton
 @onready var clear_button: ButtonFx = $VBox/ColorRect/HBox/ClearButton
@@ -18,9 +19,9 @@ var _new_event: InputEvent = null
 
 func open(action: StringName) -> void:
 	_action = action
-	_new_event = null
-	title_label.text = action.to_upper()
+	title_label.text = tr(action.to_upper())
 	_update_icons(_get_icons_by_event(_get_event_by_action(action)))
+
 	show()
 	set_process_input(true)
 
@@ -28,6 +29,10 @@ func open(action: StringName) -> void:
 func close() -> void:
 	hide()
 	closed.emit()
+
+	# Reset state for next opening
+	_reset_conflict_hint()
+	_new_event = null
 
 
 func _ready() -> void:
@@ -43,6 +48,7 @@ func _ready() -> void:
 func _on_clear_pressed() -> void:
 	_update_icons([])
 	_new_event = null
+	_reset_conflict_hint()
 
 
 func _on_confirm_pressed() -> void:
@@ -59,6 +65,22 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		_new_event = event as InputEventKey
 		_update_icons(_get_icons_by_event(_new_event))
+		_check_conflict(_new_event)
+
+
+func _check_conflict(event: InputEventKey) -> void:
+	var conflict := _get_action_by_event(event)
+	if conflict.is_empty():
+		hint_label.text = ""
+		confirm_button.disabled = false
+	else:
+		hint_label.text = "Conflict with %s" % tr(conflict.to_upper())
+		confirm_button.disabled = true
+
+
+func _reset_conflict_hint() -> void:
+	hint_label.text = ""
+	confirm_button.disabled = true
 
 
 func _get_event_by_action(action: StringName) -> InputEventKey:
@@ -66,6 +88,24 @@ func _get_event_by_action(action: StringName) -> InputEventKey:
 		if event is InputEventKey:
 			return event as InputEventKey
 	return null
+
+
+func _get_action_by_event(event: InputEventKey) -> StringName:
+	for action in InputMap.get_actions():
+		if action.begins_with("ui_") or action == _action:
+			continue
+		for other in InputMap.action_get_events(action):
+			if other is InputEventKey and _events_match(event, other as InputEventKey):
+				return action
+	return &""
+
+
+func _events_match(a: InputEventKey, b: InputEventKey) -> bool:
+	return a.physical_keycode == b.physical_keycode \
+		and a.ctrl_pressed == b.ctrl_pressed \
+		and a.shift_pressed == b.shift_pressed \
+		and a.alt_pressed == b.alt_pressed \
+		and a.meta_pressed == b.meta_pressed
 
 
 func _update_icons(icons: Array[Texture2D]) -> void:
