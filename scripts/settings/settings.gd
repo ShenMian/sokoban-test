@@ -33,7 +33,7 @@ const DEFAULT_CONFIG = {
 		"master_volume": 1.0,
 		"music_volume": 1.0,
 		"sfx_volume": 1.0,
-		"mute_when_not_focused": true
+		"mute_on_unfocused": true
 	}
 }
 

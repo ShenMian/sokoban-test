@@ -853,22 +853,22 @@ theme = ExtResource("2_f4mfi")
 text = "OUTPUT"
 uppercase = true
 
-[node name="MuteWhenNotFocusedPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox" unique_id=1015039224]
+[node name="MuteOnUnfocusedPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox" unique_id=1015039224]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
-metadata/title = "MUTE_WHEN_NOT_FOCUSED"
-metadata/description = "MUTE_WHEN_NOT_FOCUSED_TIP"
+metadata/title = "MUTE_ON_UNFOCUSED"
+metadata/description = "MUTE_ON_UNFOCUSED_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteWhenNotFocusedPanel" unique_id=763210533]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteOnUnfocusedPanel" unique_id=763210533]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteWhenNotFocusedPanel/HBox" unique_id=1359093338]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteOnUnfocusedPanel/HBox" unique_id=1359093338]
 layout_mode = 2
-text = "MUTE_WHEN_NOT_FOCUSED"
+text = "MUTE_ON_UNFOCUSED"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteWhenNotFocusedPanel/HBox" unique_id=1963800041]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO/VBox/MuteOnUnfocusedPanel/HBox" unique_id=1963800041]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")

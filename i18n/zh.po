@@ -328,11 +328,11 @@ msgstr "单独调整音效音量"
 msgid "OUTPUT"
 msgstr "输出设备"
 
-msgid "MUTE_WHEN_NOT_FOCUSED"
+msgid "MUTE_ON_UNFOCUSED"
 msgstr "失去焦点时静音"
 
-msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
-msgstr "在游戏窗口不在焦点时静音"
+msgid "MUTE_ON_UNFOCUSED_TIP"
+msgstr "窗口失去焦点时静音"
 
 # Input
 

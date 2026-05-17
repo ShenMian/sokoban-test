@@ -328,11 +328,11 @@ msgstr "Adjust sound effects volume separately from music"
 msgid "OUTPUT"
 msgstr "Output"
 
-msgid "MUTE_WHEN_NOT_FOCUSED"
-msgstr "Mute When Not Focused"
+msgid "MUTE_ON_UNFOCUSED"
+msgstr "Mute On Unfocused"
 
-msgid "MUTE_WHEN_NOT_FOCUSED_TIP"
-msgstr "Mute audio when the game window is not focused"
+msgid "MUTE_ON_UNFOCUSED_TIP"
+msgstr "Mute sound when the window is unfocused"
 
 # Input
 
