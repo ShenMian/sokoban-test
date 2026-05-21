@@ -5,7 +5,7 @@ signal setting_changed(section: String, key: String, value: Variant)
 const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
-		"animation_speed": E.AnimationSpeed.FAST,
+		"animation_speed": E.AnimationSpeed.NORMAL,
 		"deadlock_hint": true,
 		"pushable_hint": true,
 		"pathfinding_strategy": E.Strategy.PUSH_OPTIMAL,

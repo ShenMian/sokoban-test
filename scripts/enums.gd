@@ -9,8 +9,9 @@ enum Direction {
 
 enum AnimationSpeed {
 	SLOW = 0,
-	FAST = 1,
-	INSTANT = 2,
+	NORMAL = 1,
+	FAST = 2,
+	INSTANT = 3,
 }
 
 enum Strategy {

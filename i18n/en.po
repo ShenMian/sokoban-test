@@ -70,6 +70,9 @@ msgstr ""
 msgid "ANIM_SLOW"
 msgstr "Slow"
 
+msgid "ANIM_NORMAL"
+msgstr "Normal"
+
 msgid "ANIM_FAST"
 msgstr "Fast"
 

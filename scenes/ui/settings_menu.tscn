@@ -199,13 +199,15 @@ text = "ANIMATION_SPEED"
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/AnimationSpeedPanel/HBox" unique_id=1048294716]
 layout_mode = 2
 size_flags_horizontal = 10
-item_count = 3
+item_count = 4
 popup/item_0/text = "ANIM_SLOW"
 popup/item_0/id = 0
-popup/item_1/text = "ANIM_FAST"
+popup/item_1/text = "ANIM_NORMAL"
 popup/item_1/id = 1
-popup/item_2/text = "ANIM_INSTANT"
+popup/item_2/text = "ANIM_FAST"
 popup/item_2/id = 2
+popup/item_3/text = "ANIM_INSTANT"
+popup/item_3/id = 3
 
 [node name="DeadlockPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1898183586]
 custom_minimum_size = Vector2(0, 40)
