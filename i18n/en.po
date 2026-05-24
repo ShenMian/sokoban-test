@@ -48,6 +48,10 @@ msgstr "Back to Level List"
 msgid "GAMEPLAY"
 msgstr "Gameplay"
 
+msgid "ASSISTS"
+msgstr "Assists"
+
+
 msgid "GENERAL"
 msgstr "General"
 

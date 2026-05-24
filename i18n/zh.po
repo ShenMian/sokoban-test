@@ -48,6 +48,10 @@ msgstr "返回关卡列表"
 msgid "GAMEPLAY"
 msgstr "玩法"
 
+msgid "ASSISTS"
+msgstr "辅助"
+
+
 msgid "GENERAL"
 msgstr "通用"
 

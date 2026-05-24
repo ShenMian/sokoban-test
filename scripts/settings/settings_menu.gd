@@ -10,6 +10,7 @@ signal closed
 @onready var restore_button: ButtonFx = $RestoreButton
 
 @onready var gameplay: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/GAMEPLAY
+@onready var assists: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/ASSISTS
 @onready var video: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/VIDEO
 @onready var audio: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/AUDIO
 @onready var input: ScrollContainer = $MarginContainer/VBox/HSplit/Tabs/INPUT
@@ -42,9 +43,10 @@ func _on_active_tab_changed(index: int) -> void:
 
 func _on_restore_pressed() -> void:
 	match tabs.get_tab_title(tabs.current_tab):
-		"GAMEPLAY":
+		"GAMEPLAY", "ASSISTS":
 			Settings.reset_gameplay_settings()
 			gameplay.apply_settings()
+			assists.apply_settings()
 		"VIDEO":
 			Settings.reset_video_settings()
 			video.apply_settings()

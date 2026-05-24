@@ -17,6 +17,7 @@
 [ext_resource type="FontFile" uid="uid://dh020jxovl25i" path="res://assets/fonts/Sarasa-1.0.33/SarasaUiSC-Bold.woff2" id="11_x0dr5"]
 [ext_resource type="Texture2D" uid="uid://c3gjvvql86lqt" path="res://assets/textures/input_prompts/keyboard_mouse/keyboard_r.svg" id="12_n0fy7"]
 [ext_resource type="PackedScene" uid="uid://bgou1t8ve7r2j" path="res://scenes/ui/binding_popup.tscn" id="14_puhno"]
+[ext_resource type="Script" uid="uid://ct3j0vxj4ugbh" path="res://scripts/settings/assists.gd" id="15_assists"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4mfi"]
 content_margin_left = 10.0
@@ -136,9 +137,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_2ctot")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 0
+current_tab = 1
 
 [node name="GAMEPLAY" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1471899089]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("4_fb6cq")
@@ -209,51 +211,7 @@ popup/item_2/id = 2
 popup/item_3/text = "ANIM_INSTANT"
 popup/item_3/id = 3
 
-[node name="DeadlockPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1898183586]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 1
-metadata/title = "DEADLOCK_HINT"
-metadata/description = "DEADLOCK_TIP"
-
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/DeadlockPanel" unique_id=1063472659]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/DeadlockPanel/HBox" unique_id=1402921645]
-layout_mode = 2
-mouse_filter = 1
-text = "DEADLOCK_HINT"
-
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/DeadlockPanel/HBox" unique_id=1408398352]
-layout_mode = 2
-size_flags_horizontal = 10
-script = ExtResource("6_jrqig")
-metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
-
-[node name="PushableHintPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=119725633]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 1
-metadata/title = "PUSHABLE_HINT"
-metadata/description = "PUSHABLE_TIP"
-
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PushableHintPanel" unique_id=1063472660]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PushableHintPanel/HBox" unique_id=1402921646]
-layout_mode = 2
-mouse_filter = 1
-text = "PUSHABLE_HINT"
-
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PushableHintPanel/HBox" unique_id=1408398353]
-layout_mode = 2
-size_flags_horizontal = 10
-script = ExtResource("6_jrqig")
-metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
-
-[node name="PathfindingStrategyPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1499112344]
+[node name="PathfindingStrategyPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1288326473]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
@@ -261,15 +219,15 @@ mouse_filter = 1
 metadata/title = "PATHFINDING_STRATEGY"
 metadata/description = "PATHFINDING_STRATEGY_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PathfindingStrategyPanel" unique_id=845937859]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PathfindingStrategyPanel" unique_id=740049846]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PathfindingStrategyPanel/HBox" unique_id=383984995]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PathfindingStrategyPanel/HBox" unique_id=1367166436]
 layout_mode = 2
 mouse_filter = 1
 text = "PATHFINDING_STRATEGY"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PathfindingStrategyPanel/HBox" unique_id=1406255690]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/PathfindingStrategyPanel/HBox" unique_id=1948137708]
 layout_mode = 2
 size_flags_horizontal = 10
 item_count = 3
@@ -357,13 +315,24 @@ size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
-[node name="SolverLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1344000682]
+[node name="ASSISTS" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1536049610]
+layout_mode = 2
+horizontal_scroll_mode = 0
+script = ExtResource("15_assists")
+metadata/_tab_index = 1
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS" unique_id=831202701]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="SolverLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=747104202]
 layout_mode = 2
 theme = ExtResource("2_f4mfi")
 text = "SOLVER"
 uppercase = true
 
-[node name="AlgorithmPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1186478082]
+[node name="AlgorithmPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=2137436547]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
@@ -371,14 +340,14 @@ mouse_filter = 1
 metadata/title = "ALGORITHM"
 metadata/description = "ALGORITHM_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/AlgorithmPanel" unique_id=1884022865]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/AlgorithmPanel" unique_id=611898308]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/AlgorithmPanel/HBox" unique_id=1040873168]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/AlgorithmPanel/HBox" unique_id=354136211]
 layout_mode = 2
 text = "ALGORITHM"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/AlgorithmPanel/HBox" unique_id=1155594425]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/AlgorithmPanel/HBox" unique_id=895955509]
 layout_mode = 2
 size_flags_horizontal = 10
 item_count = 3
@@ -389,7 +358,7 @@ popup/item_1/id = 1
 popup/item_2/text = "BFS"
 popup/item_2/id = 2
 
-[node name="StrategyPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=767301948]
+[node name="StrategyPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=114872132]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
@@ -397,14 +366,14 @@ mouse_filter = 1
 metadata/title = "STRATEGY"
 metadata/description = "STRATEGY_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/StrategyPanel" unique_id=1475075385]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/StrategyPanel" unique_id=356207614]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/StrategyPanel/HBox" unique_id=333799218]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/StrategyPanel/HBox" unique_id=1402012704]
 layout_mode = 2
 text = "STRATEGY"
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/StrategyPanel/HBox" unique_id=2053655336]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/StrategyPanel/HBox" unique_id=1700549519]
 layout_mode = 2
 size_flags_horizontal = 10
 item_count = 3
@@ -415,7 +384,7 @@ popup/item_1/id = 1
 popup/item_2/text = "MOVE_OPTIMAL"
 popup/item_2/id = 2
 
-[node name="LowerBoundsPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1598998361]
+[node name="LowerBoundsPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=1222934605]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
@@ -423,21 +392,21 @@ mouse_filter = 1
 metadata/title = "LOWER_BOUNDS"
 metadata/description = "HEATMAP_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LowerBoundsPanel" unique_id=795991132]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/LowerBoundsPanel" unique_id=149428079]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LowerBoundsPanel/HBox" unique_id=341875207]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/LowerBoundsPanel/HBox" unique_id=1291412297]
 layout_mode = 2
 mouse_filter = 1
 text = "LOWER_BOUNDS"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/LowerBoundsPanel/HBox" unique_id=381670691]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/LowerBoundsPanel/HBox" unique_id=1332835569]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
-[node name="TunnelsPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox" unique_id=1598998362]
+[node name="TunnelsPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=1992379498]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
@@ -445,15 +414,65 @@ mouse_filter = 1
 metadata/title = "TUNNELS"
 metadata/description = "TUNNELS_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/TunnelsPanel" unique_id=795991133]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/TunnelsPanel" unique_id=138547890]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/TunnelsPanel/HBox" unique_id=341875208]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/TunnelsPanel/HBox" unique_id=452740766]
 layout_mode = 2
 mouse_filter = 1
 text = "TUNNELS"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/GAMEPLAY/VBox/TunnelsPanel/HBox" unique_id=381670692]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/TunnelsPanel/HBox" unique_id=1979703112]
+layout_mode = 2
+size_flags_horizontal = 10
+script = ExtResource("6_jrqig")
+metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
+
+[node name="HintsLabel" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=1729122816]
+layout_mode = 2
+theme = ExtResource("2_f4mfi")
+text = "HINTS"
+uppercase = true
+
+[node name="DeadlockPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=1898183586]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+metadata/title = "DEADLOCK_HINT"
+metadata/description = "DEADLOCK_TIP"
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockPanel" unique_id=1063472659]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockPanel/HBox" unique_id=1402921645]
+layout_mode = 2
+mouse_filter = 1
+text = "DEADLOCK_HINT"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockPanel/HBox" unique_id=1408398352]
+layout_mode = 2
+size_flags_horizontal = 10
+script = ExtResource("6_jrqig")
+metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
+
+[node name="PushableHintPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=119725633]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+metadata/title = "PUSHABLE_HINT"
+metadata/description = "PUSHABLE_TIP"
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/PushableHintPanel" unique_id=1063472660]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/PushableHintPanel/HBox" unique_id=1402921646]
+layout_mode = 2
+mouse_filter = 1
+text = "PUSHABLE_HINT"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/PushableHintPanel/HBox" unique_id=1408398353]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
@@ -464,7 +483,7 @@ visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("2_r6d6q")
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/VIDEO" unique_id=845343373]
 layout_mode = 2
@@ -758,7 +777,7 @@ visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("1_5p8wc")
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/AUDIO" unique_id=1530500254]
 layout_mode = 2
@@ -881,7 +900,7 @@ visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("10_jpbdv")
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/INPUT" unique_id=61495452]
 layout_mode = 2
