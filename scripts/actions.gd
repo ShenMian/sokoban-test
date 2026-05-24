@@ -19,7 +19,7 @@ func pushes() -> int:
 	return _count_uppercase(lurd)
 
 
-func rotate():
+func rotate_cw():
 	var map = {
 		"U": "R", "R": "D", "D": "L", "L": "U",
 		"u": "r", "r": "d", "d": "l", "l": "u"

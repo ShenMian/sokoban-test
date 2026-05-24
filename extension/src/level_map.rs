@@ -533,7 +533,7 @@ impl LevelMap {
     }
 
     #[func]
-    pub fn rotate(&mut self) {
+    pub fn rotate_cw(&mut self) {
         self.level.rotate_cw();
         self.build();
     }
