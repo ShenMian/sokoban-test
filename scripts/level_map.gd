@@ -197,16 +197,6 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 	if section == "gameplay":
 		if key == "animation_speed":
 			_is_instant = value == E.AnimationSpeed.INSTANT
-		elif key == "deadlock_hint":
-			deadlock_hint = value
-			build()
-		elif key == "pushable_hint":
-			pushable_hint = value
-			_update_pushable_hint()
-		elif key == "lower_bounds":
-			show_lower_bounds = value
-		elif key == "tunnels":
-			show_tunnels = value
 		elif key == "pathfinding_strategy":
 			pathfinding_strategy = value
 		elif key == "theme":
@@ -216,6 +206,17 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 		elif key == "checkerboard":
 			checkerboard_shading = value
 			build()
+	elif section == "assists":
+		if key == "deadlock_hint":
+			deadlock_hint = value
+			build()
+		elif key == "pushable_hint":
+			pushable_hint = value
+			_update_pushable_hint()
+		elif key == "lower_bounds":
+			show_lower_bounds = value
+		elif key == "tunnels":
+			show_tunnels = value
 		elif key == "algorithm":
 			solver_algorithm = value
 		elif key == "solver_strategy":

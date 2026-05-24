@@ -6,12 +6,14 @@ const DEFAULT_CONFIG = {
 	"gameplay": {
 		"language": "en",
 		"animation_speed": E.AnimationSpeed.NORMAL,
-		"deadlock_hint": true,
-		"pushable_hint": true,
 		"pathfinding_strategy": E.Strategy.PUSH_OPTIMAL,
 		"theme": 0,
 		"2d_view": false,
 		"checkerboard": true,
+	},
+	"assists": {
+		"deadlock_hint": true,
+		"pushable_hint": true,
 		"algorithm": E.Algorithm.A_STAR,
 		"solver_strategy": E.Strategy.QUICK,
 		"lower_bounds": false,
@@ -61,6 +63,7 @@ func _ready() -> void:
 		# Resets to default settings
 		print("Restore default settings")
 		reset_gameplay_settings()
+		reset_assists_settings()
 		reset_video_settings()
 		reset_audio_settings()
 
@@ -101,6 +104,14 @@ func reset_gameplay_settings() -> void:
 	if locale in TranslationServer.get_loaded_locales():
 		_config.set_value("gameplay", "language", locale)
 
+	_config.save(CONFIG_PATH)
+
+
+func reset_assists_settings() -> void:
+	_config.erase_section("assists")
+	for key in DEFAULT_CONFIG.assists:
+		var value: Variant = DEFAULT_CONFIG.assists[key]
+		set_value("assists", key, value)
 	_config.save(CONFIG_PATH)
 
 

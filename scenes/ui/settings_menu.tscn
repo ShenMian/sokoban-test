@@ -137,10 +137,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_f4mfi")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_gis3k")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_2ctot")
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_es4n0")
-current_tab = 1
+current_tab = 0
 
 [node name="GAMEPLAY" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1471899089]
-visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("4_fb6cq")
@@ -316,6 +315,7 @@ script = ExtResource("6_jrqig")
 metadata/_custom_type_script = "uid://bc8nqwx2f77uu"
 
 [node name="ASSISTS" type="ScrollContainer" parent="MarginContainer/VBox/HSplit/Tabs" unique_id=1536049610]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 script = ExtResource("15_assists")
@@ -434,7 +434,7 @@ theme = ExtResource("2_f4mfi")
 text = "HINTS"
 uppercase = true
 
-[node name="DeadlockPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=1898183586]
+[node name="DeadlockHintPanel" type="PanelContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox" unique_id=1898183586]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 3
@@ -442,15 +442,15 @@ mouse_filter = 1
 metadata/title = "DEADLOCK_HINT"
 metadata/description = "DEADLOCK_TIP"
 
-[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockPanel" unique_id=1063472659]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockHintPanel" unique_id=1063472659]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockPanel/HBox" unique_id=1402921645]
+[node name="Label" type="Label" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockHintPanel/HBox" unique_id=1402921645]
 layout_mode = 2
 mouse_filter = 1
 text = "DEADLOCK_HINT"
 
-[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockPanel/HBox" unique_id=1408398352]
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockHintPanel/HBox" unique_id=1408398352]
 layout_mode = 2
 size_flags_horizontal = 10
 script = ExtResource("6_jrqig")
