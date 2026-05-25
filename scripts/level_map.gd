@@ -514,8 +514,16 @@ func _on_solved() -> void:
 
 func reset_camera_position() -> void:
 	var center := get_dimensions() / 2.0
-	var max_dimension = max(get_dimensions().x, get_dimensions().y)
-	camera._target_position = Vector3(center.x, max_dimension, center.y)
+	var fit_zoom := get_fit_zoom()
+
+	camera._target_position = Vector3(center.x, fit_zoom, center.y)
 	camera.global_position = camera._target_position
-	camera.max_zoom_factor = max_dimension + 1.0
+	camera.max_zoom_factor = fit_zoom
 	camera.zoom_factor = camera.max_zoom_factor
+
+
+func get_fit_zoom(margin: float = 1.0) -> float:
+	var viewport := get_viewport()
+	var aspect = float(viewport.size.x) / float(viewport.size.y)
+	var dimensions := get_dimensions()
+	return max((dimensions.x + margin) / aspect, dimensions.y + margin)

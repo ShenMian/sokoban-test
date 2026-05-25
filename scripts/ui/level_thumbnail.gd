@@ -47,15 +47,13 @@ func _process(_delta: float) -> void:
 	level_map.load_from_string(levels[index]["map_xsb"])
 	_sync_entities_from_state()
 
-	var dimensions = Vector2(level_map.get_dimensions())
-	var center = dimensions / 2.0
-	var max_dimension = max(dimensions.x, dimensions.y)
+	var dimensions := Vector2(level_map.get_dimensions())
+	var center := dimensions / 2.0
+	var fit_zoom = get_fit_zoom(level_map)
 
-	camera.global_position = Vector3(center.x, max_dimension, center.y)
-	camera.global_position.y = max_dimension / (2.0 * tan(deg_to_rad(camera.fov) / 2.0))
-
-	if camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
-		camera.size = max_dimension
+	camera.global_position = Vector3(center.x, fit_zoom, center.y)
+	camera.global_position.y = fit_zoom / (2.0 * tan(deg_to_rad(camera.fov) / 2.0))
+	camera.size = fit_zoom
 
 	render_target_update_mode = SubViewport.UPDATE_ONCE
 	await RenderingServer.frame_post_draw
@@ -82,3 +80,10 @@ func _sync_entities_from_state() -> void:
 
 	var player_position := level_map.get_player_position()
 	player.position = Vector3(player_position.x + 0.5, 0.0, player_position.y + 0.5)
+
+
+func get_fit_zoom(map: LevelMap, margin: float = 1.0) -> float:
+	var viewport := get_viewport()
+	var aspect = float(viewport.size.x) / float(viewport.size.y)
+	var dimensions := map.get_dimensions()
+	return max((dimensions.x + margin) / aspect, dimensions.y + margin)
