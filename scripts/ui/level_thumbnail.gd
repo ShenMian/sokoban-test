@@ -10,7 +10,7 @@ signal thumbnail_generated(index: int, texture: Texture2D)
 
 var levels: Array[Dictionary] = []
 var _queue: Array[int] = []
-var _version: int = 0
+var _generation: int = 0
 
 var _is_processing: bool = false
 
@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func set_levels(new_levels: Array[Dictionary]) -> void:
-	_version += 1
+	_generation += 1
 	levels = new_levels
 	_queue.clear()
 
@@ -41,7 +41,7 @@ func _process(_delta: float) -> void:
 		return
 
 	_is_processing = true
-	var version := _version
+	var generation := _generation
 	var index: int = _queue.pop_front()
 
 	level_map.load_from_string(levels[index]["map_xsb"])
@@ -51,14 +51,17 @@ func _process(_delta: float) -> void:
 	var center := dimensions / 2.0
 	var fit_zoom = get_fit_zoom(level_map)
 
-	camera.global_position = Vector3(center.x, fit_zoom, center.y)
-	camera.global_position.y = fit_zoom / (2.0 * tan(deg_to_rad(camera.fov) / 2.0))
-	camera.size = fit_zoom
+	if camera.projection == Camera3D.PROJECTION_PERSPECTIVE:
+		camera.global_position = Vector3(center.x, fit_zoom / (2.0 * tan(deg_to_rad(camera.fov) / 2.0)), center.y)
+	elif camera.projection == Camera3D.PROJECTION_ORTHOGONAL:
+		camera.size = fit_zoom
+	else:
+		assert(false, "unreachable")
 
 	render_target_update_mode = SubViewport.UPDATE_ONCE
 	await RenderingServer.frame_post_draw
 
-	if version != _version:
+	if generation != _generation:
 		_is_processing = false
 		return
 
@@ -83,7 +86,6 @@ func _sync_entities_from_state() -> void:
 
 
 func get_fit_zoom(map: LevelMap, margin: float = 1.0) -> float:
-	var viewport := get_viewport()
-	var aspect = float(viewport.size.x) / float(viewport.size.y)
+	var aspect = float(size.x) / float(size.y)
 	var dimensions := map.get_dimensions()
 	return max((dimensions.x + margin) / aspect, dimensions.y + margin)
