@@ -22,10 +22,8 @@ use soukoban::{
 };
 
 use crate::{
-    algorithm::Algorithm,
     convert::{ToGodot, ToSoukoban},
-    direction::Direction,
-    strategy::Strategy,
+    enums::{algorithm::Algorithm, direction::Direction, strategy::Strategy},
 };
 
 /// Solver thread stack size in bytes (64 MB).
