@@ -440,7 +440,7 @@ layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 metadata/title = "DEADLOCK_HINT"
-metadata/description = "DEADLOCK_TIP"
+metadata/description = "DEADLOCK_HINT_TIP"
 
 [node name="HBox" type="HBoxContainer" parent="MarginContainer/VBox/HSplit/Tabs/ASSISTS/VBox/DeadlockHintPanel" unique_id=1063472659]
 layout_mode = 2

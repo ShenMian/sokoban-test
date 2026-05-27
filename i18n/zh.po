@@ -178,7 +178,7 @@ msgstr "提示"
 msgid "DEADLOCK_HINT"
 msgstr "死锁提示"
 
-msgid "DEADLOCK_TIP"
+msgid "DEADLOCK_HINT_TIP"
 msgstr "标记静态死锁位置"
 
 msgid "PUSHABLE_HINT"
