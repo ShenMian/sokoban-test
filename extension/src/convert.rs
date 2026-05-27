@@ -15,12 +15,12 @@ impl ToGodot for Point {
 
 pub trait ToSoukoban {
     type Out;
-    fn to_na(&self) -> Self::Out;
+    fn to_point(&self) -> Self::Out;
 }
 
 impl ToSoukoban for Vector2i {
     type Out = Point;
-    fn to_na(&self) -> Self::Out {
+    fn to_point(&self) -> Self::Out {
         Point::new(self.x, self.y)
     }
 }

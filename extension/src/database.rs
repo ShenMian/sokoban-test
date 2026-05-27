@@ -451,7 +451,7 @@ impl Database {
         self.conn().execute(CREATE_SNAPSHOT_TABLE, ()).unwrap();
     }
 
-    pub fn conn(&self) -> &Connection {
+    fn conn(&self) -> &Connection {
         self.connection.as_ref().expect("database not connected")
     }
 }

@@ -18,40 +18,15 @@ use godot::{
     prelude::*,
 };
 use soukoban::{
-    deadlock::compute_static_deadlocks,
-    direction, path_finding,
-    prelude::*,
-    solver::{self, Solver},
+    deadlock::compute_static_deadlocks, direction, path_finding, prelude::*, solver::Solver,
 };
 
 use crate::{
+    algorithm::Algorithm,
     convert::{ToGodot, ToSoukoban},
     direction::Direction,
     strategy::Strategy,
 };
-
-/// Solver search algorithms.
-#[derive(GodotConvert, Var, Export, Default, Clone, Copy, PartialEq, Eq, Debug)]
-#[godot(via = i32)]
-pub enum Algorithm {
-    /// A* search algorithm.
-    #[default]
-    AStar,
-    /// IDA* search algorithm.
-    IDAStar,
-    /// BFS search algorithm.
-    Bfs,
-}
-
-impl From<Algorithm> for solver::Algorithm {
-    fn from(algorithm: Algorithm) -> Self {
-        match algorithm {
-            Algorithm::AStar => solver::Algorithm::AStar,
-            Algorithm::IDAStar => solver::Algorithm::IDAStar,
-            Algorithm::Bfs => solver::Algorithm::Bfs,
-        }
-    }
-}
 
 /// Solver thread stack size in bytes (64 MB).
 const SOLVER_STACK_SIZE: usize = 64 * 1024 * 1024;
@@ -168,6 +143,7 @@ impl LevelMap {
     #[signal]
     fn solve_failed(error: GString);
 
+    /// Loads and displays a level from an XSB file at the given `index`.
     #[func]
     pub fn load_from_file(&mut self, path: String, index: i32) {
         let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
@@ -179,6 +155,7 @@ impl LevelMap {
         self.build();
     }
 
+    /// Loads a level from an XSB map string or an LURD action string.
     #[func]
     pub fn load_from_string(&mut self, string: String) {
         if let Ok(level) = Level::from_str(&string) {
@@ -198,26 +175,31 @@ impl LevelMap {
         }
     }
 
+    /// Returns the current map in XSB format.
     #[func]
     pub fn get_map_xsb(&self) -> String {
         self.map().to_string()
     }
 
+    /// Returns the action history as an LURD string.
     #[func]
     pub fn get_actions_lurd(&self) -> String {
         self.level.actions().to_string()
     }
 
+    /// Returns the map dimensions as `(width, height)`.
     #[func]
     pub fn get_dimensions(&self) -> Vector2i {
         self.map().dimensions().to_gd()
     }
 
+    /// Returns the player's current grid position.
     #[func]
     pub fn get_player_position(&self) -> Vector2i {
         self.map().player_position().to_gd()
     }
 
+    /// Returns the direction the player is facing, defaults to `Down`.
     #[func]
     pub fn get_player_direction(&self) -> Direction {
         self.level
@@ -226,7 +208,9 @@ impl LevelMap {
             .into()
     }
 
+    /// Returns the positions of all boxes on the map.
     #[func]
+    #[must_use]
     pub fn get_box_positions(&self) -> Array<Vector2i> {
         self.map()
             .box_positions()
@@ -235,6 +219,7 @@ impl LevelMap {
             .collect()
     }
 
+    /// Returns positions of boxes that the player can currently push.
     #[func]
     pub fn get_pushable_box_positions(&self) -> Array<Vector2i> {
         path_finding::compute_pushable_boxes(self.map())
@@ -243,6 +228,7 @@ impl LevelMap {
             .collect()
     }
 
+    /// Returns all goal tile positions.
     #[func]
     pub fn get_goal_positions(&self) -> Array<Vector2i> {
         self.map()
@@ -252,14 +238,16 @@ impl LevelMap {
             .collect()
     }
 
+    /// Returns `true` if every goal is occupied by a box.
     #[func]
     pub fn is_solved(&self) -> bool {
         self.map().is_solved()
     }
 
+    /// Returns the sequence of player directions needed to push the nearest box to `to`.
     #[func]
     pub fn get_box_move_path(&self, to: Vector2i) -> Array<i32> {
-        let to = to.to_na();
+        let to = to.to_point();
 
         let mut best_dp = None;
         let mut min_cost = i32::MAX;
@@ -295,9 +283,10 @@ impl LevelMap {
         directions
     }
 
+    /// Returns the sequence of tile positions a box traverses when pushed to `to`.
     #[func]
     pub fn get_box_path(&self, to: Vector2i) -> Array<Vector2i> {
-        let to = to.to_na();
+        let to = to.to_point();
 
         let mut best_dp = None;
         let mut min_cost = i32::MAX;
@@ -321,9 +310,10 @@ impl LevelMap {
         Array::from_iter(positions)
     }
 
+    /// Computes all reachable waypoint positions for the box at `box_position`.
     #[func]
     pub fn get_waypoint_positions(&mut self, box_position: Vector2i) -> Array<Vector2i> {
-        let box_position = box_position.to_na();
+        let box_position = box_position.to_point();
 
         let (mut waypoints, costs) = path_finding::compute_box_waypoints(
             self.map(),
@@ -421,14 +411,7 @@ impl LevelMap {
         }
     }
 
-    #[func]
-    pub fn fast_forward(&mut self, lurd: String) {
-        let actions = Actions::from_str(&lurd).expect("failed to parse actions");
-        self.level
-            .execute_batch(actions.0.into_iter().map(|action| action.direction()))
-            .unwrap();
-    }
-
+    /// Moves the player in the given direction.
     #[func]
     pub fn move_by(&mut self, direction: Direction) {
         let direction: direction::Direction = direction.into();
@@ -500,6 +483,15 @@ impl LevelMap {
         self.build();
     }
 
+    /// Applies an entire LURD action sequence without emitting per-move signals.
+    #[func]
+    pub fn fast_forward(&mut self, lurd: String) {
+        let actions = Actions::from_str(&lurd).expect("failed to parse actions");
+        self.level
+            .execute_batch(actions.0.into_iter().map(|action| action.direction()))
+            .unwrap();
+    }
+
     /// Returns true if there are actions to undo.
     #[func]
     pub fn can_undo(&self) -> bool {
@@ -512,16 +504,19 @@ impl LevelMap {
         !self.level.undone_actions().is_empty()
     }
 
+    /// Returns the total number of moves (steps) taken so far.
     #[func]
     pub fn get_move_count(&self) -> i32 {
         self.level.actions().moves() as i32
     }
 
+    /// Returns the total number of pushes (box shifts) so far.
     #[func]
     pub fn get_push_count(&self) -> i32 {
         self.level.actions().shifts() as i32
     }
 
+    /// Returns a dictionary with `move_count`, `push_count`, `can_undo`, `can_redo`.
     #[func]
     pub fn get_status(&self) -> VarDictionary {
         dict! {
@@ -532,18 +527,21 @@ impl LevelMap {
         }
     }
 
+    /// Rotates the entire level 90° clockwise.
     #[func]
     pub fn rotate_cw(&mut self) {
         self.level.rotate_cw();
         self.build();
     }
 
+    /// Flips the level horizontally.
     #[func]
     pub fn flip_horizontal(&mut self) {
         self.level.flip_horizontal();
         self.build();
     }
 
+    /// Returns a dictionary mapping each position to its heuristic lower-bound cost.
     #[func]
     pub fn get_min_costs(&self, strategy: Strategy) -> VarDictionary {
         let solver = Solver::new(self.map().clone(), strategy.into());
@@ -554,6 +552,7 @@ impl LevelMap {
         dict
     }
 
+    /// Returns positions that form solver-detected tunnels (macro moves).
     #[func]
     pub fn get_tunnels(&self) -> Array<Vector2i> {
         let solver = Solver::new(self.map().clone(), Strategy::Quick.into());
@@ -568,6 +567,7 @@ impl LevelMap {
         positions
     }
 
+    /// Rebuilds the GridMap.
     #[func]
     pub fn build(&mut self) {
         if !self.base().is_inside_tree() {
@@ -614,6 +614,7 @@ impl LevelMap {
         }
     }
 
+    /// Updates the deadlock tint color and rebuilds theme variants.
     #[func]
     pub fn set_deadlock_tint(&mut self, color: Color) {
         self.deadlock_tint = color;
@@ -621,6 +622,7 @@ impl LevelMap {
         self.build();
     }
 
+    /// Creates tinted MeshLibrary variants for floor, wall, goal, and deadlock tiles.
     #[func]
     pub fn create_theme_variants(&mut self) {
         let Some(mut mesh_library) = self.base().get_mesh_library() else {

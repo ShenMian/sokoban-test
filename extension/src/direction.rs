@@ -1,6 +1,9 @@
 use godot::prelude::*;
 use soukoban::direction;
 
+/// Direction exposed to Godot.
+///
+/// This is a mirror of [`soukoban::direction::Direction`] with `GodotConvert`
 #[derive(GodotConvert, Var, Export, Clone, Copy, PartialEq, Eq, Debug)]
 #[godot(via = i32)]
 pub enum Direction {
