@@ -83,18 +83,6 @@ msgstr "快速"
 msgid "ANIM_INSTANT"
 msgstr "立即"
 
-msgid "DEADLOCK_HINT"
-msgstr "死锁提示"
-
-msgid "DEADLOCK_TIP"
-msgstr "标记静态死锁位置"
-
-msgid "PUSHABLE_HINT"
-msgstr "可推动提示"
-
-msgid "PUSHABLE_TIP"
-msgstr "标记将当前可推动的箱子"
-
 msgid "PATHFINDING_STRATEGY"
 msgstr "寻路策略"
 
@@ -133,6 +121,8 @@ msgstr "棋盘纹"
 
 msgid "CHECKERBOARD_TIP"
 msgstr "以棋盘格样式给地砖上色"
+
+# Assists
 
 msgid "SOLVER"
 msgstr "求解器"
@@ -181,6 +171,21 @@ msgstr "隧道"
 
 msgid "TUNNELS_TIP"
 msgstr "可视化隧道"
+
+msgid "HINTS"
+msgstr "提示"
+
+msgid "DEADLOCK_HINT"
+msgstr "死锁提示"
+
+msgid "DEADLOCK_TIP"
+msgstr "标记静态死锁位置"
+
+msgid "PUSHABLE_HINT"
+msgstr "可推动提示"
+
+msgid "PUSHABLE_TIP"
+msgstr "标记将当前可推动的箱子"
 
 # Video
 
