@@ -413,10 +413,10 @@ impl LevelMap {
 
         let box_positions = self.map().box_positions().clone();
         let _ = self.level.execute(direction);
-        let new_box_positions = self.map().box_positions().clone();
+        let new_box_positions = self.map().box_positions();
 
-        let box_position = box_positions.difference(&new_box_positions).next();
-        let new_box_position = new_box_positions.difference(&box_positions).next();
+        let box_position = box_positions.difference(new_box_positions).next().copied();
+        let new_box_position = new_box_positions.difference(&box_positions).next().copied();
         debug_assert!(box_position.is_some() == new_box_position.is_some());
 
         let player_position = self.map().player_position();
@@ -428,8 +428,8 @@ impl LevelMap {
             self.signals().box_moved().emit(from.to_gd(), to.to_gd());
 
             match (
-                self.map()[*from].contains(Tiles::Goal),
-                self.map()[*to].contains(Tiles::Goal),
+                self.map()[from].contains(Tiles::Goal),
+                self.map()[to].contains(Tiles::Goal),
             ) {
                 (false, true) => self.signals().box_enter_goal().emit(to.to_gd()),
                 (true, false) => self.signals().box_leave_goal().emit(to.to_gd()),
