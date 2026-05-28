@@ -1,5 +1,4 @@
 use std::{
-    collections::HashSet,
     io::{BufReader, Cursor},
     str::FromStr,
     sync::{
@@ -323,7 +322,8 @@ impl LevelMap {
             waypoints.retain(|dp, _| !deadlocks.contains(&dp.position));
         }
 
-        let positions: HashSet<Vector2i> = waypoints.keys().map(|dp| dp.position.to_gd()).collect();
+        let positions: FxHashSet<Vector2i> =
+            waypoints.keys().map(|dp| dp.position.to_gd()).collect();
         self.waypoints = waypoints;
         self.costs = costs;
 
@@ -543,7 +543,7 @@ impl LevelMap {
     pub fn get_tunnels(&self) -> Array<Vector2i> {
         let solver = Solver::new(self.map().clone(), Strategy::Quick.into());
         let mut positions = Array::new();
-        let mut set = HashSet::new();
+        let mut set = FxHashSet::default();
         for tunnel in solver.context().tunnels() {
             let box_position = tunnel.position;
             if set.insert(box_position) {
