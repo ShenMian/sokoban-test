@@ -305,7 +305,7 @@ func deselect_box() -> void:
 
 func _build_waypoints(from: Vector2i) -> void:
 	_clear_waypoints()
-	for to in get_waypoint_positions(from):
+	for to in get_waypoints(from):
 		var waypoint = WAYPOINT_SCENE.instantiate()
 		waypoint.position = Vector3(to.x, waypoint_height, to.y)
 		waypoint.clicked.connect(func() -> void:

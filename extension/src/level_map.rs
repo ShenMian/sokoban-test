@@ -309,7 +309,7 @@ impl LevelMap {
 
     /// Computes all reachable waypoint positions for the box at `box_position`.
     #[func]
-    pub fn get_waypoint_positions(&mut self, box_position: Vector2i) -> Array<Vector2i> {
+    pub fn get_waypoints(&mut self, box_position: Vector2i) -> Array<Vector2i> {
         let box_position = box_position.to_point();
 
         let (mut waypoints, costs) = path_finding::compute_box_waypoints(
