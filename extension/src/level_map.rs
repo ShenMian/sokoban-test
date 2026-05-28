@@ -134,7 +134,7 @@ impl LevelMap {
 
     /// Emitted when the background solver completes successfully.
     #[signal]
-    fn solve_completed(directions: Array<i32>);
+    fn solve_completed(directions: Vec<i32>);
 
     /// Emitted when the background solver fails.
     #[signal]
@@ -207,7 +207,7 @@ impl LevelMap {
 
     /// Returns the positions of all boxes on the map.
     #[func]
-    pub fn get_box_positions(&self) -> Array<Vector2i> {
+    pub fn get_box_positions(&self) -> Vec<Vector2i> {
         self.map()
             .box_positions()
             .iter()
@@ -215,18 +215,9 @@ impl LevelMap {
             .collect()
     }
 
-    /// Returns positions of boxes that the player can currently push.
-    #[func]
-    pub fn get_pushable_box_positions(&self) -> Array<Vector2i> {
-        path_finding::compute_pushable_boxes(self.map())
-            .iter()
-            .map(ToGodot::to_gd)
-            .collect()
-    }
-
     /// Returns all goal tile positions.
     #[func]
-    pub fn get_goal_positions(&self) -> Array<Vector2i> {
+    pub fn get_goal_positions(&self) -> Vec<Vector2i> {
         self.map()
             .goal_positions()
             .iter()
@@ -240,9 +231,18 @@ impl LevelMap {
         self.map().is_solved()
     }
 
+    /// Returns positions of boxes that the player can currently push.
+    #[func]
+    pub fn get_pushable_box_positions(&self) -> Vec<Vector2i> {
+        path_finding::compute_pushable_boxes(self.map())
+            .iter()
+            .map(ToGodot::to_gd)
+            .collect()
+    }
+
     /// Returns the sequence of player directions needed to push the nearest box to `to`.
     #[func]
-    pub fn get_box_move_path(&self, to: Vector2i) -> Array<i32> {
+    pub fn get_box_move_path(&self, to: Vector2i) -> Vec<i32> {
         let to = to.to_point();
 
         let mut best_dp = None;
@@ -258,10 +258,10 @@ impl LevelMap {
         }
 
         let Some(dp) = best_dp else {
-            return Array::new();
+            return Vec::new();
         };
 
-        let mut directions = Array::new();
+        let mut directions = Vec::new();
         let box_path = path_finding::construct_box_path(dp, &self.waypoints);
         let player_path = path_finding::construct_player_path(
             self.map(),
@@ -281,7 +281,7 @@ impl LevelMap {
 
     /// Returns the sequence of tile positions a box traverses when pushed to `to`.
     #[func]
-    pub fn get_box_path(&self, to: Vector2i) -> Array<Vector2i> {
+    pub fn get_box_path(&self, to: Vector2i) -> Vec<Vector2i> {
         let to = to.to_point();
 
         let mut best_dp = None;
@@ -297,23 +297,21 @@ impl LevelMap {
         }
 
         let Some(dp) = best_dp else {
-            return Array::new();
+            return Vec::new();
         };
 
         let positions = path_finding::construct_box_path(dp, &self.waypoints)
             .into_iter()
             .map(|position| position.to_gd());
-        Array::from_iter(positions)
+        Vec::from_iter(positions)
     }
 
     /// Computes all reachable waypoint positions for the box at `box_position`.
     #[func]
-    pub fn get_waypoints(&mut self, box_position: Vector2i) -> Array<Vector2i> {
-        let box_position = box_position.to_point();
-
+    pub fn get_waypoints(&mut self, box_position: Vector2i) -> Vec<Vector2i> {
         let (mut waypoints, costs) = path_finding::compute_box_waypoints(
             self.map(),
-            box_position,
+            box_position.to_point(),
             self.pathfinding_strategy.into(),
         );
 
@@ -327,7 +325,7 @@ impl LevelMap {
         self.waypoints = waypoints;
         self.costs = costs;
 
-        Array::from_iter(positions)
+        Vec::from_iter(positions)
     }
 
     /// Starts solving in a background thread with a custom stack size.
@@ -377,11 +375,11 @@ impl LevelMap {
 
         match result {
             Some(Ok(actions)) => {
-                let mut directions = Array::new();
+                let mut directions = Vec::new();
                 for action in &*actions {
                     directions.push(action.direction() as i32);
                 }
-                self.signals().solve_completed().emit(&directions);
+                self.signals().solve_completed().emit(directions);
             }
             Some(Err(err)) => {
                 self.signals()
@@ -540,13 +538,13 @@ impl LevelMap {
 
     /// Returns positions that form solver-detected tunnels (macro moves).
     #[func]
-    pub fn get_tunnels(&self) -> Array<Vector2i> {
+    pub fn get_tunnels(&self) -> Vec<Vector2i> {
         let solver = Solver::new(self.map().clone(), Strategy::Quick.into());
-        let mut positions = Array::new();
-        let mut set = FxHashSet::default();
+        let mut positions = Vec::new();
+        let mut visited = FxHashSet::default();
         for tunnel in solver.context().tunnels() {
             let box_position = tunnel.position;
-            if set.insert(box_position) {
+            if visited.insert(box_position) {
                 positions.push(box_position.to_gd());
             }
         }

@@ -100,7 +100,7 @@ impl Database {
 
     /// Retrieves an array of all level collections.
     #[func]
-    pub fn get_collections(&self) -> Array<VarDictionary> {
+    pub fn get_collections(&self) -> Vec<VarDictionary> {
         const QUERY_COLLECTIONS: &str =
             "SELECT id, name, description FROM tb_collection ORDER BY name";
         self.conn()
@@ -162,7 +162,7 @@ impl Database {
 
     /// Retrieves all levels within a collection, including solve status.
     #[func]
-    pub fn get_collection_levels(&self, collection_name: String) -> Array<VarDictionary> {
+    pub fn get_collection_levels(&self, collection_name: String) -> Vec<VarDictionary> {
         const QUERY_LEVELS: &str = "
             SELECT l.id, l.map_xsb, l.title, l.author, l.comments, l.hash,
                    EXISTS(SELECT 1 FROM tb_solution s WHERE s.level_id = l.id) as solved,
