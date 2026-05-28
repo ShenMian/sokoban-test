@@ -470,11 +470,9 @@ func _on_player_moved(to: Vector2i, pushed: bool) -> void:
 
 
 func update_ui() -> void:
-	var status: Dictionary = get_status()
-
 	# Update HUD labels
-	gameplay.moves_label.text = str(status["move_count"])
-	gameplay.pushes_label.text = str(status["push_count"])
+	gameplay.moves_label.text = str(get_move_count())
+	gameplay.pushes_label.text = str(get_push_count())
 
 	_update_pushable_hint()
 
@@ -501,9 +499,9 @@ func update_ui() -> void:
 			gameplay.solve_button.disabled = true
 			gameplay.transform_button.disabled = true
 		else:
-			gameplay.undo_button.disabled = !status["can_undo"]
-			gameplay.redo_button.disabled = !status["can_redo"]
-			gameplay.undo_all_button.disabled = !status["can_undo"]
+			gameplay.undo_button.disabled = !can_undo()
+			gameplay.redo_button.disabled = !can_redo()
+			gameplay.undo_all_button.disabled = !can_undo()
 			gameplay.solve_button.disabled = false
 			gameplay.transform_button.disabled = false
 

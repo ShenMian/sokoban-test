@@ -208,7 +208,6 @@ impl LevelMap {
 
     /// Returns the positions of all boxes on the map.
     #[func]
-    #[must_use]
     pub fn get_box_positions(&self) -> Array<Vector2i> {
         self.map()
             .box_positions()
@@ -320,7 +319,7 @@ impl LevelMap {
         );
 
         if self.deadlock_hint {
-            let deadlocks = compute_static_deadlocks(self.map());
+            let deadlocks = self.dead_positions();
             waypoints.retain(|dp, _| !deadlocks.contains(&dp.position));
         }
 
@@ -514,17 +513,6 @@ impl LevelMap {
         self.level.actions().shifts() as i32
     }
 
-    /// Returns a dictionary with `move_count`, `push_count`, `can_undo`, `can_redo`.
-    #[func]
-    pub fn get_status(&self) -> VarDictionary {
-        dict! {
-            "move_count" => self.get_move_count(),
-            "push_count" => self.get_push_count(),
-            "can_undo" => self.can_undo(),
-            "can_redo" => self.can_redo(),
-        }
-    }
-
     /// Rotates the entire level 90° clockwise.
     #[func]
     pub fn rotate_cw(&mut self) {
@@ -575,7 +563,7 @@ impl LevelMap {
         self.waypoints.clear();
         self.costs.clear();
 
-        let deadlocks = compute_static_deadlocks(self.map());
+        let deadlocks = self.dead_positions();
         self.base_mut().clear();
         for x in 0..self.map().dimensions().x {
             for y in 0..self.map().dimensions().y {
@@ -671,6 +659,10 @@ impl LevelMap {
 
     fn map(&self) -> &Map {
         self.level.map()
+    }
+
+    fn dead_positions(&self) -> FxHashSet<Point> {
+        compute_static_deadlocks(self.map())
     }
 
     fn create_colored_variant<F>(
