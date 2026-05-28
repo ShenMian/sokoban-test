@@ -520,7 +520,7 @@ func reset_camera_position() -> void:
 	camera.zoom_factor = camera.max_zoom_factor
 
 
-func get_fit_zoom(margin: float = 1.0) -> float:
+func get_fit_zoom(margin: float = 2.0) -> float:
 	var viewport := get_viewport()
 	var aspect = float(viewport.size.x) / float(viewport.size.y)
 	var dimensions := get_dimensions()
