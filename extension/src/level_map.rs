@@ -211,6 +211,7 @@ impl LevelMap {
         self.map()
             .box_positions()
             .iter()
+            .copied()
             .map(ToGodot::to_gd)
             .collect()
     }
@@ -221,6 +222,7 @@ impl LevelMap {
         self.map()
             .goal_positions()
             .iter()
+            .copied()
             .map(ToGodot::to_gd)
             .collect()
     }
@@ -235,75 +237,38 @@ impl LevelMap {
     #[func]
     pub fn get_pushable_box_positions(&self) -> Vec<Vector2i> {
         path_finding::compute_pushable_boxes(self.map())
-            .iter()
+            .into_iter()
             .map(ToGodot::to_gd)
             .collect()
     }
 
     /// Returns the sequence of player directions needed to push the nearest box to `to`.
     #[func]
-    pub fn get_box_move_path(&self, to: Vector2i) -> Vec<i32> {
-        let to = to.to_point();
+    pub fn get_box_move_path(&self, to: Vector2i) -> Vec<Direction> {
+        let waypoint = self.find_best_waypoint(to.to_point()).unwrap();
 
-        let mut best_dp = None;
-        let mut min_cost = i32::MAX;
-        for &dp in self.waypoints.keys() {
-            if dp.position == to
-                && let Some(&cost) = self.costs.get(&dp)
-                && cost < min_cost
-            {
-                min_cost = cost;
-                best_dp = Some(dp);
-            }
-        }
-
-        let Some(dp) = best_dp else {
-            return Vec::new();
-        };
-
-        let mut directions = Vec::new();
-        let box_path = path_finding::construct_box_path(dp, &self.waypoints);
+        let box_path = path_finding::construct_box_path(waypoint, &self.waypoints);
         let player_path = path_finding::construct_player_path(
             self.map(),
             self.map().player_position(),
             &box_path,
         );
 
-        for direction in player_path
+        player_path
             .windows(2)
-            .map(|p| direction::Direction::try_from(p[1] - p[0]).unwrap())
-        {
-            directions.push(direction as i32);
-        }
-
-        directions
+            .map(|positions| direction::Direction::try_from(positions[1] - positions[0]).unwrap())
+            .map(Into::into)
+            .collect()
     }
 
     /// Returns the sequence of tile positions a box traverses when pushed to `to`.
     #[func]
     pub fn get_box_path(&self, to: Vector2i) -> Vec<Vector2i> {
-        let to = to.to_point();
-
-        let mut best_dp = None;
-        let mut min_cost = i32::MAX;
-        for &dp in self.waypoints.keys() {
-            if dp.position == to
-                && let Some(&cost) = self.costs.get(&dp)
-                && cost < min_cost
-            {
-                min_cost = cost;
-                best_dp = Some(dp);
-            }
-        }
-
-        let Some(dp) = best_dp else {
-            return Vec::new();
-        };
-
-        let positions = path_finding::construct_box_path(dp, &self.waypoints)
+        let waypoint = self.find_best_waypoint(to.to_point()).unwrap();
+        path_finding::construct_box_path(waypoint, &self.waypoints)
             .into_iter()
-            .map(|position| position.to_gd());
-        Vec::from_iter(positions)
+            .map(ToGodot::to_gd)
+            .collect()
     }
 
     /// Computes all reachable waypoint positions for the box at `box_position`.
@@ -543,9 +508,8 @@ impl LevelMap {
         let mut positions = Vec::new();
         let mut visited = FxHashSet::default();
         for tunnel in solver.context().tunnels() {
-            let box_position = tunnel.position;
-            if visited.insert(box_position) {
-                positions.push(box_position.to_gd());
+            if visited.insert(tunnel.position) {
+                positions.push(tunnel.position.to_gd());
             }
         }
         positions
@@ -609,9 +573,7 @@ impl LevelMap {
     /// Creates tinted MeshLibrary variants for floor, wall, goal, and deadlock tiles.
     #[func]
     pub fn create_theme_variants(&mut self) {
-        let Some(mut mesh_library) = self.base().get_mesh_library() else {
-            return;
-        };
+        let mut mesh_library = self.base().get_mesh_library().unwrap();
 
         let map_theme = self.base().get_node_as::<Node>("/root/MapTheme");
         let floor_color: Color = map_theme.get("floor_color").to();
@@ -667,55 +629,58 @@ impl LevelMap {
         compute_static_deadlocks(self.map())
     }
 
+    fn find_best_waypoint(&self, target: Point) -> Option<DirectedPosition> {
+        let mut best = None;
+        let mut min_cost = i32::MAX;
+        for (&dp, &cost) in &self.costs {
+            if dp.position == target && cost < min_cost {
+                min_cost = cost;
+                best = Some(dp);
+            }
+        }
+        best
+    }
+
     fn create_colored_variant<F>(
         &self,
         mesh_library: &mut Gd<MeshLibrary>,
-        source_id: i32,
+        base_item_id: i32,
         name: &str,
         f: F,
     ) -> i32
     where
         F: Fn(Color) -> Color,
     {
-        debug_assert_ne!(source_id, GridMap::INVALID_CELL_ITEM);
+        debug_assert_ne!(base_item_id, GridMap::INVALID_CELL_ITEM);
 
-        let mut next_id = -1;
-        let items = mesh_library.get_item_list();
-        for id in items.as_slice() {
-            if mesh_library.get_item_name(*id) == name {
-                next_id = *id;
-                break;
-            }
-        }
-
-        if next_id == -1 {
-            next_id = mesh_library.get_last_unused_item_id();
-            mesh_library.create_item(next_id);
-            mesh_library.set_item_name(next_id, name);
+        let mut item_id = mesh_library.find_item_by_name(name);
+        if item_id == -1 {
+            item_id = mesh_library.get_last_unused_item_id();
+            mesh_library.create_item(item_id);
+            mesh_library.set_item_name(item_id, name);
         }
 
         let mesh = mesh_library
-            .get_item_mesh(source_id)
+            .get_item_mesh(base_item_id)
             .unwrap()
             .cast::<ArrayMesh>();
 
         let material = mesh.surface_get_material(0).unwrap();
-        let standard_material = material.clone().cast::<StandardMaterial3D>();
-        let mut new_standard_material = standard_material.duplicate_resource();
+        let mut new_material = material.cast::<StandardMaterial3D>().duplicate_resource();
 
-        let color = new_standard_material.get_albedo();
-        new_standard_material.set_albedo(f(color));
-        new_standard_material.set("albedo_texture", &Variant::nil());
-        new_standard_material.set("vertex_color_use_as_albedo", &false.to_variant());
+        let color = new_material.get_albedo();
+        new_material.set_albedo(f(color));
+        new_material.set("albedo_texture", &Variant::nil());
+        new_material.set("vertex_color_use_as_albedo", &false.to_variant());
 
         let mut new_mesh = mesh.duplicate_resource();
-        new_mesh.surface_set_material(0, &new_standard_material);
+        new_mesh.surface_set_material(0, &new_material);
 
-        mesh_library.set_item_mesh(next_id, &new_mesh);
+        mesh_library.set_item_mesh(item_id, &new_mesh);
 
-        let transform = mesh_library.get_item_mesh_transform(source_id);
-        mesh_library.set_item_mesh_transform(next_id, transform);
+        let transform = mesh_library.get_item_mesh_transform(base_item_id);
+        mesh_library.set_item_mesh_transform(item_id, transform);
 
-        next_id
+        item_id
     }
 }
