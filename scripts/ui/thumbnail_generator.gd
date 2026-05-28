@@ -1,5 +1,5 @@
 extends SubViewport
-class_name LevelThumbnail
+class_name ThumbnailGenerator
 
 signal thumbnail_generated(index: int, texture: Texture2D)
 

@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://cn7iy24ba0l5v"]
 
-[ext_resource type="Script" uid="uid://bgp0xwjsm3l4o" path="res://scripts/ui/level_thumbnail.gd" id="1_l0aea"]
+[ext_resource type="Script" uid="uid://bgp0xwjsm3l4o" path="res://scripts/ui/thumbnail_generator.gd" id="1_l0aea"]
 [ext_resource type="MeshLibrary" uid="uid://br514ac2ncat8" path="res://assets/meshes/mesh_library.tres" id="2_7ma8a"]
 [ext_resource type="ArrayMesh" uid="uid://hc0acof11624" path="res://assets/meshes/crate.res" id="3_7eok1"]
 [ext_resource type="Texture2D" uid="uid://dulwo8iblpe3u" path="res://assets/models/prototype_kit/textures/colormap.png" id="4_7eok1"]

@@ -1,10 +1,8 @@
 extends Control
 
-const LEVEL_PREVIEW_SCENE := preload("res://scenes/ui/level_thumbnail.tscn")
-
 @onready var collection_list: ItemList = $Margin/VBox/HSplit/CollectionList
 @onready var level_list: ItemList = $Margin/VBox/HSplit/LevelList
-@onready var level_thumbnail: LevelThumbnail = $LevelThumbnail
+@onready var thumbnail_generator: ThumbnailGenerator = $ThumbnailGenerator
 
 @export var level_item_min_width: int = 120
 
@@ -33,7 +31,7 @@ func _ready():
 	level_list.gui_input.connect(_on_level_list_gui_input)
 	level_list.resized.connect(_on_level_list_resized)
 
-	level_thumbnail.thumbnail_generated.connect(_on_preview_generated)
+	thumbnail_generator.thumbnail_generated.connect(_on_preview_generated)
 
 	Database.open("user://database.db")
 	if Database.is_empty():
@@ -104,7 +102,7 @@ func _process(_delta: float):
 		if i >= 0 and i < _levels.size():
 			if not _generated_previews.has(i):
 				queue.append(i)
-	level_thumbnail.submit_queue(queue)
+	thumbnail_generator.submit_queue(queue)
 
 	# Frees distant preview textures
 	for i in range(_generated_previews.size() - 1, -1, -1):
@@ -139,7 +137,7 @@ func _load_levels():
 	_end_item_index = -1
 
 	_levels = Database.get_collection_levels(_selected_collection)
-	level_thumbnail.set_levels(_levels)
+	thumbnail_generator.set_levels(_levels)
 
 	for idx in range(_levels.size()):
 		var label = str(idx + 1)
