@@ -1,11 +1,6 @@
 use std::{
     io::{BufReader, Cursor},
     str::FromStr,
-    sync::{
-        Arc, Mutex,
-        atomic::{AtomicBool, Ordering},
-    },
-    thread,
 };
 
 use godot::{
@@ -23,10 +18,8 @@ use soukoban::{
 use crate::{
     convert::{ToGodot, ToSoukoban as _},
     enums::{algorithm::Algorithm, direction::Direction, strategy::Strategy},
+    solver_worker::SolverWorker,
 };
-
-/// Solver thread stack size in bytes (64 MB).
-const SOLVER_STACK_SIZE: usize = 64 * 1024 * 1024;
 
 #[derive(GodotClass)]
 #[class(base=GridMap)]
@@ -64,14 +57,7 @@ struct LevelMap {
     waypoints: FxHashMap<DirectedPosition, DirectedPosition>,
     costs: FxHashMap<DirectedPosition, i32>,
 
-    /// Active solver instance.
-    solver: Option<Solver>,
-    /// Shared storage for the background solver result.
-    solver_result: Arc<Mutex<Option<Result<Actions, SearchError>>>>,
-    /// Flag indicating that the solver thread has finished.
-    solver_done: Arc<AtomicBool>,
-    /// Handle to the solver thread (if running).
-    solver_handle: Option<thread::JoinHandle<()>>,
+    solver_worker: SolverWorker,
 
     base: Base<GridMap>,
 }
@@ -96,10 +82,7 @@ impl IGridMap for LevelMap {
             goal_item_id: GridMap::INVALID_CELL_ITEM,
             waypoints: FxHashMap::default(),
             costs: FxHashMap::default(),
-            solver_result: Arc::new(Mutex::new(None)),
-            solver_done: Arc::new(AtomicBool::new(false)),
-            solver_handle: None,
-            solver: None,
+            solver_worker: SolverWorker::new(),
             level,
             base,
         }
@@ -138,7 +121,7 @@ impl LevelMap {
 
     /// Emitted when the background solver fails.
     #[signal]
-    fn solve_failed(error: GString);
+    fn solve_failed(error: String);
 
     /// Loads and displays a level from an XSB file at the given `index`.
     #[func]
@@ -296,30 +279,8 @@ impl LevelMap {
     /// Starts solving in a background thread with a custom stack size.
     #[func]
     pub fn start_solve(&mut self, algorithm: Algorithm, strategy: Strategy) {
-        // Cancel any previously running solve.
-        self.cancel_solve();
-
-        let map = self.map().clone();
-        let result_slot = Arc::clone(&self.solver_result);
-        let done_flag = Arc::clone(&self.solver_done);
-
-        done_flag.store(false, Ordering::Release);
-        *result_slot.lock().unwrap() = None;
-
-        let solver = Solver::new(map, strategy.into());
-        self.solver = Some(solver.clone());
-
-        let handle = thread::Builder::new()
-            .name("solver".into())
-            .stack_size(SOLVER_STACK_SIZE)
-            .spawn(move || {
-                let result = solver.search(algorithm.into());
-                *result_slot.lock().unwrap() = Some(result);
-                done_flag.store(true, Ordering::Release);
-            })
-            .expect("failed to spawn solver thread");
-
-        self.solver_handle = Some(handle);
+        self.solver_worker
+            .start(self.map().clone(), algorithm, strategy);
     }
 
     /// Polls for the solver result. Returns `true` while the solver is still
@@ -327,48 +288,27 @@ impl LevelMap {
     /// `solve_failed` and returns `false`.
     #[func]
     pub fn poll_solve(&mut self) -> bool {
-        if !self.solver_done.load(Ordering::Acquire) {
-            return true;
-        }
-
-        if let Some(handle) = self.solver_handle.take() {
-            let _ = handle.join();
-        }
-        self.solver = None;
-
-        let result = self.solver_result.lock().unwrap().take();
-
-        match result {
+        match self.solver_worker.poll() {
             Some(Ok(actions)) => {
                 let mut directions = Vec::new();
                 for action in &*actions {
                     directions.push(action.direction() as i32);
                 }
                 self.signals().solve_completed().emit(directions);
+                false
             }
             Some(Err(err)) => {
-                self.signals()
-                    .solve_failed()
-                    .emit(&Into::<GString>::into(&err.to_string()));
+                self.signals().solve_failed().emit(err.to_string());
+                false
             }
-            None => unreachable!(),
+            None => true,
         }
-
-        false
     }
 
     /// Cancels a running solve (if any).
     #[func]
     pub fn cancel_solve(&mut self) {
-        if let Some(solver) = self.solver.take() {
-            solver.request_stop();
-        }
-        if let Some(handle) = self.solver_handle.take() {
-            // Wait for the solver thread to exit.
-            let _ = handle.join();
-            self.solver_done.store(false, Ordering::Release);
-            *self.solver_result.lock().unwrap() = None;
-        }
+        self.solver_worker.cancel();
     }
 
     /// Moves the player in the given direction.

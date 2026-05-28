@@ -12,6 +12,8 @@ mod database;
 mod enums;
 /// The core level map node: rendering, player/box movement, pathfinding, and solver integration.
 mod level_map;
+/// Background thread worker for the Sokoban solver.
+mod solver_worker;
 
 struct Extension;
 
