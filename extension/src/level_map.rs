@@ -21,7 +21,7 @@ use soukoban::{
 };
 
 use crate::{
-    convert::{ToGodot, ToSoukoban},
+    convert::{ToGodot, ToSoukoban as _},
     enums::{algorithm::Algorithm, direction::Direction, strategy::Strategy},
 };
 
@@ -46,20 +46,20 @@ struct LevelMap {
     #[export]
     pathfinding_strategy: Strategy,
 
+    #[export_group(name = "Base Meshes", prefix = "base_")]
     #[export]
-    floor_item_id: i32,
+    base_floor_item_id: i32,
     #[export]
-    wall_item_id: i32,
+    base_wall_item_id: i32,
     #[export]
-    goal_item_id: i32,
+    base_goal_item_id: i32,
 
+    floor_item_id: i32,
+    wall_item_id: i32,
+    goal_item_id: i32,
     floor_dark_item_id: i32,
     deadlock_item_id: i32,
     deadlock_dark_item_id: i32,
-
-    theme_floor_item_id: i32,
-    theme_wall_item_id: i32,
-    theme_goal_item_id: i32,
 
     waypoints: FxHashMap<DirectedPosition, DirectedPosition>,
     costs: FxHashMap<DirectedPosition, i32>,
@@ -85,15 +85,15 @@ impl IGridMap for LevelMap {
             deadlock_hint: true,
             deadlock_tint: Color::from_rgb(0.5, 0.5, 0.5),
             pathfinding_strategy: Strategy::default(),
-            floor_item_id: GridMap::INVALID_CELL_ITEM,
-            wall_item_id: GridMap::INVALID_CELL_ITEM,
-            goal_item_id: GridMap::INVALID_CELL_ITEM,
+            base_floor_item_id: GridMap::INVALID_CELL_ITEM,
+            base_wall_item_id: GridMap::INVALID_CELL_ITEM,
+            base_goal_item_id: GridMap::INVALID_CELL_ITEM,
             floor_dark_item_id: GridMap::INVALID_CELL_ITEM,
             deadlock_item_id: GridMap::INVALID_CELL_ITEM,
             deadlock_dark_item_id: GridMap::INVALID_CELL_ITEM,
-            theme_floor_item_id: GridMap::INVALID_CELL_ITEM,
-            theme_wall_item_id: GridMap::INVALID_CELL_ITEM,
-            theme_goal_item_id: GridMap::INVALID_CELL_ITEM,
+            floor_item_id: GridMap::INVALID_CELL_ITEM,
+            wall_item_id: GridMap::INVALID_CELL_ITEM,
+            goal_item_id: GridMap::INVALID_CELL_ITEM,
             waypoints: FxHashMap::default(),
             costs: FxHashMap::default(),
             solver_result: Arc::new(Mutex::new(None)),
@@ -578,16 +578,16 @@ impl LevelMap {
                     } else if self.checkerboard_shading && (x + y) % 2 == 1 {
                         self.floor_dark_item_id
                     } else {
-                        self.theme_floor_item_id
+                        self.floor_item_id
                     };
                     self.base_mut()
                         .set_cell_item(Vector3i::new(x, -1, y), tile_id);
                 }
                 if tiles.intersects(Tiles::Wall | Tiles::Goal) {
                     let item_id = if tiles.contains(Tiles::Wall) {
-                        self.theme_wall_item_id
+                        self.wall_item_id
                     } else if tiles.contains(Tiles::Goal) {
-                        self.theme_goal_item_id
+                        self.goal_item_id
                     } else {
                         continue;
                     };
@@ -618,24 +618,28 @@ impl LevelMap {
         let wall_color: Color = map_theme.get("wall_color").to();
         let goal_color: Color = map_theme.get("goal_color").to();
 
-        self.theme_floor_item_id = self.create_colored_variant(
+        self.floor_item_id = self.create_colored_variant(
             &mut mesh_library,
-            self.floor_item_id,
+            self.base_floor_item_id,
             "theme_floor",
             |_| floor_color,
         );
-        self.theme_wall_item_id =
-            self.create_colored_variant(&mut mesh_library, self.wall_item_id, "theme_wall", |_| {
-                wall_color
-            });
-        self.theme_goal_item_id =
-            self.create_colored_variant(&mut mesh_library, self.goal_item_id, "theme_goal", |_| {
-                goal_color
-            });
+        self.wall_item_id = self.create_colored_variant(
+            &mut mesh_library,
+            self.base_wall_item_id,
+            "theme_wall",
+            |_| wall_color,
+        );
+        self.goal_item_id = self.create_colored_variant(
+            &mut mesh_library,
+            self.base_goal_item_id,
+            "theme_goal",
+            |_| goal_color,
+        );
 
         self.floor_dark_item_id = self.create_colored_variant(
             &mut mesh_library,
-            self.theme_floor_item_id,
+            self.floor_item_id,
             "floor_dark",
             |color| color.darkened(0.15),
         );
@@ -643,13 +647,13 @@ impl LevelMap {
         let deadlock_tint = self.deadlock_tint;
         self.deadlock_item_id = self.create_colored_variant(
             &mut mesh_library,
-            self.theme_floor_item_id,
+            self.floor_item_id,
             "floor_deadlock",
             |color| color * deadlock_tint,
         );
         self.deadlock_dark_item_id = self.create_colored_variant(
             &mut mesh_library,
-            self.theme_floor_item_id,
+            self.floor_item_id,
             "floor_deadlock_dark",
             |color| color.darkened(0.15) * deadlock_tint,
         );
