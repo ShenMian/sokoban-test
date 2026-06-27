@@ -73,16 +73,18 @@ func _process(_delta: float) -> void:
 
 
 func rebuild_player_and_boxes() -> void:
+	const OFFSET = Vector3(0.5, 0.0, 0.5)
+
 	var box_positions := level_map.get_box_positions()
 
 	var multi_mesh := boxes.multimesh
 	multi_mesh.instance_count = box_positions.size()
 	for i in range(box_positions.size()):
-		var pos = box_positions[i]
-		multi_mesh.set_instance_transform(i, Transform3D().translated(Vector3(pos.x + 0.5, 0.0, pos.y + 0.5)))
+		var position = Vector3(box_positions[i].x, 0.0, box_positions[i].y) + OFFSET
+		multi_mesh.set_instance_transform(i, Transform3D().translated(position))
 
 	var player_position := level_map.get_player_position()
-	player.position = Vector3(player_position.x + 0.5, 0.0, player_position.y + 0.5)
+	player.position = Vector3(player_position.x, 0.0, player_position.y) + OFFSET
 
 
 func get_fit_zoom(map: LevelMap, margin: float = 1.0) -> float:
