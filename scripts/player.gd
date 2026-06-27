@@ -105,7 +105,7 @@ func move(direction: Vector2, push: bool) -> void:
 	else:
 		state_machine.travel("Walking")
 
-	tween.tween_property(self , "global_position", global_position + direction3d, move_duration * _duration_multiplier) \
+	tween.tween_property(self, "global_position", global_position + direction3d, move_duration * _duration_multiplier) \
 		.set_ease(move_ease) \
 		.set_trans(move_transition)
 

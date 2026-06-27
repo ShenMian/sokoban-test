@@ -82,7 +82,7 @@ func move(direction: Vector3) -> void:
 	await create_tween() \
 		.set_ease(move_ease) \
 		.set_trans(move_transition) \
-		.tween_property(self , "global_position", global_position + direction, move_duration * _duration_multiplier) \
+		.tween_property(self, "global_position", global_position + direction, move_duration * _duration_multiplier) \
 		.finished
 	is_moving = false
 	move_finished.emit()
