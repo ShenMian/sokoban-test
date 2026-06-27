@@ -45,7 +45,7 @@ func _process(_delta: float) -> void:
 	var index: int = _queue.pop_front()
 
 	level_map.load_from_string(levels[index]["map_xsb"])
-	_sync_entities_from_state()
+	rebuild_player_and_boxes()
 
 	var dimensions := Vector2(level_map.get_dimensions())
 	var center := dimensions / 2.0
@@ -72,7 +72,7 @@ func _process(_delta: float) -> void:
 	_is_processing = false
 
 
-func _sync_entities_from_state() -> void:
+func rebuild_player_and_boxes() -> void:
 	var box_positions := level_map.get_box_positions()
 
 	var multi_mesh := boxes.multimesh

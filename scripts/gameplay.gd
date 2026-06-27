@@ -149,6 +149,6 @@ func _transform_level() -> void:
 	transform_label.text = _TRANSFORM_LABELS[_transform_state]
 
 	level_map.deselect_box()
-	level_map.sync_entities_from_state()
+	level_map.rebuild_player_and_boxes()
 	level_map.update_ui()
 	level_map.reset_camera_position()

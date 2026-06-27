@@ -70,7 +70,7 @@ func _ready() -> void:
 	var snapshot := Database.get_snapshot(SceneTransition.level_id, true)
 	fast_forward(snapshot)
 
-	sync_entities_from_state()
+	rebuild_player_and_boxes()
 
 	reset_camera_position()
 
@@ -108,7 +108,7 @@ func _input(_event: InputEvent) -> void:
 		var content := DisplayServer.clipboard_get()
 		Database.import_level_from_string(content, "Imported")
 		load_from_string(content)
-		sync_entities_from_state()
+		rebuild_player_and_boxes()
 		_build_lower_bounds()
 		_build_tunnels()
 		update_ui()
@@ -138,21 +138,21 @@ func _unhandled_input(event: InputEvent) -> void:
 func do_undo() -> void:
 	undo()
 	deselect_box()
-	sync_entities_from_state()
+	rebuild_player_and_boxes()
 	update_ui()
 
 
 func do_redo() -> void:
 	redo()
 	deselect_box()
-	sync_entities_from_state()
+	rebuild_player_and_boxes()
 	update_ui()
 
 
 func do_undo_all() -> void:
 	undo_all()
 	deselect_box()
-	sync_entities_from_state()
+	rebuild_player_and_boxes()
 	update_ui()
 
 
@@ -202,7 +202,7 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 		elif key == "theme":
 			create_theme_variants()
 			build()
-			sync_entities_from_state()
+			rebuild_player_and_boxes()
 		elif key == "checkerboard":
 			checkerboard_shading = value
 			build()
@@ -237,7 +237,7 @@ func _execute_path(directions: Array) -> void:
 		if not _is_instant:
 			await wait_for_moves_finished()
 	if _is_instant:
-		sync_entities_from_state()
+		rebuild_player_and_boxes()
 	update_ui()
 
 
@@ -248,7 +248,7 @@ func _is_box_moving() -> bool:
 	return false
 
 
-func sync_entities_from_state() -> void:
+func rebuild_player_and_boxes() -> void:
 	for child in boxes_container.get_children():
 		child.queue_free()
 
