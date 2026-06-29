@@ -50,9 +50,8 @@ var _duration_multiplier: float = 1.0
 func _ready() -> void:
 	Settings.setting_changed.connect(_on_setting_changed)
 
-	mesh.mesh = mesh.mesh.duplicate()
 	for i in range(mesh.mesh.get_surface_count()):
-		mesh.mesh.surface_set_material(i, mesh.mesh.surface_get_material(i).duplicate())
+		mesh.set_surface_override_material(i, mesh.mesh.surface_get_material(i).duplicate())
 
 	mesh_area.area_entered.connect(_on_area_entered)
 
@@ -162,9 +161,9 @@ func _stop_indicator_tween() -> void:
 func _apply_disabled() -> void:
 	var target_albedo := Color.WHITE.darkened(0.5) if disabled else Color.WHITE
 	var tween := create_tween().set_parallel(true)
-	tween.tween_property(mesh, "mesh:surface_0/material:albedo_color", target_albedo, 0.2)
-	tween.tween_property(mesh, "mesh:surface_1/material:albedo_color", target_albedo, 0.2)
-	tween.tween_property(mesh, "mesh:surface_2/material:albedo_color", target_albedo, 0.2)
+	tween.tween_property(mesh, "surface_material_override/0:albedo_color", target_albedo, 0.2)
+	tween.tween_property(mesh, "surface_material_override/1:albedo_color", target_albedo, 0.2)
+	tween.tween_property(mesh, "surface_material_override/2:albedo_color", target_albedo, 0.2)
 
 
 func _apply_selectable() -> void:
