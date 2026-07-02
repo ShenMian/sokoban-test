@@ -48,12 +48,12 @@ func _on_setting_changed(section: String, key: String, value: Variant):
 
 func _process(delta: float):
 	if abs(self.size - _target_size) > 0.001:
-		size = lerp(size, _target_size, smooth_factor * delta)
+		size = lerp(size, _target_size, clamp(delta * smooth_factor, 0.0, 1.0))
 	else:
 		size = _target_size
 
 	if global_position.distance_to(_target_position) > 0.001:
-		global_position = lerp(global_position, _target_position, smooth_factor * delta)
+		global_position = lerp(global_position, _target_position, clamp(delta * smooth_factor, 0.0, 1.0))
 	else:
 		global_position = _target_position
 
