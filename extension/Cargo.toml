@@ -10,3 +10,7 @@ crate-type = ["cdylib"]
 godot = "0.5"
 soukoban = { path = "../../soukoban" }
 rusqlite = { version = "0.40", features = ["bundled", "serialize"] }
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
