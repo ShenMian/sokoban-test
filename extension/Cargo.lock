@@ -321,6 +321,7 @@ checksum = "8ed6a63f02c8539c91a8685a86f4099661ba3da017932f6ebbea6de3f0fa7c90"
 [[package]]
 name = "soukoban"
 version = "0.1.5"
+source = "git+https://github.com/ShenMian/soukoban#0d34dd1d3d08d0c9cc827accd0a56a477347016b"
 dependencies = [
  "bitflags",
  "itertools",
