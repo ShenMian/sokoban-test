@@ -3,7 +3,7 @@ class_name ButtonFx
 
 @export var smooth_factor: float = 20.0
 
-const SNAP_THRESHOLD: float = 0.001
+const SCALE_SNAP_DISTANCE: float = 0.001
 
 var _target_scale := Vector2.ONE
 
@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	scale = lerp(scale, _target_scale, clamp(delta * smooth_factor, 0.0, 1.0))
-	if scale.distance_squared_to(_target_scale) < SNAP_THRESHOLD * SNAP_THRESHOLD:
+	if scale.distance_squared_to(_target_scale) < SCALE_SNAP_DISTANCE * SCALE_SNAP_DISTANCE:
 		set_process(false)
 		scale = _target_scale
 
@@ -63,5 +63,5 @@ func _on_unhovered() -> void:
 
 
 func _reset() -> void:
-	scale = Vector2.ONE
 	_target_scale = Vector2.ONE
+	scale = Vector2.ONE
