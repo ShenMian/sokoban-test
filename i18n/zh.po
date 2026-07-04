@@ -107,12 +107,6 @@ msgstr "极地实验室"
 msgid "OCEAN_DEPTHS"
 msgstr "深海探险"
 
-msgid "CYBERPUNK_NEON"
-msgstr "赛博朋克"
-
-msgid "UNDERGROUND_CAVERN"
-msgstr "地下岩洞"
-
 msgid "2D_VIEW"
 msgstr "2D 视角"
 

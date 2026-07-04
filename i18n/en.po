@@ -107,12 +107,6 @@ msgstr "Arctic Lab"
 msgid "OCEAN_DEPTHS"
 msgstr "Ocean Depths"
 
-msgid "CYBERPUNK_NEON"
-msgstr "Cyberpunk Neon"
-
-msgid "UNDERGROUND_CAVERN"
-msgstr "Underground Cavern"
-
 msgid "2D_VIEW"
 msgstr "2D View"
 
