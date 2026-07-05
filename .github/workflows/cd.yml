@@ -29,7 +29,7 @@ jobs:
           persist-credentials: false
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y build-essential curl
+        run: apt-get update && apt-get install -y build-essential curl zstd
 
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
@@ -179,7 +179,7 @@ jobs:
 
       - name: Build GDExtension
         run: |
-          source /opt/emsdk/emsdk_env.sh
+          . /opt/emsdk/emsdk_env.sh
           cargo +nightly build --manifest-path extension/Cargo.toml -Zbuild-std --target wasm32-unknown-emscripten --release --features godot/experimental-wasm,godot/lazy-function-tables
 
       - name: Setup Godot
