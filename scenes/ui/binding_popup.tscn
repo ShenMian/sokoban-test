@@ -111,6 +111,7 @@ custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
+disabled = true
 text = "CONFIRM"
 script = ExtResource("2_sycsx")
 metadata/_custom_type_script = "uid://cr5yoytr47auc"

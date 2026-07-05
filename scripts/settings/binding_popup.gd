@@ -69,12 +69,18 @@ func _input(event: InputEvent) -> void:
 
 
 func _check_conflict(event: InputEventKey) -> void:
-	var conflict := _get_action_by_event(event)
-	if conflict.is_empty():
+	var action := _get_action_by_event(event)
+	if action.is_empty():
+		# No conflict with other actions' events
 		hint_label.text = ""
 		confirm_button.disabled = false
+	elif action == _action:
+		# Same event already assigned to this action
+		hint_label.text = tr("KEY_UNCHANGED")
+		confirm_button.disabled = true
 	else:
-		hint_label.text = tr("CONFLICT_WITH") % tr(conflict.to_upper())
+		# Event conflicts with another action
+		hint_label.text = tr("KEY_CONFLICT") % tr(action.to_upper())
 		confirm_button.disabled = true
 
 
@@ -92,7 +98,7 @@ func _get_event_by_action(action: StringName) -> InputEventKey:
 
 func _get_action_by_event(event: InputEventKey) -> StringName:
 	for action in InputMap.get_actions():
-		if action.begins_with("ui_") or action == _action:
+		if action.begins_with("ui_"):
 			continue
 		for other in InputMap.action_get_events(action):
 			if other is InputEventKey and _events_match(event, other as InputEventKey):

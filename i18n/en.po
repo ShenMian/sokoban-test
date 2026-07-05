@@ -357,7 +357,10 @@ msgstr "Clear"
 msgid "CONFIRM"
 msgstr "Confirm"
 
-msgid "CONFLICT_WITH"
+msgid "KEY_UNCHANGED"
+msgstr "Already assigned to this action"
+
+msgid "KEY_CONFLICT"
 msgstr "Conflict with %s"
 
 msgid "MOVE_UP"

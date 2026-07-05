@@ -357,7 +357,10 @@ msgstr "清空"
 msgid "CONFIRM"
 msgstr "确认"
 
-msgid "CONFLICT_WITH"
+msgid "KEY_UNCHANGED"
+msgstr "该按键已绑定到当前操作"
+
+msgid "KEY_CONFLICT"
 msgstr "与 %s 冲突"
 
 msgid "MOVE_UP"
