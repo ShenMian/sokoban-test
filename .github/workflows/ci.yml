@@ -114,9 +114,12 @@ jobs:
           mv /root/.config/godot ~/.config/godot
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import project
-        # First run generates .godot/imported/; expected to emit non-fatal
-        # warnings about missing imported files and Blender/Android in CI.
+      - name: Import assets (pass 1)
+        # First pass generates .godot/imported/ files.
+        run: godot --headless --editor --quit 2>&1 || true
+
+      - name: Import assets (pass 2)
+        # Second pass: imported files now exist, editor saves the UID cache.
         run: godot --headless --editor --quit 2>&1 || true
 
       - name: Validate project
