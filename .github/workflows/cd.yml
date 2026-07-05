@@ -29,7 +29,7 @@ jobs:
           persist-credentials: false
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y curl libfontconfig1
+        run: apt-get update && apt-get install -y build-essential curl libfontconfig1
 
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
@@ -147,7 +147,7 @@ jobs:
           persist-credentials: false
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y curl libfontconfig1 python3
+        run: apt-get update && apt-get install -y build-essential curl libfontconfig1 python3
 
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
