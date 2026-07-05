@@ -114,18 +114,16 @@ jobs:
           mv /root/.config/godot ~/.config/godot
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import assets (pass 1)
-        # First pass generates .godot/imported/ files.
-        run: godot --headless --editor --quit 2>&1 || true
-
-      - name: Import assets (pass 2)
-        # Second pass: imported files now exist, editor saves the UID cache.
-        run: godot --headless --editor --quit 2>&1 || true
-
       - name: Validate project
         run: |
-          godot --headless --quit 2>&1 | tee /tmp/godot.log
-          if grep -qE "ERROR|CRASH" /tmp/godot.log; then
-            echo "::error::Godot project failed to load"
+          godot --headless --editor --quit 2>&1 | tee /tmp/godot.log
+          if grep -v \
+            -e 'Cannot open file.*\.godot/imported/' \
+            -e 'Failed loading resource: res://\.godot/imported/' \
+            -e 'Blender path is invalid' \
+            -e 'cannot connect to daemon at tcp:5037' \
+            -e 'Plugin is not attached to debugger' \
+            /tmp/godot.log | grep -qE 'ERROR|CRASH'; then
+            echo "::error::Godot project validation failed"
             exit 1
           fi

@@ -56,12 +56,7 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import assets (pass 1)
-        # First pass generates .godot/imported/ files.
-        run: godot --headless --editor --quit 2>&1 || true
-
-      - name: Import assets (pass 2)
-        # Second pass: imported files now exist, editor saves the UID cache.
+      - name: Import project
         run: godot --headless --editor --quit 2>&1 || true
 
       - name: Export
@@ -123,12 +118,7 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import assets (pass 1)
-        # First pass generates .godot/imported/ files.
-        run: godot --headless --editor --quit 2>&1 || true
-
-      - name: Import assets (pass 2)
-        # Second pass: imported files now exist, editor saves the UID cache.
+      - name: Import project
         run: godot --headless --editor --quit 2>&1 || true
 
       - name: Export
@@ -196,12 +186,7 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import assets (pass 1)
-        # First pass generates .godot/imported/ files.
-        run: godot --headless --editor --quit 2>&1 || true
-
-      - name: Import assets (pass 2)
-        # Second pass: imported files now exist, editor saves the UID cache.
+      - name: Import project
         run: godot --headless --editor --quit 2>&1 || true
 
       - name: Export
