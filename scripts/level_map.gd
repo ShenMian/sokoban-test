@@ -476,6 +476,7 @@ func update_ui() -> void:
 
 	_update_pushable_hint()
 
+	# Update toolbar buttons
 	if _solving:
 		gameplay.undo_button.disabled = true
 		gameplay.redo_button.disabled = true
