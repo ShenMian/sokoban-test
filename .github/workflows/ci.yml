@@ -84,6 +84,9 @@ jobs:
           lfs: true
           persist-credentials: false
 
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y curl libfontconfig1
+
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
         with:
@@ -106,7 +109,6 @@ jobs:
 
       - name: Setup Godot
         run: |
-          apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
           mkdir -v -p ~/.config/
           mv /root/.config/godot ~/.config/godot

@@ -28,6 +28,9 @@ jobs:
           lfs: true
           persist-credentials: false
 
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y curl libfontconfig1
+
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
         with:
@@ -50,7 +53,6 @@ jobs:
 
       - name: Setup Godot
         run: |
-          apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
@@ -82,6 +84,9 @@ jobs:
           lfs: true
           persist-credentials: false
 
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y curl libfontconfig1
+
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
         with:
@@ -110,7 +115,6 @@ jobs:
 
       - name: Setup Godot
         run: |
-          apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
@@ -143,7 +147,7 @@ jobs:
           persist-credentials: false
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y python3
+        run: apt-get update && apt-get install -y curl libfontconfig1 python3
 
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
@@ -179,7 +183,6 @@ jobs:
 
       - name: Setup Godot
         run: |
-          apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
