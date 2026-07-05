@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           lfs: true
           persist-credentials: false
@@ -32,7 +32,7 @@ jobs:
         run: apt-get update && apt-get install -y build-essential curl zstd
 
       - name: Cache Cargo artifacts
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/bin/
@@ -66,7 +66,7 @@ jobs:
         run: tar -caf sokoban-linux-x86_64.tar.zst -C build/linux .
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sokoban-linux-x86_64
           path: sokoban-linux-x86_64.tar.zst
@@ -79,7 +79,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           lfs: true
           persist-credentials: false
@@ -88,7 +88,7 @@ jobs:
         run: apt-get update && apt-get install -y build-essential curl g++-mingw-w64-x86-64 p7zip-full
 
       - name: Cache Cargo artifacts
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/bin/
@@ -129,7 +129,7 @@ jobs:
           7z a -tzip ../../sokoban-windows-x86_64.zip .
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sokoban-windows-x86_64
           path: sokoban-windows-x86_64.zip
@@ -142,7 +142,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           lfs: true
           persist-credentials: false
@@ -151,7 +151,7 @@ jobs:
         run: apt-get update && apt-get install -y build-essential curl p7zip-full python3
 
       - name: Cache Cargo artifacts
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/bin/
@@ -178,6 +178,7 @@ jobs:
           ./emsdk activate latest
 
       - name: Build GDExtension
+        shell: bash
         run: |
           . /opt/emsdk/emsdk_env.sh
           cargo +nightly build --manifest-path extension/Cargo.toml -Zbuild-std --target wasm32-unknown-emscripten --release --features godot/experimental-wasm,godot/lazy-function-tables
@@ -199,7 +200,7 @@ jobs:
           7z a -tzip ../../sokoban-web.zip .
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sokoban-web
           path: sokoban-web.zip
@@ -218,10 +219,10 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
 
       - name: Create release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             sokoban-linux-x86_64/sokoban-linux-x86_64.tar.zst
