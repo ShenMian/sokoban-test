@@ -1,0 +1,197 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+  GODOT_VERSION: "4.7"
+  EXPORT_NAME: sokoban
+
+jobs:
+  export-linux:
+    name: Linux Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.7
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Cache Cargo artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            extension/target/
+          key: cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-${{ hashFiles('extension/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-
+            cargo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build GDExtension
+        run: cargo build --manifest-path extension/Cargo.toml --release
+
+      - name: Setup Godot
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+
+      - name: Export
+        run: |
+          mkdir -v -p build/linux
+          EXPORT_DIR="$(readlink -f build)"
+          godot --headless --verbose --export-release "Linux" "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: build/linux
+
+  export-windows:
+    name: Windows Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.7
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Cache Cargo artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            extension/target/
+          key: cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-${{ hashFiles('extension/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-
+            cargo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-gnu
+
+      - name: Build GDExtension
+        run: |
+          cargo build --manifest-path extension/Cargo.toml --release --target x86_64-pc-windows-gnu
+          # Copy cross-compiled .dll to the path expected by sokoban.gdextension
+          mkdir -p extension/target/release
+          cp extension/target/x86_64-pc-windows-gnu/release/extension.dll extension/target/release/extension.dll
+
+      - name: Setup Godot
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+
+      - name: Export
+        run: |
+          mkdir -v -p build/windows
+          EXPORT_DIR="$(readlink -f build)"
+          godot --headless --verbose --export-release "Windows" "$EXPORT_DIR/windows/$EXPORT_NAME.exe"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: build/windows
+
+  export-web:
+    name: Web Export
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.7
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Install system dependencies
+        run: apt-get update && apt-get install -y python3
+
+      - name: Cache Cargo artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            extension/target/
+          key: cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-${{ hashFiles('extension/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-
+            cargo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: wasm32-unknown-emscripten
+          components: rust-src
+
+      - name: Setup Emscripten
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git /opt/emsdk --depth 1
+          cd /opt/emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+
+      - name: Build GDExtension
+        run: |
+          source /opt/emsdk/emsdk_env.sh
+          cargo +nightly build --manifest-path extension/Cargo.toml -Zbuild-std --target wasm32-unknown-emscripten --release --features godot/experimental-wasm,godot/lazy-function-tables
+
+      - name: Setup Godot
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+
+      - name: Export
+        run: |
+          mkdir -v -p build/wasm
+          EXPORT_DIR="$(readlink -f build)"
+          godot --headless --verbose --export-release "Web" "$EXPORT_DIR/wasm/index.html"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: build/wasm
+
+      - name: Install rsync
+        run: apt-get update && apt-get install -y rsync
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        if: github.event_name != 'pull_request'
+        with:
+          branch: gh-pages
+          folder: build/wasm

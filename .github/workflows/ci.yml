@@ -1,0 +1,133 @@
+name: CI
+
+on: [pull_request, push]
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Cache Cargo artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            extension/target/
+          key: cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-${{ hashFiles('extension/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-
+            cargo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt
+
+      - name: Run cargo fmt
+        run: cargo +nightly fmt --manifest-path extension/Cargo.toml --all -- --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Cache Cargo artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            extension/target/
+          key: cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-${{ hashFiles('extension/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-
+            cargo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run clippy lints
+        run: cargo clippy --manifest-path extension/Cargo.toml --locked --workspace --all-targets --all-features -- --deny warnings
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Cache Cargo artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            extension/target/
+          key: cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-${{ hashFiles('extension/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-
+            cargo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run tests
+        run: |
+          cargo test --manifest-path extension/Cargo.toml --locked --workspace --all-features --all-targets
+          # Workaround for https://github.com/rust-lang/cargo/issues/6669
+          cargo test --manifest-path extension/Cargo.toml --locked --workspace --all-features --doc
+
+  godot-validate:
+    name: Godot Validate
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.7
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mkdir -v -p ~/.config/
+          mv /root/.config/godot ~/.config/godot
+          mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+
+      - name: Validate project
+        run: |
+          godot --headless --quit 2>&1 | tee /tmp/godot.log
+          if grep -qE "ERROR|CRASH" /tmp/godot.log; then
+            echo "::error::Godot project failed to load"
+            exit 1
+          fi
