@@ -29,7 +29,7 @@ jobs:
           persist-credentials: false
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y build-essential curl libfontconfig1
+        run: apt-get update && apt-get install -y build-essential curl
 
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
@@ -56,20 +56,20 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import project
-        run: godot --headless --editor --quit 2>&1 || true
-
       - name: Export
         run: |
           mkdir -v -p build/linux
           EXPORT_DIR="$(readlink -f build)"
           godot --headless --verbose --export-release "Linux" "$EXPORT_DIR/linux/$EXPORT_NAME.x86_64"
 
+      - name: Create archive
+        run: tar -caf sokoban-linux-x86_64.tar.zst -C build/linux .
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux
-          path: build/linux
+          name: sokoban-linux-x86_64
+          path: sokoban-linux-x86_64.tar.zst
 
   export-windows:
     name: Windows Export
@@ -85,7 +85,7 @@ jobs:
           persist-credentials: false
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y curl libfontconfig1
+        run: apt-get update && apt-get install -y build-essential curl
 
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
@@ -109,7 +109,6 @@ jobs:
       - name: Build GDExtension
         run: |
           cargo build --manifest-path extension/Cargo.toml --release --target x86_64-pc-windows-gnu
-          # Copy cross-compiled .dll to the path expected by sokoban.gdextension
           mkdir -p extension/target/release
           cp extension/target/x86_64-pc-windows-gnu/release/extension.dll extension/target/release/extension.dll
 
@@ -118,20 +117,23 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import project
-        run: godot --headless --editor --quit 2>&1 || true
-
       - name: Export
         run: |
           mkdir -v -p build/windows
           EXPORT_DIR="$(readlink -f build)"
           godot --headless --verbose --export-release "Windows" "$EXPORT_DIR/windows/$EXPORT_NAME.exe"
 
+      - name: Create archive
+        run: |
+          apt-get update && apt-get install -y p7zip-full
+          cd build/windows
+          7z a -tzip ../../sokoban-windows-x86_64.zip .
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows
-          path: build/windows
+          name: sokoban-windows-x86_64
+          path: sokoban-windows-x86_64.zip
 
   export-web:
     name: Web Export
@@ -147,7 +149,7 @@ jobs:
           persist-credentials: false
 
       - name: Install system dependencies
-        run: apt-get update && apt-get install -y build-essential curl libfontconfig1 python3
+        run: apt-get update && apt-get install -y build-essential curl python3
 
       - name: Cache Cargo artifacts
         uses: actions/cache@v5
@@ -186,23 +188,23 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
-      - name: Import project
-        run: godot --headless --editor --quit 2>&1 || true
-
       - name: Export
         run: |
           mkdir -v -p build/wasm
           EXPORT_DIR="$(readlink -f build)"
           godot --headless --verbose --export-release "Web" "$EXPORT_DIR/wasm/index.html"
 
+      - name: Create archive
+        run: |
+          apt-get update && apt-get install -y p7zip-full
+          cd build/wasm
+          7z a -tzip ../../sokoban-web.zip .
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: web
-          path: build/wasm
-
-      - name: Install rsync
-        run: apt-get update && apt-get install -y rsync
+          name: sokoban-web
+          path: sokoban-web.zip
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@releases/v4
@@ -210,3 +212,20 @@ jobs:
         with:
           branch: gh-pages
           folder: build/wasm
+
+  release:
+    name: Release
+    needs: [export-linux, export-windows, export-web]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            sokoban-linux-x86_64/sokoban-linux-x86_64.tar.zst
+            sokoban-windows-x86_64/sokoban-windows-x86_64.zip
+            sokoban-web/sokoban-web.zip
