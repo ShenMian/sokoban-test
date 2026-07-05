@@ -84,7 +84,27 @@ jobs:
           lfs: true
           persist-credentials: false
 
-      - name: Setup
+      - name: Cache Cargo artifacts
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            extension/target/
+          key: cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-${{ hashFiles('extension/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-${{ github.job }}-${{ github.ref_name }}-
+            cargo-${{ runner.os }}-${{ github.job }}-
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build GDExtension
+        run: cargo build --manifest-path extension/Cargo.toml
+
+      - name: Setup Godot
         run: |
           apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
