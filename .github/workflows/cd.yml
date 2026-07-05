@@ -50,8 +50,12 @@ jobs:
 
       - name: Setup Godot
         run: |
+          apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+
+      - name: Import project
+        run: godot --headless --editor --quit
 
       - name: Export
         run: |
@@ -106,8 +110,12 @@ jobs:
 
       - name: Setup Godot
         run: |
+          apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+
+      - name: Import project
+        run: godot --headless --editor --quit
 
       - name: Export
         run: |
@@ -171,8 +179,12 @@ jobs:
 
       - name: Setup Godot
         run: |
+          apt-get update && apt-get install -y libfontconfig1
           mkdir -v -p ~/.local/share/godot/export_templates/
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+
+      - name: Import project
+        run: godot --headless --editor --quit
 
       - name: Export
         run: |
