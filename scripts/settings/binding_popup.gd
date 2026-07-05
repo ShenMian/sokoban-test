@@ -74,7 +74,7 @@ func _check_conflict(event: InputEventKey) -> void:
 		hint_label.text = ""
 		confirm_button.disabled = false
 	else:
-		hint_label.text = "Conflict with %s" % tr(conflict.to_upper())
+		hint_label.text = tr("CONFLICT_WITH") % tr(conflict.to_upper())
 		confirm_button.disabled = true
 
 

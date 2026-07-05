@@ -357,6 +357,9 @@ msgstr "清空"
 msgid "CONFIRM"
 msgstr "确认"
 
+msgid "CONFLICT_WITH"
+msgstr "与 %s 冲突"
+
 msgid "MOVE_UP"
 msgstr "上移"
 

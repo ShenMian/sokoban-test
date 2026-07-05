@@ -357,6 +357,9 @@ msgstr "Clear"
 msgid "CONFIRM"
 msgstr "Confirm"
 
+msgid "CONFLICT_WITH"
+msgstr "Conflict with %s"
+
 msgid "MOVE_UP"
 msgstr "Up"
 
