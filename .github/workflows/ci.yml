@@ -114,12 +114,15 @@ jobs:
           mv /root/.config/godot ~/.config/godot
           mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
 
+      - name: Import assets
+        # First run generates .godot/imported/; non-fatal warnings expected.
+        run: godot --headless --editor --quit 2>&1 || true
+
       - name: Validate project
+        # Second run: imports exist, only permanent CI noise remains.
         run: |
           godot --headless --editor --quit 2>&1 | tee /tmp/godot.log
           if grep -v \
-            -e 'Cannot open file.*\.godot/imported/' \
-            -e 'Failed loading resource: res://\.godot/imported/' \
             -e 'Blender path is invalid' \
             -e 'cannot connect to daemon at tcp:5037' \
             -e 'Plugin is not attached to debugger' \
