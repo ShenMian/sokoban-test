@@ -201,15 +201,15 @@ func _on_setting_changed(section: String, key: String, value: Variant) -> void:
 			pathfinding_strategy = value
 		elif key == "theme":
 			create_theme_variants()
-			build()
+			rebuild()
 			rebuild_player_and_boxes()
 		elif key == "checkerboard":
 			checkerboard_shading = value
-			build()
+			rebuild()
 	elif section == "assists":
 		if key == "deadlock_hint":
 			deadlock_hint = value
-			build()
+			rebuild()
 		elif key == "pushable_hint":
 			pushable_hint = value
 			_update_pushable_hint()

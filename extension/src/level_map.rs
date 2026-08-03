@@ -132,7 +132,7 @@ impl LevelMap {
         let reader = BufReader::new(Cursor::new(buffer));
 
         self.level = Level::load_nth_from_reader(reader, index as usize).unwrap();
-        self.build();
+        self.rebuild();
     }
 
     /// Loads a level from an XSB map string or an LURD action string.
@@ -140,7 +140,7 @@ impl LevelMap {
     pub fn load_from_string(&mut self, string: String) {
         if let Ok(level) = Level::from_str(&string) {
             self.level = level;
-            self.build();
+            self.rebuild();
         } else if let Ok(actions) = Actions::from_str(&string) {
             let Ok(map) = Map::with_actions(&actions) else {
                 godot_warn!("failed to create map from actions");
@@ -149,7 +149,7 @@ impl LevelMap {
             self.level = Level::from_map(map);
             self.fast_forward(string);
             self.undo_all();
-            self.build();
+            self.rebuild();
         } else {
             godot_warn!("failed to parse level or actions from string: '{string}'");
         }
@@ -356,7 +356,7 @@ impl LevelMap {
                 break;
             }
         }
-        self.build();
+        self.rebuild();
     }
 
     /// Redoes actions until crossing the next box-change boundary.
@@ -369,7 +369,7 @@ impl LevelMap {
                 break;
             }
         }
-        self.build();
+        self.rebuild();
 
         if self.map().is_solved() {
             self.signals().solved().emit();
@@ -380,7 +380,7 @@ impl LevelMap {
     #[func]
     pub fn undo_all(&mut self) {
         while self.level.undo().is_ok() {}
-        self.build();
+        self.rebuild();
     }
 
     /// Applies an entire LURD action sequence without emitting per-move signals.
@@ -420,14 +420,14 @@ impl LevelMap {
     #[func]
     pub fn rotate_cw(&mut self) {
         self.level.rotate_cw();
-        self.build();
+        self.rebuild();
     }
 
     /// Flips the level horizontally.
     #[func]
     pub fn flip_horizontal(&mut self) {
         self.level.flip_horizontal();
-        self.build();
+        self.rebuild();
     }
 
     /// Returns a dictionary mapping each position to its heuristic lower-bound cost.
@@ -457,7 +457,7 @@ impl LevelMap {
 
     /// Rebuilds the GridMap.
     #[func]
-    pub fn build(&mut self) {
+    pub fn rebuild(&mut self) {
         if !self.base().is_inside_tree() {
             return;
         }
@@ -507,7 +507,7 @@ impl LevelMap {
     pub fn set_deadlock_tint(&mut self, color: Color) {
         self.deadlock_tint = color;
         self.create_theme_variants();
-        self.build();
+        self.rebuild();
     }
 
     /// Creates tinted MeshLibrary variants for floor, wall, goal, and deadlock tiles.
