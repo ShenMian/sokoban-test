@@ -239,8 +239,11 @@ impl LevelMap {
 
         player_path
             .windows(2)
-            .map(|positions| direction::Direction::try_from(positions[1] - positions[0]).unwrap())
-            .map(Into::into)
+            .map(|positions| {
+                direction::Direction::try_from(positions[1] - positions[0])
+                    .unwrap()
+                    .into()
+            })
             .collect()
     }
 
@@ -290,10 +293,10 @@ impl LevelMap {
     pub fn poll_solve(&mut self) -> bool {
         match self.solver_worker.poll() {
             Some(Ok(actions)) => {
-                let mut directions = Vec::new();
-                for action in &*actions {
-                    directions.push(action.direction() as i32);
-                }
+                let directions: Vec<_> = actions
+                    .iter()
+                    .map(|action| action.direction() as i32)
+                    .collect();
                 self.signals().solve_completed().emit(directions);
                 false
             }
@@ -473,19 +476,16 @@ impl LevelMap {
                 let tiles = self.map()[position];
 
                 if tiles.contains(Tiles::Floor) {
-                    let tile_id = if self.deadlock_hint && deadlocks.contains(&position) {
-                        if self.checkerboard_shading && (x + y) % 2 == 1 {
-                            self.deadlock_dark_item_id
-                        } else {
-                            self.deadlock_item_id
-                        }
-                    } else if self.checkerboard_shading && (x + y) % 2 == 1 {
-                        self.floor_dark_item_id
-                    } else {
-                        self.floor_item_id
+                    let is_dark = self.checkerboard_shading && (x + y) % 2 == 1;
+                    let is_deadlocked = self.deadlock_hint && deadlocks.contains(&position);
+                    let item_id = match (is_deadlocked, is_dark) {
+                        (false, false) => self.floor_item_id,
+                        (false, true) => self.floor_dark_item_id,
+                        (true, false) => self.deadlock_item_id,
+                        (true, true) => self.deadlock_dark_item_id,
                     };
                     self.base_mut()
-                        .set_cell_item(Vector3i::new(x, -1, y), tile_id);
+                        .set_cell_item(Vector3i::new(x, -1, y), item_id);
                 }
                 if tiles.intersects(Tiles::Wall | Tiles::Goal) {
                     let item_id = if tiles.contains(Tiles::Wall) {
