@@ -126,12 +126,19 @@ impl LevelMap {
     /// Loads and displays a level from an XSB file at the given `index`.
     #[func]
     pub fn load_from_file(&mut self, path: String, index: i32) {
-        let mut file = FileAccess::open(&path, ModeFlags::READ).unwrap();
+        let Some(mut file) = FileAccess::open(&path, ModeFlags::READ) else {
+            godot_error!("failed to open level file '{path}'");
+            return;
+        };
         let len = file.get_length() as i64;
         let buffer = file.get_buffer(len).to_vec();
         let reader = BufReader::new(Cursor::new(buffer));
 
-        self.level = Level::load_nth_from_reader(reader, index as usize).unwrap();
+        let Ok(level) = Level::load_nth_from_reader(reader, index as usize) else {
+            godot_error!("failed to load level #{index} from '{path}'");
+            return;
+        };
+        self.level = level;
         self.rebuild();
     }
 
