@@ -360,7 +360,10 @@ func _show_path_preview(to: Vector2i) -> void:
 	if not enable_path_preview:
 		return
 
-	var path2d := _smooth_path(get_box_path(to), 0.3, 8)
+	var box_path := get_box_path(to)
+	if box_path.size() < 2:
+		return
+	var path2d := _smooth_path(box_path, 0.3, 8)
 
 	var path3d: Array[Vector3] = []
 	for point in path2d:
@@ -411,6 +414,8 @@ func _smooth_path(path: Array[Vector2i], corner_radius: float, resolution: int) 
 
 
 func _create_path_mesh(smoothed_path: Array[Vector3], width: float) -> ImmediateMesh:
+	assert(smoothed_path.size() >= 2)
+
 	var mesh := ImmediateMesh.new()
 	mesh.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 
