@@ -49,9 +49,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Build GDExtension
-        run: |
-          cargo build --manifest-path extension/Cargo.toml --release
-          cargo build --manifest-path extension/Cargo.toml
+        run: cargo build --manifest-path extension/Cargo.toml --release
 
       - name: Setup Godot
         run: |
@@ -111,7 +109,6 @@ jobs:
       - name: Build GDExtension
         run: |
           cargo build --manifest-path extension/Cargo.toml --release --target x86_64-pc-windows-gnu
-          cargo build --manifest-path extension/Cargo.toml --target x86_64-pc-windows-gnu
           mkdir -p extension/target/release
           cp extension/target/x86_64-pc-windows-gnu/release/extension.dll extension/target/release/extension.dll
 
