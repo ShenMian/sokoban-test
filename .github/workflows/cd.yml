@@ -11,7 +11,7 @@ permissions:
 
 env:
   CARGO_TERM_COLOR: always
-  GODOT_VERSION: "4.7"
+  GODOT_VERSION: "4.7.2"
   EXPORT_NAME: sokoban
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
     name: Linux Export
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:4.7
+      image: barichello/godot-ci:4.7.2
 
     steps:
       - name: Checkout repository
@@ -54,7 +54,7 @@ jobs:
       - name: Setup Godot
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+          mv /root/.local/share/godot/export_templates/4.7.2.stable ~/.local/share/godot/export_templates/4.7.2.stable
 
       - name: Export
         run: |
@@ -75,7 +75,7 @@ jobs:
     name: Windows Export
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:4.7
+      image: barichello/godot-ci:4.7.2
 
     steps:
       - name: Checkout repository
@@ -115,7 +115,7 @@ jobs:
       - name: Setup Godot
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+          mv /root/.local/share/godot/export_templates/4.7.2.stable ~/.local/share/godot/export_templates/4.7.2.stable
 
       - name: Export
         run: |
@@ -138,7 +138,7 @@ jobs:
     name: Web Export
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:4.7
+      image: barichello/godot-ci:4.7.2
 
     steps:
       - name: Checkout repository
@@ -188,7 +188,7 @@ jobs:
       - name: Setup Godot
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/4.7.stable ~/.local/share/godot/export_templates/4.7.stable
+          mv /root/.local/share/godot/export_templates/4.7.2.stable ~/.local/share/godot/export_templates/4.7.2.stable
 
       - name: Export
         run: |
