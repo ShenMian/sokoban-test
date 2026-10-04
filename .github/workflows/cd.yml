@@ -167,8 +167,9 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
+            ~/.rustup/
             extension/target/
-          key: cargo-${{ runner.os }}-${{ github.job }}-${{ hashFiles('extension/Cargo.lock') }}
+          key: cargo-${{ runner.os }}-${{ github.job }}-rustup-${{ hashFiles('extension/Cargo.lock') }}
           restore-keys: |
             cargo-${{ runner.os }}-${{ github.job }}-
 
