@@ -113,15 +113,6 @@ cargo ndk --target arm64-v8a build --release --features godot/experimental-threa
 cd ..
 ```
 
-### In CI
-
-The `export-android` job in `.github/workflows/cd.yml` builds an arm64-v8a debug APK on every CD run. It reuses the Android SDK, NDK, JDK and debug keystore bundled with the `barichello/godot-ci` image, so no signing secrets are needed. Tagged runs attach the APK to the GitHub release.
-
-> [!NOTE]
-> GitHub Actions overrides `HOME` to `/github/home` inside container jobs, so the editor settings baked into the image under `/root/.config/godot/` are not on Godot's search path. The job copies `editor_settings-4.7.tres` next to the export templates for this reason; without it Godot cannot find the Android SDK, the JDK or the debug keystore.
-
-The job also rewrites `version/code` and `version/name` in `export_presets.cfg` before exporting. A `vX.Y.Z` tag yields that version, while any other run is labelled `0.0.0-dev.<run number>`.
-
 ## WASM (Experimental)
 
 > [!WARNING]
