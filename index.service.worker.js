@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1791216733|3510993';
+const CACHE_VERSION = '1791226179|4820460';
 /** @type {string} */
 const CACHE_PREFIX = 'Sokoban-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
