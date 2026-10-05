@@ -208,6 +208,30 @@ jobs:
           EXPORT_DIR="$(readlink -f build)"
           godot --headless --verbose --export-release "Web" "$EXPORT_DIR/wasm/index.html"
 
+      - name: Patch service worker for immediate updates
+        run: |
+          python3 - <<'PYEOF'
+          path = "build/wasm/index.service.worker.js"
+          s = open(path).read()
+          assert "self.addEventListener('install'" in s, "install handler not found"
+          assert "self.addEventListener('activate'" in s, "activate handler not found"
+          # Without these, a new service worker waits for all tabs to close before
+          # activating, so browsers keep serving the previous cached build (e.g.
+          # a stale extension.wasm) for a long time after a deployment.
+          s = s.replace(
+              "self.addEventListener('install', (event) => {",
+              "self.addEventListener('install', (event) => {\n\tself.skipWaiting();",
+              1,
+          )
+          s = s.replace(
+              "self.addEventListener('activate', (event) => {",
+              "self.addEventListener('activate', (event) => {\n\tevent.waitUntil(self.clients.claim());",
+              1,
+          )
+          open(path, "w").write(s)
+          print("service worker patched")
+          PYEOF
+
       - name: Create archive
         run: |
           cd build/wasm
