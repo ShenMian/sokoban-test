@@ -285,8 +285,13 @@ jobs:
         with:
           targets: aarch64-linux-android
 
+      # The Cargo cache restores ~/.cargo/bin, so on a warm cache cargo-ndk is
+      # already present and an unconditional install aborts the job with
+      # "binary `cargo-ndk` already exists in destination". Skip it when the
+      # binary is usable, and force the overwrite on the fallback so a stale or
+      # non-executable cached binary is replaced.
       - name: Install cargo-ndk
-        run: cargo install cargo-ndk --locked
+        run: command -v cargo-ndk >/dev/null 2>&1 || cargo install cargo-ndk --locked --force
 
       # The image ships NDK 25.2.9519653 next to the Android SDK. cargo-ndk reads
       # ANDROID_NDK_HOME to locate the toolchain that cross-compiles the extension.
